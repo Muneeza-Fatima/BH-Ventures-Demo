@@ -1,26 +1,56 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --navy: #0d1b2a;
+  --navy-light: #102536;
+
+  --white: #ffffff;
+  --off-white: #f7f9f8;
+
+  --teal: #11998e;
+  --turquoise: #2dd4c3;
+
+  --text-dark: #0d1b2a;
+  --text-muted: #53616b;
+  --text-light: #d9e2e7;
+
+  --border: #e2e8e7;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+* {
+  box-sizing: border-box;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
+  margin: 0;
+  background: var(--white);
+  color: var(--text-dark);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+::selection {
+  background: var(--teal);
+  color: var(--white);
+}
+
+/* ========================================
+   HERO BUTTON BORDER SHINE
+   ======================================== */
+
+@keyframes border-shine {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-border-shine {
+  animation: border-shine 3.5s linear infinite;
 }
