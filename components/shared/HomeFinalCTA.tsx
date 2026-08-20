@@ -1,0 +1,372 @@
+"use client";
+
+import Link from "next/link";
+import { ArrowRight } from "lucide-react";
+
+export default function HomeFinalCTA() {
+  return (
+    <section
+      className="
+        relative
+        isolate
+        overflow-hidden
+        bg-[#0B1220]
+        px-5
+        py-20
+
+        sm:px-8
+        sm:py-24
+
+        md:px-10
+        md:py-28
+
+        lg:px-12
+        lg:py-32
+
+        xl:px-16
+      "
+    >
+      {/* Static Ambient Glow — no JS animation */}
+      <div
+        aria-hidden="true"
+        className="
+          pointer-events-none
+          absolute
+          left-1/2
+          top-1/2
+          h-[320px]
+          w-[560px]
+          -translate-x-1/2
+          -translate-y-1/2
+          rounded-full
+          bg-[#14B8A6]/[0.055]
+          blur-[110px]
+        "
+      />
+
+      {/* Subtle top glow */}
+      <div
+        aria-hidden="true"
+        className="
+          pointer-events-none
+          absolute
+          left-1/2
+          top-0
+          h-px
+          w-[55%]
+          -translate-x-1/2
+          bg-gradient-to-r
+          from-transparent
+          via-[#2DD4BF]/40
+          to-transparent
+        "
+      />
+
+      {/* Content */}
+      <div
+        className="
+          relative
+          z-10
+          mx-auto
+          flex
+          w-full
+          max-w-[900px]
+          flex-col
+          items-center
+          text-center
+        "
+      >
+        {/* Eyebrow */}
+        <div
+          className="
+            mb-5
+            flex
+            items-center
+            justify-center
+            gap-3
+          "
+        >
+          <span
+            className="
+              h-px
+              w-7
+              bg-[#14B8A6]/60
+              sm:w-9
+            "
+          />
+
+          <p
+            className="
+              text-[9px]
+              font-semibold
+              uppercase
+              tracking-[0.3em]
+              text-[#2DD4BF]
+
+              sm:text-[10px]
+            "
+          >
+            Explore What Comes Next
+          </p>
+
+          <span
+            className="
+              h-px
+              w-7
+              bg-[#14B8A6]/60
+              sm:w-9
+            "
+          />
+        </div>
+
+        {/* Heading */}
+        <h2
+          className="
+            w-full
+            text-[30px]
+            font-semibold
+            leading-[1.1]
+            tracking-[-0.045em]
+            text-white
+
+            sm:text-[40px]
+
+            md:text-[48px]
+
+            lg:text-[52px]
+          "
+        >
+          Discover What BH Ventures
+          <br className="hidden sm:block" />
+          {" "}Can Build Next.
+        </h2>
+
+        {/* Accent */}
+        <div
+          aria-hidden="true"
+          className="
+            mt-6
+            h-px
+            w-12
+            bg-gradient-to-r
+            from-transparent
+            via-[#2DD4BF]
+            to-transparent
+          "
+        />
+
+        {/* Description */}
+        <p
+          className="
+            mx-auto
+            mt-5
+            max-w-[600px]
+            text-[14px]
+            font-medium
+            leading-7
+            text-white/55
+
+            sm:text-[16px]
+          "
+        >
+          Explore our solutions and ventures shaping
+          opportunities across global markets.
+        </p>
+
+        {/* CTA Buttons */}
+        <div
+          className="
+            mt-8
+            flex
+            w-full
+            flex-col
+            items-center
+            justify-center
+            gap-3
+
+            sm:flex-row
+            sm:gap-4
+          "
+        >
+          {/* Discover Solutions */}
+          <Link
+            href="/services"
+            className="
+              group
+              relative
+              w-full
+              max-w-[210px]
+              sm:w-auto
+              sm:max-w-none
+            "
+          >
+            <span
+              className="
+                relative
+                flex
+                min-h-[50px]
+                min-w-[190px]
+                items-center
+                justify-center
+                gap-2
+                overflow-hidden
+                rounded-full
+
+                border
+                border-[#14B8A6]/70
+                bg-[#14B8A6]
+
+                px-7
+
+                text-[13px]
+                font-bold
+                text-[#07151A]
+
+                shadow-[0_0_18px_rgba(20,184,166,0.22)]
+
+                transition-transform
+                duration-300
+                ease-out
+
+                group-hover:-translate-y-0.5
+                group-hover:bg-[#2DD4BF]
+                group-hover:shadow-[0_0_24px_rgba(45,212,191,0.35)]
+              "
+            >
+              {/* Shine */}
+              <span
+                aria-hidden="true"
+                className="
+                  pointer-events-none
+                  absolute
+                  inset-y-[-20%]
+                  left-[-70%]
+                  w-[45%]
+                  rotate-[18deg]
+                  bg-gradient-to-r
+                  from-transparent
+                  via-white/50
+                  to-transparent
+                  opacity-0
+
+                  transition-all
+                  duration-700
+                  ease-out
+
+                  group-hover:left-[125%]
+                  group-hover:opacity-100
+                "
+              />
+
+              <span className="relative z-10 whitespace-nowrap">
+                Discover Solutions
+              </span>
+
+              <ArrowRight
+                className="
+                  relative
+                  z-10
+                  h-4
+                  w-4
+                  transition-transform
+                  duration-300
+                  group-hover:translate-x-1
+                "
+              />
+            </span>
+          </Link>
+
+          {/* Explore Our Ventures */}
+          <Link
+            href="/ventures"
+            className="
+              group
+              relative
+              w-full
+              max-w-[210px]
+              sm:w-auto
+              sm:max-w-none
+            "
+          >
+            <span
+              className="
+                relative
+                flex
+                min-h-[50px]
+                min-w-[190px]
+                items-center
+                justify-center
+                gap-2
+                overflow-hidden
+                rounded-full
+
+                border
+                border-white/[0.16]
+                bg-white/[0.035]
+
+                px-7
+
+                text-[13px]
+                font-bold
+                text-white
+
+                backdrop-blur-sm
+
+                transition-transform
+                duration-300
+                ease-out
+
+                group-hover:-translate-y-0.5
+                group-hover:border-[#14B8A6]/70
+                group-hover:bg-[#14B8A6]
+                group-hover:text-[#07151A]
+                group-hover:shadow-[0_0_24px_rgba(20,184,166,0.28)]
+              "
+            >
+              {/* Shine */}
+              <span
+                aria-hidden="true"
+                className="
+                  pointer-events-none
+                  absolute
+                  inset-y-[-20%]
+                  left-[-70%]
+                  w-[45%]
+                  rotate-[18deg]
+                  bg-gradient-to-r
+                  from-transparent
+                  via-white/35
+                  to-transparent
+                  opacity-0
+
+                  transition-all
+                  duration-700
+                  ease-out
+
+                  group-hover:left-[125%]
+                  group-hover:opacity-100
+                "
+              />
+
+              <span className="relative z-10 whitespace-nowrap">
+                Explore Our Ventures
+              </span>
+
+              <ArrowRight
+                className="
+                  relative
+                  z-10
+                  h-4
+                  w-4
+                  transition-transform
+                  duration-300
+                  group-hover:translate-x-1
+                "
+              />
+            </span>
+          </Link>
+        </div>
+      </div>
+    </section>
+  );
+}

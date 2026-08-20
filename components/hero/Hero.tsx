@@ -1,12 +1,20 @@
 "use client";
 
-import { motion } from "framer-motion";
 import HeroBackground from "./HeroBackground";
 import HeroContent from "./HeroContent";
 
 export default function Hero() {
   return (
-    <section className="relative min-h-screen overflow-hidden bg-white">
+    <section
+      className="
+        relative
+        isolate
+        overflow-hidden
+        bg-[#0B1220]
+        min-h-0
+        md:min-h-[100svh]
+      "
+    >
       <HeroBackground />
 
       <div
@@ -15,57 +23,50 @@ export default function Hero() {
           z-10
           mx-auto
           flex
-          min-h-screen
           w-full
           max-w-[1440px]
           items-start
+          min-h-0
 
           px-5
-          pb-5
-          pt-[104px]
+          pt-[82px]
+          pb-[104px]
 
-          sm:px-8
-          sm:pb-6
-          sm:pt-[108px]
+          sm:px-7
+          sm:pt-[88px]
+          sm:pb-[112px]
 
+          md:min-h-[100svh]
           md:px-10
-          md:pb-8
-          md:pt-[112px]
+          md:pt-[94px]
+          md:pb-[120px]
 
           lg:items-center
           lg:px-12
-          lg:pb-0
-          lg:pt-[112px]
+          lg:pt-20
+          lg:pb-[128px]
 
           xl:px-16
 
           2xl:max-w-[1600px]
           2xl:px-20
+
+          /* iPad Air + iPad Pro */
+          [@media(min-width:1024px)_and_(max-width:1366px)]:items-start
+          [@media(min-width:1024px)_and_(max-width:1366px)]:pt-[108px]
+          [@media(min-width:1024px)_and_(max-width:1366px)]:pb-[88px]
         "
       >
-        <motion.div
-          initial={{
-            opacity: 0,
-            y: 24,
-          }}
-          animate={{
-            opacity: 1,
-            y: 0,
-          }}
-          transition={{
-            duration: 0.8,
-            delay: 0.1,
-            ease: "easeOut",
-          }}
+        <div
           className="
             w-full
-            md:max-w-[600px]
-            lg:max-w-[620px]
-            xl:max-w-[610px]
+            max-w-[680px]
+
+            [@media(min-width:1024px)_and_(max-width:1366px)]:pt-2
           "
         >
           <HeroContent />
-        </motion.div>
+        </div>
       </div>
     </section>
   );

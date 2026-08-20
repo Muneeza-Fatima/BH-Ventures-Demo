@@ -1,14 +1,14 @@
 "use client";
 
 import { motion, type Variants } from "framer-motion";
-import HeroButtons from "./HeroButtons";
+import { ChevronDown } from "lucide-react";
 
 const containerVariants: Variants = {
   hidden: {},
   visible: {
     transition: {
-      staggerChildren: 0.1,
-      delayChildren: 0.15,
+      staggerChildren: 0.08,
+      delayChildren: 0.1,
     },
   },
 };
@@ -16,13 +16,13 @@ const containerVariants: Variants = {
 const itemVariants: Variants = {
   hidden: {
     opacity: 0,
-    y: 22,
+    y: 16,
   },
   visible: {
     opacity: 1,
     y: 0,
     transition: {
-      duration: 0.7,
+      duration: 0.55,
       ease: "easeOut",
     },
   },
@@ -32,8 +32,8 @@ const headingContainer: Variants = {
   hidden: {},
   visible: {
     transition: {
-      staggerChildren: 0.13,
-      delayChildren: 0.35,
+      staggerChildren: 0.08,
+      delayChildren: 0.2,
     },
   },
 };
@@ -41,13 +41,13 @@ const headingContainer: Variants = {
 const headingWord: Variants = {
   hidden: {
     opacity: 0,
-    y: 28,
+    y: 20,
   },
   visible: {
     opacity: 1,
     y: 0,
     transition: {
-      duration: 0.65,
+      duration: 0.55,
       ease: [0.22, 1, 0.36, 1],
     },
   },
@@ -63,57 +63,47 @@ export default function HeroContent() {
         relative
         z-20
         w-full
-        max-w-[590px]
-        px-0
-
-        md:max-w-[650px]
-        md:px-2
-
-        lg:max-w-[680px]
-        lg:px-0
-
-        xl:max-w-[700px]
+        max-w-[680px]
       "
     >
       {/* Location */}
       <motion.div
-        initial={{ opacity: 0, x: -18 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{
-          duration: 0.7,
-          delay: 0.2,
-          ease: "easeOut",
-        }}
+        variants={itemVariants}
         className="
-          mb-5
+          mb-6
           flex
           items-center
           gap-3
+
+          sm:mb-7
+          md:mb-8
+          lg:mb-7
         "
       >
-        <motion.span
-          initial={{ scaleX: 0 }}
-          animate={{ scaleX: 1 }}
-          transition={{
-            duration: 0.8,
-            delay: 0.3,
-            ease: [0.16, 1, 0.3, 1],
-          }}
-          style={{
-            transformOrigin: "left center",
-          }}
-          className="h-px w-10 shrink-0 bg-[#14B8A6]"
+        <span
+          className="
+            h-px
+            w-8
+            shrink-0
+            bg-gradient-to-r
+            from-[#14B8A6]
+            to-[#2DD4BF]
+
+            sm:w-9
+          "
         />
 
         <span
           className="
-            text-[11px]
+            text-[10px]
             font-semibold
             uppercase
-            tracking-[0.2em]
-            text-[#14B8A6]
+            tracking-[0.24em]
+            text-[#2DD4BF]
 
-            sm:text-xs
+            sm:text-[11px]
+
+            md:text-xs
           "
         >
           Dubai • UAE
@@ -123,42 +113,53 @@ export default function HeroContent() {
       {/* Main Heading */}
       <motion.h1
         variants={headingContainer}
-        initial="hidden"
-        animate="visible"
         aria-label="Building the Future of Ventures."
         className="
           max-w-[680px]
           font-bold
-          tracking-[-0.06em]
-          text-[#0B1220]
+          tracking-[-0.055em]
+          text-white
 
-          text-[3.65rem]
-          leading-[0.92]
+          text-[3.25rem]
+          leading-[0.94]
 
-          sm:text-[3.85rem]
+          sm:text-[3.6rem]
+          sm:leading-[0.95]
 
-          md:text-[4rem]
-          md:leading-[0.93]
+          md:text-[3.9rem]
+          md:leading-[0.95]
 
-          lg:text-[4.5rem]
+          lg:text-[4rem]
 
-          xl:text-[4.75rem]
+          xl:text-[4.7rem]
         "
       >
         <span className="block">
-          <motion.span variants={headingWord} className="inline-block">
+          <motion.span
+            variants={headingWord}
+            className="inline-block"
+          >
             Building
           </motion.span>{" "}
-          <motion.span variants={headingWord} className="inline-block">
+          <motion.span
+            variants={headingWord}
+            className="inline-block"
+          >
             the
           </motion.span>
         </span>
 
         <span className="block">
-          <motion.span variants={headingWord} className="inline-block">
+          <motion.span
+            variants={headingWord}
+            className="inline-block"
+          >
             Future
           </motion.span>{" "}
-          <motion.span variants={headingWord} className="inline-block">
+          <motion.span
+            variants={headingWord}
+            className="inline-block"
+          >
             of
           </motion.span>
         </span>
@@ -166,151 +167,260 @@ export default function HeroContent() {
         <span className="block">
           <motion.span
             variants={headingWord}
-            className="inline-block font-extrabold"
+            className="
+              inline-block
+              font-extrabold
+              text-white
+            "
           >
             Ventures.
           </motion.span>
         </span>
       </motion.h1>
 
-      {/* Supporting Line */}
-      <p
+      {/* Bridging Line */}
+      <div
         className="
-          mt-7
-          max-w-[540px]
-          text-[1.18rem]
-          font-semibold
-          leading-[1.6]
-          tracking-[-0.012em]
-          text-[#1E293B]
+          mt-5
+          flex
+          w-full
+          max-w-[620px]
+          items-baseline
+          overflow-hidden
 
-          sm:text-[1.22rem]
-
-          md:text-[1.25rem]
-
-          lg:text-[1.3rem]
+          sm:mt-6
+          md:mt-6
+          lg:mt-5
         "
       >
-        <span>Bridging </span>
+        {/* Bridging */}
+        <motion.span
+          variants={itemVariants}
+          className="
+            shrink-0
+            whitespace-nowrap
+            text-[1rem]
+            font-bold
+            leading-[1.5]
+            text-[#14B8A6]
 
-        {/* Looping Text */}
-        <span className="relative inline-block">
+            sm:text-[1.08rem]
+
+            md:text-[1.12rem]
+
+            lg:text-[1.18rem]
+
+            xl:text-[1.24rem]
+          "
+        >
+          Bridging
+        </motion.span>
+
+        {/* Animated Text */}
+        <div
+          className="
+            ml-2
+            min-w-0
+            overflow-hidden
+          "
+        >
           <motion.span
             initial={{
-              opacity: 0,
-              x: -12,
+              clipPath: "inset(0 100% 0 0)",
             }}
             animate={{
-              opacity: [0, 1, 1, 0],
-              x: [-12, 0, 0, 12],
+              clipPath: [
+                "inset(0 100% 0 0)",
+                "inset(0 0% 0 0)",
+                "inset(0 0% 0 0)",
+                "inset(0 100% 0 0)",
+              ],
             }}
             transition={{
-              duration: 4.2,
-              delay: 1,
-              repeat: Infinity,
-              repeatDelay: 1.2,
-              times: [0, 0.2, 0.78, 1],
+              duration: 5,
+              times: [0, 0.25, 0.75, 1],
               ease: "easeInOut",
+              repeat: Infinity,
+              repeatDelay: 0.6,
             }}
             className="
-              relative
               inline-block
-              whitespace-nowrap
+              whitespace-normal
+              text-[1rem]
+              font-bold
+              leading-[1.5]
 
-              text-[1.12rem]
+              sm:text-[1.08rem]
 
-              sm:text-[1.18rem]
+              md:text-[1.12rem]
 
-              md:text-[1.25rem]
+              lg:text-[1.18rem]
 
-              lg:text-[1.3rem]
+              xl:text-[1.24rem]
             "
           >
-            Trade, Technology & Innovation from the UAE.
-          </motion.span>
+            <span className="text-white">
+              Technology{" "}
+            </span>
 
-          {/* Close Sea-Green Underline */}
-          <motion.span
-            initial={{
-              scaleX: 0,
-              opacity: 0,
-            }}
-            animate={{
-              scaleX: [0, 1, 1, 0],
-              opacity: [0, 1, 1, 0],
-            }}
-            transition={{
-              duration: 4.2,
-              delay: 1,
-              repeat: Infinity,
-              repeatDelay: 1.2,
-              times: [0, 0.2, 0.78, 1],
-              ease: "easeInOut",
-            }}
-            style={{
-              transformOrigin: "left center",
-            }}
-            className="
-              pointer-events-none
-              absolute
-              left-0
-              bottom-0
-              h-[2px]
-              w-full
-              bg-[#14B8A6]
-            "
-          />
-        </span>
-      </p>
+            <span className="text-[#2DD4BF]">
+              &amp;
+            </span>
+
+            <span className="text-white">
+              {" Innovation "}
+            </span>
+
+            <span className="text-[#2DD4BF]">
+              from the UAE.
+            </span>
+          </motion.span>
+        </div>
+      </div>
+
+      {/* Premium Visible Gap */}
+      <div
+        aria-hidden="true"
+        className="
+          h-7
+
+          sm:h-8
+
+          md:h-8
+
+          lg:h-8
+
+          xl:h-9
+        "
+      />
 
       {/* Description */}
       <motion.p
         variants={itemVariants}
         className="
-          mt-5
-          max-w-[535px]
-          text-[16.5px]
-          font-normal
-          leading-[1.85]
-          tracking-[-0.002em]
-          text-[#475569]
+          max-w-[560px]
+          text-[15.5px]
+          font-bold
+          leading-[1.7]
+          text-white
 
-          sm:text-[17px]
-          sm:leading-[1.85]
+          sm:text-[16px]
 
-          md:mt-5
-          md:text-[17px]
-          md:leading-[1.75]
+          md:text-[16px]
 
-          lg:mt-5
-          lg:text-[17px]
-          lg:leading-[1.8]
+          lg:text-[16.5px]
+
+          xl:text-[17px]
         "
       >
-        BH Ventures FZE LLC is a forward-thinking ventures company
-        specializing in Web3, Artificial Intelligence, Digital Analytics,
+        <motion.span
+          className="
+            inline-block
+            bg-[linear-gradient(90deg,#14B8A6_0%,#2DD4BF_30%,#ffffff_50%,#2DD4BF_70%,#14B8A6_100%)]
+            bg-[length:250%_100%]
+            bg-clip-text
+            font-extrabold
+            text-transparent
+            [-webkit-background-clip:text]
+          "
+          animate={{
+            backgroundPosition: [
+              "100% 50%",
+              "0% 50%",
+              "100% 50%",
+            ],
+          }}
+          transition={{
+            duration: 3.2,
+            ease: "easeInOut",
+            repeat: Infinity,
+            repeatDelay: 0.4,
+          }}
+        >
+          BH Ventures FZE LLC
+        </motion.span>{" "}
+        is a licensed free-zone company specializing in Web3
+        Studio, Artificial Intelligence, Digital Analytics,
         Marketing, and International Trading.
       </motion.p>
 
-      {/* CTA */}
+      {/* Impact Line */}
+      <motion.p
+        variants={itemVariants}
+        className="
+          mt-5
+          max-w-[560px]
+          text-sm
+          font-semibold
+          leading-6
+          text-[#2DD4BF]
+
+          sm:text-[15px]
+
+          md:text-[15px]
+
+          lg:text-[15.5px]
+
+          xl:text-base
+        "
+      >
+        Driving global growth through innovation and strategic
+        ventures.
+      </motion.p>
+
+      {/* Scroll Indicator */}
       <motion.div
         variants={itemVariants}
         className="
-          mt-8
-          w-full
-          pb-12
+          mt-14
+          flex
+          flex-col
+          items-start
 
-          sm:mt-8
-          sm:pb-14
+          sm:mt-16
 
-          md:mt-8
-          md:pb-16
+          md:mt-16
 
-          lg:w-auto
-          lg:pb-20
+          lg:mt-16
+
+          xl:mt-18
         "
       >
-        <HeroButtons />
+        <span
+          className="
+            text-[9px]
+            font-semibold
+            uppercase
+            tracking-[0.28em]
+            text-white/60
+
+            sm:text-[10px]
+          "
+        >
+          Scroll to Explore
+        </span>
+
+        <motion.div
+          animate={{
+            y: [0, 5, 0],
+            opacity: [0.65, 1, 0.65],
+          }}
+          transition={{
+            duration: 1.8,
+            repeat: Infinity,
+            ease: "easeInOut",
+          }}
+        >
+          <ChevronDown
+            className="
+              mt-2
+              h-5
+              w-5
+              text-[#2DD4BF]
+              drop-shadow-[0_0_7px_rgba(45,212,191,0.65)]
+            "
+          />
+        </motion.div>
       </motion.div>
     </motion.div>
   );

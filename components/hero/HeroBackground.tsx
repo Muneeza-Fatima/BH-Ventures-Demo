@@ -1,76 +1,106 @@
+"use client";
+
+import { useEffect, useRef } from "react";
+
 export default function HeroBackground() {
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+
+  useEffect(() => {
+    const video = videoRef.current;
+
+    if (!video) return;
+
+    video.muted = true;
+    video.defaultMuted = true;
+    video.playsInline = true;
+
+    const startVideo = () => {
+      video.play().catch(() => {
+        // Autoplay may be blocked by the browser.
+      });
+    };
+
+    if (video.readyState >= 2) {
+      startVideo();
+    } else {
+      video.addEventListener("canplay", startVideo, {
+        once: true,
+      });
+    }
+
+    return () => {
+      video.removeEventListener("canplay", startVideo);
+    };
+  }, []);
+
   return (
     <div
-      className="pointer-events-none absolute inset-0 overflow-hidden"
+      className="
+        pointer-events-none
+        absolute
+        inset-0
+        z-0
+        overflow-hidden
+        bg-[#0B1220]
+      "
       aria-hidden="true"
     >
       {/* Background Video */}
       <video
-        className="absolute inset-0 h-full w-full object-cover object-center"
+        ref={videoRef}
         autoPlay
         muted
         loop
         playsInline
         preload="metadata"
+        className="
+          absolute
+          inset-0
+          h-full
+          w-full
+          object-cover
+          object-center
+        "
       >
-        <source src="/videos/hero.mp4" type="video/mp4" />
+        <source
+          src="/videos/hero.mp4"
+          type="video/mp4"
+        />
       </video>
 
-      {/* DESKTOP
-          Left side = light but video still visible
-          Right side = fully visible
-      */}
+      {/* Simple readability overlay */}
       <div
         className="
           absolute
           inset-0
+          bg-[#0B1220]/35
+        "
+      />
+
+      {/* Stronger left readability on desktop */}
+      <div
+        className="
+          absolute
+          inset-y-0
+          left-0
           hidden
-          lg:block
+          w-[65%]
           bg-gradient-to-r
-          from-white/85
-          from-0%
-          via-white/65
-          via-38%
-          via-white/25
-          via-55%
+          from-[#0B1220]/65
           to-transparent
-          to-72%
+          lg:block
         "
       />
 
-      {/* MOBILE
-          Top = light but video visible
-          Bottom = fully visible
-      */}
+      {/* Mobile readability */}
       <div
         className="
           absolute
           inset-0
-          block
           bg-gradient-to-b
-          from-white/82
-          from-0%
-          via-white/60
-          via-35%
-          via-white/25
-          via-55%
-          to-transparent
-          to-75%
+          from-[#0B1220]/45
+          to-[#0B1220]/20
           lg:hidden
-        "
-      />
-
-      {/* Very subtle brand atmosphere */}
-      <div
-        className="
-          absolute
-          -right-40
-          top-10
-          h-[480px]
-          w-[480px]
-          rounded-full
-          bg-[#14B8A6]/[0.04]
-          blur-3xl
         "
       />
     </div>

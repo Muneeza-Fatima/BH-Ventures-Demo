@@ -69,22 +69,41 @@ const socialLinks = [
 
 export default function Footer() {
   return (
-    <footer className="border-t border-[#E2E8E7] bg-white">
+    <footer className="relative overflow-hidden border-t border-[#E2E8E7] bg-white">
+      {/* Very subtle turquoise ambient glow */}
       <div
         className="
+          pointer-events-none
+          absolute
+          left-1/2
+          top-0
+          h-[180px]
+          w-[520px]
+          -translate-x-1/2
+          -translate-y-1/2
+          rounded-full
+          bg-[#14B8A6]/[0.035]
+          blur-[90px]
+        "
+      />
+
+      <div
+        className="
+          relative
           mx-auto
           w-full
           max-w-[1440px]
           px-5
-          py-8
+          py-10
 
           sm:px-8
-          sm:py-9
+          sm:py-11
 
           md:px-10
-          md:py-10
+          md:py-12
 
           lg:px-12
+
           xl:px-16
 
           2xl:max-w-[1600px]
@@ -97,11 +116,12 @@ export default function Footer() {
             flex
             flex-col
             items-center
-            gap-5
+            justify-between
+            gap-7
             text-center
 
             sm:flex-row
-            sm:justify-between
+            sm:gap-6
             sm:text-left
           "
         >
@@ -109,9 +129,11 @@ export default function Footer() {
           <Link
             href="/"
             className="
-              text-[18px]
+              group
+              relative
+              text-[19px]
               font-bold
-              tracking-[-0.03em]
+              tracking-[-0.035em]
               text-[#0B1220]
               transition-colors
               duration-300
@@ -119,22 +141,41 @@ export default function Footer() {
             "
           >
             BH Ventures
+
+            <span
+              className="
+                absolute
+                -bottom-1
+                left-0
+                h-px
+                w-0
+                bg-[#14B8A6]
+                transition-all
+                duration-300
+                group-hover:w-full
+              "
+            />
           </Link>
 
           {/* Social Icons */}
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2.5">
             {socialLinks.map((social) => (
               <a
                 key={social.label}
                 href={social.href}
                 aria-label={`BH Ventures ${social.label}`}
-                target={social.href.startsWith("mailto:") ? undefined : "_blank"}
+                target={
+                  social.href.startsWith("mailto:")
+                    ? undefined
+                    : "_blank"
+                }
                 rel={
                   social.href.startsWith("mailto:")
                     ? undefined
                     : "noopener noreferrer"
                 }
                 className="
+                  group
                   flex
                   h-10
                   w-10
@@ -143,28 +184,33 @@ export default function Footer() {
                   rounded-full
                   border
                   border-[#E2E8E7]
-                  text-[#53616B]
+                  bg-white
+                  text-[#64748B]
+
+                  shadow-[0_4px_18px_rgba(11,18,32,0.04)]
+
                   transition-all
                   duration-300
 
                   hover:-translate-y-1
-                  hover:border-[#14B8A6]
+                  hover:border-[#14B8A6]/60
                   hover:bg-[#14B8A6]
                   hover:text-white
-                  hover:shadow-[0_0_20px_rgba(20,184,166,0.4)]
+                  hover:shadow-[0_8px_25px_rgba(20,184,166,0.22)]
 
                   active:translate-y-0
-                  active:shadow-[0_0_10px_rgba(20,184,166,0.25)]
                 "
               >
-                {social.icon}
+                <span className="transition-transform duration-300 group-hover:scale-105">
+                  {social.icon}
+                </span>
               </a>
             ))}
           </div>
         </div>
 
         {/* Divider */}
-        <div className="my-6 h-px w-full bg-[#E2E8E7]" />
+        <div className="my-7 h-px w-full bg-[#E2E8E7]" />
 
         {/* Bottom */}
         <div
@@ -177,24 +223,43 @@ export default function Footer() {
             text-center
 
             sm:flex-row
+            sm:gap-4
             sm:text-left
           "
         >
-          <p className="text-xs text-[#64748B]">
+          <p
+            className="
+              text-[11px]
+              font-medium
+              leading-5
+              text-[#64748B]
+
+              sm:text-xs
+            "
+          >
             © {new Date().getFullYear()} BH Ventures FZE LLC. All rights
             reserved.
           </p>
 
-          <p
+          <div
             className="
-              text-xs
-              font-medium
-              tracking-[0.04em]
+              flex
+              items-center
+              gap-2
+              text-[10px]
+              font-semibold
+              uppercase
+              tracking-[0.16em]
               text-[#14B8A6]
+
+              sm:text-[11px]
             "
           >
-            Dubai • UAE
-          </p>
+            <span className="h-1.5 w-1.5 rounded-full bg-[#14B8A6]" />
+            <span>Dubai</span>
+            <span className="text-[#CBD5E1]">•</span>
+            <span>UAE</span>
+          </div>
         </div>
       </div>
     </footer>

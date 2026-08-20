@@ -1,156 +1,253 @@
 "use client";
 
-import { useState } from "react";
 import Link from "next/link";
+import { motion } from "framer-motion";
+import { ArrowRight } from "lucide-react";
 
 export default function HeroButtons() {
-  const [activeButton, setActiveButton] = useState<
-    "ventures" | "contact" | null
-  >(null);
-
-  const handleClick = (button: "ventures" | "contact") => {
-    setActiveButton(button);
-
-    window.setTimeout(() => {
-      setActiveButton(null);
-    }, 350);
-  };
-
-  const buttonClass = `
-    group
-    relative
-    flex
-    min-h-[64px]
-    w-full
-    items-center
-    justify-center
-    overflow-hidden
-    rounded-full
-    bg-[#0B1220]
-    p-[2px]
-    shadow-[0_0_24px_rgba(20,184,166,0.20)]
-    transition-all
-    duration-300
-
-    sm:min-h-[66px]
-    md:min-h-[68px]
-
-    lg:min-h-[64px]
-    lg:w-auto
-
-    hover:shadow-[0_0_32px_rgba(20,184,166,0.32)]
-  `;
-
-  const shineClass = `
-    pointer-events-none
-    absolute
-    inset-[-100%]
-    z-0
-    opacity-0
-    transition-opacity
-    duration-200
-    group-hover:opacity-100
-    bg-[conic-gradient(from_0deg,transparent_0deg,transparent_300deg,#14B8A6_320deg,#5EEAD4_338deg,#14B8A6_350deg,transparent_360deg)]
-    group-hover:animate-border-shine
-  `;
-
   return (
-    <div className="flex w-full flex-col gap-4 lg:w-auto lg:flex-row">
+    <div className="flex w-full flex-col gap-3.5 sm:w-auto sm:flex-row sm:items-center sm:gap-4">
       {/* Explore Our Ventures */}
-      <Link
-        href="/ventures"
-        onClick={() => handleClick("ventures")}
-        className={buttonClass}
+      <motion.div
+        whileHover={{ y: -2 }}
+        whileTap={{ scale: 0.985 }}
+        transition={{ duration: 0.2, ease: "easeOut" }}
+        className="w-full sm:w-auto"
       >
-        {/* Bright Moving Border Shine */}
-        <span className={shineClass} />
-
-        {/* Button */}
-        <span
-          className={`
+        <Link
+          href="/ventures"
+          className="
+            group
             relative
-            z-10
             flex
-            min-h-full
+            min-h-[52px]
             w-full
             items-center
             justify-center
+            gap-2.5
+            overflow-hidden
             rounded-full
-            bg-[#0B1220]
-            px-8
-            text-[17px]
+
+            border
+            border-[#2DD4BF]/55
+            bg-[#0F1B2D]
+
+            px-7
+            py-3
+
+            text-[13px]
             font-semibold
-            tracking-[-0.01em]
+            tracking-[0.01em]
             text-white
+
+            shadow-[0_8px_30px_rgba(0,0,0,0.22),0_0_18px_rgba(20,184,166,0.12)]
             transition-all
             duration-300
             ease-out
 
-            sm:text-[18px]
-            md:text-[18px]
+            hover:border-[#5EEAD4]/80
+            hover:bg-[#122536]
+            hover:shadow-[0_10px_35px_rgba(0,0,0,0.28),0_0_28px_rgba(20,184,166,0.22)]
 
-            lg:px-10
-            lg:text-[17px]
-
-            group-hover:-translate-y-0.5
-            group-hover:bg-[#0F766E]
-
-            ${activeButton === "ventures" ? "bg-[#0F766E]" : ""}
-          `}
+            sm:min-w-[190px]
+            sm:w-auto
+          "
         >
-          <span className="relative z-20">
+          {/* Inner border */}
+          <span
+            aria-hidden="true"
+            className="
+              pointer-events-none
+              absolute
+              inset-[1px]
+              rounded-full
+              border
+              border-white/[0.045]
+            "
+          />
+
+          {/* Soft glow */}
+          <span
+            aria-hidden="true"
+            className="
+              pointer-events-none
+              absolute
+              -right-8
+              top-1/2
+              h-16
+              w-16
+              -translate-y-1/2
+              rounded-full
+              bg-[#2DD4BF]/10
+              blur-2xl
+              transition-all
+              duration-500
+              group-hover:bg-[#2DD4BF]/20
+            "
+          />
+
+          {/* Shine */}
+          <span
+            aria-hidden="true"
+            className="
+              pointer-events-none
+              absolute
+              inset-y-[-60%]
+              left-[-70%]
+              w-[28%]
+              rotate-[20deg]
+              bg-gradient-to-r
+              from-transparent
+              via-white/30
+              to-transparent
+              opacity-0
+              blur-[2px]
+              transition-all
+              duration-700
+              group-hover:left-[125%]
+              group-hover:opacity-100
+            "
+          />
+
+          <span className="relative z-10 whitespace-nowrap">
             Explore Our Ventures
           </span>
-        </span>
-      </Link>
 
-      {/* Let's Talk */}
-      <Link
-        href="/contact"
-        onClick={() => handleClick("contact")}
-        className={buttonClass}
+          <ArrowRight
+            className="
+              relative
+              z-10
+              h-[15px]
+              w-[15px]
+              text-[#5EEAD4]
+              transition-all
+              duration-300
+              group-hover:translate-x-1
+              group-hover:text-[#99F6E4]
+            "
+          />
+        </Link>
+      </motion.div>
+
+      {/* Discover Solutions */}
+      <motion.div
+        whileHover={{ y: -2 }}
+        whileTap={{ scale: 0.985 }}
+        transition={{ duration: 0.2, ease: "easeOut" }}
+        className="w-full sm:w-auto"
       >
-        {/* Bright Moving Border Shine */}
-        <span className={shineClass} />
-
-        {/* Button */}
-        <span
-          className={`
+        <Link
+          href="/contact"
+          className="
+            group
             relative
-            z-10
             flex
-            min-h-full
+            min-h-[52px]
             w-full
             items-center
             justify-center
+            gap-2.5
+            overflow-hidden
             rounded-full
-            bg-[#0B1220]
-            px-8
-            text-[17px]
-            font-semibold
-            tracking-[-0.01em]
-            text-white
+
+            border
+            border-[#14B8A6]/80
+            bg-gradient-to-r
+            from-[#14B8A6]
+            to-[#10B981]
+
+            px-7
+            py-3
+
+            text-[13px]
+            font-bold
+            tracking-[0.01em]
+            text-[#06151A]
+
+            shadow-[0_8px_28px_rgba(20,184,166,0.24),0_0_22px_rgba(20,184,166,0.12)]
             transition-all
             duration-300
             ease-out
 
-            sm:text-[18px]
-            md:text-[18px]
+            hover:border-[#5EEAD4]
+            hover:from-[#2DD4BF]
+            hover:to-[#14B8A6]
+            hover:shadow-[0_10px_35px_rgba(20,184,166,0.35),0_0_40px_rgba(20,184,166,0.18)]
 
-            lg:px-10
-            lg:text-[17px]
-
-            group-hover:-translate-y-0.5
-            group-hover:bg-[#0F766E]
-
-            ${activeButton === "contact" ? "bg-[#0F766E]" : ""}
-          `}
+            sm:min-w-[190px]
+            sm:w-auto
+          "
         >
-          <span className="relative z-20">
-            Let&apos;s Talk
+          {/* Inner highlight */}
+          <span
+            aria-hidden="true"
+            className="
+              pointer-events-none
+              absolute
+              inset-[1px]
+              rounded-full
+              border
+              border-white/20
+            "
+          />
+
+          {/* Soft inner glow */}
+          <span
+            aria-hidden="true"
+            className="
+              pointer-events-none
+              absolute
+              inset-0
+              rounded-full
+              bg-white/10
+              opacity-0
+              transition-opacity
+              duration-300
+              group-hover:opacity-100
+            "
+          />
+
+          {/* Shine sweep */}
+          <span
+            aria-hidden="true"
+            className="
+              pointer-events-none
+              absolute
+              inset-y-[-70%]
+              left-[-65%]
+              w-[30%]
+              rotate-[20deg]
+              bg-gradient-to-r
+              from-transparent
+              via-white/60
+              to-transparent
+              opacity-0
+              blur-[2px]
+              transition-all
+              duration-700
+              group-hover:left-[125%]
+              group-hover:opacity-100
+            "
+          />
+
+          <span className="relative z-10 whitespace-nowrap">
+            Discover Solutions
           </span>
-        </span>
-      </Link>
+
+          <ArrowRight
+            className="
+              relative
+              z-10
+              h-[15px]
+              w-[15px]
+              text-[#06151A]
+              transition-transform
+              duration-300
+              group-hover:translate-x-1
+            "
+          />
+        </Link>
+      </motion.div>
     </div>
   );
 }
