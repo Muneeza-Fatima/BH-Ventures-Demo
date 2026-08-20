@@ -1,38 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
-
 export default function HeroBackground() {
-  const videoRef = useRef<HTMLVideoElement | null>(null);
-
-  useEffect(() => {
-    const video = videoRef.current;
-
-    if (!video) return;
-
-    video.muted = true;
-    video.defaultMuted = true;
-    video.playsInline = true;
-
-    const startVideo = () => {
-      video.play().catch(() => {
-        // Autoplay may be blocked by the browser.
-      });
-    };
-
-    if (video.readyState >= 2) {
-      startVideo();
-    } else {
-      video.addEventListener("canplay", startVideo, {
-        once: true,
-      });
-    }
-
-    return () => {
-      video.removeEventListener("canplay", startVideo);
-    };
-  }, []);
-
   return (
     <div
       className="
@@ -45,21 +13,22 @@ export default function HeroBackground() {
       "
       aria-hidden="true"
     >
-      {/* Background Video */}
+      {/* Desktop / Large Screens Video */}
       <video
-        ref={videoRef}
         autoPlay
         muted
         loop
         playsInline
-        preload="metadata"
+        preload="none"
         className="
           absolute
           inset-0
+          hidden
           h-full
           w-full
           object-cover
           object-center
+          lg:block
         "
       >
         <source
@@ -68,7 +37,7 @@ export default function HeroBackground() {
         />
       </video>
 
-      {/* Simple readability overlay */}
+      {/* Base Readability Overlay */}
       <div
         className="
           absolute
@@ -77,7 +46,7 @@ export default function HeroBackground() {
         "
       />
 
-      {/* Stronger left readability on desktop */}
+      {/* Stronger Left Readability on Desktop */}
       <div
         className="
           absolute
@@ -92,13 +61,14 @@ export default function HeroBackground() {
         "
       />
 
-      {/* Mobile readability */}
+      {/* Mobile / Tablet Lightweight Background */}
       <div
         className="
           absolute
           inset-0
           bg-gradient-to-b
           from-[#0B1220]/45
+          via-[#0B1220]/30
           to-[#0B1220]/20
           lg:hidden
         "
