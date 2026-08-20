@@ -18,7 +18,7 @@ export default function HeroBackground() {
         muted
         loop
         playsInline
-        preload="auto"
+        preload="metadata"
         poster="/images/hero-poster.jpg"
         className="
           absolute
