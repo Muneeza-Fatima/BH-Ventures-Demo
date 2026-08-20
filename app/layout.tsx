@@ -24,6 +24,15 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={manrope.variable}>
+      <head>
+        {/* Video preload hint taake browser foran download start kare */}
+        <link
+          rel="preload"
+          href="/videos/hero.mp4"
+          as="video"
+          type="video/mp4"
+        />
+      </head>
       <body className="font-sans antialiased">
         <Navbar />
 
