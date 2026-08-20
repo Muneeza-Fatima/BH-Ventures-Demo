@@ -102,7 +102,6 @@ export default function HeroContent() {
             text-[#2DD4BF]
 
             sm:text-[11px]
-
             md:text-xs
           "
         >
@@ -181,116 +180,105 @@ export default function HeroContent() {
       {/* Bridging Line */}
       <div
         className="
-          mt-5
-          flex
+          mt-9
           w-full
           max-w-[620px]
-          items-baseline
-          overflow-hidden
 
           sm:mt-6
           md:mt-6
           lg:mt-5
         "
       >
-        {/* Bridging */}
-        <motion.span
-          variants={itemVariants}
+        <div
           className="
-            shrink-0
+            flex
+            w-full
+            items-baseline
             whitespace-nowrap
-            text-[1rem]
+            text-[0.82rem]
             font-bold
             leading-[1.5]
-            text-[#14B8A6]
 
             sm:text-[1.08rem]
-
             md:text-[1.12rem]
-
             lg:text-[1.18rem]
-
             xl:text-[1.24rem]
           "
         >
-          Bridging
-        </motion.span>
-
-        {/* Animated Text */}
-        <div
-          className="
-            ml-2
-            min-w-0
-            overflow-hidden
-          "
-        >
+          {/* Bridging — FIXED */}
           <motion.span
-            initial={{
-              clipPath: "inset(0 100% 0 0)",
-            }}
-            animate={{
-              clipPath: [
-                "inset(0 100% 0 0)",
-                "inset(0 0% 0 0)",
-                "inset(0 0% 0 0)",
-                "inset(0 100% 0 0)",
-              ],
-            }}
-            transition={{
-              duration: 5,
-              times: [0, 0.25, 0.75, 1],
-              ease: "easeInOut",
-              repeat: Infinity,
-              repeatDelay: 0.6,
-            }}
+            variants={itemVariants}
             className="
-              inline-block
-              whitespace-normal
-              text-[1rem]
-              font-bold
-              leading-[1.5]
-
-              sm:text-[1.08rem]
-
-              md:text-[1.12rem]
-
-              lg:text-[1.18rem]
-
-              xl:text-[1.24rem]
+              shrink-0
+              text-[#14B8A6]
             "
           >
-            <span className="text-white">
-              Technology{" "}
-            </span>
-
-            <span className="text-[#2DD4BF]">
-              &amp;
-            </span>
-
-            <span className="text-white">
-              {" Innovation "}
-            </span>
-
-            <span className="text-[#2DD4BF]">
-              from the UAE.
-            </span>
+            Bridging
           </motion.span>
+
+          {/* Animated text */}
+          <span
+            className="
+              ml-1.5
+              min-w-0
+              overflow-hidden
+
+              sm:ml-2
+            "
+          >
+            <motion.span
+              initial={{
+                clipPath: "inset(0 100% 0 0)",
+                opacity: 0,
+              }}
+              animate={{
+                clipPath: [
+                  "inset(0 100% 0 0)",
+                  "inset(0 0% 0 0)",
+                  "inset(0 0% 0 0)",
+                  "inset(0 100% 0 0)",
+                ],
+                opacity: [0, 1, 1, 0],
+              }}
+              transition={{
+                duration: 5,
+                times: [0, 0.25, 0.75, 1],
+                ease: [0.22, 1, 0.36, 1],
+                repeat: Infinity,
+                repeatDelay: 0.6,
+              }}
+              className="inline-block"
+            >
+              <span className="text-white">
+                Technology{" "}
+              </span>
+
+              <span className="text-[#2DD4BF]">
+                &amp;{" "}
+              </span>
+
+              <span className="text-white">
+                Innovation{" "}
+              </span>
+
+              <span className="text-[#2DD4BF]">
+                from the UAE.
+              </span>
+            </motion.span>
+          </span>
         </div>
       </div>
 
-      {/* Premium Visible Gap */}
+      {/* Gap Before Description */}
       <div
         aria-hidden="true"
         className="
-          h-7
+          h-4
 
-          sm:h-8
-
-          md:h-8
-
-          lg:h-8
-
-          xl:h-9
+          sm:h-6
+          md:h-6
+          lg:h-6
+          xl:h-7
         "
       />
 
@@ -305,11 +293,8 @@ export default function HeroContent() {
           text-white
 
           sm:text-[16px]
-
           md:text-[16px]
-
           lg:text-[16.5px]
-
           xl:text-[17px]
         "
       >
@@ -356,11 +341,8 @@ export default function HeroContent() {
           text-[#2DD4BF]
 
           sm:text-[15px]
-
           md:text-[15px]
-
           lg:text-[15.5px]
-
           xl:text-base
         "
       >
@@ -378,11 +360,8 @@ export default function HeroContent() {
           items-start
 
           sm:mt-16
-
           md:mt-16
-
           lg:mt-16
-
           xl:mt-18
         "
       >

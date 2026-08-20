@@ -9,28 +9,29 @@ const stats = [
     prefix: "",
     suffix: "+",
     label: "Countries Registered",
-    positionClass: "left-2 sm:left-6 top-0",
+    positionClass: "left-5 sm:left-10 top-0",
   },
   {
     value: 15,
     prefix: "",
     suffix: "h",
     label: "Average Payout Processing",
-    positionClass: "right-2 sm:right-6 top-10 sm:top-14",
+    positionClass: "right-5 sm:right-10 top-9 sm:top-10",
   },
   {
     value: 350,
     prefix: "$",
     suffix: "K+",
     label: "Paid Out to Traders",
-    positionClass: "left-2 sm:left-6 top-28 sm:top-32",
+    positionClass: "left-5 sm:left-10 top-28 sm:top-28",
   },
   {
     value: 10,
     prefix: "",
     suffix: "K+",
     label: "Traders Worldwide",
-    positionClass: "right-6 sm:right-12 top-40 sm:top-46",
+    positionClass:
+      "right-7 sm:right-12 top-[9.25rem] sm:top-[9.5rem]",
   },
 ];
 
@@ -60,7 +61,6 @@ function CountUp({
     const update = (time: number) => {
       const progress = Math.min((time - start) / duration, 1);
 
-      // Smooth ease-out
       const eased = 1 - Math.pow(1 - progress, 4);
 
       setCount(Math.round(eased * value));
@@ -117,14 +117,6 @@ export default function GlobalImpact() {
     amount: 0.25,
   });
 
-  /*
-   * Video playback
-   *
-   * Important:
-   * No pause/play loop.
-   * No currentTime manipulation.
-   * No visibility listener fighting with normal playback.
-   */
   useEffect(() => {
     const video = videoRef.current;
 
@@ -160,10 +152,12 @@ export default function GlobalImpact() {
         relative
         w-full
         overflow-hidden
-        bg-[#0B1220]
+        bg-[#111C2D]
         px-4
         py-12
         font-sans
+
+        sm:bg-[#0B1220]
 
         sm:px-6
         sm:py-16
@@ -174,7 +168,7 @@ export default function GlobalImpact() {
         lg:py-24
       "
     >
-      {/* Ambient glow */}
+      {/* Ambient Glow */}
       <div
         aria-hidden="true"
         className="
@@ -182,13 +176,13 @@ export default function GlobalImpact() {
           absolute
           left-1/2
           top-1/2
-          h-[420px]
-          w-[620px]
+          h-[360px]
+          w-[520px]
           -translate-x-1/2
           -translate-y-1/2
           rounded-full
-          bg-[#14B8A6]/[0.035]
-          blur-[100px]
+          bg-[#14B8A6]/[0.03]
+          blur-[80px]
         "
       />
 
@@ -201,19 +195,15 @@ export default function GlobalImpact() {
           max-w-5xl
           overflow-hidden
           rounded-[24px]
-
           border
           border-white/[0.10]
-
           bg-[#0F1B2D]
-
-          shadow-[0_25px_70px_rgba(0,0,0,0.28)]
+          shadow-[0_20px_55px_rgba(0,0,0,0.24)]
 
           sm:rounded-[30px]
         "
       >
         {/* Background Video */}
-
         <video
           ref={videoRef}
           className="
@@ -238,7 +228,7 @@ export default function GlobalImpact() {
           />
         </video>
 
-        {/* Lightweight overlay */}
+        {/* Overlay */}
         <div
           aria-hidden="true"
           className="
@@ -249,18 +239,18 @@ export default function GlobalImpact() {
           "
         />
 
-        {/* Center glow */}
+        {/* Center Glow */}
         <div
           aria-hidden="true"
           className="
             pointer-events-none
             absolute
             inset-0
-            bg-[radial-gradient(circle_at_50%_38%,rgba(20,184,166,0.12),transparent_58%)]
+            bg-[radial-gradient(circle_at_50%_38%,rgba(20,184,166,0.10),transparent_58%)]
           "
         />
 
-        {/* Bottom readability */}
+        {/* Bottom Readability */}
         <div
           aria-hidden="true"
           className="
@@ -268,13 +258,13 @@ export default function GlobalImpact() {
             absolute
             inset-0
             bg-gradient-to-b
-            from-[#0B1220]/45
+            from-[#0B1220]/40
             via-transparent
-            to-[#0B1220]/65
+            to-[#0B1220]/60
           "
         />
 
-        {/* Top accent */}
+        {/* Top Accent */}
         <div
           aria-hidden="true"
           className="
@@ -356,6 +346,7 @@ export default function GlobalImpact() {
                   h-px
                   w-7
                   bg-[#14B8A6]/60
+
                   sm:w-9
                 "
               />
@@ -380,15 +371,16 @@ export default function GlobalImpact() {
                   h-px
                   w-7
                   bg-[#14B8A6]/60
+
                   sm:w-9
                 "
               />
             </div>
 
-            {/* Heading */}
+            {/* Main Heading */}
             <h2
               className="
-                font-bold
+                font-light
                 leading-[1.08]
                 tracking-[-0.04em]
                 text-white
@@ -402,13 +394,14 @@ export default function GlobalImpact() {
                 lg:text-[44px]
               "
             >
-              <span className="block">
+              <span className="block font-light">
                 Global Reach.
               </span>
 
               <span
                 className="
                   block
+                  font-light
                   bg-gradient-to-r
                   from-[#2DD4BF]
                   via-[#5EEAD4]
@@ -421,13 +414,13 @@ export default function GlobalImpact() {
                 Real Opportunities.
               </span>
 
-              <span className="block">
+              <span className="block font-light">
                 Trusted by Traders
               </span>
 
-              <span className="block">
+              <span className="block font-light">
                 Across{" "}
-                <span className="text-[#5EEAD4]">
+                <span className="font-light text-[#5EEAD4]">
                   150+ Countries.
                 </span>
               </span>
@@ -468,7 +461,7 @@ export default function GlobalImpact() {
               requiring them to risk their own trading capital.
             </p>
 
-            {/* Secondary line */}
+            {/* Secondary Line */}
             <p
               className="
                 mx-auto
@@ -494,18 +487,18 @@ export default function GlobalImpact() {
             className="
               relative
               mt-9
-              h-[225px]
+              h-[215px]
               w-full
               max-w-[390px]
 
               sm:mt-11
-              sm:h-[255px]
+              sm:h-[235px]
               sm:max-w-[500px]
 
               md:max-w-[540px]
             "
           >
-            {/* Very subtle center glow */}
+            {/* Subtle Center Glow */}
             <div
               aria-hidden="true"
               className="
@@ -513,13 +506,13 @@ export default function GlobalImpact() {
                 absolute
                 left-1/2
                 top-1/2
-                h-20
-                w-20
+                h-16
+                w-16
                 -translate-x-1/2
                 -translate-y-1/2
                 rounded-full
-                bg-[#14B8A6]/[0.07]
-                blur-2xl
+                bg-[#14B8A6]/[0.05]
+                blur-xl
               "
             />
 
@@ -528,7 +521,7 @@ export default function GlobalImpact() {
                 key={stat.label}
                 initial={{
                   opacity: 0,
-                  y: 12,
+                  y: 10,
                 }}
                 animate={
                   statsInView
@@ -538,7 +531,7 @@ export default function GlobalImpact() {
                       }
                     : {
                         opacity: 0,
-                        y: 12,
+                        y: 10,
                       }
                 }
                 transition={{
@@ -549,88 +542,44 @@ export default function GlobalImpact() {
                 className={`
                   absolute
                   ${stat.positionClass}
-                  max-w-[145px]
+                  max-w-[135px]
 
-                  sm:max-w-[170px]
+                  sm:max-w-[160px]
                 `}
               >
-                {/* Stat card */}
+                {/* Number */}
                 <div
                   className="
-                    relative
-                    overflow-hidden
-                    rounded-xl
+                    whitespace-nowrap
+                    text-[21px]
+                    font-normal
+                    leading-none
+                    tracking-[-0.035em]
 
-                    border
-                    border-white/[0.10]
+                    sm:text-[24px]
 
-                    bg-white/[0.045]
-
-                    px-3
-                    py-2
-
-                    shadow-[0_8px_25px_rgba(0,0,0,0.16)]
-
-                    backdrop-blur-[4px]
-
-                    transition-colors
-                    duration-200
-
-                    hover:border-[#2DD4BF]/25
-                    hover:bg-white/[0.06]
+                    md:text-[26px]
                   "
                 >
-                  {/* Top highlight */}
-                  <span
-                    aria-hidden="true"
-                    className="
-                      pointer-events-none
-                      absolute
-                      left-3
-                      right-3
-                      top-0
-                      h-px
-                      bg-gradient-to-r
-                      from-transparent
-                      via-[#2DD4BF]/45
-                      to-transparent
-                    "
+                  <CountUp
+                    value={stat.value}
+                    prefix={stat.prefix}
+                    suffix={stat.suffix}
+                    active={statsInView}
                   />
-
-                  {/* Number */}
-                  <div
-                    className="
-                      relative
-                      text-[19px]
-                      font-semibold
-                      leading-none
-                      tracking-[-0.03em]
-
-                      sm:text-[22px]
-
-                      md:text-[24px]
-                    "
-                  >
-                    <CountUp
-                      value={stat.value}
-                      prefix={stat.prefix}
-                      suffix={stat.suffix}
-                      active={statsInView}
-                    />
-                  </div>
                 </div>
 
                 {/* Label */}
                 <p
                   className="
                     mt-1.5
-                    max-w-[145px]
+                    max-w-[135px]
                     text-[9px]
                     font-medium
                     leading-4
-                    text-white/50
+                    text-white/55
 
-                    sm:max-w-[165px]
+                    sm:max-w-[160px]
                     sm:text-[10px]
                     sm:leading-5
                   "
@@ -641,7 +590,7 @@ export default function GlobalImpact() {
             ))}
           </div>
 
-          {/* Bottom accent */}
+          {/* Bottom Accent */}
           <motion.div
             initial={{
               opacity: 0,
