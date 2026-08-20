@@ -12,7 +12,7 @@ export default function Hero() {
         overflow-hidden
         bg-[#0B1220]
         min-h-0
-        md:min-h-[100svh]
+        lg:min-h-[100svh]
       "
     >
       {/* Background video */}
@@ -38,11 +38,11 @@ export default function Hero() {
           sm:pt-[88px]
           sm:pb-[112px]
 
-          md:min-h-[100svh]
           md:px-10
           md:pt-[94px]
           md:pb-[120px]
 
+          lg:min-h-[100svh]
           lg:items-center
           lg:px-12
           lg:pt-20

@@ -23,7 +23,7 @@ const itemVariants: Variants = {
     y: 0,
     transition: {
       duration: 0.55,
-      ease: "easeOut",
+      ease: [0.22, 1, 0.36, 1],
     },
   },
 };
@@ -95,14 +95,14 @@ export default function HeroContent() {
 
         <span
           className="
-            text-[10px]
+            text-[9px]
             font-semibold
             uppercase
-            tracking-[0.24em]
-            text-[#2DD4BF]
+            tracking-[0.30em]
+            text-[#5EEAD4]
 
-            sm:text-[11px]
-            md:text-xs
+            sm:text-[10px]
+            md:text-[11px]
           "
         >
           Dubai • UAE
@@ -116,17 +116,17 @@ export default function HeroContent() {
         className="
           max-w-[680px]
           font-bold
-          tracking-[-0.055em]
+          tracking-[-0.06em]
           text-white
 
           text-[3.25rem]
           leading-[0.94]
 
           sm:text-[3.6rem]
-          sm:leading-[0.95]
+          sm:leading-[0.94]
 
           md:text-[3.9rem]
-          md:leading-[0.95]
+          md:leading-[0.94]
 
           lg:text-[4rem]
 
@@ -136,13 +136,19 @@ export default function HeroContent() {
         <span className="block">
           <motion.span
             variants={headingWord}
-            className="inline-block"
+            className="
+              inline-block
+              font-semibold
+            "
           >
             Building
           </motion.span>{" "}
           <motion.span
             variants={headingWord}
-            className="inline-block"
+            className="
+              inline-block
+              font-semibold
+            "
           >
             the
           </motion.span>
@@ -151,13 +157,19 @@ export default function HeroContent() {
         <span className="block">
           <motion.span
             variants={headingWord}
-            className="inline-block"
+            className="
+              inline-block
+              font-semibold
+            "
           >
             Future
           </motion.span>{" "}
           <motion.span
             variants={headingWord}
-            className="inline-block"
+            className="
+              inline-block
+              font-semibold
+            "
           >
             of
           </motion.span>
@@ -168,8 +180,14 @@ export default function HeroContent() {
             variants={headingWord}
             className="
               inline-block
+              bg-gradient-to-r
+              from-white
+              via-white
+              to-[#5EEAD4]
+              bg-clip-text
               font-extrabold
-              text-white
+              text-transparent
+              [-webkit-background-clip:text]
             "
           >
             Ventures.
@@ -180,7 +198,7 @@ export default function HeroContent() {
       {/* Bridging Line */}
       <div
         className="
-          mt-9
+          mt-8
           w-full
           max-w-[620px]
 
@@ -196,7 +214,7 @@ export default function HeroContent() {
             items-baseline
             whitespace-nowrap
             text-[0.82rem]
-            font-bold
+            font-semibold
             leading-[1.5]
 
             sm:text-[1.08rem]
@@ -205,7 +223,7 @@ export default function HeroContent() {
             xl:text-[1.24rem]
           "
         >
-          {/* Bridging — FIXED */}
+          {/* Bridging */}
           <motion.span
             variants={itemVariants}
             className="
@@ -216,7 +234,7 @@ export default function HeroContent() {
             Bridging
           </motion.span>
 
-          {/* Animated text */}
+          {/* Animated Text */}
           <span
             className="
               ml-1.5
@@ -269,7 +287,7 @@ export default function HeroContent() {
         </div>
       </div>
 
-      {/* Gap Before Description */}
+      {/* Premium Gap */}
       <div
         aria-hidden="true"
         className="
@@ -287,10 +305,11 @@ export default function HeroContent() {
         variants={itemVariants}
         className="
           max-w-[560px]
-          text-[15.5px]
-          font-bold
-          leading-[1.7]
-          text-white
+          text-[15px]
+          font-medium
+          leading-[1.75]
+          tracking-[-0.005em]
+          text-white/75
 
           sm:text-[16px]
           md:text-[16px]
@@ -334,46 +353,64 @@ export default function HeroContent() {
         variants={itemVariants}
         className="
           mt-5
+          flex
+          items-center
+          gap-2
           max-w-[560px]
-          text-sm
+          text-[13px]
           font-semibold
           leading-6
-          text-[#2DD4BF]
+          tracking-[0.01em]
+          text-[#5EEAD4]
 
-          sm:text-[15px]
-          md:text-[15px]
-          lg:text-[15.5px]
-          xl:text-base
+          sm:text-[14px]
+          md:text-[14.5px]
+          lg:text-[15px]
+          xl:text-[15.5px]
         "
       >
-        Driving global growth through innovation and strategic
-        ventures.
+        <span
+          aria-hidden="true"
+          className="
+            inline-block
+            h-px
+            w-5
+            shrink-0
+            bg-gradient-to-r
+            from-[#14B8A6]
+            to-[#2DD4BF]
+          "
+        />
+
+        Driving global growth through innovation and
+        strategic ventures.
       </motion.p>
 
       {/* Scroll Indicator */}
       <motion.div
         variants={itemVariants}
         className="
-          mt-14
+          mt-12
           flex
           flex-col
           items-start
 
-          sm:mt-16
-          md:mt-16
-          lg:mt-16
-          xl:mt-18
+          sm:mt-14
+          md:mt-15
+          lg:mt-15
+          xl:mt-16
         "
       >
         <span
           className="
-            text-[9px]
+            text-[8px]
             font-semibold
             uppercase
-            tracking-[0.28em]
-            text-white/60
+            tracking-[0.32em]
+            text-white/50
 
-            sm:text-[10px]
+            sm:text-[9px]
+            md:text-[10px]
           "
         >
           Scroll to Explore
@@ -382,7 +419,7 @@ export default function HeroContent() {
         <motion.div
           animate={{
             y: [0, 5, 0],
-            opacity: [0.65, 1, 0.65],
+            opacity: [0.55, 1, 0.55],
           }}
           transition={{
             duration: 1.8,
