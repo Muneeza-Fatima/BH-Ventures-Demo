@@ -1,10 +1,16 @@
-// components/HeroBackground.tsx
 "use client";
 
 export default function HeroBackground() {
   return (
     <div
-      className="pointer-events-none absolute inset-0 z-0 overflow-hidden bg-[#0B1220]"
+      className="
+        pointer-events-none
+        absolute
+        inset-0
+        z-0
+        overflow-hidden
+        bg-[#0B1220]
+      "
       aria-hidden="true"
     >
       <video
@@ -14,7 +20,15 @@ export default function HeroBackground() {
         playsInline
         preload="auto"
         poster="/images/hero-poster.jpg"
-        className="absolute inset-0 h-full w-full object-cover object-center opacity-85"
+        className="
+          absolute
+          inset-0
+          h-full
+          w-full
+          object-cover
+          object-center
+          opacity-85
+        "
       >
         <source src="/videos/hero.mp4" type="video/mp4" />
         Your browser does not support the video tag.
