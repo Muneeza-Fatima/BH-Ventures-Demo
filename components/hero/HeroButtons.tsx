@@ -11,7 +11,7 @@ export default function HeroButtons() {
       <motion.div
         whileHover={{ y: -2 }}
         whileTap={{ scale: 0.985 }}
-        transition={{ duration: 0.2, ease: "easeOut" }}
+        transition={{ duration: 0.18, ease: "easeOut" }}
         className="w-full sm:w-auto"
       >
         <Link
@@ -27,28 +27,22 @@ export default function HeroButtons() {
             gap-2.5
             overflow-hidden
             rounded-full
-
             border
             border-[#2DD4BF]/55
             bg-[#0F1B2D]
-
             px-7
             py-3
-
             text-[13px]
             font-semibold
             tracking-[0.01em]
             text-white
-
-            shadow-[0_8px_30px_rgba(0,0,0,0.22),0_0_18px_rgba(20,184,166,0.12)]
-            transition-all
-            duration-300
+            shadow-[0_8px_25px_rgba(0,0,0,0.20)]
+            transition-[background-color,border-color,box-shadow]
+            duration-200
             ease-out
-
             hover:border-[#5EEAD4]/80
             hover:bg-[#122536]
-            hover:shadow-[0_10px_35px_rgba(0,0,0,0.28),0_0_28px_rgba(20,184,166,0.22)]
-
+            hover:shadow-[0_10px_30px_rgba(0,0,0,0.25)]
             sm:min-w-[190px]
             sm:w-auto
           "
@@ -74,37 +68,14 @@ export default function HeroButtons() {
               absolute
               -right-8
               top-1/2
-              h-16
-              w-16
+              h-14
+              w-14
               -translate-y-1/2
               rounded-full
-              bg-[#2DD4BF]/10
-              blur-2xl
-              transition-all
-              duration-500
-              group-hover:bg-[#2DD4BF]/20
-            "
-          />
-
-          {/* Shine */}
-          <span
-            aria-hidden="true"
-            className="
-              pointer-events-none
-              absolute
-              inset-y-[-60%]
-              left-[-70%]
-              w-[28%]
-              rotate-[20deg]
-              bg-gradient-to-r
-              from-transparent
-              via-white/30
-              to-transparent
-              opacity-0
-              blur-[2px]
-              transition-all
-              duration-700
-              group-hover:left-[125%]
+              bg-[#2DD4BF]/[0.08]
+              blur-xl
+              transition-opacity
+              duration-200
               group-hover:opacity-100
             "
           />
@@ -120,10 +91,9 @@ export default function HeroButtons() {
               h-[15px]
               w-[15px]
               text-[#5EEAD4]
-              transition-all
-              duration-300
+              transition-transform
+              duration-200
               group-hover:translate-x-1
-              group-hover:text-[#99F6E4]
             "
           />
         </Link>
@@ -133,7 +103,7 @@ export default function HeroButtons() {
       <motion.div
         whileHover={{ y: -2 }}
         whileTap={{ scale: 0.985 }}
-        transition={{ duration: 0.2, ease: "easeOut" }}
+        transition={{ duration: 0.18, ease: "easeOut" }}
         className="w-full sm:w-auto"
       >
         <Link
@@ -149,31 +119,25 @@ export default function HeroButtons() {
             gap-2.5
             overflow-hidden
             rounded-full
-
             border
             border-[#14B8A6]/80
             bg-gradient-to-r
             from-[#14B8A6]
             to-[#10B981]
-
             px-7
             py-3
-
             text-[13px]
             font-bold
             tracking-[0.01em]
             text-[#06151A]
-
-            shadow-[0_8px_28px_rgba(20,184,166,0.24),0_0_22px_rgba(20,184,166,0.12)]
-            transition-all
-            duration-300
+            shadow-[0_8px_25px_rgba(20,184,166,0.20)]
+            transition-[background-color,border-color,box-shadow]
+            duration-200
             ease-out
-
             hover:border-[#5EEAD4]
             hover:from-[#2DD4BF]
             hover:to-[#14B8A6]
-            hover:shadow-[0_10px_35px_rgba(20,184,166,0.35),0_0_40px_rgba(20,184,166,0.18)]
-
+            hover:shadow-[0_10px_30px_rgba(20,184,166,0.28)]
             sm:min-w-[190px]
             sm:w-auto
           "
@@ -199,33 +163,10 @@ export default function HeroButtons() {
               absolute
               inset-0
               rounded-full
-              bg-white/10
+              bg-white/[0.08]
               opacity-0
               transition-opacity
-              duration-300
-              group-hover:opacity-100
-            "
-          />
-
-          {/* Shine sweep */}
-          <span
-            aria-hidden="true"
-            className="
-              pointer-events-none
-              absolute
-              inset-y-[-70%]
-              left-[-65%]
-              w-[30%]
-              rotate-[20deg]
-              bg-gradient-to-r
-              from-transparent
-              via-white/60
-              to-transparent
-              opacity-0
-              blur-[2px]
-              transition-all
-              duration-700
-              group-hover:left-[125%]
+              duration-200
               group-hover:opacity-100
             "
           />
@@ -242,7 +183,7 @@ export default function HeroButtons() {
               w-[15px]
               text-[#06151A]
               transition-transform
-              duration-300
+              duration-200
               group-hover:translate-x-1
             "
           />

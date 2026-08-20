@@ -13,22 +13,19 @@ export default function HeroBackground() {
       "
       aria-hidden="true"
     >
-      {/* Desktop / Large Screens Video */}
       <video
         autoPlay
         muted
         loop
         playsInline
-        preload="none"
+        preload="auto"
         className="
           absolute
           inset-0
-          hidden
           h-full
           w-full
           object-cover
           object-center
-          lg:block
         "
       >
         <source
@@ -37,7 +34,6 @@ export default function HeroBackground() {
         />
       </video>
 
-      {/* Base Readability Overlay */}
       <div
         className="
           absolute
@@ -46,7 +42,6 @@ export default function HeroBackground() {
         "
       />
 
-      {/* Stronger Left Readability on Desktop */}
       <div
         className="
           absolute
@@ -61,14 +56,12 @@ export default function HeroBackground() {
         "
       />
 
-      {/* Mobile / Tablet Lightweight Background */}
       <div
         className="
           absolute
           inset-0
           bg-gradient-to-b
           from-[#0B1220]/45
-          via-[#0B1220]/30
           to-[#0B1220]/20
           lg:hidden
         "

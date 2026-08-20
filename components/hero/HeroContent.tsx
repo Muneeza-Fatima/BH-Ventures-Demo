@@ -22,7 +22,7 @@ const itemVariants: Variants = {
     opacity: 1,
     y: 0,
     transition: {
-      duration: 0.55,
+      duration: 0.5,
       ease: "easeOut",
     },
   },
@@ -32,8 +32,8 @@ const headingContainer: Variants = {
   hidden: {},
   visible: {
     transition: {
-      staggerChildren: 0.08,
-      delayChildren: 0.2,
+      staggerChildren: 0.07,
+      delayChildren: 0.18,
     },
   },
 };
@@ -41,13 +41,13 @@ const headingContainer: Variants = {
 const headingWord: Variants = {
   hidden: {
     opacity: 0,
-    y: 20,
+    y: 18,
   },
   visible: {
     opacity: 1,
     y: 0,
     transition: {
-      duration: 0.55,
+      duration: 0.5,
       ease: [0.22, 1, 0.36, 1],
     },
   },
@@ -74,7 +74,6 @@ export default function HeroContent() {
           flex
           items-center
           gap-3
-
           sm:mb-7
           md:mb-8
           lg:mb-7
@@ -88,7 +87,6 @@ export default function HeroContent() {
             bg-gradient-to-r
             from-[#14B8A6]
             to-[#2DD4BF]
-
             sm:w-9
           "
         />
@@ -100,9 +98,7 @@ export default function HeroContent() {
             uppercase
             tracking-[0.24em]
             text-[#2DD4BF]
-
             sm:text-[11px]
-
             md:text-xs
           "
         >
@@ -119,18 +115,13 @@ export default function HeroContent() {
           font-bold
           tracking-[-0.055em]
           text-white
-
           text-[3.25rem]
           leading-[0.94]
-
           sm:text-[3.6rem]
           sm:leading-[0.95]
-
           md:text-[3.9rem]
           md:leading-[0.95]
-
           lg:text-[4rem]
-
           xl:text-[4.7rem]
         "
       >
@@ -187,13 +178,11 @@ export default function HeroContent() {
           max-w-[620px]
           items-baseline
           overflow-hidden
-
           sm:mt-6
           md:mt-6
           lg:mt-5
         "
       >
-        {/* Bridging */}
         <motion.span
           variants={itemVariants}
           className="
@@ -203,20 +192,15 @@ export default function HeroContent() {
             font-bold
             leading-[1.5]
             text-[#14B8A6]
-
             sm:text-[1.08rem]
-
             md:text-[1.12rem]
-
             lg:text-[1.18rem]
-
             xl:text-[1.24rem]
           "
         >
           Bridging
         </motion.span>
 
-        {/* Animated Text */}
         <div
           className="
             ml-2
@@ -226,22 +210,17 @@ export default function HeroContent() {
         >
           <motion.span
             initial={{
-              clipPath: "inset(0 100% 0 0)",
+              opacity: 0,
+              x: -10,
             }}
             animate={{
-              clipPath: [
-                "inset(0 100% 0 0)",
-                "inset(0 0% 0 0)",
-                "inset(0 0% 0 0)",
-                "inset(0 100% 0 0)",
-              ],
+              opacity: 1,
+              x: 0,
             }}
             transition={{
-              duration: 5,
-              times: [0, 0.25, 0.75, 1],
-              ease: "easeInOut",
-              repeat: Infinity,
-              repeatDelay: 0.6,
+              duration: 0.6,
+              delay: 0.45,
+              ease: "easeOut",
             }}
             className="
               inline-block
@@ -249,13 +228,9 @@ export default function HeroContent() {
               text-[1rem]
               font-bold
               leading-[1.5]
-
               sm:text-[1.08rem]
-
               md:text-[1.12rem]
-
               lg:text-[1.18rem]
-
               xl:text-[1.24rem]
             "
           >
@@ -283,13 +258,9 @@ export default function HeroContent() {
         aria-hidden="true"
         className="
           h-7
-
           sm:h-8
-
           md:h-8
-
           lg:h-8
-
           xl:h-9
         "
       />
@@ -303,42 +274,20 @@ export default function HeroContent() {
           font-bold
           leading-[1.7]
           text-white
-
           sm:text-[16px]
-
           md:text-[16px]
-
           lg:text-[16.5px]
-
           xl:text-[17px]
         "
       >
-        <motion.span
+        <span
           className="
-            inline-block
-            bg-[linear-gradient(90deg,#14B8A6_0%,#2DD4BF_30%,#ffffff_50%,#2DD4BF_70%,#14B8A6_100%)]
-            bg-[length:250%_100%]
-            bg-clip-text
             font-extrabold
-            text-transparent
-            [-webkit-background-clip:text]
+            text-[#2DD4BF]
           "
-          animate={{
-            backgroundPosition: [
-              "100% 50%",
-              "0% 50%",
-              "100% 50%",
-            ],
-          }}
-          transition={{
-            duration: 3.2,
-            ease: "easeInOut",
-            repeat: Infinity,
-            repeatDelay: 0.4,
-          }}
         >
           BH Ventures FZE LLC
-        </motion.span>{" "}
+        </span>{" "}
         is a licensed free-zone company specializing in Web3
         Studio, Artificial Intelligence, Digital Analytics,
         Marketing, and International Trading.
@@ -354,13 +303,9 @@ export default function HeroContent() {
           font-semibold
           leading-6
           text-[#2DD4BF]
-
           sm:text-[15px]
-
           md:text-[15px]
-
           lg:text-[15.5px]
-
           xl:text-base
         "
       >
@@ -376,13 +321,9 @@ export default function HeroContent() {
           flex
           flex-col
           items-start
-
           sm:mt-16
-
           md:mt-16
-
           lg:mt-16
-
           xl:mt-18
         "
       >
@@ -393,7 +334,6 @@ export default function HeroContent() {
             uppercase
             tracking-[0.28em]
             text-white/60
-
             sm:text-[10px]
           "
         >
@@ -402,11 +342,11 @@ export default function HeroContent() {
 
         <motion.div
           animate={{
-            y: [0, 5, 0],
-            opacity: [0.65, 1, 0.65],
+            y: [0, 4, 0],
+            opacity: [0.7, 1, 0.7],
           }}
           transition={{
-            duration: 1.8,
+            duration: 2,
             repeat: Infinity,
             ease: "easeInOut",
           }}
@@ -417,7 +357,6 @@ export default function HeroContent() {
               h-5
               w-5
               text-[#2DD4BF]
-              drop-shadow-[0_0_7px_rgba(45,212,191,0.65)]
             "
           />
         </motion.div>

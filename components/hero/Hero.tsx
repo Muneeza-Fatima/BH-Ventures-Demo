@@ -15,8 +15,10 @@ export default function Hero() {
         md:min-h-[100svh]
       "
     >
+      {/* Background video */}
       <HeroBackground />
 
+      {/* Hero content */}
       <div
         className="
           relative
@@ -25,8 +27,8 @@ export default function Hero() {
           flex
           w-full
           max-w-[1440px]
-          items-start
           min-h-0
+          items-start
 
           px-5
           pt-[82px]
@@ -51,7 +53,6 @@ export default function Hero() {
           2xl:max-w-[1600px]
           2xl:px-20
 
-          /* iPad Air + iPad Pro */
           [@media(min-width:1024px)_and_(max-width:1366px)]:items-start
           [@media(min-width:1024px)_and_(max-width:1366px)]:pt-[108px]
           [@media(min-width:1024px)_and_(max-width:1366px)]:pb-[88px]
