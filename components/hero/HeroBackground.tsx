@@ -18,7 +18,7 @@ export default function HeroBackground() {
         muted
         loop
         playsInline
-        preload="auto"
+        preload="metadata"
         className="
           absolute
           inset-0
@@ -28,20 +28,13 @@ export default function HeroBackground() {
           object-center
         "
       >
-        <source
-          src="/videos/hero.mp4"
-          type="video/mp4"
-        />
+        <source src="/videos/hero.mp4" type="video/mp4" />
       </video>
 
-      <div
-        className="
-          absolute
-          inset-0
-          bg-[#0B1220]/35
-        "
-      />
+      {/* Main readability overlay */}
+      <div className="absolute inset-0 bg-[#0B1220]/35" />
 
+      {/* Desktop text readability */}
       <div
         className="
           absolute
@@ -56,6 +49,7 @@ export default function HeroBackground() {
         "
       />
 
+      {/* Mobile readability */}
       <div
         className="
           absolute
