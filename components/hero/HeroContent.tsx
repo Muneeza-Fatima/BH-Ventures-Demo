@@ -1,39 +1,33 @@
+// components/HeroBackground.tsx
 "use client";
 
-export default function HeroContent() {
-  return (
-    <div className="flex flex-col text-left">
-      {/* Location Tag */}
-      <div className="inline-flex items-center space-x-2 mb-4">
-        <span className="h-[2px] w-8 bg-cyan-400"></span>
-        <span className="text-cyan-400 text-xs sm:text-sm font-semibold tracking-widest uppercase">
-          DUBAI • UAE
-        </span>
-      </div>
+export default function HeroBackground() {
+  return (
+    <div
+      className="pointer-events-none absolute inset-0 z-0 overflow-hidden bg-[#0B1220]"
+      aria-hidden="true"
+    >
+      <video
+        autoPlay
+        muted
+        loop
+        playsInline
+        preload="auto"
+        poster="/images/hero-poster.jpg"
+        className="absolute inset-0 h-full w-full object-cover object-center opacity-85"
+      >
+        <source src="/videos/hero.mp4" type="video/mp4" />
+        Your browser does not support the video tag.
+      </video>
 
-      {/* Main Heading */}
-      <h1 className="text-4xl sm:text-6xl lg:text-7xl font-bold tracking-tight text-white mb-4 leading-[1.1]">
-        Building the <br className="hidden sm:block" />
-        Future of Ventures.
-      </h1>
+      {/* Light overlay taake video zinda aur clear lage */}
+      <div className="absolute inset-0 bg-[#0B1220]/20" />
 
-      {/* Subheading: Responsive text sizing to prevent wrapping on small mobile screens */}
-      <p className="text-[11.5px] xs:text-[13px] sm:text-lg lg:text-xl text-gray-200 mb-6 font-medium tracking-wide whitespace-nowrap overflow-x-auto scrollbar-none py-1">
-        <span className="text-cyan-400">Bridging</span> Technology & Innovation from the UAE.
-      </p>
+      {/* Subtle Desktop Gradient */}
+      <div className="absolute inset-y-0 left-0 hidden w-[60%] bg-gradient-to-r from-[#0B1220]/50 to-transparent lg:block" />
 
-      {/* Description Paragraph */}
-      <p className="text-sm sm:text-base text-gray-300 max-w-2xl mb-8 leading-relaxed">
-        <strong className="text-cyan-400 font-semibold">BH Ventures FZE LLC</strong> is a licensed free-zone company specializing in Web3 Studio, Artificial Intelligence, Digital Analytics, Marketing, and International Trading. Driving global growth through innovation and strategic ventures.
-      </p>
-
-      {/* Scroll Indicator */}
-      <div className="flex items-center space-x-2 text-gray-400 text-xs tracking-widest uppercase">
-        <span>Scroll to explore</span>
-        <svg className="w-4 h-4 animate-bounce text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
-        </svg>
-      </div>
-    </div>
-  );
+      {/* Subtle Mobile Gradient */}
+      <div className="absolute inset-0 bg-gradient-to-b from-[#0B1220]/30 to-[#0B1220]/20 lg:hidden" />
+    </div>
+  );
 }
