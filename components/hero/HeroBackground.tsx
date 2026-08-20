@@ -12,10 +12,12 @@ export default function HeroBackground() {
         muted
         loop
         playsInline
-        preload="metadata"
+        preload="auto"
+        poster="/images/hero-poster.jpg"
         className="absolute inset-0 h-full w-full object-cover object-center opacity-85"
       >
         <source src="/videos/hero.mp4" type="video/mp4" />
+        Your browser does not support the video tag.
       </video>
 
       {/* Light overlay taake video zinda aur clear lage */}
