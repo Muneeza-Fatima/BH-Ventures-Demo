@@ -45,7 +45,7 @@ const stats = [
 ];
 
 /* ========================================
-   SMOOTH COUNT UP
+   COUNT UP
 ======================================== */
 
 function CountUp({
@@ -60,50 +60,42 @@ function CountUp({
   active: boolean;
 }) {
   const [count, setCount] = useState(0);
-  const started = useRef(false);
+  const startedRef = useRef(false);
 
   useEffect(() => {
-    if (!active || started.current) return;
+    if (!active || startedRef.current) return;
 
-    started.current = true;
+    startedRef.current = true;
+
+    const isMobile =
+      typeof window !== "undefined" &&
+      window.matchMedia("(max-width: 639px)").matches;
+
+    const duration = isMobile ? 850 : 1350;
 
     let frameId = 0;
-    let lastDisplayedValue = -1;
-
-    const duration = 1800;
     const startTime = performance.now();
 
-    const animate = (currentTime: number) => {
-      const elapsed = currentTime - startTime;
-      const progress = Math.min(elapsed / duration, 1);
-
-      // Smooth ease-out curve
-      const eased =
-        1 - Math.pow(1 - progress, 4);
-
-      const nextValue = Math.round(
-        eased * value
+    const update = (currentTime: number) => {
+      const progress = Math.min(
+        (currentTime - startTime) / duration,
+        1
       );
 
-      /*
-       * Only update React state when
-       * the visible number actually changes.
-       */
-      if (nextValue !== lastDisplayedValue) {
-        lastDisplayedValue = nextValue;
-        setCount(nextValue);
-      }
+      // Smooth ease-out
+      const eased =
+        1 - Math.pow(1 - progress, 3);
+
+      const nextValue = Math.round(eased * value);
+
+      setCount(nextValue);
 
       if (progress < 1) {
-        frameId =
-          requestAnimationFrame(animate);
-      } else {
-        setCount(value);
+        frameId = requestAnimationFrame(update);
       }
     };
 
-    frameId =
-      requestAnimationFrame(animate);
+    frameId = requestAnimationFrame(update);
 
     return () => {
       cancelAnimationFrame(frameId);
@@ -143,45 +135,39 @@ function CountUp({
 ======================================== */
 
 export default function GlobalImpact() {
-  const statsRef =
-    useRef<HTMLDivElement | null>(null);
+  const sectionRef = useRef<HTMLElement | null>(null);
+  const statsRef = useRef<HTMLDivElement | null>(null);
+  const videoRef = useRef<HTMLVideoElement | null>(null);
 
-  const videoRef =
-    useRef<HTMLVideoElement | null>(null);
-
-  const [statsActive, setStatsActive] =
+  const [sectionVisible, setSectionVisible] =
     useState(false);
 
-  const [cardsVisible, setCardsVisible] =
+  const [statsVisible, setStatsVisible] =
     useState(false);
 
   /* ========================================
-     LIGHT SCROLL OBSERVER
+     LIGHTWEIGHT SECTION OBSERVER
   ======================================== */
 
   useEffect(() => {
-    const element = statsRef.current;
+    const section = sectionRef.current;
 
-    if (!element) return;
+    if (!section) return;
 
-    const observer =
-      new IntersectionObserver(
-        ([entry]) => {
-          if (entry.isIntersecting) {
-            setStatsActive(true);
-            setCardsVisible(true);
-
-            observer.disconnect();
-          }
-        },
-        {
-          threshold: 0.2,
-          rootMargin:
-            "0px 0px -40px 0px",
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setSectionVisible(true);
+          observer.disconnect();
         }
-      );
+      },
+      {
+        threshold: 0.08,
+        rootMargin: "80px 0px",
+      }
+    );
 
-    observer.observe(element);
+    observer.observe(section);
 
     return () => {
       observer.disconnect();
@@ -189,7 +175,36 @@ export default function GlobalImpact() {
   }, []);
 
   /* ========================================
-     LIGHT VIDEO SETUP
+     STATS OBSERVER
+  ======================================== */
+
+  useEffect(() => {
+    const statsElement = statsRef.current;
+
+    if (!statsElement) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setStatsVisible(true);
+          observer.disconnect();
+        }
+      },
+      {
+        threshold: 0.18,
+        rootMargin: "60px 0px",
+      }
+    );
+
+    observer.observe(statsElement);
+
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
+
+  /* ========================================
+     LIGHTWEIGHT VIDEO
   ======================================== */
 
   useEffect(() => {
@@ -225,6 +240,7 @@ export default function GlobalImpact() {
 
   return (
     <section
+      ref={sectionRef}
       className="
         relative
         w-full
@@ -245,7 +261,10 @@ export default function GlobalImpact() {
         lg:py-24
       "
     >
-      {/* Ambient Glow */}
+      {/* ========================================
+          AMBIENT GLOW
+      ======================================== */}
+
       <div
         aria-hidden="true"
         className="
@@ -259,11 +278,14 @@ export default function GlobalImpact() {
           -translate-y-1/2
           rounded-full
           bg-[#14B8A6]/[0.03]
-          blur-[70px]
+          blur-[80px]
         "
       />
 
-      {/* Main Card */}
+      {/* ========================================
+          MAIN CARD
+      ======================================== */}
+
       <div
         className="
           relative
@@ -275,12 +297,15 @@ export default function GlobalImpact() {
           border
           border-white/[0.10]
           bg-[#0F1B2D]
-          shadow-[0_20px_45px_rgba(0,0,0,0.20)]
+          shadow-[0_20px_55px_rgba(0,0,0,0.24)]
 
           sm:rounded-[30px]
         "
       >
-        {/* Background Video */}
+        {/* ========================================
+            BACKGROUND VIDEO
+        ======================================== */}
+
         <video
           ref={videoRef}
           className="
@@ -288,8 +313,13 @@ export default function GlobalImpact() {
             inset-0
             h-full
             w-full
-            object-cover
+            object-contain
             object-center
+            scale-[2]
+
+            sm:scale-100
+            sm:object-cover
+            sm:object-center
           "
           autoPlay
           muted
@@ -305,7 +335,10 @@ export default function GlobalImpact() {
           />
         </video>
 
-        {/* Overlay */}
+        {/* ========================================
+            OVERLAY
+        ======================================== */}
+
         <div
           aria-hidden="true"
           className="
@@ -317,17 +350,19 @@ export default function GlobalImpact() {
         />
 
         {/* Center Glow */}
+
         <div
           aria-hidden="true"
           className="
             pointer-events-none
             absolute
             inset-0
-            bg-[radial-gradient(circle_at_50%_38%,rgba(20,184,166,0.08),transparent_58%)]
+            bg-[radial-gradient(circle_at_50%_38%,rgba(20,184,166,0.10),transparent_58%)]
           "
         />
 
         {/* Bottom Readability */}
+
         <div
           aria-hidden="true"
           className="
@@ -335,13 +370,14 @@ export default function GlobalImpact() {
             absolute
             inset-0
             bg-gradient-to-b
-            from-[#0B1220]/35
+            from-[#0B1220]/40
             via-transparent
             to-[#0B1220]/60
           "
         />
 
         {/* Top Accent */}
+
         <div
           aria-hidden="true"
           className="
@@ -359,7 +395,10 @@ export default function GlobalImpact() {
           "
         />
 
-        {/* Content */}
+        {/* ========================================
+            CONTENT
+        ======================================== */}
+
         <div
           className="
             relative
@@ -380,15 +419,26 @@ export default function GlobalImpact() {
             lg:py-22
           "
         >
-          {/* Heading */}
+          {/* ========================================
+              HEADING
+          ======================================== */}
+
           <div
-            className="
+            className={`
               mx-auto
               max-w-[650px]
               text-center
-            "
+              transition-opacity
+              duration-500
+              ${
+                sectionVisible
+                  ? "opacity-100"
+                  : "opacity-0"
+              }
+            `}
           >
             {/* Eyebrow */}
+
             <div
               className="
                 mb-4
@@ -435,6 +485,7 @@ export default function GlobalImpact() {
             </div>
 
             {/* Main Heading */}
+
             <h2
               className="
                 font-semibold
@@ -491,6 +542,7 @@ export default function GlobalImpact() {
             </h2>
 
             {/* Accent */}
+
             <div
               className="
                 mx-auto
@@ -505,6 +557,7 @@ export default function GlobalImpact() {
             />
 
             {/* Description */}
+
             <p
               className="
                 mx-auto
@@ -527,6 +580,7 @@ export default function GlobalImpact() {
             </p>
 
             {/* Secondary Line */}
+
             <p
               className="
                 mx-auto
@@ -541,12 +595,16 @@ export default function GlobalImpact() {
                 sm:leading-6
               "
             >
-              Built to create accessible opportunities and
-              sustainable growth for traders worldwide.
+              Built to create accessible opportunities
+              and sustainable growth for traders
+              worldwide.
             </p>
           </div>
 
-          {/* Statistics */}
+          {/* ========================================
+              STATISTICS
+          ======================================== */}
+
           <div
             ref={statsRef}
             className="
@@ -564,6 +622,7 @@ export default function GlobalImpact() {
             "
           >
             {/* Center Glow */}
+
             <div
               aria-hidden="true"
               className="
@@ -576,164 +635,182 @@ export default function GlobalImpact() {
                 -translate-x-1/2
                 -translate-y-1/2
                 rounded-full
-                bg-[#14B8A6]/[0.04]
+                bg-[#14B8A6]/[0.05]
                 blur-xl
               "
             />
 
-            {stats.map(
-              (stat, index) => {
-                const Icon = stat.icon;
+            {stats.map((stat, index) => {
+              const Icon = stat.icon;
 
-                return (
-                  <div
-                    key={stat.label}
-                    className={`
-                      group
+              return (
+                <div
+                  key={stat.label}
+                  className={`
+                    group
+                    absolute
+                    ${stat.positionClass}
+
+                    w-[138px]
+                    overflow-hidden
+                    rounded-[17px]
+                    border
+                    border-white/[0.12]
+                    bg-white/[0.055]
+                    px-3
+                    py-3
+                    shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_12px_30px_rgba(0,0,0,0.16)]
+                    backdrop-blur-xl
+
+                    transition-[opacity,transform,border-color,background-color,box-shadow]
+                    duration-500
+                    ease-out
+
+                    ${
+                      statsVisible
+                        ? "translate-y-0 opacity-100"
+                        : "translate-y-2 opacity-0"
+                    }
+
+                    sm:w-[175px]
+                    sm:rounded-[20px]
+                    sm:px-4
+                    sm:py-3.5
+                  `}
+                  style={{
+                    transitionDelay: statsVisible
+                      ? `${index * 60}ms`
+                      : "0ms",
+                  }}
+                >
+                  {/* Shine */}
+
+                  <span
+                    aria-hidden="true"
+                    className="
+                      pointer-events-none
                       absolute
-                      ${stat.positionClass}
+                      -left-[85%]
+                      top-[-30%]
+                      h-[170%]
+                      w-[45%]
+                      rotate-[20deg]
+                      bg-gradient-to-r
+                      from-transparent
+                      via-white/[0.12]
+                      to-transparent
+                      opacity-0
+                      transition-all
+                      duration-700
+                      group-hover:left-[135%]
+                      group-hover:opacity-100
+                    "
+                  />
 
-                      w-[138px]
-                      overflow-hidden
-                      rounded-[17px]
+                  {/* Glass Highlight */}
+
+                  <span
+                    aria-hidden="true"
+                    className="
+                      pointer-events-none
+                      absolute
+                      left-1/2
+                      top-0
+                      h-px
+                      w-[65%]
+                      -translate-x-1/2
+                      bg-gradient-to-r
+                      from-transparent
+                      via-[#5EEAD4]/55
+                      to-transparent
+                    "
+                  />
+
+                  {/* Icon */}
+
+                  <div
+                    className="
+                      relative
+                      mb-2.5
+                      flex
+                      h-8
+                      w-8
+                      items-center
+                      justify-center
+                      rounded-[10px]
                       border
-                      border-white/[0.12]
-                      bg-white/[0.055]
-                      px-3
-                      py-3
-                      shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_10px_25px_rgba(0,0,0,0.14)]
-                      backdrop-blur-lg
+                      border-[#5EEAD4]/20
+                      bg-[#14B8A6]/[0.09]
+                      text-[#5EEAD4]
+                      shadow-[0_0_18px_rgba(20,184,166,0.08)]
+                      transition-all
+                      duration-300
 
-                      transition-opacity
-                      duration-500
-
-                      ${
-                        cardsVisible
-                          ? "opacity-100"
-                          : "opacity-0"
-                      }
-
-                      sm:w-[175px]
-                      sm:rounded-[20px]
-                      sm:px-4
-                      sm:py-3.5
-                    `}
+                      group-hover:border-[#5EEAD4]/40
+                      group-hover:bg-[#14B8A6]/[0.14]
+                    "
                   >
-                    {/* Shine */}
-                    <span
+                    <Icon
+                      size={16}
+                      strokeWidth={1.7}
                       aria-hidden="true"
-                      className="
-                        pointer-events-none
-                        absolute
-                        -left-[85%]
-                        top-[-30%]
-                        h-[170%]
-                        w-[45%]
-                        rotate-[20deg]
-                        bg-gradient-to-r
-                        from-transparent
-                        via-white/[0.12]
-                        to-transparent
-                        opacity-0
-                        transition-all
-                        duration-700
-                        group-hover:left-[135%]
-                        group-hover:opacity-100
-                      "
                     />
-
-                    {/* Glass Highlight */}
-                    <span
-                      aria-hidden="true"
-                      className="
-                        pointer-events-none
-                        absolute
-                        left-1/2
-                        top-0
-                        h-px
-                        w-[65%]
-                        -translate-x-1/2
-                        bg-gradient-to-r
-                        from-transparent
-                        via-[#5EEAD4]/55
-                        to-transparent
-                      "
-                    />
-
-                    {/* Icon */}
-                    <div
-                      className="
-                        relative
-                        mb-2.5
-                        flex
-                        h-8
-                        w-8
-                        items-center
-                        justify-center
-                        rounded-[10px]
-                        border
-                        border-[#5EEAD4]/20
-                        bg-[#14B8A6]/[0.09]
-                        text-[#5EEAD4]
-                      "
-                    >
-                      <Icon
-                        size={16}
-                        strokeWidth={1.7}
-                        aria-hidden="true"
-                      />
-                    </div>
-
-                    {/* Number */}
-                    <div
-                      className="
-                        relative
-                        whitespace-nowrap
-                        text-[21px]
-                        font-normal
-                        leading-none
-                        tracking-[-0.035em]
-
-                        sm:text-[24px]
-
-                        md:text-[26px]
-                      "
-                    >
-                      <CountUp
-                        value={stat.value}
-                        prefix={stat.prefix}
-                        suffix={stat.suffix}
-                        active={statsActive}
-                      />
-                    </div>
-
-                    {/* Label */}
-                    <p
-                      className="
-                        relative
-                        mt-1.5
-                        max-w-[125px]
-                        text-[9px]
-                        font-medium
-                        leading-4
-                        text-white/55
-
-                        sm:max-w-[160px]
-                        sm:text-[10px]
-                        sm:leading-5
-                      "
-                    >
-                      {stat.label}
-                    </p>
                   </div>
-                );
-              }
-            )}
+
+                  {/* Number */}
+
+                  <div
+                    className="
+                      relative
+                      whitespace-nowrap
+                      text-[21px]
+                      font-normal
+                      leading-none
+                      tracking-[-0.035em]
+
+                      sm:text-[24px]
+
+                      md:text-[26px]
+                    "
+                  >
+                    <CountUp
+                      value={stat.value}
+                      prefix={stat.prefix}
+                      suffix={stat.suffix}
+                      active={statsVisible}
+                    />
+                  </div>
+
+                  {/* Label */}
+
+                  <p
+                    className="
+                      relative
+                      mt-1.5
+                      max-w-[125px]
+                      text-[9px]
+                      font-medium
+                      leading-4
+                      text-white/55
+
+                      sm:max-w-[160px]
+                      sm:text-[10px]
+                      sm:leading-5
+                    "
+                  >
+                    {stat.label}
+                  </p>
+                </div>
+              );
+            })}
           </div>
 
-          {/* Bottom Accent */}
+          {/* ========================================
+              BOTTOM ACCENT
+          ======================================== */}
+
           <div
-            className="
+            className={`
               mt-0
               h-px
               w-16
@@ -741,7 +818,14 @@ export default function GlobalImpact() {
               from-transparent
               via-[#2DD4BF]/70
               to-transparent
-            "
+              transition-opacity
+              duration-500
+              ${
+                statsVisible
+                  ? "opacity-100"
+                  : "opacity-0"
+              }
+            `}
           />
         </div>
       </div>
