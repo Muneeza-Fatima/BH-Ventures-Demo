@@ -70,14 +70,11 @@ function CountUp({
     let animationFrame = 0;
     let startTime: number | null = null;
 
-    /*
-      Slightly faster on phones so the animation
-      doesn't compete with scrolling/video rendering.
-    */
-    const duration =
-      typeof window !== "undefined" && window.innerWidth < 640
-        ? 950
-        : 1300;
+    const isMobile =
+      typeof window !== "undefined" &&
+      window.innerWidth < 640;
+
+    const duration = isMobile ? 1200 : 1600;
 
     const animate = (timestamp: number) => {
       if (startTime === null) {
@@ -87,19 +84,14 @@ function CountUp({
       const elapsed = timestamp - startTime;
       const progress = Math.min(elapsed / duration, 1);
 
-      /*
-        Smooth ease-out:
-        fast at the beginning, gentle at the end.
-      */
-      const eased = 1 - Math.pow(1 - progress, 3);
+      // Smooth ease-out
+      const eased = 1 - Math.pow(1 - progress, 4);
       const nextValue = Math.round(eased * value);
 
       setCount(nextValue);
 
       if (progress < 1) {
         animationFrame = requestAnimationFrame(animate);
-      } else {
-        setCount(value);
       }
     };
 
@@ -143,7 +135,6 @@ function CountUp({
 ======================================== */
 
 export default function GlobalImpact() {
-  const sectionRef = useRef<HTMLElement | null>(null);
   const statsRef = useRef<HTMLDivElement | null>(null);
   const videoRef = useRef<HTMLVideoElement | null>(null);
 
@@ -151,7 +142,7 @@ export default function GlobalImpact() {
 
   /* ========================================
      LIGHT INTERSECTION OBSERVER
-     Triggers numbers only when reached.
+     Numbers start when user reaches them
   ======================================== */
 
   useEffect(() => {
@@ -167,8 +158,8 @@ export default function GlobalImpact() {
         }
       },
       {
-        threshold: 0.2,
-        rootMargin: "0px 0px -40px 0px",
+        threshold: 0.15,
+        rootMargin: "0px 0px -30px 0px",
       }
     );
 
@@ -193,9 +184,7 @@ export default function GlobalImpact() {
     video.playsInline = true;
 
     const playVideo = () => {
-      video.play().catch(() => {
-        // Browser may block autoplay.
-      });
+      video.play().catch(() => {});
     };
 
     if (video.readyState >= 2) {
@@ -213,7 +202,6 @@ export default function GlobalImpact() {
 
   return (
     <section
-      ref={sectionRef}
       className="
         relative
         w-full
@@ -275,6 +263,14 @@ export default function GlobalImpact() {
       >
         {/* ========================================
             BACKGROUND VIDEO
+
+            Mobile:
+            2× larger framing.
+            Object-contain keeps the complete
+            video visible.
+
+            Desktop:
+            Normal full-card coverage.
         ======================================== */}
 
         <video
@@ -284,10 +280,13 @@ export default function GlobalImpact() {
             inset-0
             h-full
             w-full
-            object-cover
+            object-contain
             object-center
+            scale-[2]
 
+            sm:scale-100
             sm:object-cover
+            sm:object-center
           "
           autoPlay
           muted
@@ -341,6 +340,7 @@ export default function GlobalImpact() {
         />
 
         {/* Top Accent */}
+
         <div
           aria-hidden="true"
           className="
@@ -409,7 +409,6 @@ export default function GlobalImpact() {
                   h-px
                   w-7
                   bg-[#14B8A6]/60
-
                   sm:w-9
                 "
               />
@@ -434,7 +433,6 @@ export default function GlobalImpact() {
                   h-px
                   w-7
                   bg-[#14B8A6]/60
-
                   sm:w-9
                 "
               />
@@ -690,9 +688,7 @@ export default function GlobalImpact() {
             })}
           </div>
 
-          {/* ========================================
-              BOTTOM ACCENT
-          ======================================== */}
+          {/* Bottom Accent */}
 
           <div
             className="
