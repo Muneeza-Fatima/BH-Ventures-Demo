@@ -45,8 +45,7 @@ const stats = [
 ];
 
 /* ========================================
-   SMOOTH COUNT UP
-   DOM BASED — NO SETSTATE PER FRAME
+   SMOOTH LIGHTWEIGHT COUNT UP
 ======================================== */
 
 function CountUp({
@@ -60,88 +59,56 @@ function CountUp({
   suffix: string;
   active: boolean;
 }) {
-  const numberRef = useRef<HTMLSpanElement | null>(null);
+  const [count, setCount] = useState(0);
   const startedRef = useRef(false);
+  const frameRef = useRef<number | null>(null);
 
   useEffect(() => {
     if (!active || startedRef.current) return;
 
-    const numberElement = numberRef.current;
-
-    if (!numberElement) return;
-
     startedRef.current = true;
 
-    let frameId = 0;
-    let cancelled = false;
-
-    const isMobile =
-      typeof window !== "undefined" &&
-      window.matchMedia("(max-width: 639px)").matches;
-
-    /*
-      Slightly faster on mobile,
-      but still smooth enough to see
-      every number transition naturally.
-    */
-    const duration = isMobile ? 1200 : 1500;
-
+    const duration = 1500;
     const startTime = performance.now();
 
-    const animate = (currentTime: number) => {
-      if (cancelled) return;
-
-      const elapsed = currentTime - startTime;
-
+    const animate = (time: number) => {
       const progress = Math.min(
-        elapsed / duration,
+        (time - startTime) / duration,
         1
       );
 
-      /*
-        Smooth ease-out:
-        starts gently,
-        moves quickly in the middle,
-        finishes softly.
-      */
+      // Smooth ease-out
       const eased =
-        1 - Math.pow(1 - progress, 4);
+        1 - Math.pow(1 - progress, 3);
 
-      const currentValue = Math.round(
-        eased * value
-      );
-
-      if (numberElement) {
-        numberElement.textContent =
-          `${prefix}${currentValue}`;
-      }
+      setCount(Math.round(value * eased));
 
       if (progress < 1) {
-        frameId =
+        frameRef.current =
           requestAnimationFrame(animate);
-      } else if (numberElement) {
-        numberElement.textContent =
-          `${prefix}${value}`;
+      } else {
+        setCount(value);
       }
     };
 
-    frameId =
+    frameRef.current =
       requestAnimationFrame(animate);
 
     return () => {
-      cancelled = true;
-      cancelAnimationFrame(frameId);
+      if (frameRef.current !== null) {
+        cancelAnimationFrame(frameRef.current);
+      }
     };
-  }, [active, value, prefix]);
+  }, [active, value]);
 
   return (
     <>
       <span
-        ref={numberRef}
         translate="no"
         className="notranslate text-white"
       >
-        {prefix}0
+        {prefix}
+        {count}
       </span>
 
       <span
@@ -167,14 +134,9 @@ function CountUp({
 ======================================== */
 
 export default function GlobalImpact() {
-  const sectionRef =
-    useRef<HTMLElement | null>(null);
-
-  const statsRef =
-    useRef<HTMLDivElement | null>(null);
-
-  const videoRef =
-    useRef<HTMLVideoElement | null>(null);
+  const sectionRef = useRef<HTMLElement | null>(null);
+  const statsRef = useRef<HTMLDivElement | null>(null);
+  const videoRef = useRef<HTMLVideoElement | null>(null);
 
   const [sectionVisible, setSectionVisible] =
     useState(false);
@@ -183,8 +145,7 @@ export default function GlobalImpact() {
     useState(false);
 
   /* ========================================
-     SECTION OBSERVER
-     LIGHTWEIGHT
+     SECTION VISIBILITY
   ======================================== */
 
   useEffect(() => {
@@ -192,29 +153,26 @@ export default function GlobalImpact() {
 
     if (!section) return;
 
-    const observer =
-      new IntersectionObserver(
-        ([entry]) => {
-          if (entry.isIntersecting) {
-            setSectionVisible(true);
-            observer.disconnect();
-          }
-        },
-        {
-          threshold: 0.05,
-          rootMargin: "100px 0px",
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setSectionVisible(true);
+          observer.disconnect();
         }
-      );
+      },
+      {
+        threshold: 0.08,
+        rootMargin: "0px 0px -50px 0px",
+      }
+    );
 
     observer.observe(section);
 
-    return () => {
-      observer.disconnect();
-    };
+    return () => observer.disconnect();
   }, []);
 
   /* ========================================
-     STATS OBSERVER
+     STATS VISIBILITY
   ======================================== */
 
   useEffect(() => {
@@ -222,29 +180,26 @@ export default function GlobalImpact() {
 
     if (!statsElement) return;
 
-    const observer =
-      new IntersectionObserver(
-        ([entry]) => {
-          if (entry.isIntersecting) {
-            setStatsVisible(true);
-            observer.disconnect();
-          }
-        },
-        {
-          threshold: 0.12,
-          rootMargin: "80px 0px",
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setStatsVisible(true);
+          observer.disconnect();
         }
-      );
+      },
+      {
+        threshold: 0.2,
+        rootMargin: "0px 0px -30px 0px",
+      }
+    );
 
     observer.observe(statsElement);
 
-    return () => {
-      observer.disconnect();
-    };
+    return () => observer.disconnect();
   }, []);
 
   /* ========================================
-     VIDEO
+     LIGHTWEIGHT VIDEO CONTROL
   ======================================== */
 
   useEffect(() => {
@@ -257,7 +212,9 @@ export default function GlobalImpact() {
     video.playsInline = true;
 
     const playVideo = () => {
-      video.play().catch(() => {});
+      if (video.paused) {
+        video.play().catch(() => {});
+      }
     };
 
     if (video.readyState >= 2) {
@@ -291,7 +248,6 @@ export default function GlobalImpact() {
         font-sans
 
         sm:bg-[#0B1220]
-
         sm:px-6
         sm:py-16
 
@@ -337,13 +293,13 @@ export default function GlobalImpact() {
           border
           border-white/[0.10]
           bg-[#0F1B2D]
-          shadow-[0_20px_55px_rgba(0,0,0,0.24)]
+          shadow-[0_18px_50px_rgba(0,0,0,0.22)]
 
           sm:rounded-[30px]
         "
       >
         {/* ========================================
-            VIDEO
+            BACKGROUND VIDEO
         ======================================== */}
 
         <video
@@ -353,13 +309,10 @@ export default function GlobalImpact() {
             inset-0
             h-full
             w-full
-            object-contain
+            object-cover
             object-center
-            scale-[2]
 
-            sm:scale-100
             sm:object-cover
-            sm:object-center
           "
           autoPlay
           muted
@@ -368,6 +321,7 @@ export default function GlobalImpact() {
           preload="metadata"
           disablePictureInPicture
           disableRemotePlayback
+          aria-hidden="true"
         >
           <source
             src="/videos/global-impact.mp4"
@@ -375,7 +329,9 @@ export default function GlobalImpact() {
           />
         </video>
 
-        {/* Overlay */}
+        {/* ========================================
+            VIDEO OVERLAY
+        ======================================== */}
 
         <div
           aria-hidden="true"
@@ -383,11 +339,9 @@ export default function GlobalImpact() {
             pointer-events-none
             absolute
             inset-0
-            bg-[#0B1220]/75
+            bg-[#0B1220]/70
           "
         />
-
-        {/* Center Glow */}
 
         <div
           aria-hidden="true"
@@ -395,11 +349,9 @@ export default function GlobalImpact() {
             pointer-events-none
             absolute
             inset-0
-            bg-[radial-gradient(circle_at_50%_38%,rgba(20,184,166,0.08),transparent_58%)]
+            bg-[radial-gradient(circle_at_50%_38%,rgba(20,184,166,0.10),transparent_58%)]
           "
         />
-
-        {/* Bottom Readability */}
 
         <div
           aria-hidden="true"
@@ -408,7 +360,7 @@ export default function GlobalImpact() {
             absolute
             inset-0
             bg-gradient-to-b
-            from-[#0B1220]/40
+            from-[#0B1220]/35
             via-transparent
             to-[#0B1220]/60
           "
@@ -469,6 +421,7 @@ export default function GlobalImpact() {
               transition-opacity
               duration-500
               ease-out
+
               ${
                 sectionVisible
                   ? "opacity-100"
@@ -492,7 +445,6 @@ export default function GlobalImpact() {
                   h-px
                   w-7
                   bg-[#14B8A6]/60
-
                   sm:w-9
                 "
               />
@@ -517,7 +469,6 @@ export default function GlobalImpact() {
                   h-px
                   w-7
                   bg-[#14B8A6]/60
-
                   sm:w-9
                 "
               />
@@ -533,22 +484,18 @@ export default function GlobalImpact() {
                 text-white
 
                 text-[28px]
-
                 sm:text-[34px]
-
                 md:text-[40px]
-
                 lg:text-[44px]
               "
             >
-              <span className="block font-semibold">
+              <span className="block">
                 Global Reach.
               </span>
 
               <span
                 className="
                   block
-                  font-semibold
                   bg-gradient-to-r
                   from-[#2DD4BF]
                   via-[#5EEAD4]
@@ -561,17 +508,16 @@ export default function GlobalImpact() {
                 Real Opportunities.
               </span>
 
-              <span className="block font-semibold">
+              <span className="block">
                 Trusted by Traders
               </span>
 
-              <span className="block font-semibold">
+              <span className="block">
                 Across{" "}
                 <span
                   translate="no"
                   className="
                     notranslate
-                    font-semibold
                     text-[#5EEAD4]
                   "
                 >
@@ -611,14 +557,11 @@ export default function GlobalImpact() {
                 sm:leading-7
               "
             >
-              Our trading programs connect traders
-              worldwide with structured opportunities,
-              training accounts, and commission-based
-              earning potential—without requiring them
-              to risk their own trading capital.
+              Our trading programs connect traders worldwide
+              with structured opportunities, training accounts,
+              and commission-based earning potential—without
+              requiring them to risk their own trading capital.
             </p>
-
-            {/* Secondary */}
 
             <p
               className="
@@ -634,9 +577,8 @@ export default function GlobalImpact() {
                 sm:leading-6
               "
             >
-              Built to create accessible opportunities
-              and sustainable growth for traders
-              worldwide.
+              Built to create accessible opportunities and
+              sustainable growth for traders worldwide.
             </p>
           </div>
 
@@ -669,13 +611,13 @@ export default function GlobalImpact() {
                 absolute
                 left-1/2
                 top-1/2
-                h-14
-                w-14
+                h-16
+                w-16
                 -translate-x-1/2
                 -translate-y-1/2
                 rounded-full
                 bg-[#14B8A6]/[0.04]
-                blur-lg
+                blur-xl
               "
             />
 
@@ -698,8 +640,10 @@ export default function GlobalImpact() {
                     bg-white/[0.055]
                     px-3
                     py-3
-                    shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_12px_30px_rgba(0,0,0,0.16)]
-                    backdrop-blur-xl
+
+                    shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_10px_25px_rgba(0,0,0,0.14)]
+
+                    backdrop-blur-lg
 
                     transition-[opacity,transform]
                     duration-400
@@ -708,7 +652,7 @@ export default function GlobalImpact() {
                     ${
                       statsVisible
                         ? "translate-y-0 opacity-100"
-                        : "translate-y-1.5 opacity-0"
+                        : "translate-y-2 opacity-0"
                     }
 
                     sm:w-[175px]
@@ -722,7 +666,7 @@ export default function GlobalImpact() {
                       : "0ms",
                   }}
                 >
-                  {/* Top Highlight */}
+                  {/* Highlight */}
 
                   <span
                     aria-hidden="true"
@@ -736,7 +680,7 @@ export default function GlobalImpact() {
                       -translate-x-1/2
                       bg-gradient-to-r
                       from-transparent
-                      via-[#5EEAD4]/55
+                      via-[#5EEAD4]/50
                       to-transparent
                     "
                   />
@@ -757,10 +701,6 @@ export default function GlobalImpact() {
                       border-[#5EEAD4]/20
                       bg-[#14B8A6]/[0.09]
                       text-[#5EEAD4]
-                      shadow-[0_0_18px_rgba(20,184,166,0.08)]
-                      transition-transform
-                      duration-300
-                      group-hover:scale-105
                     "
                   >
                     <Icon
@@ -782,7 +722,6 @@ export default function GlobalImpact() {
                       tracking-[-0.035em]
 
                       sm:text-[24px]
-
                       md:text-[26px]
                     "
                   >
@@ -831,6 +770,7 @@ export default function GlobalImpact() {
               to-transparent
               transition-opacity
               duration-500
+
               ${
                 statsVisible
                   ? "opacity-100"
