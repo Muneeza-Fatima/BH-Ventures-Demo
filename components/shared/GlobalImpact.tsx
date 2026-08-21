@@ -45,7 +45,7 @@ const stats = [
 ];
 
 /* ========================================
-   COUNT UP
+   SMOOTH COUNT UP
 ======================================== */
 
 function CountUp({
@@ -67,29 +67,46 @@ function CountUp({
 
     started.current = true;
 
-    let animationFrame = 0;
-    const duration = 1500;
+    let frameId = 0;
+    let lastDisplayedValue = -1;
+
+    const duration = 1800;
     const startTime = performance.now();
 
-    const update = (currentTime: number) => {
+    const animate = (currentTime: number) => {
       const elapsed = currentTime - startTime;
       const progress = Math.min(elapsed / duration, 1);
 
-      // Light ease-out
-      const eased = 1 - Math.pow(1 - progress, 3);
-      const nextValue = Math.round(eased * value);
+      // Smooth ease-out curve
+      const eased =
+        1 - Math.pow(1 - progress, 4);
 
-      setCount(nextValue);
+      const nextValue = Math.round(
+        eased * value
+      );
+
+      /*
+       * Only update React state when
+       * the visible number actually changes.
+       */
+      if (nextValue !== lastDisplayedValue) {
+        lastDisplayedValue = nextValue;
+        setCount(nextValue);
+      }
 
       if (progress < 1) {
-        animationFrame = requestAnimationFrame(update);
+        frameId =
+          requestAnimationFrame(animate);
+      } else {
+        setCount(value);
       }
     };
 
-    animationFrame = requestAnimationFrame(update);
+    frameId =
+      requestAnimationFrame(animate);
 
     return () => {
-      cancelAnimationFrame(animationFrame);
+      cancelAnimationFrame(frameId);
     };
   }, [active, value]);
 
@@ -126,14 +143,20 @@ function CountUp({
 ======================================== */
 
 export default function GlobalImpact() {
-  const statsRef = useRef<HTMLDivElement | null>(null);
-  const videoRef = useRef<HTMLVideoElement | null>(null);
+  const statsRef =
+    useRef<HTMLDivElement | null>(null);
 
-  const [statsActive, setStatsActive] = useState(false);
-  const [visibleCards, setVisibleCards] = useState<boolean[]>([]);
+  const videoRef =
+    useRef<HTMLVideoElement | null>(null);
+
+  const [statsActive, setStatsActive] =
+    useState(false);
+
+  const [cardsVisible, setCardsVisible] =
+    useState(false);
 
   /* ========================================
-     LIGHT INTERSECTION OBSERVER
+     LIGHT SCROLL OBSERVER
   ======================================== */
 
   useEffect(() => {
@@ -141,21 +164,22 @@ export default function GlobalImpact() {
 
     if (!element) return;
 
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setStatsActive(true);
+    const observer =
+      new IntersectionObserver(
+        ([entry]) => {
+          if (entry.isIntersecting) {
+            setStatsActive(true);
+            setCardsVisible(true);
 
-          setVisibleCards([true, true, true, true]);
-
-          observer.disconnect();
+            observer.disconnect();
+          }
+        },
+        {
+          threshold: 0.2,
+          rootMargin:
+            "0px 0px -40px 0px",
         }
-      },
-      {
-        threshold: 0.2,
-        rootMargin: "0px 0px -40px 0px",
-      }
-    );
+      );
 
     observer.observe(element);
 
@@ -184,13 +208,18 @@ export default function GlobalImpact() {
     if (video.readyState >= 2) {
       playVideo();
     } else {
-      video.addEventListener("canplay", playVideo, {
-        once: true,
-      });
+      video.addEventListener(
+        "canplay",
+        playVideo,
+        { once: true }
+      );
     }
 
     return () => {
-      video.removeEventListener("canplay", playVideo);
+      video.removeEventListener(
+        "canplay",
+        playVideo
+      );
     };
   }, []);
 
@@ -450,7 +479,11 @@ export default function GlobalImpact() {
                 Across{" "}
                 <span
                   translate="no"
-                  className="notranslate font-semibold text-[#5EEAD4]"
+                  className="
+                    notranslate
+                    font-semibold
+                    text-[#5EEAD4]
+                  "
                 >
                   150+ Countries.
                 </span>
@@ -486,10 +519,11 @@ export default function GlobalImpact() {
                 sm:leading-7
               "
             >
-              Our trading programs connect traders worldwide
-              with structured opportunities, training accounts,
-              and commission-based earning potential—without
-              requiring them to risk their own trading capital.
+              Our trading programs connect traders
+              worldwide with structured opportunities,
+              training accounts, and commission-based
+              earning potential—without requiring them
+              to risk their own trading capital.
             </p>
 
             {/* Secondary Line */}
@@ -547,155 +581,154 @@ export default function GlobalImpact() {
               "
             />
 
-            {stats.map((stat, index) => {
-              const Icon = stat.icon;
+            {stats.map(
+              (stat, index) => {
+                const Icon = stat.icon;
 
-              return (
-                <div
-                  key={stat.label}
-                  className={`
-                    group
-                    absolute
-                    ${stat.positionClass}
-
-                    w-[138px]
-                    overflow-hidden
-                    rounded-[17px]
-                    border
-                    border-white/[0.12]
-                    bg-white/[0.055]
-                    px-3
-                    py-3
-                    shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_10px_25px_rgba(0,0,0,0.14)]
-                    backdrop-blur-lg
-                    transition-[opacity,transform,border-color,background-color,box-shadow]
-                    duration-500
-
-                    ${
-                      visibleCards[index]
-                        ? "translate-y-0 opacity-100"
-                        : "translate-y-2 opacity-0"
-                    }
-
-                    hover:-translate-y-1
-                    hover:border-[#2DD4BF]/35
-                    hover:bg-white/[0.075]
-
-                    sm:w-[175px]
-                    sm:rounded-[20px]
-                    sm:px-4
-                    sm:py-3.5
-                  `}
-                >
-                  {/* Shine */}
-                  <span
-                    aria-hidden="true"
-                    className="
-                      pointer-events-none
-                      absolute
-                      -left-[85%]
-                      top-[-30%]
-                      h-[170%]
-                      w-[45%]
-                      rotate-[20deg]
-                      bg-gradient-to-r
-                      from-transparent
-                      via-white/[0.12]
-                      to-transparent
-                      opacity-0
-                      transition-all
-                      duration-700
-                      group-hover:left-[135%]
-                      group-hover:opacity-100
-                    "
-                  />
-
-                  {/* Glass Highlight */}
-                  <span
-                    aria-hidden="true"
-                    className="
-                      pointer-events-none
-                      absolute
-                      left-1/2
-                      top-0
-                      h-px
-                      w-[65%]
-                      -translate-x-1/2
-                      bg-gradient-to-r
-                      from-transparent
-                      via-[#5EEAD4]/55
-                      to-transparent
-                    "
-                  />
-
-                  {/* Icon */}
+                return (
                   <div
-                    className="
-                      relative
-                      mb-2.5
-                      flex
-                      h-8
-                      w-8
-                      items-center
-                      justify-center
-                      rounded-[10px]
+                    key={stat.label}
+                    className={`
+                      group
+                      absolute
+                      ${stat.positionClass}
+
+                      w-[138px]
+                      overflow-hidden
+                      rounded-[17px]
                       border
-                      border-[#5EEAD4]/20
-                      bg-[#14B8A6]/[0.09]
-                      text-[#5EEAD4]
-                    "
+                      border-white/[0.12]
+                      bg-white/[0.055]
+                      px-3
+                      py-3
+                      shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_10px_25px_rgba(0,0,0,0.14)]
+                      backdrop-blur-lg
+
+                      transition-opacity
+                      duration-500
+
+                      ${
+                        cardsVisible
+                          ? "opacity-100"
+                          : "opacity-0"
+                      }
+
+                      sm:w-[175px]
+                      sm:rounded-[20px]
+                      sm:px-4
+                      sm:py-3.5
+                    `}
                   >
-                    <Icon
-                      size={16}
-                      strokeWidth={1.7}
+                    {/* Shine */}
+                    <span
                       aria-hidden="true"
+                      className="
+                        pointer-events-none
+                        absolute
+                        -left-[85%]
+                        top-[-30%]
+                        h-[170%]
+                        w-[45%]
+                        rotate-[20deg]
+                        bg-gradient-to-r
+                        from-transparent
+                        via-white/[0.12]
+                        to-transparent
+                        opacity-0
+                        transition-all
+                        duration-700
+                        group-hover:left-[135%]
+                        group-hover:opacity-100
+                      "
                     />
-                  </div>
 
-                  {/* Number */}
-                  <div
-                    className="
-                      relative
-                      whitespace-nowrap
-                      text-[21px]
-                      font-normal
-                      leading-none
-                      tracking-[-0.035em]
-
-                      sm:text-[24px]
-
-                      md:text-[26px]
-                    "
-                  >
-                    <CountUp
-                      value={stat.value}
-                      prefix={stat.prefix}
-                      suffix={stat.suffix}
-                      active={statsActive}
+                    {/* Glass Highlight */}
+                    <span
+                      aria-hidden="true"
+                      className="
+                        pointer-events-none
+                        absolute
+                        left-1/2
+                        top-0
+                        h-px
+                        w-[65%]
+                        -translate-x-1/2
+                        bg-gradient-to-r
+                        from-transparent
+                        via-[#5EEAD4]/55
+                        to-transparent
+                      "
                     />
+
+                    {/* Icon */}
+                    <div
+                      className="
+                        relative
+                        mb-2.5
+                        flex
+                        h-8
+                        w-8
+                        items-center
+                        justify-center
+                        rounded-[10px]
+                        border
+                        border-[#5EEAD4]/20
+                        bg-[#14B8A6]/[0.09]
+                        text-[#5EEAD4]
+                      "
+                    >
+                      <Icon
+                        size={16}
+                        strokeWidth={1.7}
+                        aria-hidden="true"
+                      />
+                    </div>
+
+                    {/* Number */}
+                    <div
+                      className="
+                        relative
+                        whitespace-nowrap
+                        text-[21px]
+                        font-normal
+                        leading-none
+                        tracking-[-0.035em]
+
+                        sm:text-[24px]
+
+                        md:text-[26px]
+                      "
+                    >
+                      <CountUp
+                        value={stat.value}
+                        prefix={stat.prefix}
+                        suffix={stat.suffix}
+                        active={statsActive}
+                      />
+                    </div>
+
+                    {/* Label */}
+                    <p
+                      className="
+                        relative
+                        mt-1.5
+                        max-w-[125px]
+                        text-[9px]
+                        font-medium
+                        leading-4
+                        text-white/55
+
+                        sm:max-w-[160px]
+                        sm:text-[10px]
+                        sm:leading-5
+                      "
+                    >
+                      {stat.label}
+                    </p>
                   </div>
-
-                  {/* Label */}
-                  <p
-                    className="
-                      relative
-                      mt-1.5
-                      max-w-[125px]
-                      text-[9px]
-                      font-medium
-                      leading-4
-                      text-white/55
-
-                      sm:max-w-[160px]
-                      sm:text-[10px]
-                      sm:leading-5
-                    "
-                  >
-                    {stat.label}
-                  </p>
-                </div>
-              );
-            })}
+                );
+              }
+            )}
           </div>
 
           {/* Bottom Accent */}
