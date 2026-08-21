@@ -44,6 +44,10 @@ const stats = [
   },
 ];
 
+/* ========================================
+   LIGHTWEIGHT COUNT UP
+======================================== */
+
 function CountUp({
   value,
   prefix,
@@ -64,25 +68,31 @@ function CountUp({
     startedRef.current = true;
 
     const duration = 1400;
-    const startTime = Date.now();
+    const startTime = performance.now();
 
-    const timer = window.setInterval(() => {
-      const elapsed = Date.now() - startTime;
+    let timerId: number | null = null;
+
+    const update = () => {
+      const elapsed = performance.now() - startTime;
       const progress = Math.min(elapsed / duration, 1);
 
-      // Smooth ease-out
       const eased = 1 - Math.pow(1 - progress, 3);
 
       setCount(Math.round(value * eased));
 
-      if (progress >= 1) {
-        window.clearInterval(timer);
+      if (progress < 1) {
+        timerId = window.setTimeout(update, 30);
+      } else {
         setCount(value);
       }
-    }, 30);
+    };
+
+    timerId = window.setTimeout(update, 30);
 
     return () => {
-      window.clearInterval(timer);
+      if (timerId !== null) {
+        window.clearTimeout(timerId);
+      }
     };
   }, [active, value]);
 
@@ -114,6 +124,10 @@ function CountUp({
   );
 }
 
+/* ========================================
+   GLOBAL IMPACT
+======================================== */
+
 export default function GlobalImpact() {
   const statsRef = useRef<HTMLDivElement | null>(null);
   const videoRef = useRef<HTMLVideoElement | null>(null);
@@ -121,7 +135,7 @@ export default function GlobalImpact() {
   const [statsActive, setStatsActive] = useState(false);
 
   /* ========================================
-     LIGHTWEIGHT SCROLL DETECTION
+     LIGHTWEIGHT INTERSECTION OBSERVER
   ======================================== */
 
   useEffect(() => {
@@ -130,20 +144,21 @@ export default function GlobalImpact() {
     if (!element) return;
 
     if (!("IntersectionObserver" in window)) {
-      setStatsActive(true);
       return;
     }
 
     const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
+      (entries) => {
+        const entry = entries[0];
+
+        if (entry?.isIntersecting) {
           setStatsActive(true);
           observer.disconnect();
         }
       },
       {
         threshold: 0.2,
-        rootMargin: "0px 0px -40px 0px",
+        rootMargin: "0px 0px -30px 0px",
       }
     );
 
@@ -155,7 +170,7 @@ export default function GlobalImpact() {
   }, []);
 
   /* ========================================
-     LIGHTWEIGHT VIDEO PLAYBACK
+     LIGHTWEIGHT VIDEO
   ======================================== */
 
   useEffect(() => {
@@ -567,14 +582,13 @@ export default function GlobalImpact() {
                     shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_12px_30px_rgba(0,0,0,0.16)]
                     backdrop-blur-xl
 
-                    transition-[transform,border-color,background-color,box-shadow]
+                    transition-[transform,border-color,background-color]
                     duration-300
                     ease-out
 
                     hover:-translate-y-1
                     hover:border-[#2DD4BF]/35
                     hover:bg-white/[0.075]
-                    hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.12),0_18px_38px_rgba(0,0,0,0.24)]
 
                     sm:w-[175px]
                     sm:rounded-[20px]
@@ -615,14 +629,12 @@ export default function GlobalImpact() {
                       border-[#5EEAD4]/20
                       bg-[#14B8A6]/[0.09]
                       text-[#5EEAD4]
-                      shadow-[0_0_18px_rgba(20,184,166,0.08)]
-                      transition-[transform,border-color,background-color,box-shadow]
+                      transition-[transform,border-color,background-color]
                       duration-300
                       ease-out
 
                       group-hover:border-[#5EEAD4]/40
                       group-hover:bg-[#14B8A6]/[0.14]
-                      group-hover:shadow-[0_0_24px_rgba(20,184,166,0.16)]
                     "
                   >
                     <Icon
