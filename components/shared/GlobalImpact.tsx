@@ -45,7 +45,7 @@ const stats = [
 ];
 
 /* ========================================
-   LIGHTWEIGHT COUNT UP
+   COUNT UP
 ======================================== */
 
 function CountUp({
@@ -60,39 +60,36 @@ function CountUp({
   active: boolean;
 }) {
   const [count, setCount] = useState(0);
-  const startedRef = useRef(false);
+  const started = useRef(false);
 
   useEffect(() => {
-    if (!active || startedRef.current) return;
+    if (!active || started.current) return;
 
-    startedRef.current = true;
+    started.current = true;
 
-    const duration = 1400;
+    let animationFrame = 0;
+    const duration = 1500;
     const startTime = performance.now();
 
-    let timerId: number | null = null;
-
-    const update = () => {
-      const elapsed = performance.now() - startTime;
+    const update = (currentTime: number) => {
+      const elapsed = currentTime - startTime;
       const progress = Math.min(elapsed / duration, 1);
 
+      // Light ease-out
       const eased = 1 - Math.pow(1 - progress, 3);
+      const nextValue = Math.round(eased * value);
 
-      setCount(Math.round(value * eased));
+      setCount(nextValue);
 
       if (progress < 1) {
-        timerId = window.setTimeout(update, 30);
-      } else {
-        setCount(value);
+        animationFrame = requestAnimationFrame(update);
       }
     };
 
-    timerId = window.setTimeout(update, 30);
+    animationFrame = requestAnimationFrame(update);
 
     return () => {
-      if (timerId !== null) {
-        window.clearTimeout(timerId);
-      }
+      cancelAnimationFrame(animationFrame);
     };
   }, [active, value]);
 
@@ -133,9 +130,10 @@ export default function GlobalImpact() {
   const videoRef = useRef<HTMLVideoElement | null>(null);
 
   const [statsActive, setStatsActive] = useState(false);
+  const [visibleCards, setVisibleCards] = useState<boolean[]>([]);
 
   /* ========================================
-     LIGHTWEIGHT INTERSECTION OBSERVER
+     LIGHT INTERSECTION OBSERVER
   ======================================== */
 
   useEffect(() => {
@@ -143,22 +141,19 @@ export default function GlobalImpact() {
 
     if (!element) return;
 
-    if (!("IntersectionObserver" in window)) {
-      return;
-    }
-
     const observer = new IntersectionObserver(
-      (entries) => {
-        const entry = entries[0];
-
-        if (entry?.isIntersecting) {
+      ([entry]) => {
+        if (entry.isIntersecting) {
           setStatsActive(true);
+
+          setVisibleCards([true, true, true, true]);
+
           observer.disconnect();
         }
       },
       {
         threshold: 0.2,
-        rootMargin: "0px 0px -30px 0px",
+        rootMargin: "0px 0px -40px 0px",
       }
     );
 
@@ -170,7 +165,7 @@ export default function GlobalImpact() {
   }, []);
 
   /* ========================================
-     LIGHTWEIGHT VIDEO
+     LIGHT VIDEO SETUP
   ======================================== */
 
   useEffect(() => {
@@ -183,9 +178,7 @@ export default function GlobalImpact() {
     video.playsInline = true;
 
     const playVideo = () => {
-      if (video.paused) {
-        video.play().catch(() => {});
-      }
+      video.play().catch(() => {});
     };
 
     if (video.readyState >= 2) {
@@ -237,7 +230,7 @@ export default function GlobalImpact() {
           -translate-y-1/2
           rounded-full
           bg-[#14B8A6]/[0.03]
-          blur-[80px]
+          blur-[70px]
         "
       />
 
@@ -253,7 +246,7 @@ export default function GlobalImpact() {
           border
           border-white/[0.10]
           bg-[#0F1B2D]
-          shadow-[0_20px_55px_rgba(0,0,0,0.24)]
+          shadow-[0_20px_45px_rgba(0,0,0,0.20)]
 
           sm:rounded-[30px]
         "
@@ -266,13 +259,8 @@ export default function GlobalImpact() {
             inset-0
             h-full
             w-full
-            object-contain
+            object-cover
             object-center
-            scale-[2]
-
-            sm:scale-100
-            sm:object-cover
-            sm:object-center
           "
           autoPlay
           muted
@@ -281,7 +269,6 @@ export default function GlobalImpact() {
           preload="metadata"
           disablePictureInPicture
           disableRemotePlayback
-          aria-hidden="true"
         >
           <source
             src="/videos/global-impact.mp4"
@@ -307,7 +294,7 @@ export default function GlobalImpact() {
             pointer-events-none
             absolute
             inset-0
-            bg-[radial-gradient(circle_at_50%_38%,rgba(20,184,166,0.10),transparent_58%)]
+            bg-[radial-gradient(circle_at_50%_38%,rgba(20,184,166,0.08),transparent_58%)]
           "
         />
 
@@ -319,7 +306,7 @@ export default function GlobalImpact() {
             absolute
             inset-0
             bg-gradient-to-b
-            from-[#0B1220]/40
+            from-[#0B1220]/35
             via-transparent
             to-[#0B1220]/60
           "
@@ -555,12 +542,12 @@ export default function GlobalImpact() {
                 -translate-x-1/2
                 -translate-y-1/2
                 rounded-full
-                bg-[#14B8A6]/[0.05]
+                bg-[#14B8A6]/[0.04]
                 blur-xl
               "
             />
 
-            {stats.map((stat) => {
+            {stats.map((stat, index) => {
               const Icon = stat.icon;
 
               return (
@@ -579,12 +566,16 @@ export default function GlobalImpact() {
                     bg-white/[0.055]
                     px-3
                     py-3
-                    shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_12px_30px_rgba(0,0,0,0.16)]
-                    backdrop-blur-xl
+                    shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_10px_25px_rgba(0,0,0,0.14)]
+                    backdrop-blur-lg
+                    transition-[opacity,transform,border-color,background-color,box-shadow]
+                    duration-500
 
-                    transition-[transform,border-color,background-color]
-                    duration-300
-                    ease-out
+                    ${
+                      visibleCards[index]
+                        ? "translate-y-0 opacity-100"
+                        : "translate-y-2 opacity-0"
+                    }
 
                     hover:-translate-y-1
                     hover:border-[#2DD4BF]/35
@@ -596,6 +587,29 @@ export default function GlobalImpact() {
                     sm:py-3.5
                   `}
                 >
+                  {/* Shine */}
+                  <span
+                    aria-hidden="true"
+                    className="
+                      pointer-events-none
+                      absolute
+                      -left-[85%]
+                      top-[-30%]
+                      h-[170%]
+                      w-[45%]
+                      rotate-[20deg]
+                      bg-gradient-to-r
+                      from-transparent
+                      via-white/[0.12]
+                      to-transparent
+                      opacity-0
+                      transition-all
+                      duration-700
+                      group-hover:left-[135%]
+                      group-hover:opacity-100
+                    "
+                  />
+
                   {/* Glass Highlight */}
                   <span
                     aria-hidden="true"
@@ -629,24 +643,12 @@ export default function GlobalImpact() {
                       border-[#5EEAD4]/20
                       bg-[#14B8A6]/[0.09]
                       text-[#5EEAD4]
-                      transition-[transform,border-color,background-color]
-                      duration-300
-                      ease-out
-
-                      group-hover:border-[#5EEAD4]/40
-                      group-hover:bg-[#14B8A6]/[0.14]
                     "
                   >
                     <Icon
                       size={16}
                       strokeWidth={1.7}
                       aria-hidden="true"
-                      className="
-                        transition-transform
-                        duration-300
-                        ease-out
-                        group-hover:scale-110
-                      "
                     />
                   </div>
 
