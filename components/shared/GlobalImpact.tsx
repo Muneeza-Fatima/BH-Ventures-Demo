@@ -48,68 +48,46 @@ function CountUp({
   value,
   prefix,
   suffix,
+  active,
 }: {
   value: number;
   prefix: string;
   suffix: string;
+  active: boolean;
 }) {
   const [count, setCount] = useState(0);
-  const [started, setStarted] = useState(false);
-  const ref = useRef<HTMLSpanElement | null>(null);
+  const startedRef = useRef(false);
 
   useEffect(() => {
-    const element = ref.current;
+    if (!active || startedRef.current) return;
 
-    if (!element) return;
+    startedRef.current = true;
 
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting && !started) {
-          setStarted(true);
-        }
-      },
-      {
-        threshold: 0.15,
-      }
-    );
+    const duration = 1400;
+    const startTime = Date.now();
 
-    observer.observe(element);
+    const timer = window.setInterval(() => {
+      const elapsed = Date.now() - startTime;
+      const progress = Math.min(elapsed / duration, 1);
 
-    return () => observer.disconnect();
-  }, [started]);
+      // Smooth ease-out
+      const eased = 1 - Math.pow(1 - progress, 3);
 
-  useEffect(() => {
-    if (!started) return;
+      setCount(Math.round(value * eased));
 
-    let frame = 0;
-    const duration = 1200;
-    const start = performance.now();
-
-    const update = (time: number) => {
-      const progress = Math.min(
-        (time - start) / duration,
-        1
-      );
-
-      const eased =
-        1 - Math.pow(1 - progress, 3);
-
-      setCount(Math.round(eased * value));
-
-      if (progress < 1) {
-        frame = requestAnimationFrame(update);
-      } else {
+      if (progress >= 1) {
+        window.clearInterval(timer);
         setCount(value);
       }
+    }, 30);
+
+    return () => {
+      window.clearInterval(timer);
     };
-
-    frame = requestAnimationFrame(update);
-
-    return () => cancelAnimationFrame(frame);
-  }, [started, value]);
+  }, [active, value]);
 
   return (
-    <span ref={ref}>
+    <>
       <span
         translate="no"
         className="notranslate text-white"
@@ -132,12 +110,53 @@ function CountUp({
       >
         {suffix}
       </span>
-    </span>
+    </>
   );
 }
 
 export default function GlobalImpact() {
+  const statsRef = useRef<HTMLDivElement | null>(null);
   const videoRef = useRef<HTMLVideoElement | null>(null);
+
+  const [statsActive, setStatsActive] = useState(false);
+
+  /* ========================================
+     LIGHTWEIGHT SCROLL DETECTION
+  ======================================== */
+
+  useEffect(() => {
+    const element = statsRef.current;
+
+    if (!element) return;
+
+    if (!("IntersectionObserver" in window)) {
+      setStatsActive(true);
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setStatsActive(true);
+          observer.disconnect();
+        }
+      },
+      {
+        threshold: 0.2,
+        rootMargin: "0px 0px -40px 0px",
+      }
+    );
+
+    observer.observe(element);
+
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
+
+  /* ========================================
+     LIGHTWEIGHT VIDEO PLAYBACK
+  ======================================== */
 
   useEffect(() => {
     const video = videoRef.current;
@@ -149,7 +168,9 @@ export default function GlobalImpact() {
     video.playsInline = true;
 
     const playVideo = () => {
-      video.play().catch(() => {});
+      if (video.paused) {
+        video.play().catch(() => {});
+      }
     };
 
     if (video.readyState >= 2) {
@@ -177,6 +198,7 @@ export default function GlobalImpact() {
         font-sans
 
         sm:bg-[#0B1220]
+
         sm:px-6
         sm:py-16
 
@@ -231,7 +253,9 @@ export default function GlobalImpact() {
             w-full
             object-contain
             object-center
+            scale-[2]
 
+            sm:scale-100
             sm:object-cover
             sm:object-center
           "
@@ -239,9 +263,10 @@ export default function GlobalImpact() {
           muted
           loop
           playsInline
-          preload="none"
+          preload="metadata"
           disablePictureInPicture
           disableRemotePlayback
+          aria-hidden="true"
         >
           <source
             src="/videos/global-impact.mp4"
@@ -423,11 +448,7 @@ export default function GlobalImpact() {
                 Across{" "}
                 <span
                   translate="no"
-                  className="
-                    notranslate
-                    font-semibold
-                    text-[#5EEAD4]
-                  "
+                  className="notranslate font-semibold text-[#5EEAD4]"
                 >
                   150+ Countries.
                 </span>
@@ -491,6 +512,7 @@ export default function GlobalImpact() {
 
           {/* Statistics */}
           <div
+            ref={statsRef}
             className="
               relative
               mt-9
@@ -545,12 +567,14 @@ export default function GlobalImpact() {
                     shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_12px_30px_rgba(0,0,0,0.16)]
                     backdrop-blur-xl
 
-                    transition-[border-color,background-color,box-shadow]
+                    transition-[transform,border-color,background-color,box-shadow]
                     duration-300
+                    ease-out
 
+                    hover:-translate-y-1
                     hover:border-[#2DD4BF]/35
                     hover:bg-white/[0.075]
-                    hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.12),0_16px_34px_rgba(0,0,0,0.20)]
+                    hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.12),0_18px_38px_rgba(0,0,0,0.24)]
 
                     sm:w-[175px]
                     sm:rounded-[20px]
@@ -558,31 +582,6 @@ export default function GlobalImpact() {
                     sm:py-3.5
                   `}
                 >
-                  {/* Shine */}
-                  <span
-                    aria-hidden="true"
-                    className="
-                      pointer-events-none
-                      absolute
-                      -left-[85%]
-                      top-[-30%]
-                      h-[170%]
-                      w-[45%]
-                      rotate-[20deg]
-                      bg-gradient-to-r
-                      from-transparent
-                      via-white/[0.16]
-                      to-transparent
-                      opacity-0
-
-                      transition-[left,opacity]
-                      duration-700
-
-                      group-hover:left-[135%]
-                      group-hover:opacity-100
-                    "
-                  />
-
                   {/* Glass Highlight */}
                   <span
                     aria-hidden="true"
@@ -617,18 +616,25 @@ export default function GlobalImpact() {
                       bg-[#14B8A6]/[0.09]
                       text-[#5EEAD4]
                       shadow-[0_0_18px_rgba(20,184,166,0.08)]
-
-                      transition-[border-color,background-color]
+                      transition-[transform,border-color,background-color,box-shadow]
                       duration-300
+                      ease-out
 
                       group-hover:border-[#5EEAD4]/40
                       group-hover:bg-[#14B8A6]/[0.14]
+                      group-hover:shadow-[0_0_24px_rgba(20,184,166,0.16)]
                     "
                   >
                     <Icon
                       size={16}
                       strokeWidth={1.7}
                       aria-hidden="true"
+                      className="
+                        transition-transform
+                        duration-300
+                        ease-out
+                        group-hover:scale-110
+                      "
                     />
                   </div>
 
@@ -651,6 +657,7 @@ export default function GlobalImpact() {
                       value={stat.value}
                       prefix={stat.prefix}
                       suffix={stat.suffix}
+                      active={statsActive}
                     />
                   </div>
 
