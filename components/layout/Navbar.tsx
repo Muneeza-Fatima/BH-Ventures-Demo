@@ -46,12 +46,16 @@ export default function Navbar() {
           h-[64px]
           w-full
           items-center
+
           border-b
           border-white/[0.08]
-          bg-white/[0.025]
-          backdrop-blur-2xl
+
+          bg-white/[0.01]
+          backdrop-blur-xl
           backdrop-saturate-150
+
           px-4
+
           shadow-[0_8px_35px_rgba(0,0,0,0.08)]
 
           sm:h-[66px]
@@ -80,6 +84,7 @@ export default function Navbar() {
             items-center
           "
         >
+          {/* Logo glow */}
           <span
             aria-hidden="true"
             className="
@@ -108,6 +113,7 @@ export default function Navbar() {
               w-auto
               max-w-[112px]
               object-contain
+
               transition-transform
               duration-300
               group-hover:scale-[1.03]
@@ -134,10 +140,13 @@ export default function Navbar() {
             rounded-full
             border
             border-white/[0.06]
-            bg-white/[0.02]
+
+            bg-[#0B1220]/20
+            backdrop-blur-xl
+            backdrop-saturate-150
+
             px-1.5
             py-1
-            backdrop-blur-xl
 
             lg:flex
 
@@ -157,18 +166,22 @@ export default function Navbar() {
                 rounded-full
                 px-3
                 py-2
+
                 text-[12px]
                 font-semibold
                 tracking-[0.01em]
                 text-white/70
+
                 transition-all
                 duration-300
+
                 hover:bg-white/[0.06]
                 hover:text-white
 
                 xl:px-3.5
               "
             >
+              {/* Hover underline */}
               <span
                 aria-hidden="true"
                 className="
@@ -208,19 +221,26 @@ export default function Navbar() {
             gap-1.5
             overflow-hidden
             rounded-full
+
             border
             border-[#14B8A6]/50
             bg-[#14B8A6]/[0.06]
+
             px-4
             py-2
+
             text-[11px]
             font-bold
             tracking-[0.01em]
             text-white
+
             shadow-[0_0_20px_rgba(20,184,166,0.05)]
+
             backdrop-blur-xl
+
             transition-all
             duration-300
+
             hover:border-[#2DD4BF]/80
             hover:bg-[#14B8A6]/15
             hover:shadow-[0_0_25px_rgba(20,184,166,0.16)]
@@ -228,6 +248,7 @@ export default function Navbar() {
             lg:inline-flex
           "
         >
+          {/* CTA shine */}
           <span
             aria-hidden="true"
             className="
@@ -295,16 +316,22 @@ export default function Navbar() {
               overflow-hidden
               whitespace-nowrap
               rounded-full
+
               border
               border-[#14B8A6]/60
               bg-[#14B8A6]/[0.06]
+
               px-3
+
               text-[9px]
               font-bold
               text-white
+
               backdrop-blur-xl
+
               transition-all
               duration-300
+
               hover:border-[#2DD4BF]
               hover:bg-[#14B8A6]/15
 
@@ -369,13 +396,18 @@ export default function Navbar() {
               justify-center
               overflow-hidden
               rounded-full
+
               border
               border-white/[0.12]
-              bg-white/[0.035]
+              bg-white/[0.02]
+
               text-white
+
               backdrop-blur-xl
+
               transition-all
               duration-300
+
               hover:border-[#14B8A6]/60
               hover:bg-[#14B8A6]/10
 
@@ -417,15 +449,16 @@ export default function Navbar() {
           top-[72px]
           overflow-hidden
           rounded-2xl
+
           border
           border-white/[0.08]
 
-          /* Navy mobile menu background */
-          bg-[#0B1220]
-
-          backdrop-blur-2xl
+          bg-white/[0.01]
+          backdrop-blur-xl
           backdrop-saturate-150
+
           shadow-[0_20px_60px_rgba(0,0,0,0.28)]
+
           transition-all
           duration-300
 
@@ -492,12 +525,16 @@ export default function Navbar() {
                   justify-between
                   border-b
                   border-white/[0.07]
+
                   py-3.5
+
                   text-[13px]
                   font-semibold
                   text-white/75
+
                   transition-all
                   duration-200
+
                   hover:pl-1
                   hover:text-white
 
@@ -537,15 +574,20 @@ export default function Navbar() {
                 gap-2
                 overflow-hidden
                 rounded-full
+
                 border
                 border-[#14B8A6]/60
                 bg-[#14B8A6]/10
+
                 text-[12px]
                 font-bold
                 text-white
+
                 backdrop-blur-xl
+
                 transition-all
                 duration-300
+
                 hover:border-[#2DD4BF]
                 hover:bg-[#14B8A6]/20
 

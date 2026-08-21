@@ -20,7 +20,7 @@
 
   --border: #e2e8e7;
 
-  /* Premium typography */
+  /* Premium Typography */
   --font-premium: var(--font-manrope);
 }
 
@@ -46,6 +46,7 @@ body {
   color: var(--text-dark);
 
   font-family: var(--font-premium), sans-serif;
+  font-weight: 500;
 
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -66,13 +67,18 @@ h4,
 h5,
 h6 {
   margin: 0;
+
   font-family: var(--font-premium), sans-serif;
+  font-weight: 800;
+
   text-wrap: balance;
 }
 
 p {
   margin: 0;
+
   font-family: var(--font-premium), sans-serif;
+  font-weight: 600;
 }
 
 button,
@@ -81,6 +87,34 @@ input,
 textarea,
 select {
   font-family: var(--font-premium), sans-serif;
+}
+
+/* ========================================
+   PREMIUM TEXT WEIGHTS
+   ======================================== */
+
+.font-premium {
+  font-family: var(--font-premium), sans-serif;
+}
+
+.font-premium-medium {
+  font-family: var(--font-premium), sans-serif;
+  font-weight: 500;
+}
+
+.font-premium-semibold {
+  font-family: var(--font-premium), sans-serif;
+  font-weight: 600;
+}
+
+.font-premium-bold {
+  font-family: var(--font-premium), sans-serif;
+  font-weight: 700;
+}
+
+.font-premium-extrabold {
+  font-family: var(--font-premium), sans-serif;
+  font-weight: 800;
 }
 
 /* ========================================

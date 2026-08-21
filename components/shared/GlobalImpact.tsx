@@ -16,8 +16,7 @@ const stats = [
     prefix: "",
     suffix: "h",
     label: "Average Payout Processing",
-    positionClass:
-      "right-5 sm:right-10 top-9 sm:top-10 w-[135px] sm:w-[160px]",
+    positionClass: "right-5 sm:right-10 top-9 sm:top-10",
   },
   {
     value: 350,
@@ -32,7 +31,7 @@ const stats = [
     suffix: "K+",
     label: "Traders Worldwide",
     positionClass:
-      "right-5 sm:right-10 top-[9.25rem] sm:top-[9.5rem] w-[135px] sm:w-[160px]",
+      "right-7 sm:right-12 top-[9.25rem] sm:top-[9.5rem]",
   },
 ];
 
@@ -61,7 +60,6 @@ function CountUp({
 
     const update = (time: number) => {
       const progress = Math.min((time - start) / duration, 1);
-
       const eased = 1 - Math.pow(1 - progress, 4);
 
       setCount(Math.round(eased * value));
@@ -386,7 +384,7 @@ export default function GlobalImpact() {
             {/* Main Heading */}
             <h2
               className="
-                font-bold
+                font-semibold
                 leading-[1.08]
                 tracking-[-0.04em]
                 text-white
@@ -400,14 +398,14 @@ export default function GlobalImpact() {
                 lg:text-[44px]
               "
             >
-              <span className="block font-bold">
+              <span className="block font-semibold">
                 Global Reach.
               </span>
 
               <span
                 className="
                   block
-                  font-bold
+                  font-semibold
                   bg-gradient-to-r
                   from-[#2DD4BF]
                   via-[#5EEAD4]
@@ -420,13 +418,13 @@ export default function GlobalImpact() {
                 Real Opportunities.
               </span>
 
-              <span className="block font-bold">
+              <span className="block font-semibold">
                 Trusted by Traders
               </span>
 
-              <span className="block font-bold">
+              <span className="block font-semibold">
                 Across{" "}
-                <span className="font-bold text-[#5EEAD4]">
+                <span className="font-semibold text-[#5EEAD4]">
                   150+ Countries.
                 </span>
               </span>
@@ -548,13 +546,15 @@ export default function GlobalImpact() {
                 className={`
                   absolute
                   ${stat.positionClass}
+                  max-w-[135px]
+
+                  sm:max-w-[160px]
                 `}
               >
                 {/* Number */}
                 <div
                   className="
                     whitespace-nowrap
-                    text-left
                     text-[21px]
                     font-normal
                     leading-none
@@ -578,7 +578,6 @@ export default function GlobalImpact() {
                   className="
                     mt-1.5
                     max-w-[135px]
-                    text-left
                     text-[9px]
                     font-medium
                     leading-4

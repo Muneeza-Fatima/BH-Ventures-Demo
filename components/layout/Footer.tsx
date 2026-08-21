@@ -17,8 +17,8 @@ const socialLinks = [
     ),
   },
   {
-    label: "Instagram",
-    href: "#",
+    label: "Email",
+    href: "mailto:info@bhventures.ae",
     icon: (
       <svg
         viewBox="0 0 24 24"
@@ -26,14 +26,34 @@ const socialLinks = [
         strokeWidth="1.8"
         aria-hidden="true"
       >
-        <rect x="3" y="3" width="18" height="18" rx="5" />
-        <circle cx="12" cy="12" r="4" />
-        <circle
-          cx="17.5"
-          cy="6.5"
-          r="1"
-          className="fill-current stroke-none"
-        />
+        <rect x="3" y="5" width="18" height="14" rx="2" />
+        <path d="m4 7 8 6 8-6" />
+      </svg>
+    ),
+  },
+  {
+    label: "Facebook",
+    href: "#",
+    icon: (
+      <svg
+        viewBox="0 0 24 24"
+        className="h-[18px] w-[18px] fill-current"
+        aria-hidden="true"
+      >
+        <path d="M14 8h3V4h-3c-3.31 0-5 1.69-5 5v3H6v4h3v8h4v-8h3.5l.5-4H13V9c0-.67.33-1 1-1z" />
+      </svg>
+    ),
+  },
+  {
+    label: "Twitter",
+    href: "#",
+    icon: (
+      <svg
+        viewBox="0 0 24 24"
+        className="h-[17px] w-[17px] fill-current"
+        aria-hidden="true"
+      >
+        <path d="M18.9 2H22l-6.77 7.74L23.2 22h-6.24l-4.89-6.39L6.48 22H3.36l7.24-8.28L2.8 2h6.4l4.42 5.84L18.9 2zm-1.1 17.9h1.73L8.27 3.98H6.41L17.8 19.9z" />
       </svg>
     ),
   },
@@ -47,21 +67,6 @@ const socialLinks = [
         aria-hidden="true"
       >
         <path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.4.5A3 3 0 0 0 .5 6.2 31 31 0 0 0 0 12a31 31 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1A31 31 0 0 0 24 12a31 31 0 0 0-.5-5.8zM9.6 15.6V8.4l6.3 3.6-6.3 3.6z" />
-      </svg>
-    ),
-  },
-  {
-    label: "Email",
-    href: "mailto:info@bhventures.ae",
-    icon: (
-      <svg
-        viewBox="0 0 24 24"
-        className="h-[18px] w-[18px] fill-none stroke-current"
-        strokeWidth="1.8"
-        aria-hidden="true"
-      >
-        <rect x="3" y="5" width="18" height="14" rx="2" />
-        <path d="m4 7 8 6 8-6" />
       </svg>
     ),
   },
@@ -158,7 +163,7 @@ export default function Footer() {
           </Link>
 
           {/* Social Icons */}
-          <div className="flex items-center gap-2.5">
+          <div className="flex items-center gap-2">
             {socialLinks.map((social) => (
               <a
                 key={social.label}
