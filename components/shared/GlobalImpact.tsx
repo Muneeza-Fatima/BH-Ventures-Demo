@@ -45,7 +45,8 @@ const stats = [
 ];
 
 /* ========================================
-   COUNT UP
+   SMOOTH COUNT UP
+   DOM BASED — NO SETSTATE PER FRAME
 ======================================== */
 
 function CountUp({
@@ -59,57 +60,88 @@ function CountUp({
   suffix: string;
   active: boolean;
 }) {
-  const [count, setCount] = useState(0);
+  const numberRef = useRef<HTMLSpanElement | null>(null);
   const startedRef = useRef(false);
 
   useEffect(() => {
     if (!active || startedRef.current) return;
 
+    const numberElement = numberRef.current;
+
+    if (!numberElement) return;
+
     startedRef.current = true;
+
+    let frameId = 0;
+    let cancelled = false;
 
     const isMobile =
       typeof window !== "undefined" &&
       window.matchMedia("(max-width: 639px)").matches;
 
-    const duration = isMobile ? 850 : 1350;
+    /*
+      Slightly faster on mobile,
+      but still smooth enough to see
+      every number transition naturally.
+    */
+    const duration = isMobile ? 1200 : 1500;
 
-    let frameId = 0;
     const startTime = performance.now();
 
-    const update = (currentTime: number) => {
+    const animate = (currentTime: number) => {
+      if (cancelled) return;
+
+      const elapsed = currentTime - startTime;
+
       const progress = Math.min(
-        (currentTime - startTime) / duration,
+        elapsed / duration,
         1
       );
 
-      // Smooth ease-out
+      /*
+        Smooth ease-out:
+        starts gently,
+        moves quickly in the middle,
+        finishes softly.
+      */
       const eased =
-        1 - Math.pow(1 - progress, 3);
+        1 - Math.pow(1 - progress, 4);
 
-      const nextValue = Math.round(eased * value);
+      const currentValue = Math.round(
+        eased * value
+      );
 
-      setCount(nextValue);
+      if (numberElement) {
+        numberElement.textContent =
+          `${prefix}${currentValue}`;
+      }
 
       if (progress < 1) {
-        frameId = requestAnimationFrame(update);
+        frameId =
+          requestAnimationFrame(animate);
+      } else if (numberElement) {
+        numberElement.textContent =
+          `${prefix}${value}`;
       }
     };
 
-    frameId = requestAnimationFrame(update);
+    frameId =
+      requestAnimationFrame(animate);
 
     return () => {
+      cancelled = true;
       cancelAnimationFrame(frameId);
     };
-  }, [active, value]);
+  }, [active, value, prefix]);
 
   return (
     <>
       <span
+        ref={numberRef}
         translate="no"
         className="notranslate text-white"
       >
-        {prefix}
-        {count}
+        {prefix}0
       </span>
 
       <span
@@ -135,9 +167,14 @@ function CountUp({
 ======================================== */
 
 export default function GlobalImpact() {
-  const sectionRef = useRef<HTMLElement | null>(null);
-  const statsRef = useRef<HTMLDivElement | null>(null);
-  const videoRef = useRef<HTMLVideoElement | null>(null);
+  const sectionRef =
+    useRef<HTMLElement | null>(null);
+
+  const statsRef =
+    useRef<HTMLDivElement | null>(null);
+
+  const videoRef =
+    useRef<HTMLVideoElement | null>(null);
 
   const [sectionVisible, setSectionVisible] =
     useState(false);
@@ -146,7 +183,8 @@ export default function GlobalImpact() {
     useState(false);
 
   /* ========================================
-     LIGHTWEIGHT SECTION OBSERVER
+     SECTION OBSERVER
+     LIGHTWEIGHT
   ======================================== */
 
   useEffect(() => {
@@ -154,18 +192,19 @@ export default function GlobalImpact() {
 
     if (!section) return;
 
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setSectionVisible(true);
-          observer.disconnect();
+    const observer =
+      new IntersectionObserver(
+        ([entry]) => {
+          if (entry.isIntersecting) {
+            setSectionVisible(true);
+            observer.disconnect();
+          }
+        },
+        {
+          threshold: 0.05,
+          rootMargin: "100px 0px",
         }
-      },
-      {
-        threshold: 0.08,
-        rootMargin: "80px 0px",
-      }
-    );
+      );
 
     observer.observe(section);
 
@@ -183,18 +222,19 @@ export default function GlobalImpact() {
 
     if (!statsElement) return;
 
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setStatsVisible(true);
-          observer.disconnect();
+    const observer =
+      new IntersectionObserver(
+        ([entry]) => {
+          if (entry.isIntersecting) {
+            setStatsVisible(true);
+            observer.disconnect();
+          }
+        },
+        {
+          threshold: 0.12,
+          rootMargin: "80px 0px",
         }
-      },
-      {
-        threshold: 0.18,
-        rootMargin: "60px 0px",
-      }
-    );
+      );
 
     observer.observe(statsElement);
 
@@ -204,7 +244,7 @@ export default function GlobalImpact() {
   }, []);
 
   /* ========================================
-     LIGHTWEIGHT VIDEO
+     VIDEO
   ======================================== */
 
   useEffect(() => {
@@ -272,13 +312,13 @@ export default function GlobalImpact() {
           absolute
           left-1/2
           top-1/2
-          h-[360px]
-          w-[520px]
+          h-[320px]
+          w-[460px]
           -translate-x-1/2
           -translate-y-1/2
           rounded-full
-          bg-[#14B8A6]/[0.03]
-          blur-[80px]
+          bg-[#14B8A6]/[0.025]
+          blur-[70px]
         "
       />
 
@@ -303,7 +343,7 @@ export default function GlobalImpact() {
         "
       >
         {/* ========================================
-            BACKGROUND VIDEO
+            VIDEO
         ======================================== */}
 
         <video
@@ -335,9 +375,7 @@ export default function GlobalImpact() {
           />
         </video>
 
-        {/* ========================================
-            OVERLAY
-        ======================================== */}
+        {/* Overlay */}
 
         <div
           aria-hidden="true"
@@ -357,7 +395,7 @@ export default function GlobalImpact() {
             pointer-events-none
             absolute
             inset-0
-            bg-[radial-gradient(circle_at_50%_38%,rgba(20,184,166,0.10),transparent_58%)]
+            bg-[radial-gradient(circle_at_50%_38%,rgba(20,184,166,0.08),transparent_58%)]
           "
         />
 
@@ -430,6 +468,7 @@ export default function GlobalImpact() {
               text-center
               transition-opacity
               duration-500
+              ease-out
               ${
                 sectionVisible
                   ? "opacity-100"
@@ -484,7 +523,7 @@ export default function GlobalImpact() {
               />
             </div>
 
-            {/* Main Heading */}
+            {/* Heading */}
 
             <h2
               className="
@@ -579,7 +618,7 @@ export default function GlobalImpact() {
               to risk their own trading capital.
             </p>
 
-            {/* Secondary Line */}
+            {/* Secondary */}
 
             <p
               className="
@@ -630,13 +669,13 @@ export default function GlobalImpact() {
                 absolute
                 left-1/2
                 top-1/2
-                h-16
-                w-16
+                h-14
+                w-14
                 -translate-x-1/2
                 -translate-y-1/2
                 rounded-full
-                bg-[#14B8A6]/[0.05]
-                blur-xl
+                bg-[#14B8A6]/[0.04]
+                blur-lg
               "
             />
 
@@ -662,14 +701,14 @@ export default function GlobalImpact() {
                     shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_12px_30px_rgba(0,0,0,0.16)]
                     backdrop-blur-xl
 
-                    transition-[opacity,transform,border-color,background-color,box-shadow]
-                    duration-500
+                    transition-[opacity,transform]
+                    duration-400
                     ease-out
 
                     ${
                       statsVisible
                         ? "translate-y-0 opacity-100"
-                        : "translate-y-2 opacity-0"
+                        : "translate-y-1.5 opacity-0"
                     }
 
                     sm:w-[175px]
@@ -679,35 +718,11 @@ export default function GlobalImpact() {
                   `}
                   style={{
                     transitionDelay: statsVisible
-                      ? `${index * 60}ms`
+                      ? `${index * 50}ms`
                       : "0ms",
                   }}
                 >
-                  {/* Shine */}
-
-                  <span
-                    aria-hidden="true"
-                    className="
-                      pointer-events-none
-                      absolute
-                      -left-[85%]
-                      top-[-30%]
-                      h-[170%]
-                      w-[45%]
-                      rotate-[20deg]
-                      bg-gradient-to-r
-                      from-transparent
-                      via-white/[0.12]
-                      to-transparent
-                      opacity-0
-                      transition-all
-                      duration-700
-                      group-hover:left-[135%]
-                      group-hover:opacity-100
-                    "
-                  />
-
-                  {/* Glass Highlight */}
+                  {/* Top Highlight */}
 
                   <span
                     aria-hidden="true"
@@ -743,11 +758,9 @@ export default function GlobalImpact() {
                       bg-[#14B8A6]/[0.09]
                       text-[#5EEAD4]
                       shadow-[0_0_18px_rgba(20,184,166,0.08)]
-                      transition-all
+                      transition-transform
                       duration-300
-
-                      group-hover:border-[#5EEAD4]/40
-                      group-hover:bg-[#14B8A6]/[0.14]
+                      group-hover:scale-105
                     "
                   >
                     <Icon
@@ -805,9 +818,7 @@ export default function GlobalImpact() {
             })}
           </div>
 
-          {/* ========================================
-              BOTTOM ACCENT
-          ======================================== */}
+          {/* Bottom Accent */}
 
           <div
             className={`
