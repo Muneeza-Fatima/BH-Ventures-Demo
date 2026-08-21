@@ -4,7 +4,7 @@ import HomeFinalCTA from "@/components/shared/HomeFinalCTA";
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-[#0B1220]">
+    <div className="min-h-screen bg-[#0B1220]">
       {/* 1. HERO */}
       <Hero />
 
@@ -13,6 +13,6 @@ export default function Home() {
 
       {/* 3. FINAL CTA */}
       <HomeFinalCTA />
-    </main>
+    </div>
   );
 }

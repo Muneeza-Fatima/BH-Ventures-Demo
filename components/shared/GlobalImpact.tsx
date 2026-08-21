@@ -2,6 +2,12 @@
 
 import { useEffect, useRef, useState } from "react";
 import { motion, useInView } from "framer-motion";
+import {
+  Globe2,
+  Clock3,
+  WalletCards,
+  UsersRound,
+} from "lucide-react";
 
 const stats = [
   {
@@ -9,21 +15,24 @@ const stats = [
     prefix: "",
     suffix: "+",
     label: "Countries Registered",
-    positionClass: "left-5 sm:left-10 top-0",
+    positionClass: "left-1 sm:left-10 top-0",
+    icon: Globe2,
   },
   {
     value: 15,
     prefix: "",
     suffix: "h",
     label: "Average Payout Processing",
-    positionClass: "right-5 sm:right-10 top-9 sm:top-10",
+    positionClass: "right-1 sm:right-10 top-10 sm:top-11",
+    icon: Clock3,
   },
   {
     value: 350,
     prefix: "$",
     suffix: "K+",
     label: "Paid Out to Traders",
-    positionClass: "left-5 sm:left-10 top-28 sm:top-28",
+    positionClass: "left-1 sm:left-10 top-36 sm:top-36",
+    icon: WalletCards,
   },
   {
     value: 10,
@@ -31,7 +40,8 @@ const stats = [
     suffix: "K+",
     label: "Traders Worldwide",
     positionClass:
-      "right-7 sm:right-12 top-[9.25rem] sm:top-[9.5rem]",
+      "right-1 sm:right-12 top-[12rem] sm:top-[12.25rem]",
+    icon: UsersRound,
   },
 ];
 
@@ -80,13 +90,18 @@ function CountUp({
 
   return (
     <>
-      <span className="text-white">
+      <span
+        translate="no"
+        className="notranslate text-white"
+      >
         {prefix}
         {count}
       </span>
 
       <span
+        translate="no"
         className="
+          notranslate
           bg-gradient-to-r
           from-[#2DD4BF]
           to-[#10B981]
@@ -210,7 +225,6 @@ export default function GlobalImpact() {
             inset-0
             h-full
             w-full
-
             object-contain
             object-center
             scale-[2]
@@ -424,7 +438,10 @@ export default function GlobalImpact() {
 
               <span className="block font-semibold">
                 Across{" "}
-                <span className="font-semibold text-[#5EEAD4]">
+                <span
+                  translate="no"
+                  className="notranslate font-semibold text-[#5EEAD4]"
+                >
                   150+ Countries.
                 </span>
               </span>
@@ -491,18 +508,18 @@ export default function GlobalImpact() {
             className="
               relative
               mt-9
-              h-[215px]
+              h-[275px]
               w-full
               max-w-[390px]
 
               sm:mt-11
-              sm:h-[235px]
+              sm:h-[295px]
               sm:max-w-[500px]
 
               md:max-w-[540px]
             "
           >
-            {/* Subtle Center Glow */}
+            {/* Center Glow */}
             <div
               aria-hidden="true"
               className="
@@ -520,78 +537,182 @@ export default function GlobalImpact() {
               "
             />
 
-            {stats.map((stat, index) => (
-              <motion.div
-                key={stat.label}
-                initial={{
-                  opacity: 0,
-                  y: 10,
-                }}
-                animate={
-                  statsInView
-                    ? {
-                        opacity: 1,
-                        y: 0,
-                      }
-                    : {
-                        opacity: 0,
-                        y: 10,
-                      }
-                }
-                transition={{
-                  duration: 0.45,
-                  delay: 0.08 + index * 0.07,
-                  ease: [0.22, 1, 0.36, 1],
-                }}
-                className={`
-                  absolute
-                  ${stat.positionClass}
-                  max-w-[135px]
+            {stats.map((stat, index) => {
+              const Icon = stat.icon;
 
-                  sm:max-w-[160px]
-                `}
-              >
-                {/* Number */}
-                <div
-                  className="
-                    whitespace-nowrap
-                    text-[21px]
-                    font-normal
-                    leading-none
-                    tracking-[-0.035em]
+              return (
+                <motion.div
+                  key={stat.label}
+                  initial={{
+                    opacity: 0,
+                    y: 10,
+                  }}
+                  animate={
+                    statsInView
+                      ? {
+                          opacity: 1,
+                          y: 0,
+                        }
+                      : {
+                          opacity: 0,
+                          y: 10,
+                        }
+                  }
+                  transition={{
+                    duration: 0.45,
+                    delay: 0.08 + index * 0.07,
+                    ease: [0.22, 1, 0.36, 1],
+                  }}
+                  className={`
+                    group
+                    absolute
+                    ${stat.positionClass}
 
-                    sm:text-[24px]
+                    w-[138px]
+                    overflow-hidden
+                    rounded-[17px]
+                    border
+                    border-white/[0.12]
+                    bg-white/[0.055]
+                    px-3
+                    py-3
+                    shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_12px_30px_rgba(0,0,0,0.16)]
+                    backdrop-blur-xl
+                    transition-all
+                    duration-500
 
-                    md:text-[26px]
-                  "
+                    hover:-translate-y-1
+                    hover:border-[#2DD4BF]/35
+                    hover:bg-white/[0.075]
+                    hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.12),0_18px_38px_rgba(0,0,0,0.24)]
+
+                    sm:w-[175px]
+                    sm:rounded-[20px]
+                    sm:px-4
+                    sm:py-3.5
+                  `}
                 >
-                  <CountUp
-                    value={stat.value}
-                    prefix={stat.prefix}
-                    suffix={stat.suffix}
-                    active={statsInView}
+                  {/* Shine */}
+                  <span
+                    aria-hidden="true"
+                    className="
+                      pointer-events-none
+                      absolute
+                      -left-[85%]
+                      top-[-30%]
+                      h-[170%]
+                      w-[45%]
+                      rotate-[20deg]
+                      bg-gradient-to-r
+                      from-transparent
+                      via-white/[0.16]
+                      to-transparent
+                      opacity-0
+                      transition-all
+                      duration-700
+                      group-hover:left-[135%]
+                      group-hover:opacity-100
+                    "
                   />
-                </div>
 
-                {/* Label */}
-                <p
-                  className="
-                    mt-1.5
-                    max-w-[135px]
-                    text-[9px]
-                    font-medium
-                    leading-4
-                    text-white/55
+                  {/* Glass Highlight */}
+                  <span
+                    aria-hidden="true"
+                    className="
+                      pointer-events-none
+                      absolute
+                      left-1/2
+                      top-0
+                      h-px
+                      w-[65%]
+                      -translate-x-1/2
+                      bg-gradient-to-r
+                      from-transparent
+                      via-[#5EEAD4]/55
+                      to-transparent
+                    "
+                  />
 
-                    sm:max-w-[160px]
-                    sm:text-[10px]
-                    sm:leading-5
-                  "
-                >
-                  {stat.label}
-                </p>
-              </motion.div>
-            ))}
+                  {/* Icon */}
+                  <div
+                    className="
+                      relative
+                      mb-2.5
+                      flex
+                      h-8
+                      w-8
+                      items-center
+                      justify-center
+                      rounded-[10px]
+                      border
+                      border-[#5EEAD4]/20
+                      bg-[#14B8A6]/[0.09]
+                      text-[#5EEAD4]
+                      shadow-[0_0_18px_rgba(20,184,166,0.08)]
+                      transition-all
+                      duration-500
+
+                      group-hover:border-[#5EEAD4]/40
+                      group-hover:bg-[#14B8A6]/[0.14]
+                      group-hover:shadow-[0_0_24px_rgba(20,184,166,0.16)]
+                    "
+                  >
+                    <Icon
+                      size={16}
+                      strokeWidth={1.7}
+                      aria-hidden="true"
+                      className="
+                        transition-transform
+                        duration-500
+                        group-hover:scale-110
+                      "
+                    />
+                  </div>
+
+                  {/* Number */}
+                  <div
+                    className="
+                      relative
+                      whitespace-nowrap
+                      text-[21px]
+                      font-normal
+                      leading-none
+                      tracking-[-0.035em]
+
+                      sm:text-[24px]
+
+                      md:text-[26px]
+                    "
+                  >
+                    <CountUp
+                      value={stat.value}
+                      prefix={stat.prefix}
+                      suffix={stat.suffix}
+                      active={statsInView}
+                    />
+                  </div>
+
+                  {/* Label */}
+                  <p
+                    className="
+                      relative
+                      mt-1.5
+                      max-w-[125px]
+                      text-[9px]
+                      font-medium
+                      leading-4
+                      text-white/55
+
+                      sm:max-w-[160px]
+                      sm:text-[10px]
+                      sm:leading-5
+                    "
+                  >
+                    {stat.label}
+                  </p>
+                </motion.div>
+              );
+            })}
           </div>
 
           {/* Bottom Accent */}

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import { Manrope } from "next/font/google";
 
 import "./globals.css";
@@ -24,21 +25,47 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={manrope.variable}>
-      <head>
-        <link
-          rel="preload"
-          href="/videos/hero.mp4"
-          as="video"
-          type="video/mp4"
-        />
-      </head>
-
       <body className="min-h-screen font-sans antialiased">
+        {/* Google Translate container */}
+        <div
+          id="google_translate_element"
+          aria-hidden="true"
+          className="hidden"
+        />
+
         <Navbar />
 
         <main className="w-full">{children}</main>
 
         <Footer />
+
+        {/* Google Translate */}
+        <Script
+          src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"
+          strategy="afterInteractive"
+        />
+
+        <Script id="google-translate-init" strategy="afterInteractive">
+          {`
+            window.googleTranslateElementInit = function () {
+              if (
+                window.google &&
+                window.google.translate &&
+                window.google.translate.TranslateElement
+              ) {
+                new window.google.translate.TranslateElement(
+                  {
+                    pageLanguage: "en",
+                    includedLanguages:
+                      "en,ar,de,fr,it,uk,pl,es,pt,hr,sv",
+                    autoDisplay: false,
+                  },
+                  "google_translate_element"
+                );
+              }
+            };
+          `}
+        </Script>
       </body>
     </html>
   );

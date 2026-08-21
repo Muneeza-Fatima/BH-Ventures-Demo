@@ -54,6 +54,9 @@ body {
   text-rendering: optimizeLegibility;
 
   overflow-x: hidden;
+
+  /* Prevent Google Translate from shifting the page */
+  top: 0 !important;
 }
 
 /* ========================================
@@ -139,4 +142,251 @@ select {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
+}
+
+/* =========================================================
+   GOOGLE TRANSLATE — CLEAN / HIDDEN UI
+   ========================================================= */
+
+/*
+  Google Translate injects its own top iframe.
+  These rules completely hide the visual header
+  without disabling Google Translate itself.
+*/
+
+/* Main Google Translate top banner */
+.goog-te-banner-frame,
+.goog-te-banner-frame.skiptranslate,
+iframe.goog-te-banner-frame {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+
+  width: 0 !important;
+  height: 0 !important;
+
+  position: absolute !important;
+  top: -9999px !important;
+  left: -9999px !important;
+
+  pointer-events: none !important;
+}
+
+/* Google floating translation popup */
+.goog-te-balloon-frame,
+iframe.goog-te-balloon-frame {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+
+  width: 0 !important;
+  height: 0 !important;
+
+  position: absolute !important;
+  top: -9999px !important;
+  left: -9999px !important;
+
+  pointer-events: none !important;
+}
+
+/* Google tooltip */
+.goog-tooltip {
+  display: none !important;
+  visibility: hidden !important;
+}
+
+/* Google tooltip shadow */
+.goog-tooltip:hover {
+  display: none !important;
+}
+
+/* Google text highlight */
+.goog-text-highlight {
+  background: transparent !important;
+  box-shadow: none !important;
+  border: none !important;
+}
+
+/* Prevent Google from adding iframe spacing */
+body > .skiptranslate {
+  display: none !important;
+}
+
+/*
+  IMPORTANT:
+  We intentionally DO NOT hide every .skiptranslate element.
+
+  Google uses .skiptranslate internally for the actual
+  translated document. Hiding it globally can break
+  translation and cause DOM/removeChild errors.
+*/
+
+/* =========================================================
+   GOOGLE TRANSLATE — PAGE POSITION FIX
+   ========================================================= */
+
+html {
+  top: 0 !important;
+  margin-top: 0 !important;
+}
+
+body {
+  top: 0 !important;
+  margin-top: 0 !important;
+}
+
+/* Google sometimes adds inline top positioning */
+body[style*="top"] {
+  top: 0 !important;
+}
+
+body.skiptranslate {
+  top: 0 !important;
+  margin-top: 0 !important;
+}
+
+/* =========================================================
+   GOOGLE TRANSLATE — HIDDEN WIDGET
+   ========================================================= */
+
+#google_translate_element {
+  position: fixed !important;
+
+  left: -10000px !important;
+  top: -10000px !important;
+
+  width: 1px !important;
+  height: 1px !important;
+
+  overflow: hidden !important;
+
+  opacity: 0 !important;
+  visibility: hidden !important;
+
+  pointer-events: none !important;
+}
+
+/* Hide the visible Google gadget if injected elsewhere */
+.goog-te-gadget {
+  position: absolute !important;
+
+  width: 1px !important;
+  height: 1px !important;
+
+  overflow: hidden !important;
+
+  opacity: 0 !important;
+  visibility: hidden !important;
+
+  pointer-events: none !important;
+}
+
+/* Google Translate select */
+.goog-te-combo {
+  position: absolute !important;
+
+  width: 1px !important;
+  height: 1px !important;
+
+  opacity: 0 !important;
+  visibility: hidden !important;
+
+  pointer-events: none !important;
+}
+
+/* =========================================================
+   GOOGLE TRANSLATE — EXTRA UI CLEANUP
+   ========================================================= */
+
+/* Google branding / logo */
+.goog-logo-link {
+  display: none !important;
+}
+
+/* Google attribution text */
+.goog-te-gadget span {
+  display: none !important;
+}
+
+/* Google menu frame */
+.goog-te-menu-frame {
+  display: none !important;
+}
+
+/* Google menu */
+.goog-te-menu-value {
+  display: none !important;
+}
+
+/* =========================================================
+   TRANSLATION-PROTECTED CONTENT
+   ========================================================= */
+
+/*
+  Elements using .notranslate / translate="no"
+  remain unchanged by Google Translate.
+
+  Useful for:
+  - Statistics
+  - Numbers
+  - Currency
+  - Symbols
+  - Brand names
+  - Company names
+*/
+
+.notranslate {
+  unicode-bidi: isolate;
+}
+
+/* Explicit HTML translation protection */
+[translate="no"] {
+  unicode-bidi: isolate;
+}
+
+/* =========================================================
+   GOOGLE TRANSLATE — MOBILE SAFETY
+   ========================================================= */
+
+@media (max-width: 1023px) {
+  .goog-te-banner-frame,
+  .goog-te-banner-frame.skiptranslate,
+  iframe.goog-te-banner-frame {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+
+    top: -9999px !important;
+    left: -9999px !important;
+
+    width: 0 !important;
+    height: 0 !important;
+  }
+
+  html,
+  body {
+    top: 0 !important;
+    margin-top: 0 !important;
+  }
+
+  body.skiptranslate {
+    top: 0 !important;
+    margin-top: 0 !important;
+  }
+}
+
+/* =========================================================
+   FINAL PAGE SHIFT PROTECTION
+   ========================================================= */
+
+/*
+  Google Translate occasionally applies inline positioning
+  to the page after language selection.
+*/
+
+html[style*="top"],
+body[style*="top"],
+body[style*="margin-top"] {
+  top: 0 !important;
+  margin-top: 0 !important;
 }
