@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { motion, useInView } from "framer-motion";
 import {
   Globe2,
   Clock3,
@@ -49,28 +48,51 @@ function CountUp({
   value,
   prefix,
   suffix,
-  active,
 }: {
   value: number;
   prefix: string;
   suffix: string;
-  active: boolean;
 }) {
   const [count, setCount] = useState(0);
-  const started = useRef(false);
+  const [started, setStarted] = useState(false);
+  const ref = useRef<HTMLSpanElement | null>(null);
 
   useEffect(() => {
-    if (!active || started.current) return;
+    const element = ref.current;
 
-    started.current = true;
+    if (!element) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !started) {
+          setStarted(true);
+        }
+      },
+      {
+        threshold: 0.15,
+      }
+    );
+
+    observer.observe(element);
+
+    return () => observer.disconnect();
+  }, [started]);
+
+  useEffect(() => {
+    if (!started) return;
 
     let frame = 0;
-    const duration = 1800;
+    const duration = 1200;
     const start = performance.now();
 
     const update = (time: number) => {
-      const progress = Math.min((time - start) / duration, 1);
-      const eased = 1 - Math.pow(1 - progress, 4);
+      const progress = Math.min(
+        (time - start) / duration,
+        1
+      );
+
+      const eased =
+        1 - Math.pow(1 - progress, 3);
 
       setCount(Math.round(eased * value));
 
@@ -83,13 +105,11 @@ function CountUp({
 
     frame = requestAnimationFrame(update);
 
-    return () => {
-      cancelAnimationFrame(frame);
-    };
-  }, [active, value]);
+    return () => cancelAnimationFrame(frame);
+  }, [started, value]);
 
   return (
-    <>
+    <span ref={ref}>
       <span
         translate="no"
         className="notranslate text-white"
@@ -112,24 +132,12 @@ function CountUp({
       >
         {suffix}
       </span>
-    </>
+    </span>
   );
 }
 
 export default function GlobalImpact() {
-  const sectionRef = useRef<HTMLElement | null>(null);
-  const statsRef = useRef<HTMLDivElement | null>(null);
   const videoRef = useRef<HTMLVideoElement | null>(null);
-
-  const sectionInView = useInView(sectionRef, {
-    once: true,
-    amount: 0.12,
-  });
-
-  const statsInView = useInView(statsRef, {
-    once: true,
-    amount: 0.25,
-  });
 
   useEffect(() => {
     const video = videoRef.current;
@@ -140,28 +148,25 @@ export default function GlobalImpact() {
     video.defaultMuted = true;
     video.playsInline = true;
 
-    const startVideo = () => {
-      if (video.paused) {
-        video.play().catch(() => {});
-      }
+    const playVideo = () => {
+      video.play().catch(() => {});
     };
 
     if (video.readyState >= 2) {
-      startVideo();
+      playVideo();
     } else {
-      video.addEventListener("canplay", startVideo, {
+      video.addEventListener("canplay", playVideo, {
         once: true,
       });
     }
 
     return () => {
-      video.removeEventListener("canplay", startVideo);
+      video.removeEventListener("canplay", playVideo);
     };
   }, []);
 
   return (
     <section
-      ref={sectionRef}
       className="
         relative
         w-full
@@ -172,7 +177,6 @@ export default function GlobalImpact() {
         font-sans
 
         sm:bg-[#0B1220]
-
         sm:px-6
         sm:py-16
 
@@ -227,9 +231,7 @@ export default function GlobalImpact() {
             w-full
             object-contain
             object-center
-            scale-[2]
 
-            sm:scale-100
             sm:object-cover
             sm:object-center
           "
@@ -237,7 +239,7 @@ export default function GlobalImpact() {
           muted
           loop
           playsInline
-          preload="metadata"
+          preload="none"
           disablePictureInPicture
           disableRemotePlayback
         >
@@ -323,26 +325,7 @@ export default function GlobalImpact() {
           "
         >
           {/* Heading */}
-          <motion.div
-            initial={{
-              opacity: 0,
-              y: 18,
-            }}
-            animate={
-              sectionInView
-                ? {
-                    opacity: 1,
-                    y: 0,
-                  }
-                : {
-                    opacity: 0,
-                    y: 18,
-                  }
-            }
-            transition={{
-              duration: 0.6,
-              ease: [0.22, 1, 0.36, 1],
-            }}
+          <div
             className="
               mx-auto
               max-w-[650px]
@@ -440,7 +423,11 @@ export default function GlobalImpact() {
                 Across{" "}
                 <span
                   translate="no"
-                  className="notranslate font-semibold text-[#5EEAD4]"
+                  className="
+                    notranslate
+                    font-semibold
+                    text-[#5EEAD4]
+                  "
                 >
                   150+ Countries.
                 </span>
@@ -500,11 +487,10 @@ export default function GlobalImpact() {
               Built to create accessible opportunities and
               sustainable growth for traders worldwide.
             </p>
-          </motion.div>
+          </div>
 
           {/* Statistics */}
           <div
-            ref={statsRef}
             className="
               relative
               mt-9
@@ -537,32 +523,12 @@ export default function GlobalImpact() {
               "
             />
 
-            {stats.map((stat, index) => {
+            {stats.map((stat) => {
               const Icon = stat.icon;
 
               return (
-                <motion.div
+                <div
                   key={stat.label}
-                  initial={{
-                    opacity: 0,
-                    y: 10,
-                  }}
-                  animate={
-                    statsInView
-                      ? {
-                          opacity: 1,
-                          y: 0,
-                        }
-                      : {
-                          opacity: 0,
-                          y: 10,
-                        }
-                  }
-                  transition={{
-                    duration: 0.45,
-                    delay: 0.08 + index * 0.07,
-                    ease: [0.22, 1, 0.36, 1],
-                  }}
                   className={`
                     group
                     absolute
@@ -578,13 +544,13 @@ export default function GlobalImpact() {
                     py-3
                     shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_12px_30px_rgba(0,0,0,0.16)]
                     backdrop-blur-xl
-                    transition-all
-                    duration-500
 
-                    hover:-translate-y-1
+                    transition-[border-color,background-color,box-shadow]
+                    duration-300
+
                     hover:border-[#2DD4BF]/35
                     hover:bg-white/[0.075]
-                    hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.12),0_18px_38px_rgba(0,0,0,0.24)]
+                    hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.12),0_16px_34px_rgba(0,0,0,0.20)]
 
                     sm:w-[175px]
                     sm:rounded-[20px]
@@ -608,8 +574,10 @@ export default function GlobalImpact() {
                       via-white/[0.16]
                       to-transparent
                       opacity-0
-                      transition-all
+
+                      transition-[left,opacity]
                       duration-700
+
                       group-hover:left-[135%]
                       group-hover:opacity-100
                     "
@@ -649,23 +617,18 @@ export default function GlobalImpact() {
                       bg-[#14B8A6]/[0.09]
                       text-[#5EEAD4]
                       shadow-[0_0_18px_rgba(20,184,166,0.08)]
-                      transition-all
-                      duration-500
+
+                      transition-[border-color,background-color]
+                      duration-300
 
                       group-hover:border-[#5EEAD4]/40
                       group-hover:bg-[#14B8A6]/[0.14]
-                      group-hover:shadow-[0_0_24px_rgba(20,184,166,0.16)]
                     "
                   >
                     <Icon
                       size={16}
                       strokeWidth={1.7}
                       aria-hidden="true"
-                      className="
-                        transition-transform
-                        duration-500
-                        group-hover:scale-110
-                      "
                     />
                   </div>
 
@@ -688,7 +651,6 @@ export default function GlobalImpact() {
                       value={stat.value}
                       prefix={stat.prefix}
                       suffix={stat.suffix}
-                      active={statsInView}
                     />
                   </div>
 
@@ -710,32 +672,13 @@ export default function GlobalImpact() {
                   >
                     {stat.label}
                   </p>
-                </motion.div>
+                </div>
               );
             })}
           </div>
 
           {/* Bottom Accent */}
-          <motion.div
-            initial={{
-              opacity: 0,
-              scaleX: 0.6,
-            }}
-            animate={
-              statsInView
-                ? {
-                    opacity: 1,
-                    scaleX: 1,
-                  }
-                : {
-                    opacity: 0,
-                    scaleX: 0.6,
-                  }
-            }
-            transition={{
-              duration: 0.5,
-              delay: 0.3,
-            }}
+          <div
             className="
               mt-0
               h-px
