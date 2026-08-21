@@ -45,7 +45,7 @@ const stats = [
 ];
 
 /* ========================================
-   SMOOTH LIGHTWEIGHT COUNT UP
+   SMOOTH COUNT UP
 ======================================== */
 
 function CountUp({
@@ -60,44 +60,53 @@ function CountUp({
   active: boolean;
 }) {
   const [count, setCount] = useState(0);
-  const startedRef = useRef(false);
-  const frameRef = useRef<number | null>(null);
+  const started = useRef(false);
 
   useEffect(() => {
-    if (!active || startedRef.current) return;
+    if (!active || started.current) return;
 
-    startedRef.current = true;
+    started.current = true;
 
-    const duration = 1500;
-    const startTime = performance.now();
+    let animationFrame = 0;
+    let startTime: number | null = null;
 
-    const animate = (time: number) => {
-      const progress = Math.min(
-        (time - startTime) / duration,
-        1
-      );
+    /*
+      Slightly faster on phones so the animation
+      doesn't compete with scrolling/video rendering.
+    */
+    const duration =
+      typeof window !== "undefined" && window.innerWidth < 640
+        ? 950
+        : 1300;
 
-      // Smooth ease-out
-      const eased =
-        1 - Math.pow(1 - progress, 3);
+    const animate = (timestamp: number) => {
+      if (startTime === null) {
+        startTime = timestamp;
+      }
 
-      setCount(Math.round(value * eased));
+      const elapsed = timestamp - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+
+      /*
+        Smooth ease-out:
+        fast at the beginning, gentle at the end.
+      */
+      const eased = 1 - Math.pow(1 - progress, 3);
+      const nextValue = Math.round(eased * value);
+
+      setCount(nextValue);
 
       if (progress < 1) {
-        frameRef.current =
-          requestAnimationFrame(animate);
+        animationFrame = requestAnimationFrame(animate);
       } else {
         setCount(value);
       }
     };
 
-    frameRef.current =
-      requestAnimationFrame(animate);
+    animationFrame = requestAnimationFrame(animate);
 
     return () => {
-      if (frameRef.current !== null) {
-        cancelAnimationFrame(frameRef.current);
-      }
+      cancelAnimationFrame(animationFrame);
     };
   }, [active, value]);
 
@@ -138,47 +147,17 @@ export default function GlobalImpact() {
   const statsRef = useRef<HTMLDivElement | null>(null);
   const videoRef = useRef<HTMLVideoElement | null>(null);
 
-  const [sectionVisible, setSectionVisible] =
-    useState(false);
-
-  const [statsVisible, setStatsVisible] =
-    useState(false);
+  const [statsVisible, setStatsVisible] = useState(false);
 
   /* ========================================
-     SECTION VISIBILITY
+     LIGHT INTERSECTION OBSERVER
+     Triggers numbers only when reached.
   ======================================== */
 
   useEffect(() => {
-    const section = sectionRef.current;
+    const element = statsRef.current;
 
-    if (!section) return;
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setSectionVisible(true);
-          observer.disconnect();
-        }
-      },
-      {
-        threshold: 0.08,
-        rootMargin: "0px 0px -50px 0px",
-      }
-    );
-
-    observer.observe(section);
-
-    return () => observer.disconnect();
-  }, []);
-
-  /* ========================================
-     STATS VISIBILITY
-  ======================================== */
-
-  useEffect(() => {
-    const statsElement = statsRef.current;
-
-    if (!statsElement) return;
+    if (!element) return;
 
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -189,17 +168,19 @@ export default function GlobalImpact() {
       },
       {
         threshold: 0.2,
-        rootMargin: "0px 0px -30px 0px",
+        rootMargin: "0px 0px -40px 0px",
       }
     );
 
-    observer.observe(statsElement);
+    observer.observe(element);
 
-    return () => observer.disconnect();
+    return () => {
+      observer.disconnect();
+    };
   }, []);
 
   /* ========================================
-     LIGHTWEIGHT VIDEO CONTROL
+     LIGHT VIDEO SETUP
   ======================================== */
 
   useEffect(() => {
@@ -212,26 +193,21 @@ export default function GlobalImpact() {
     video.playsInline = true;
 
     const playVideo = () => {
-      if (video.paused) {
-        video.play().catch(() => {});
-      }
+      video.play().catch(() => {
+        // Browser may block autoplay.
+      });
     };
 
     if (video.readyState >= 2) {
       playVideo();
     } else {
-      video.addEventListener(
-        "canplay",
-        playVideo,
-        { once: true }
-      );
+      video.addEventListener("canplay", playVideo, {
+        once: true,
+      });
     }
 
     return () => {
-      video.removeEventListener(
-        "canplay",
-        playVideo
-      );
+      video.removeEventListener("canplay", playVideo);
     };
   }, []);
 
@@ -242,12 +218,11 @@ export default function GlobalImpact() {
         relative
         w-full
         overflow-hidden
-        bg-[#111C2D]
+        bg-[#0B1220]
         px-4
         py-12
         font-sans
 
-        sm:bg-[#0B1220]
         sm:px-6
         sm:py-16
 
@@ -258,7 +233,7 @@ export default function GlobalImpact() {
       "
     >
       {/* ========================================
-          AMBIENT GLOW
+          VERY LIGHT AMBIENT GLOW
       ======================================== */}
 
       <div
@@ -268,8 +243,8 @@ export default function GlobalImpact() {
           absolute
           left-1/2
           top-1/2
-          h-[320px]
-          w-[460px]
+          h-[280px]
+          w-[420px]
           -translate-x-1/2
           -translate-y-1/2
           rounded-full
@@ -293,7 +268,7 @@ export default function GlobalImpact() {
           border
           border-white/[0.10]
           bg-[#0F1B2D]
-          shadow-[0_18px_50px_rgba(0,0,0,0.22)]
+          shadow-[0_15px_45px_rgba(0,0,0,0.20)]
 
           sm:rounded-[30px]
         "
@@ -321,7 +296,6 @@ export default function GlobalImpact() {
           preload="metadata"
           disablePictureInPicture
           disableRemotePlayback
-          aria-hidden="true"
         >
           <source
             src="/videos/global-impact.mp4"
@@ -339,7 +313,7 @@ export default function GlobalImpact() {
             pointer-events-none
             absolute
             inset-0
-            bg-[#0B1220]/70
+            bg-[#0B1220]/72
           "
         />
 
@@ -349,7 +323,7 @@ export default function GlobalImpact() {
             pointer-events-none
             absolute
             inset-0
-            bg-[radial-gradient(circle_at_50%_38%,rgba(20,184,166,0.10),transparent_58%)]
+            bg-[radial-gradient(circle_at_50%_38%,rgba(20,184,166,0.08),transparent_60%)]
           "
         />
 
@@ -362,12 +336,11 @@ export default function GlobalImpact() {
             bg-gradient-to-b
             from-[#0B1220]/35
             via-transparent
-            to-[#0B1220]/60
+            to-[#0B1220]/65
           "
         />
 
         {/* Top Accent */}
-
         <div
           aria-hidden="true"
           className="
@@ -414,20 +387,11 @@ export default function GlobalImpact() {
           ======================================== */}
 
           <div
-            className={`
+            className="
               mx-auto
               max-w-[650px]
               text-center
-              transition-opacity
-              duration-500
-              ease-out
-
-              ${
-                sectionVisible
-                  ? "opacity-100"
-                  : "opacity-0"
-              }
-            `}
+            "
           >
             {/* Eyebrow */}
 
@@ -445,6 +409,7 @@ export default function GlobalImpact() {
                   h-px
                   w-7
                   bg-[#14B8A6]/60
+
                   sm:w-9
                 "
               />
@@ -469,12 +434,13 @@ export default function GlobalImpact() {
                   h-px
                   w-7
                   bg-[#14B8A6]/60
+
                   sm:w-9
                 "
               />
             </div>
 
-            {/* Heading */}
+            {/* Main Heading */}
 
             <h2
               className="
@@ -484,8 +450,11 @@ export default function GlobalImpact() {
                 text-white
 
                 text-[28px]
+
                 sm:text-[34px]
+
                 md:text-[40px]
+
                 lg:text-[44px]
               "
             >
@@ -516,10 +485,7 @@ export default function GlobalImpact() {
                 Across{" "}
                 <span
                   translate="no"
-                  className="
-                    notranslate
-                    text-[#5EEAD4]
-                  "
+                  className="notranslate text-[#5EEAD4]"
                 >
                   150+ Countries.
                 </span>
@@ -563,6 +529,8 @@ export default function GlobalImpact() {
               requiring them to risk their own trading capital.
             </p>
 
+            {/* Secondary Line */}
+
             <p
               className="
                 mx-auto
@@ -602,26 +570,7 @@ export default function GlobalImpact() {
               md:max-w-[540px]
             "
           >
-            {/* Center Glow */}
-
-            <div
-              aria-hidden="true"
-              className="
-                pointer-events-none
-                absolute
-                left-1/2
-                top-1/2
-                h-16
-                w-16
-                -translate-x-1/2
-                -translate-y-1/2
-                rounded-full
-                bg-[#14B8A6]/[0.04]
-                blur-xl
-              "
-            />
-
-            {stats.map((stat, index) => {
+            {stats.map((stat) => {
               const Icon = stat.icon;
 
               return (
@@ -640,33 +589,16 @@ export default function GlobalImpact() {
                     bg-white/[0.055]
                     px-3
                     py-3
-
-                    shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_10px_25px_rgba(0,0,0,0.14)]
-
-                    backdrop-blur-lg
-
-                    transition-[opacity,transform]
-                    duration-400
-                    ease-out
-
-                    ${
-                      statsVisible
-                        ? "translate-y-0 opacity-100"
-                        : "translate-y-2 opacity-0"
-                    }
+                    shadow-[inset_0_1px_0_rgba(255,255,255,0.06),0_10px_25px_rgba(0,0,0,0.14)]
+                    backdrop-blur-md
 
                     sm:w-[175px]
                     sm:rounded-[20px]
                     sm:px-4
                     sm:py-3.5
                   `}
-                  style={{
-                    transitionDelay: statsVisible
-                      ? `${index * 50}ms`
-                      : "0ms",
-                  }}
                 >
-                  {/* Highlight */}
+                  {/* Light Highlight */}
 
                   <span
                     aria-hidden="true"
@@ -680,7 +612,7 @@ export default function GlobalImpact() {
                       -translate-x-1/2
                       bg-gradient-to-r
                       from-transparent
-                      via-[#5EEAD4]/50
+                      via-[#5EEAD4]/45
                       to-transparent
                     "
                   />
@@ -722,6 +654,7 @@ export default function GlobalImpact() {
                       tracking-[-0.035em]
 
                       sm:text-[24px]
+
                       md:text-[26px]
                     "
                   >
@@ -757,10 +690,12 @@ export default function GlobalImpact() {
             })}
           </div>
 
-          {/* Bottom Accent */}
+          {/* ========================================
+              BOTTOM ACCENT
+          ======================================== */}
 
           <div
-            className={`
+            className="
               mt-0
               h-px
               w-16
@@ -768,15 +703,7 @@ export default function GlobalImpact() {
               from-transparent
               via-[#2DD4BF]/70
               to-transparent
-              transition-opacity
-              duration-500
-
-              ${
-                statsVisible
-                  ? "opacity-100"
-                  : "opacity-0"
-              }
-            `}
+            "
           />
         </div>
       </div>
