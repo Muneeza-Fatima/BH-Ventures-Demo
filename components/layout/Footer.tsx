@@ -47,7 +47,7 @@ const socialLinks = [
     icon: (
       <svg
         viewBox="0 0 24 24"
-        className="h-[19px] w-[19px] fill-[#0A66C2]"
+        className="h-[13px] w-[13px] fill-[#0A66C2]"
         aria-hidden="true"
       >
         <path d="M20.45 20.45h-3.56v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.13 1.44-2.13 2.94v5.67H9.35V9h3.42v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.61 0 4.28 2.38 4.28 5.47v6.27zM5.34 7.43a2.07 2.07 0 1 1 0-4.14 2.07 2.07 0 0 1 0 4.14zM3.56 20.45h3.57V9H3.56v11.45z" />
@@ -60,7 +60,7 @@ const socialLinks = [
     icon: (
       <svg
         viewBox="0 0 24 24"
-        className="h-[19px] w-[19px] fill-[#1877F2]"
+        className="h-[13px] w-[13px] fill-[#1877F2]"
         aria-hidden="true"
       >
         <path d="M14 8h3V4h-3c-3.31 0-5 1.69-5 5v3H6v4h3v8h4v-8h3.5l.5-4H13V9c0-.67.33-1 1-1z" />
@@ -73,7 +73,7 @@ const socialLinks = [
     icon: (
       <svg
         viewBox="0 0 24 24"
-        className="h-[20px] w-[20px] fill-none stroke-[#E1306C]"
+        className="h-[13px] w-[13px] fill-none stroke-[#E1306C]"
         strokeWidth="1.9"
         aria-hidden="true"
       >
@@ -95,7 +95,7 @@ const socialLinks = [
     icon: (
       <svg
         viewBox="0 0 24 24"
-        className="h-[19px] w-[19px] fill-black"
+        className="h-[13px] w-[13px] fill-black"
         aria-hidden="true"
       >
         <path d="M18.9 2H22l-6.77 7.74L23.2 22h-6.24l-4.89-6.39L6.48 22H3.36l7.24-8.28L2.8 2h6.4l4.42 5.84L18.9 2zm-1.1 17.9h1.73L8.27 3.98H6.41L17.8 19.9z" />
@@ -108,7 +108,7 @@ const socialLinks = [
     icon: (
       <svg
         viewBox="0 0 24 24"
-        className="h-[20px] w-[20px]"
+        className="h-[13px] w-[13px]"
         aria-hidden="true"
       >
         <path
@@ -132,7 +132,7 @@ const socialLinks = [
     icon: (
       <svg
         viewBox="0 0 24 24"
-        className="h-[20px] w-[20px] fill-[#FFFC00]"
+        className="h-[13px] w-[13px] fill-[#FFFC00]"
         aria-hidden="true"
       >
         <path d="M12 3.1c-3.25 0-5.35 2.27-5.35 5.4v2.17c0 .56-.2.92-.7 1.2-.32.18-.7.3-1.06.43-.42.15-.74.27-.74.58 0 .5.72.72 1.38.9.48.13.93.25 1.08.53.17.31.02.77-.4 1.32-.3.39-.63.74-.63 1.03 0 .38.44.54.96.66.4.1.85.2 1.14.5.36.37.48.95.65 1.35.15.34.36.48.68.48.25 0 .57-.1.94-.21.52-.17 1.1-.37 1.76-.37.7 0 1.28.21 1.8.4.35.12.66.22.9.22.33 0 .54-.14.7-.48.18-.4.3-.98.66-1.35.3-.3.74-.4 1.14-.5.52-.12.96-.28.96-.66 0-.29-.33-.64-.63-1.03-.42-.55-.57-1.01-.4-1.32.15-.28.6-.4 1.08-.53.66-.18 1.38-.4 1.38-.9 0-.31-.32-.43-.74-.58-.36-.13-.74-.25-1.06-.43-.5-.28-.7-.64-.7-1.2V8.5c0-3.13-2.1-5.4-5.35-5.4Z" />
@@ -145,7 +145,7 @@ const socialLinks = [
     icon: (
       <svg
         viewBox="0 0 24 24"
-        className="h-[20px] w-[20px] fill-[#FF0000]"
+        className="h-[13px] w-[13px] fill-[#FF0000]"
         aria-hidden="true"
       >
         <path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.4.5A3 3 0 0 0 .5 6.2 31 31 0 0 0 0 12a31 31 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1A31 31 0 0 0 24 12a31 31 0 0 0-.5-5.8ZM9.6 15.6V8.4l6.3 3.6-6.3 3.6Z" />
@@ -559,7 +559,7 @@ export default function Footer() {
                     hover:shadow-[0_0_18px_rgba(0,255,213,0.15)]
                   "
                 >
-                  <span className="transition-transform duration-300 group-hover:scale-110">
+                  <span className="flex items-center justify-center">
                     {social.icon}
                   </span>
                 </a>
