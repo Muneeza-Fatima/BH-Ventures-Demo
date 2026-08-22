@@ -6,13 +6,19 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-[#0B1220]">
       {/* 1. HERO */}
-      <Hero />
+      <section id="home">
+        <Hero />
+      </section>
 
       {/* 2. GLOBAL IMPACT */}
-      <GlobalImpact />
+      <section id="approach">
+        <GlobalImpact />
+      </section>
 
       {/* 3. FINAL CTA */}
-      <HomeFinalCTA />
+      <section id="portfolio">
+        <HomeFinalCTA />
+      </section>
     </div>
   );
 }

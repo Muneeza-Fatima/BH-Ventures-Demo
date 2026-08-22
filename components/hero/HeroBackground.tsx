@@ -34,7 +34,7 @@ export default function HeroBackground() {
         Your browser does not support the video tag.
       </video>
 
-      {/* Light overlay taake video zinda aur clear lage */}
+      {/* Light overlay */}
       <div className="absolute inset-0 bg-[#0B1220]/20" />
 
       {/* Subtle Desktop Gradient */}
