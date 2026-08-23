@@ -151,6 +151,7 @@ export default function WhereWeOperate() {
           to-transparent
         "
       />
+
       {/* Ambient background */}
       <div
         aria-hidden="true"
@@ -772,6 +773,7 @@ export default function WhereWeOperate() {
                         gap-3
                       "
                     >
+                      {/* FLAG — no background, no border */}
                       <div
                         className="
                           flex
@@ -781,10 +783,6 @@ export default function WhereWeOperate() {
                           items-center
                           justify-center
                           overflow-hidden
-                          rounded-lg
-                          border
-                          border-white/10
-                          bg-[#0B1220]/30
                         "
                       >
                         <Image
@@ -854,7 +852,6 @@ export default function WhereWeOperate() {
                           `}
                         />
                       </span>
-
                     </div>
                   </motion.div>
                 ))}

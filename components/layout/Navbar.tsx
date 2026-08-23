@@ -315,13 +315,6 @@ export default function Navbar() {
   const [contactOpen, setContactOpen] = useState(false);
   const [isLightMode, setIsLightMode] = useState(false);
 
-  /*
-    React 19 hydration-safe language state.
-
-    Server snapshot = "en" / GB
-    Client hydration snapshot = "en" / GB
-    Browser snapshot after hydration = saved language
-  */
   const currentLanguage = useSyncExternalStore(
     subscribeToLanguageStore,
     getLanguageSnapshot,
@@ -827,7 +820,7 @@ export default function Navbar() {
 
       {contactOpen && (
         <div
-          className="fixed inset-0 z-[300] flex items-start justify-center bg-black/35 px-4 pt-[82px] backdrop-blur-[3px] sm:pt-[92px]"
+          className="fixed inset-0 z-[300] flex items-center justify-center bg-black/35 px-4 py-6 backdrop-blur-[3px]"
           onClick={closeContactMenu}
         >
           <div
