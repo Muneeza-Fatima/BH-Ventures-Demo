@@ -1,0 +1,266 @@
+/* =========================================================
+   BH VENTURES — FOOTER RESPONSIVE SYSTEM
+   ========================================================= */
+
+footer[data-footer="true"] {
+  position: relative;
+  display: block;
+
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+
+  height: auto;
+  min-height: 0;
+  max-height: none;
+
+  margin: 0;
+  padding: 0;
+
+  overflow: visible;
+
+  box-sizing: border-box;
+
+  flex: 0 0 auto;
+}
+
+footer[data-footer="true"] *,
+footer[data-footer="true"] *::before,
+footer[data-footer="true"] *::after {
+  box-sizing: border-box;
+}
+
+/* Main footer container */
+
+footer[data-footer="true"] > div {
+  position: relative;
+
+  width: 100%;
+  max-width: 1600px;
+  min-width: 0;
+
+  height: auto;
+  min-height: 0;
+  max-height: none;
+
+  margin-left: auto;
+  margin-right: auto;
+
+  overflow: visible;
+
+  box-sizing: border-box;
+}
+
+/* =========================================================
+   CONTENT SAFETY
+   ========================================================= */
+
+footer[data-footer="true"] .grid,
+footer[data-footer="true"] .flex {
+  min-width: 0;
+  max-width: 100%;
+}
+
+footer[data-footer="true"] img {
+  max-width: 100%;
+  height: auto;
+}
+
+footer[data-footer="true"] p,
+footer[data-footer="true"] h2,
+footer[data-footer="true"] h3,
+footer[data-footer="true"] a,
+footer[data-footer="true"] span {
+  max-width: 100%;
+}
+
+/* =========================================================
+   MOBILE — SMALL
+   ========================================================= */
+
+@media (max-width: 480px) {
+  footer[data-footer="true"] > div {
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+    padding-top: 28px !important;
+    padding-bottom: 18px !important;
+  }
+
+  footer[data-footer="true"] .grid {
+    grid-template-columns: 1fr !important;
+    gap: 28px !important;
+  }
+
+  footer[data-footer="true"] [class*="flex-wrap"] {
+    gap: 7px !important;
+  }
+}
+
+/* =========================================================
+   MOBILE — LARGE
+   ========================================================= */
+
+@media (min-width: 481px) and (max-width: 767px) {
+  footer[data-footer="true"] > div {
+    padding-left: 24px !important;
+    padding-right: 24px !important;
+    padding-top: 30px !important;
+    padding-bottom: 20px !important;
+  }
+
+  footer[data-footer="true"] .grid {
+    grid-template-columns: 1fr !important;
+    gap: 30px !important;
+  }
+}
+
+/* =========================================================
+   TABLET — PORTRAIT
+   iPad / iPad Air / iPad Pro / Surface
+   ========================================================= */
+
+@media (min-width: 768px) and (max-width: 1024px) {
+  footer[data-footer="true"] > div {
+    padding-left: 30px !important;
+    padding-right: 30px !important;
+    padding-top: 32px !important;
+    padding-bottom: 20px !important;
+  }
+
+  footer[data-footer="true"] .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 30px !important;
+  }
+
+  footer[data-footer="true"] [class*="flex-wrap"] {
+    width: 100% !important;
+    gap: 7px !important;
+  }
+}
+
+/* =========================================================
+   LARGE TABLET
+   iPad Pro / Surface landscape
+   ========================================================= */
+
+@media (min-width: 1025px) and (max-width: 1366px) {
+  footer[data-footer="true"] > div {
+    padding-left: 36px !important;
+    padding-right: 36px !important;
+    padding-top: 32px !important;
+    padding-bottom: 20px !important;
+  }
+
+  footer[data-footer="true"] .grid {
+    grid-template-columns: 1.35fr 1fr 1fr 1fr !important;
+    gap: 26px !important;
+  }
+
+  footer[data-footer="true"] [class*="flex-wrap"] {
+    gap: 7px !important;
+  }
+}
+
+/* =========================================================
+   LANDSCAPE TABLETS
+   ========================================================= */
+
+@media (orientation: landscape) and (min-width: 768px) and (max-width: 1366px) {
+  footer[data-footer="true"] > div {
+    padding-top: 26px !important;
+    padding-bottom: 18px !important;
+  }
+
+  footer[data-footer="true"] .grid {
+    gap: 24px !important;
+  }
+}
+
+/* =========================================================
+   SHORT VIEWPORTS
+   Surface / iPad landscape / smaller laptops
+   ========================================================= */
+
+@media (min-width: 768px) and (max-height: 900px) {
+  footer[data-footer="true"] > div {
+    padding-top: 26px !important;
+    padding-bottom: 16px !important;
+  }
+
+  footer[data-footer="true"] .grid {
+    gap: 24px !important;
+    padding-top: 28px !important;
+    padding-bottom: 28px !important;
+  }
+
+  footer[data-footer="true"] [class*="space-y-3"] {
+    row-gap: 8px !important;
+  }
+}
+
+/* =========================================================
+   LAPTOP
+   ========================================================= */
+
+@media (min-width: 1367px) and (max-width: 1600px) {
+  footer[data-footer="true"] > div {
+    padding-left: 48px !important;
+    padding-right: 48px !important;
+    padding-top: 38px !important;
+    padding-bottom: 22px !important;
+  }
+}
+
+/* =========================================================
+   LARGE DESKTOP
+   ========================================================= */
+
+@media (min-width: 1601px) {
+  footer[data-footer="true"] > div {
+    padding-left: 64px !important;
+    padding-right: 64px !important;
+    padding-top: 40px !important;
+    padding-bottom: 24px !important;
+  }
+}
+
+/* =========================================================
+   VERY SHORT LANDSCAPE
+   ========================================================= */
+
+@media (orientation: landscape) and (min-width: 768px) and (max-height: 700px) {
+  footer[data-footer="true"] > div {
+    padding-top: 22px !important;
+    padding-bottom: 14px !important;
+  }
+
+  footer[data-footer="true"] .grid {
+    padding-top: 24px !important;
+    padding-bottom: 24px !important;
+  }
+
+  footer[data-footer="true"] h2 {
+    line-height: 1.15 !important;
+  }
+}
+
+/* =========================================================
+   FINAL OVERFLOW PROTECTION
+   ========================================================= */
+
+footer[data-footer="true"] {
+  overflow-x: hidden;
+  overflow-y: visible;
+}
+
+footer[data-footer="true"] > div {
+  overflow: visible;
+}
+
+/*
+   No fixed height.
+   No min-height.
+   No max-height.
+   No absolute footer positioning.
+   Footer always grows naturally with its content.
+*/

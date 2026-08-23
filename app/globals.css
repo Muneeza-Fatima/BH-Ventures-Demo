@@ -1,0 +1,516 @@
+@import "tailwindcss";
+
+/* =========================================================
+   BH VENTURES — GLOBAL STYLES
+   ========================================================= */
+
+:root {
+  --navy: #0d1b2a;
+  --navy-light: #102536;
+
+  --white: #ffffff;
+  --off-white: #f7f9f8;
+
+  --teal: #11998e;
+  --turquoise: #2dd4c3;
+
+  --text-dark: #0d1b2a;
+  --text-muted: #53616b;
+  --text-light: #d9e2e7;
+
+  --border: #e2e8e7;
+
+  --font-premium: var(--font-manrope);
+}
+
+/* =========================================================
+   RESET
+   ========================================================= */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  margin: 0;
+  padding: 0;
+
+  width: 100%;
+  min-width: 0;
+
+  min-height: 100%;
+  height: auto;
+
+  overflow-x: hidden;
+  overflow-y: auto;
+
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: auto;
+
+  /* Buttery native momentum scrolling on iPad / iPhone Safari */
+  -webkit-overflow-scrolling: touch;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+
+  width: 100%;
+  min-width: 0;
+
+  min-height: 100vh;
+  min-height: 100dvh;
+  height: auto;
+
+  background: var(--white);
+  color: var(--text-dark);
+
+  font-family: var(--font-premium), sans-serif;
+  font-weight: 500;
+
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  overflow-x: hidden;
+  overflow-y: auto;
+
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-y: auto;
+
+  display: flex;
+  flex-direction: column;
+}
+
+/* Lenis only runs on non-touch (desktop) devices — see SmoothScroll
+   component. Touch devices (iPad Pro / iPad Air / iPhone) fall back
+   to native scrolling, so give them native smooth anchor-scroll too. */
+@media (pointer: coarse) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+/* =========================================================
+   NEXT ROOT
+   ========================================================= */
+
+#__next,
+body > div {
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+
+  min-height: 100vh;
+  min-height: 100dvh;
+
+  height: auto;
+
+  display: flex;
+  flex-direction: column;
+
+  overflow: visible;
+}
+
+/* =========================================================
+   MAIN
+   ========================================================= */
+
+main {
+  display: block;
+
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+
+  height: auto;
+  min-height: 0;
+
+  flex: 1 0 auto;
+
+  overflow: visible;
+}
+
+/* =========================================================
+   FOOTER ROOT SAFETY
+   ========================================================= */
+
+footer[data-footer="true"] {
+  position: relative !important;
+
+  display: block !important;
+
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+
+  margin: 0 !important;
+
+  flex: 0 0 auto !important;
+
+  overflow-x: clip !important;
+  overflow-y: visible !important;
+
+  transform: none !important;
+}
+
+/* =========================================================
+   FOOTER DIRECT CONTAINER
+   ========================================================= */
+
+footer[data-footer="true"] > div {
+  width: 100%;
+  max-width: 1600px;
+  min-width: 0;
+
+  height: auto;
+  min-height: 0;
+
+  margin-left: auto;
+  margin-right: auto;
+
+  overflow: visible;
+}
+
+/* =========================================================
+   FOOTER SAFETY
+   ========================================================= */
+
+footer[data-footer="true"] img {
+  display: block;
+  max-width: 100%;
+}
+
+footer[data-footer="true"] p,
+footer[data-footer="true"] h1,
+footer[data-footer="true"] h2,
+footer[data-footer="true"] h3,
+footer[data-footer="true"] h4,
+footer[data-footer="true"] h5,
+footer[data-footer="true"] h6,
+footer[data-footer="true"] a,
+footer[data-footer="true"] span {
+  max-width: 100%;
+}
+
+/* =========================================================
+   TYPOGRAPHY
+   ========================================================= */
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0;
+
+  font-family: var(--font-premium), sans-serif;
+  font-weight: 800;
+
+  text-wrap: balance;
+}
+
+p {
+  margin: 0;
+
+  font-family: var(--font-premium), sans-serif;
+  font-weight: 600;
+}
+
+button,
+a,
+input,
+textarea,
+select {
+  font-family: var(--font-premium), sans-serif;
+}
+
+/* =========================================================
+   FONT UTILITIES
+   ========================================================= */
+
+.font-premium {
+  font-family: var(--font-premium), sans-serif;
+}
+
+.font-premium-medium {
+  font-family: var(--font-premium), sans-serif;
+  font-weight: 500;
+}
+
+.font-premium-semibold {
+  font-family: var(--font-premium), sans-serif;
+  font-weight: 600;
+}
+
+.font-premium-bold {
+  font-family: var(--font-premium), sans-serif;
+  font-weight: 700;
+}
+
+.font-premium-extrabold {
+  font-family: var(--font-premium), sans-serif;
+  font-weight: 800;
+}
+
+/* =========================================================
+   SELECTION
+   ========================================================= */
+
+::selection {
+  background: var(--teal);
+  color: var(--white);
+}
+
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* =========================================================
+   GOOGLE TRANSLATE SCROLL-FREEZE GUARD
+
+   Google Translate's own script is known to set
+   position: fixed (+ a negative top offset) on <html>/<body>
+   to pin its banner. That freezes the whole page at one
+   scroll position — content past the viewport becomes
+   unreachable. A CSS !important rule beats Google's inline
+   style outright, so this can never happen, even for the
+   brief moment before our JS polling (Navbar.tsx) catches it.
+   ========================================================= */
+
+html,
+body {
+  position: static !important;
+  margin-top: 0 !important;
+}
+
+/* =========================================================
+   GOOGLE TRANSLATE
+   ========================================================= */
+
+.goog-te-banner-frame,
+.goog-te-banner-frame.skiptranslate,
+iframe.goog-te-banner-frame,
+.goog-te-balloon-frame,
+iframe.goog-te-balloon-frame {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+
+  width: 0 !important;
+  height: 0 !important;
+
+  position: absolute !important;
+
+  top: -9999px !important;
+  left: -9999px !important;
+
+  pointer-events: none !important;
+}
+
+.goog-tooltip,
+.goog-tooltip:hover {
+  display: none !important;
+  visibility: hidden !important;
+}
+
+.goog-text-highlight {
+  background: transparent !important;
+  box-shadow: none !important;
+  border: none !important;
+}
+
+body > .skiptranslate {
+  display: none !important;
+}
+
+.goog-logo-link,
+.goog-te-gadget span,
+.goog-te-menu-frame,
+.goog-te-menu-value {
+  display: none !important;
+}
+
+/* =========================================================
+   GOOGLE TRANSLATE POSITION
+   ========================================================= */
+
+html,
+body {
+  top: 0 !important;
+  margin-top: 0 !important;
+}
+
+body[style*="top"],
+body[style*="margin-top"],
+body.skiptranslate,
+html[style*="top"],
+html[style*="margin-top"] {
+  top: 0 !important;
+  margin-top: 0 !important;
+}
+
+/* =========================================================
+   HIDDEN TRANSLATE WIDGET
+   ========================================================= */
+
+#google_translate_element {
+  position: fixed !important;
+
+  left: -10000px !important;
+  top: -10000px !important;
+
+  width: 1px !important;
+  height: 1px !important;
+
+  overflow: hidden !important;
+
+  opacity: 0 !important;
+  visibility: hidden !important;
+
+  pointer-events: none !important;
+}
+
+.goog-te-gadget,
+.goog-te-combo {
+  position: absolute !important;
+
+  width: 1px !important;
+  height: 1px !important;
+
+  overflow: hidden !important;
+
+  opacity: 0 !important;
+  visibility: hidden !important;
+
+  pointer-events: none !important;
+}
+
+/* =========================================================
+   TABLET / IPAD / SURFACE
+   ========================================================= */
+
+@media (min-width: 768px) and (max-width: 1400px) {
+  html,
+  body {
+    height: auto !important;
+    min-height: 100%;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+  }
+
+  body > div,
+  #__next {
+    height: auto !important;
+    min-height: 100vh;
+    min-height: 100dvh;
+
+    overflow: visible !important;
+  }
+
+  main {
+    height: auto !important;
+    min-height: 0 !important;
+
+    overflow: visible !important;
+
+    flex: 1 0 auto !important;
+  }
+
+  footer[data-footer="true"] {
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+
+    overflow-x: clip !important;
+    overflow-y: visible !important;
+
+    flex-shrink: 0 !important;
+  }
+
+  footer[data-footer="true"] > div {
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+
+    overflow: visible !important;
+  }
+}
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 767px) {
+  html,
+  body {
+    width: 100%;
+    max-width: 100%;
+
+    height: auto !important;
+
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+  }
+
+  body > div,
+  #__next {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+
+    height: auto !important;
+
+    overflow: visible !important;
+  }
+
+  main {
+    width: 100%;
+    max-width: 100%;
+
+    height: auto !important;
+    min-height: 0 !important;
+
+    overflow: visible !important;
+  }
+
+  footer[data-footer="true"] {
+    width: 100% !important;
+    max-width: 100% !important;
+
+    height: auto !important;
+    min-height: 0 !important;
+
+    overflow-x: clip !important;
+    overflow-y: visible !important;
+
+    flex-shrink: 0 !important;
+  }
+
+  footer[data-footer="true"] > div {
+    width: 100%;
+    max-width: 100%;
+
+    height: auto !important;
+    min-height: 0 !important;
+
+    overflow: visible !important;
+  }
+}
