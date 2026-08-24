@@ -97,7 +97,10 @@ function CountUp({
 
   return (
     <>
-      <span translate="no" className="notranslate text-white">
+      <span
+        translate="no"
+        className="notranslate text-white"
+      >
         {prefix}
         {count}
       </span>
@@ -198,6 +201,8 @@ export default function GlobalImpact() {
         [@media(min-width:1024px)_and_(max-width:1366px)]:py-14!
       "
     >
+      {/* Ambient Glow */}
+
       <div
         aria-hidden="true"
         className="
@@ -232,6 +237,8 @@ export default function GlobalImpact() {
           sm:rounded-[30px]
         "
       >
+        {/* Background Video */}
+
         <video
           ref={videoRef}
           className="
@@ -260,6 +267,8 @@ export default function GlobalImpact() {
             type="video/mp4"
           />
         </video>
+
+        {/* Video Overlay */}
 
         <div
           aria-hidden="true"
@@ -334,6 +343,8 @@ export default function GlobalImpact() {
             [@media(min-width:1024px)_and_(max-width:1366px)]:py-14!
           "
         >
+          {/* Header */}
+
           <div
             className="
               mx-auto
@@ -383,7 +394,9 @@ export default function GlobalImpact() {
                 [@media(min-width:1024px)_and_(max-width:1366px)]:text-[38px]!
               "
             >
-              <span className="block">Global Reach.</span>
+              <span className="block">
+                Global Reach.
+              </span>
 
               <span
                 className="
@@ -400,7 +413,9 @@ export default function GlobalImpact() {
                 Real Opportunities.
               </span>
 
-              <span className="block">Trusted by Traders</span>
+              <span className="block">
+                Trusted by Traders
+              </span>
 
               <span className="block">
                 Across{" "}
@@ -463,6 +478,10 @@ export default function GlobalImpact() {
             </p>
           </div>
 
+          {/* =====================================================
+              STATISTICS
+          ===================================================== */}
+
           <div
             ref={statsRef}
             className="
@@ -501,6 +520,16 @@ export default function GlobalImpact() {
                     shadow-[inset_0_1px_0_rgba(255,255,255,0.06),0_10px_25px_rgba(0,0,0,0.14)]
                     backdrop-blur-md
 
+                    transition-all
+                    duration-300
+                    ease-out
+
+                    hover:z-20
+                    hover:scale-[1.06]
+                    hover:border-[#5EEAD4]/30
+                    hover:bg-white/[0.075]
+                    hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_16px_35px_rgba(0,0,0,0.22),0_0_25px_rgba(45,212,191,0.08)]
+
                     sm:w-[175px]
                     sm:rounded-[20px]
                     sm:px-4
@@ -509,6 +538,8 @@ export default function GlobalImpact() {
                     [@media(min-width:1024px)_and_(max-width:1366px)]:w-[165px]!
                   `}
                 >
+                  {/* Card Top Highlight */}
+
                   <span
                     aria-hidden="true"
                     className="
@@ -525,6 +556,8 @@ export default function GlobalImpact() {
                       to-transparent
                     "
                   />
+
+                  {/* Icon */}
 
                   <div
                     className="
@@ -549,6 +582,8 @@ export default function GlobalImpact() {
                     />
                   </div>
 
+                  {/* Number */}
+
                   <div
                     className="
                       relative
@@ -568,6 +603,8 @@ export default function GlobalImpact() {
                       active={statsVisible}
                     />
                   </div>
+
+                  {/* Label */}
 
                   <p
                     className="
@@ -589,6 +626,8 @@ export default function GlobalImpact() {
               );
             })}
           </div>
+
+          {/* Bottom Accent */}
 
           <div
             className="

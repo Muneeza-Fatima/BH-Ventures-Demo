@@ -2,11 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import {
-  useEffect,
-  useState,
-  useSyncExternalStore,
-} from "react";
+import { useEffect, useState, useSyncExternalStore } from "react";
 import {
   Menu,
   X,
@@ -25,20 +21,24 @@ const navItems = [
 ];
 
 const languages = [
-  { code: "en", label: "English", short: "GB", flag: "🇬🇧" },
-  { code: "ar", label: "Arabic", short: "AE", flag: "🇦🇪" },
-  { code: "de", label: "German", short: "DE", flag: "🇩🇪" },
-  { code: "fr", label: "French", short: "FR", flag: "🇫🇷" },
-  { code: "it", label: "Italian", short: "IT", flag: "🇮🇹" },
-  { code: "uk", label: "Ukrainian", short: "UA", flag: "🇺🇦" },
-  { code: "pl", label: "Polish", short: "PL", flag: "🇵🇱" },
-  { code: "es", label: "Spanish", short: "ES", flag: "🇪🇸" },
-  { code: "pt", label: "Portuguese", short: "PT", flag: "🇵🇹" },
-  { code: "hr", label: "Croatian", short: "HR", flag: "🇭🇷" },
-  { code: "sv", label: "Swedish", short: "SE", flag: "🇸🇪" },
+  { code: "en", label: "English", short: "GB", flagCode: "gb" },
+  { code: "ar", label: "Arabic", short: "AE", flagCode: "ae" },
+  { code: "de", label: "German", short: "DE", flagCode: "de" },
+  { code: "fr", label: "French", short: "FR", flagCode: "fr" },
+  { code: "it", label: "Italian", short: "IT", flagCode: "it" },
+  { code: "uk", label: "Ukrainian", short: "UA", flagCode: "ua" },
+  { code: "pl", label: "Polish", short: "PL", flagCode: "pl" },
+  { code: "es", label: "Spanish", short: "ES", flagCode: "es" },
+  { code: "pt", label: "Portuguese", short: "PT", flagCode: "pt" },
+  { code: "hr", label: "Croatian", short: "HR", flagCode: "hr" },
+  { code: "sv", label: "Swedish", short: "SE", flagCode: "se" },
 ];
 
 const LANGUAGE_STORAGE_KEY = "bh-language";
+
+function getFlagUrl(flagCode: string) {
+  return `https://flagcdn.com/w40/${flagCode}.png`;
+}
 
 /* ========================================
    LANGUAGE STORE
@@ -254,6 +254,33 @@ function ColorfulWorldIcon({
         strokeWidth="0.8"
       />
     </svg>
+  );
+}
+
+/* ========================================
+   ACTUAL FLAG
+======================================== */
+
+function LanguageFlag({
+  flagCode,
+  size = "normal",
+}: {
+  flagCode: string;
+  size?: "normal" | "large";
+}) {
+  return (
+    <span
+      className={`relative flex shrink-0 items-center justify-center overflow-hidden rounded-[3px] bg-white/[0.08] shadow-[0_1px_5px_rgba(0,0,0,0.25)] ${
+        size === "large" ? "h-[18px] w-[27px]" : "h-[17px] w-[25px]"
+      }`}
+    >
+      <img
+        src={getFlagUrl(flagCode)}
+        alt=""
+        aria-hidden="true"
+        className="h-full w-full object-cover"
+      />
+    </span>
   );
 }
 
@@ -552,7 +579,7 @@ export default function Navbar() {
           {/* DESKTOP RIGHT SIDE */}
 
           <div className="ml-auto hidden items-center gap-2 lg:flex">
-            {/* Language */}
+            {/* LANGUAGE */}
 
             <div className="relative">
               <button
@@ -571,7 +598,18 @@ export default function Navbar() {
                   }
                 `}
               >
-                <ColorfulWorldIcon className="h-[18px] w-[18px]" />
+                {/* GLOBE — KEPT */}
+
+                <ColorfulWorldIcon className="h-[18px] w-[18px] shrink-0" />
+
+                {/* ACTUAL FLAG — LEFT OF ENGLISH */}
+
+                <LanguageFlag
+                  flagCode={selectedLanguage.flagCode}
+                  size="large"
+                />
+
+                {/* LANGUAGE NAME */}
 
                 <span
                   className={
@@ -580,11 +618,11 @@ export default function Navbar() {
                       : "text-white"
                   }
                 >
-                  {selectedLanguage.short}
+                  {selectedLanguage.label}
                 </span>
 
                 <ChevronDown
-                  className={`h-3 w-3 transition-transform duration-200 ${
+                  className={`h-3 w-3 shrink-0 transition-transform duration-200 ${
                     isLightMode
                       ? "text-[#0B1220]"
                       : "text-white"
@@ -593,27 +631,31 @@ export default function Navbar() {
               </button>
 
               {languageOpen && (
-                <div className="absolute right-0 top-[44px] z-[200] w-[185px] overflow-hidden rounded-2xl border border-white/[0.10] bg-[#0B1220]/95 p-1.5 shadow-[0_20px_50px_rgba(0,0,0,0.45)] backdrop-blur-2xl">
+                <div className="absolute right-0 top-[44px] z-[200] w-[220px] overflow-hidden rounded-2xl border border-white/[0.10] bg-[#0B1220]/95 p-1.5 shadow-[0_20px_50px_rgba(0,0,0,0.45)] backdrop-blur-2xl">
                   {languages.map((language) => (
                     <button
                       key={language.code}
                       type="button"
-                      onClick={() =>
-                        changeLanguage(language.code)
-                      }
-                      className={`flex w-full items-center gap-2.5 rounded-xl px-3 py-2.5 text-left text-[11px] font-semibold transition-all duration-200 ${
+                      onClick={() => changeLanguage(language.code)}
+                      className={`flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left text-[11px] font-semibold transition-all duration-200 ${
                         currentLanguage === language.code
                           ? "bg-[#2DD4BF]/15 text-[#5EEAD4]"
                           : "text-white/70 hover:bg-white/[0.06] hover:text-white"
                       }`}
                     >
-                      <span className="text-base">
-                        {language.flag}
+                      {/* ACTUAL FLAG */}
+
+                      <LanguageFlag flagCode={language.flagCode} />
+
+                      {/* LANGUAGE */}
+
+                      <span className="flex-1">
+                        {language.label}
                       </span>
 
-                      <span>{language.label}</span>
+                      {/* CODE */}
 
-                      <span className="ml-auto text-[10px] text-white/35">
+                      <span className="text-[10px] font-medium text-white/35">
                         {language.short}
                       </span>
                     </button>
@@ -674,13 +716,11 @@ export default function Navbar() {
             <div className="relative">
               <button
                 type="button"
-                onClick={() =>
-                  setLanguageOpen((prev) => !prev)
-                }
+                onClick={() => setLanguageOpen((prev) => !prev)}
                 aria-label="Select language"
                 aria-expanded={languageOpen}
                 className={`
-                  flex h-[32px] items-center gap-1 rounded-full
+                  flex h-[32px] items-center gap-1.5 rounded-full
                   border px-2 text-[9px] font-extrabold
                   transition-all duration-300
                   sm:h-[35px] sm:px-2.5 sm:text-[10px]
@@ -691,12 +731,23 @@ export default function Navbar() {
                   }
                 `}
               >
-                <ColorfulWorldIcon className="h-[15px] w-[15px] sm:h-[17px] sm:w-[17px]" />
+                {/* GLOBE — KEPT */}
 
-                <span>{selectedLanguage.short}</span>
+                <ColorfulWorldIcon className="h-[15px] w-[15px] shrink-0 sm:h-[17px] sm:w-[17px]" />
+
+                {/* ACTUAL FLAG */}
+
+                <LanguageFlag
+                  flagCode={selectedLanguage.flagCode}
+                  size="normal"
+                />
+
+                {/* LANGUAGE */}
+
+                <span>{selectedLanguage.label}</span>
 
                 <ChevronDown
-                  className={`h-2.5 w-2.5 transition-transform duration-200 ${
+                  className={`h-2.5 w-2.5 shrink-0 transition-transform duration-200 ${
                     isLightMode
                       ? "text-[#0B1220]"
                       : "text-white"
@@ -705,27 +756,31 @@ export default function Navbar() {
               </button>
 
               {languageOpen && (
-                <div className="absolute right-0 top-[39px] z-[200] max-h-[330px] w-[175px] overflow-y-auto rounded-2xl border border-white/[0.10] bg-[#0B1220]/95 p-1.5 shadow-[0_20px_50px_rgba(0,0,0,0.45)] backdrop-blur-2xl">
+                <div className="absolute right-0 top-[39px] z-[200] max-h-[330px] w-[205px] overflow-y-auto rounded-2xl border border-white/[0.10] bg-[#0B1220]/95 p-1.5 shadow-[0_20px_50px_rgba(0,0,0,0.45)] backdrop-blur-2xl">
                   {languages.map((language) => (
                     <button
                       key={language.code}
                       type="button"
-                      onClick={() =>
-                        changeLanguage(language.code)
-                      }
-                      className={`flex w-full items-center gap-2.5 rounded-xl px-3 py-2.5 text-left text-[11px] font-semibold transition-all duration-200 ${
+                      onClick={() => changeLanguage(language.code)}
+                      className={`flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left text-[11px] font-semibold transition-all duration-200 ${
                         currentLanguage === language.code
                           ? "bg-[#2DD4BF]/15 text-[#5EEAD4]"
                           : "text-white/70 hover:bg-white/[0.06] hover:text-white"
                       }`}
                     >
-                      <span className="text-base">
-                        {language.flag}
+                      {/* ACTUAL FLAG */}
+
+                      <LanguageFlag flagCode={language.flagCode} />
+
+                      {/* LANGUAGE */}
+
+                      <span className="flex-1">
+                        {language.label}
                       </span>
 
-                      <span>{language.label}</span>
+                      {/* CODE */}
 
-                      <span className="ml-auto text-[10px] text-white/35">
+                      <span className="text-[10px] font-medium text-white/35">
                         {language.short}
                       </span>
                     </button>
