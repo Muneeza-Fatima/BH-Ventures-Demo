@@ -97,6 +97,7 @@ select {
    ======================================== */
 
 @media (prefers-reduced-motion: reduce) {
+
   *,
   *::before,
   *::after {
@@ -105,4 +106,217 @@ select {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
+}
+
+/* ========================================
+   SERVICES — DESIGN TOKENS (TAILWIND v4)
+   ======================================== */
+
+@theme {
+  /* colours */
+  --color-navy: #060d18;
+  --color-navy-deep: #040912;
+  --color-navy-light: #0d1f35;
+  --color-teal: #00a8e8;
+  --color-cyan: #00c9b1;
+  --color-silver: #8ba3b5;
+
+  /* font family alias */
+  --font-display: var(--font-manrope), sans-serif;
+}
+
+/* ========================================
+   REVEAL ON SCROLL
+   ======================================== */
+
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.65s ease, transform 0.65s ease;
+}
+
+.reveal.in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ========================================
+   CARD TILT — smooth reset
+   ======================================== */
+
+.card-tilt {
+  will-change: transform;
+  transition: transform 0.18s ease, box-shadow 0.3s ease;
+}
+
+.card-tilt:not(:hover) {
+  transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.3s ease;
+}
+
+/* ========================================
+   CORNER BRACKET DECORATIONS
+   ======================================== */
+
+.corner {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  border-color: rgba(0, 168, 232, 0.45);
+  border-style: solid;
+  z-index: 20;
+  pointer-events: none;
+  transition: border-color 0.3s ease;
+}
+
+.group:hover .corner {
+  border-color: rgba(0, 168, 232, 0.8);
+}
+
+.corner-tl {
+  top: 10px;
+  left: 10px;
+  border-width: 1.5px 0 0 1.5px;
+}
+
+.corner-tr {
+  top: 10px;
+  right: 10px;
+  border-width: 1.5px 1.5px 0 0;
+}
+
+.corner-bl {
+  bottom: 10px;
+  left: 10px;
+  border-width: 0 0 1.5px 1.5px;
+}
+
+.corner-br {
+  bottom: 10px;
+  right: 10px;
+  border-width: 0 1.5px 1.5px 0;
+}
+
+/* ========================================
+   SCANLINE EFFECT
+   ======================================== */
+
+.scanline {
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(180deg,
+      transparent,
+      transparent 2px,
+      rgba(0, 0, 0, 0.04) 2px,
+      rgba(0, 0, 0, 0.04) 4px);
+  pointer-events: none;
+  z-index: 5;
+}
+
+/* ========================================
+   GRID OVERLAY
+   ======================================== */
+
+.grid-overlay {
+  background-image:
+    linear-gradient(rgba(0, 168, 232, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 168, 232, 0.04) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+
+/* ========================================
+   FLOAT-ROTATE ANIMATION (flat — used elsewhere on the site)
+   ======================================== */
+
+@keyframes float-rotate {
+  0% {
+    transform: translateY(0) rotate(0deg) scale(1);
+  }
+
+  33% {
+    transform: translateY(-6px) rotate(0.6deg) scale(1.012);
+  }
+
+  66% {
+    transform: translateY(4px) rotate(-0.4deg) scale(0.994);
+  }
+
+  100% {
+    transform: translateY(0) rotate(0deg) scale(1);
+  }
+}
+
+.animate-float-rotate {
+  animation: float-rotate 7s ease-in-out infinite;
+}
+
+/* ========================================
+   SERVICE CARD 3D IMAGE ROTATION
+   (dedicated class — do NOT reuse animate-float-rotate here)
+   ======================================== */
+
+@keyframes card-image-3d {
+  0% {
+    transform: perspective(1200px) rotateY(0deg) rotateX(0deg) translateZ(0px);
+  }
+
+  25% {
+    transform: perspective(1200px) rotateY(18deg) rotateX(6deg) translateZ(40px);
+  }
+
+  50% {
+    transform: perspective(1200px) rotateY(0deg) rotateX(-6deg) translateZ(0px);
+  }
+
+  75% {
+    transform: perspective(1200px) rotateY(-18deg) rotateX(6deg) translateZ(40px);
+  }
+
+  100% {
+    transform: perspective(1200px) rotateY(0deg) rotateX(0deg) translateZ(0px);
+  }
+}
+
+.animate-card-3d {
+  animation: card-image-3d 8s ease-in-out infinite;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+/* ========================================
+   SWEEP ANIMATION (scanline shimmer)
+   ======================================== */
+
+@keyframes sweep {
+  0% {
+    opacity: 0;
+    transform: translateY(-100%);
+  }
+
+  10% {
+    opacity: 1;
+  }
+
+  90% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+}
+
+.animate-sweep {
+  animation: sweep 6s linear infinite;
+}
+
+/* ========================================
+   TEXT GRADIENT UTILITY
+   ======================================== */
+
+.text-gradient {
+  background: linear-gradient(135deg, #00a8e8 0%, #00c9b1 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
