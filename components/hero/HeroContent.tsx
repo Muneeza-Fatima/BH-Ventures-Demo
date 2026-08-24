@@ -74,6 +74,7 @@ export default function HeroContent() {
           flex
           items-center
           gap-3
+
           sm:mb-7
           md:mb-8
           lg:mb-7
@@ -85,8 +86,9 @@ export default function HeroContent() {
             w-8
             shrink-0
             bg-gradient-to-r
-            from-[#00CDB5]
-            to-[#00FFD5]
+            from-[#14B8A6]
+            to-[#2DD4BF]
+
             sm:w-9
           "
         />
@@ -94,11 +96,11 @@ export default function HeroContent() {
         <span
           className="
             text-[9px]
-            font-extrabold
+            font-semibold
             uppercase
             tracking-[0.30em]
-            text-[#00FFD5]
-            [text-shadow:0_0_8px_rgba(0,255,213,0.55)]
+            text-[#5EEAD4]
+
             sm:text-[10px]
             md:text-[11px]
           "
@@ -113,29 +115,40 @@ export default function HeroContent() {
         aria-label="Building the Future of Ventures."
         className="
           max-w-[680px]
-          font-extrabold
+          font-bold
           tracking-[-0.06em]
           text-white
+
           text-[3.25rem]
           leading-[0.94]
+
           sm:text-[3.6rem]
           sm:leading-[0.94]
+
           md:text-[3.9rem]
           md:leading-[0.94]
+
           lg:text-[4rem]
+
           xl:text-[4.7rem]
         "
       >
         <span className="block">
           <motion.span
             variants={headingWord}
-            className="inline-block font-extrabold"
+            className="
+              inline-block
+              font-semibold
+            "
           >
             Building
           </motion.span>{" "}
           <motion.span
             variants={headingWord}
-            className="inline-block font-extrabold"
+            className="
+              inline-block
+              font-semibold
+            "
           >
             the
           </motion.span>
@@ -144,13 +157,19 @@ export default function HeroContent() {
         <span className="block">
           <motion.span
             variants={headingWord}
-            className="inline-block font-extrabold"
+            className="
+              inline-block
+              font-semibold
+            "
           >
             Future
           </motion.span>{" "}
           <motion.span
             variants={headingWord}
-            className="inline-block font-extrabold"
+            className="
+              inline-block
+              font-semibold
+            "
           >
             of
           </motion.span>
@@ -163,10 +182,10 @@ export default function HeroContent() {
               inline-block
               bg-gradient-to-r
               from-white
-              via-[#F0FFFC]
-              to-[#00FFD5]
+              via-white
+              to-[#5EEAD4]
               bg-clip-text
-              font-black
+              font-extrabold
               text-transparent
               [-webkit-background-clip:text]
             "
@@ -182,6 +201,7 @@ export default function HeroContent() {
           mt-8
           w-full
           max-w-[620px]
+
           sm:mt-6
           md:mt-6
           lg:mt-5
@@ -194,31 +214,33 @@ export default function HeroContent() {
             items-baseline
             whitespace-nowrap
             text-[0.82rem]
-            font-extrabold
+            font-semibold
             leading-[1.5]
+
             sm:text-[1.08rem]
             md:text-[1.12rem]
             lg:text-[1.18rem]
             xl:text-[1.24rem]
           "
         >
+          {/* Bridging */}
           <motion.span
             variants={itemVariants}
             className="
               shrink-0
-              font-extrabold
-              text-[#00FFD5]
-              [text-shadow:0_0_8px_rgba(0,255,213,0.55)]
+              text-[#14B8A6]
             "
           >
             Bridging
           </motion.span>
 
+          {/* Animated Text */}
           <span
             className="
               ml-1.5
               min-w-0
               overflow-hidden
+
               sm:ml-2
             "
           >
@@ -243,33 +265,21 @@ export default function HeroContent() {
                 repeat: Infinity,
                 repeatDelay: 0.6,
               }}
-              className="inline-block font-extrabold"
+              className="inline-block"
             >
-              <span className="font-extrabold text-white">
+              <span className="text-white">
                 Technology{" "}
               </span>
 
-              <span
-                className="
-                  font-black
-                  text-[#00FFD5]
-                  [text-shadow:0_0_8px_rgba(0,255,213,0.6)]
-                "
-              >
+              <span className="text-[#2DD4BF]">
                 &amp;{" "}
               </span>
 
-              <span className="font-extrabold text-white">
+              <span className="text-white">
                 Innovation{" "}
               </span>
 
-              <span
-                className="
-                  font-black
-                  text-[#00FFD5]
-                  [text-shadow:0_0_8px_rgba(0,255,213,0.6)]
-                "
-              >
+              <span className="text-[#2DD4BF]">
                 from the UAE.
               </span>
             </motion.span>
@@ -282,6 +292,7 @@ export default function HeroContent() {
         aria-hidden="true"
         className="
           h-4
+
           sm:h-6
           md:h-6
           lg:h-6
@@ -295,10 +306,11 @@ export default function HeroContent() {
         className="
           max-w-[560px]
           text-[15px]
-          font-extrabold
+          font-medium
           leading-[1.75]
           tracking-[-0.005em]
-          text-white/80
+          text-white/75
+
           sm:text-[16px]
           md:text-[16px]
           lg:text-[16.5px]
@@ -308,10 +320,10 @@ export default function HeroContent() {
         <motion.span
           className="
             inline-block
-            bg-[linear-gradient(90deg,#00CDB5_0%,#00FFD5_35%,#7AFFF0_50%,#00FFD5_65%,#00CDB5_100%)]
+            bg-[linear-gradient(90deg,#14B8A6_0%,#2DD4BF_30%,#ffffff_50%,#2DD4BF_70%,#14B8A6_100%)]
             bg-[length:250%_100%]
             bg-clip-text
-            font-black
+            font-extrabold
             text-transparent
             [-webkit-background-clip:text]
           "
@@ -331,11 +343,9 @@ export default function HeroContent() {
         >
           BH Ventures FZE LLC
         </motion.span>{" "}
-        <span className="font-extrabold text-white/90">
-          is a licensed free-zone company specializing in Web3 Studio,
-          Artificial Intelligence, Digital Analytics, Marketing, and
-          International Trading.
-        </span>
+        is a licensed free-zone company specializing in Web3
+        Studio, Artificial Intelligence, Digital Analytics,
+        Marketing, and International Trading.
       </motion.p>
 
       {/* Impact Line */}
@@ -344,15 +354,15 @@ export default function HeroContent() {
         className="
           mt-5
           flex
-          max-w-[560px]
           items-center
           gap-2
+          max-w-[560px]
           text-[13px]
-          font-extrabold
+          font-semibold
           leading-6
           tracking-[0.01em]
-          text-[#00FFD5]
-          [text-shadow:0_0_8px_rgba(0,255,213,0.45)]
+          text-[#5EEAD4]
+
           sm:text-[14px]
           md:text-[14.5px]
           lg:text-[15px]
@@ -367,12 +377,13 @@ export default function HeroContent() {
             w-5
             shrink-0
             bg-gradient-to-r
-            from-[#00CDB5]
-            to-[#00FFD5]
+            from-[#14B8A6]
+            to-[#2DD4BF]
           "
         />
 
-        Driving global growth through innovation and strategic ventures.
+        Driving global growth through innovation and
+        strategic ventures.
       </motion.p>
 
       {/* Scroll Indicator */}
@@ -383,6 +394,7 @@ export default function HeroContent() {
           flex
           flex-col
           items-start
+
           sm:mt-14
           md:mt-15
           lg:mt-15
@@ -392,10 +404,11 @@ export default function HeroContent() {
         <span
           className="
             text-[8px]
-            font-bold
+            font-semibold
             uppercase
             tracking-[0.32em]
-            text-white/55
+            text-white/50
+
             sm:text-[9px]
             md:text-[10px]
           "
@@ -419,7 +432,8 @@ export default function HeroContent() {
               mt-2
               h-5
               w-5
-              text-[#00FFD5]
+              text-[#2DD4BF]
+              drop-shadow-[0_0_7px_rgba(45,212,191,0.65)]
             "
           />
         </motion.div>
