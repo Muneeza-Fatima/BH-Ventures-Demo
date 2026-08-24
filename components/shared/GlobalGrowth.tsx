@@ -43,8 +43,8 @@ const containerVariants = {
   hidden: {},
   show: {
     transition: {
-      staggerChildren: 0.1,
-      delayChildren: 0.04,
+      staggerChildren: 0.12,
+      delayChildren: 0.05,
     },
   },
 };
@@ -52,14 +52,14 @@ const containerVariants = {
 const cardVariants = {
   hidden: {
     opacity: 0,
-    y: 24,
+    x: -70,
   },
 
   show: {
     opacity: 1,
-    y: 0,
+    x: 0,
     transition: {
-      duration: 0.55,
+      duration: 0.65,
       ease: [0.16, 1, 0.3, 1] as [
         number,
         number,
@@ -92,9 +92,7 @@ export default function BuiltForGlobalGrowth() {
         xl:py-26
       "
     >
-      {/* =====================================================
-          LIGHTWEIGHT OFF-WHITE BACKGROUND
-      ===================================================== */}
+      {/* LIGHTWEIGHT OFF-WHITE BACKGROUND */}
 
       <div
         aria-hidden="true"
@@ -121,9 +119,7 @@ export default function BuiltForGlobalGrowth() {
         "
       />
 
-      {/* =====================================================
-          CONTENT
-      ===================================================== */}
+      {/* CONTENT */}
 
       <div
         className="
@@ -143,9 +139,7 @@ export default function BuiltForGlobalGrowth() {
           2xl:px-20
         "
       >
-        {/* =====================================================
-            HEADER
-        ===================================================== */}
+        {/* HEADER */}
 
         <motion.div
           initial={{
@@ -268,9 +262,7 @@ export default function BuiltForGlobalGrowth() {
           </p>
         </motion.div>
 
-        {/* =====================================================
-            CARDS
-        ===================================================== */}
+        {/* CARDS */}
 
         <motion.div
           variants={containerVariants}
@@ -300,7 +292,14 @@ export default function BuiltForGlobalGrowth() {
             return (
               <motion.div
                 key={pillar.title}
-                variants={cardVariants}
+                variants={
+                  shouldReduceMotion
+                    ? {
+                        hidden: { opacity: 0 },
+                        show: { opacity: 1 },
+                      }
+                    : cardVariants
+                }
                 whileHover={
                   shouldReduceMotion
                     ? undefined

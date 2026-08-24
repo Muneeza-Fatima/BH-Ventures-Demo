@@ -53,8 +53,8 @@ const containerVariants = {
   hidden: {},
   show: {
     transition: {
-      staggerChildren: 0.06,
-      delayChildren: 0.02,
+      staggerChildren: 0.12,
+      delayChildren: 0.05,
     },
   },
 };
@@ -62,14 +62,14 @@ const containerVariants = {
 const cardVariants = {
   hidden: {
     opacity: 0,
-    y: 15,
+    y: -45,
   },
 
   show: {
     opacity: 1,
     y: 0,
     transition: {
-      duration: 0.42,
+      duration: 0.65,
       ease: [0.16, 1, 0.3, 1] as [
         number,
         number,
@@ -166,6 +166,7 @@ export default function OurCapabilities() {
           }}
           transition={{
             duration: shouldReduceMotion ? 0.15 : 0.5,
+            ease: [0.16, 1, 0.3, 1],
           }}
           className="
             mx-auto
@@ -247,6 +248,7 @@ export default function OurCapabilities() {
             }}
             transition={{
               duration: shouldReduceMotion ? 0.15 : 0.5,
+              ease: [0.16, 1, 0.3, 1],
             }}
             className="
               text-[1.85rem]
@@ -309,7 +311,7 @@ export default function OurCapabilities() {
           whileInView="show"
           viewport={{
             once: true,
-            amount: 0.05,
+            amount: 0.15,
           }}
           className="
             grid
@@ -339,6 +341,7 @@ export default function OurCapabilities() {
                         y: -4,
                         transition: {
                           duration: 0.22,
+                          ease: [0.22, 1, 0.36, 1],
                         },
                       }
                 }
@@ -366,6 +369,7 @@ export default function OurCapabilities() {
 
                   transition-[transform,border-color,box-shadow]
                   duration-300
+                  ease-out
 
                   hover:border-[#36CDBB]/70
                   hover:shadow-[0_10px_24px_rgba(20,120,110,0.16)]
@@ -481,6 +485,7 @@ export default function OurCapabilities() {
 
                     transition-[transform,border-color,background-color,color]
                     duration-300
+                    ease-out
 
                     group-hover:-translate-y-0.5
                     group-hover:border-[#6EE7D8]/65
@@ -589,6 +594,7 @@ export default function OurCapabilities() {
 
                     transition-[transform,opacity]
                     duration-300
+                    ease-out
 
                     group-hover:scale-x-100
                     group-hover:opacity-100
