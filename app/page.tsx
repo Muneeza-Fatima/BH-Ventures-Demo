@@ -11,16 +11,19 @@ export default function Home() {
         <Hero />
       </section>
 
+      {/* Built for Global Growth */}
       <section id="built-for-global-growth" className="w-full min-w-0">
         <BuiltForGlobalGrowth />
       </section>
 
-      <section id="our-capabilities" className="w-full min-w-0">
-        <OurCapabilities />
+      {/* Global Reach */}
+      <section id="global-impact" className="w-full min-w-0">
+        <GlobalImpact />
       </section>
 
-      <section id="approach" className="w-full min-w-0">
-        <GlobalImpact />
+      {/* Our Capabilities */}
+      <section id="our-capabilities" className="w-full min-w-0">
+        <OurCapabilities />
       </section>
 
       <section id="portfolio" className="w-full min-w-0">

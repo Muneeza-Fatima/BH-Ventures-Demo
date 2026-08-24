@@ -120,7 +120,7 @@ export default function HeroBackground() {
           ease-out
           ${
             videoLoaded
-              ? "opacity-[0.88]"
+              ? "opacity-[0.92]"
               : "opacity-0"
           }
         `}
@@ -139,7 +139,7 @@ export default function HeroBackground() {
         className="
           absolute
           inset-0
-          bg-[#0B1220]/12
+          bg-[#0B1220]/8
         "
       />
 
@@ -155,8 +155,8 @@ export default function HeroBackground() {
           hidden
           w-[64%]
           bg-gradient-to-r
-          from-[#0B1220]/68
-          via-[#0B1220]/24
+          from-[#0B1220]/60
+          via-[#0B1220]/18
           to-transparent
           lg:block
         "
@@ -174,8 +174,8 @@ export default function HeroBackground() {
           hidden
           w-[72%]
           bg-gradient-to-r
-          from-[#0B1220]/62
-          via-[#0B1220]/20
+          from-[#0B1220]/55
+          via-[#0B1220]/16
           to-transparent
           md:block
           lg:hidden
@@ -191,26 +191,27 @@ export default function HeroBackground() {
           absolute
           inset-0
           bg-gradient-to-b
-          from-[#0B1220]/58
-          via-[#0B1220]/16
-          to-[#0B1220]/62
+          from-[#0B1220]/50
+          via-[#0B1220]/10
+          to-[#0B1220]/42
           md:hidden
         "
       />
 
       {/* ================================================== */}
-      {/* BOTTOM FADE */}
+      {/* LIGHTER BOTTOM FADE */}
       {/* ================================================== */}
 
       <div
         className="
+          pointer-events-none
           absolute
           inset-x-0
           bottom-0
-          h-40
+          h-32
           bg-gradient-to-t
-          from-[#101C30]/90
-          via-[#0B1220]/45
+          from-[#0B1220]/45
+          via-[#0B1220]/18
           to-transparent
         "
       />
