@@ -178,6 +178,7 @@ export default function BuiltForGlobalGrowth() {
                 bg-gradient-to-r
                 from-transparent
                 to-[#149D8B]
+
                 sm:w-10
               "
             />
@@ -189,6 +190,7 @@ export default function BuiltForGlobalGrowth() {
                 uppercase
                 tracking-[0.28em]
                 text-[#087C70]
+
                 sm:text-[10px]
               "
             >
@@ -202,6 +204,7 @@ export default function BuiltForGlobalGrowth() {
                 bg-gradient-to-l
                 from-transparent
                 to-[#149D8B]
+
                 sm:w-10
               "
             />
@@ -428,7 +431,7 @@ export default function BuiltForGlobalGrowth() {
                   {pillar.index}
                 </span>
 
-                {/* ICON */}
+                {/* ICON + TITLE */}
 
                 <div
                   className="
@@ -437,61 +440,71 @@ export default function BuiltForGlobalGrowth() {
                     mt-4
 
                     flex
-                    h-11
-                    w-11
-                    items-center
-                    justify-center
-
-                    rounded-[14px]
-
-                    border
-                    border-[#5EEAD4]/25
-
-                    bg-[#087F78]/15
-
-                    text-[#5EEAD4]
-
-                    transition-[transform,border-color,background-color,color]
-                    duration-300
-                    ease-out
-
-                    group-hover:-translate-y-1
-                    group-hover:border-[#5EEAD4]/60
-                    group-hover:bg-[#087F78]/25
-                    group-hover:text-[#B8FFF8]
+                    flex-col
+                    items-start
+                    gap-6
                   "
                 >
-                  <Icon
-                    size={19}
-                    strokeWidth={1.7}
-                    aria-hidden="true"
-                  />
+                  {/* ICON */}
+
+                  <div
+                    className="
+                      flex
+                      h-11
+                      w-11
+                      shrink-0
+                      items-center
+                      justify-center
+
+                      rounded-[14px]
+
+                      border
+                      border-[#5EEAD4]/25
+
+                      bg-[#087F78]/15
+
+                      text-[#5EEAD4]
+
+                      transition-[transform,border-color,background-color,color]
+                      duration-300
+                      ease-out
+
+                      group-hover:-translate-y-1
+                      group-hover:border-[#5EEAD4]/60
+                      group-hover:bg-[#087F78]/25
+                      group-hover:text-[#B8FFF8]
+                    "
+                  >
+                    <Icon
+                      size={19}
+                      strokeWidth={1.7}
+                      aria-hidden="true"
+                    />
+                  </div>
+
+                  {/* TITLE */}
+
+                  <h3
+                    className="
+                      max-w-[280px]
+
+                      text-[15px]
+                      font-bold
+                      leading-[1.25]
+                      tracking-[-0.01em]
+                      text-white
+
+                      transition-colors
+                      duration-300
+
+                      group-hover:text-[#D9FFFA]
+
+                      sm:text-[16px]
+                    "
+                  >
+                    {pillar.title}
+                  </h3>
                 </div>
-
-                {/* TITLE */}
-
-                <h3
-                  className="
-                    relative
-                    z-10
-                    mt-5
-
-                    text-[15px]
-                    font-bold
-                    leading-[1.25]
-                    tracking-[-0.01em]
-                    text-white
-
-                    transition-colors
-                    duration-300
-
-                    group-hover:text-[#D9FFFA]
-
-                    sm:text-[16px]
-                  "
-                >
-                  {pillar.title}
-                </h3>
 
                 {/* DESCRIPTION */}
 
@@ -499,7 +512,7 @@ export default function BuiltForGlobalGrowth() {
                   className="
                     relative
                     z-10
-                    mt-3
+                    mt-4
 
                     text-[12.5px]
                     font-medium

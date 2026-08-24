@@ -316,7 +316,7 @@ export default function OurCapabilities() {
           className="
             grid
             grid-cols-1
-            gap-2.5
+            gap-3
 
             sm:grid-cols-2
             sm:gap-5
@@ -348,12 +348,16 @@ export default function OurCapabilities() {
                 className="
                   group
                   relative
-                  flex
-                  min-h-[145px]
+                  mx-auto
+                  w-[94%]
+                  min-h-[190px]
                   min-w-0
+
+                  flex
                   flex-col
+
                   overflow-hidden
-                  rounded-[14px]
+                  rounded-[16px]
 
                   border
                   border-[#3F7D82]/55
@@ -363,7 +367,7 @@ export default function OurCapabilities() {
                   via-[#123542]
                   to-[#0D293B]
 
-                  p-3
+                  p-4
 
                   shadow-[0_5px_16px_rgba(18,49,65,0.14)]
 
@@ -376,6 +380,8 @@ export default function OurCapabilities() {
 
                   active:border-[#36CDBB]/60
 
+                  sm:mx-0
+                  sm:w-full
                   sm:min-h-[220px]
                   sm:rounded-[18px]
                   sm:p-5
@@ -394,7 +400,7 @@ export default function OurCapabilities() {
                     pointer-events-none
                     absolute
                     inset-[1px]
-                    rounded-[13px]
+                    rounded-[15px]
                     border
                     border-white/[0.04]
 
@@ -458,86 +464,93 @@ export default function OurCapabilities() {
                   {String(index + 1).padStart(2, "0")}
                 </span>
 
-                {/* ICON */}
+                {/* ICON + TITLE */}
 
                 <div
                   className="
                     relative
                     z-10
-
-                    mt-2.5
+                    mt-3
 
                     flex
-                    h-8
-                    w-8
-                    shrink-0
-                    items-center
-                    justify-center
-
-                    rounded-[9px]
-
-                    border
-                    border-[#4ED8C7]/35
-
-                    bg-[#174E55]
-
-                    text-[#73E6D8]
-
-                    transition-[transform,border-color,background-color,color]
-                    duration-300
-                    ease-out
-
-                    group-hover:-translate-y-0.5
-                    group-hover:border-[#6EE7D8]/65
-                    group-hover:bg-[#1A5B5E]
-                    group-hover:text-[#B4FFF5]
+                    flex-col
+                    items-start
+                    gap-6
 
                     sm:mt-4
-                    sm:h-10
-                    sm:w-10
-                    sm:rounded-[12px]
+                    sm:gap-4
                   "
                 >
-                  <Icon
-                    size={15}
-                    strokeWidth={1.7}
-                    aria-hidden="true"
+                  {/* ICON */}
+
+                  <div
                     className="
-                      sm:h-[18px]
-                      sm:w-[18px]
+                      flex
+                      h-9
+                      w-9
+                      shrink-0
+                      items-center
+                      justify-center
+
+                      rounded-[10px]
+
+                      border
+                      border-[#4ED8C7]/35
+
+                      bg-[#174E55]
+
+                      text-[#73E6D8]
+
+                      transition-[transform,border-color,background-color,color]
+                      duration-300
+                      ease-out
+
+                      group-hover:-translate-y-0.5
+                      group-hover:border-[#6EE7D8]/65
+                      group-hover:bg-[#1A5B5E]
+                      group-hover:text-[#B4FFF5]
+
+                      sm:h-10
+                      sm:w-10
+                      sm:rounded-[12px]
                     "
-                  />
+                  >
+                    <Icon
+                      size={16}
+                      strokeWidth={1.7}
+                      aria-hidden="true"
+                      className="
+                        sm:h-[18px]
+                        sm:w-[18px]
+                      "
+                    />
+                  </div>
+
+                  {/* TITLE */}
+
+                  <h3
+                    className="
+                      max-w-[280px]
+
+                      text-[12.5px]
+                      font-bold
+                      leading-[1.25]
+                      tracking-[-0.01em]
+
+                      text-white
+
+                      transition-colors
+                      duration-300
+
+                      group-hover:text-[#D8FFF9]
+
+                      sm:text-[16px]
+                      sm:leading-[1.25]
+                    "
+                  >
+                    {capability.title}
+                  </h3>
                 </div>
-
-                {/* TITLE */}
-
-                <h3
-                  className="
-                    relative
-                    z-10
-
-                    mt-2.5
-                    max-w-[280px]
-
-                    text-[12px]
-                    font-bold
-                    leading-[1.2]
-                    tracking-[-0.01em]
-
-                    text-white
-
-                    transition-colors
-                    duration-300
-
-                    group-hover:text-[#D8FFF9]
-
-                    sm:mt-4
-                    sm:text-[16px]
-                    sm:leading-[1.25]
-                  "
-                >
-                  {capability.title}
-                </h3>
 
                 {/* DESCRIPTION */}
 
@@ -546,12 +559,12 @@ export default function OurCapabilities() {
                     relative
                     z-10
 
-                    mt-1.5
+                    mt-4
                     max-w-[390px]
 
-                    text-[9.5px]
+                    text-[10px]
                     font-medium
-                    leading-[1.5]
+                    leading-[1.6]
 
                     text-[#B8C8D3]
 
@@ -574,12 +587,10 @@ export default function OurCapabilities() {
                   aria-hidden="true"
                   className="
                     pointer-events-none
-
                     absolute
                     bottom-0
-                    left-4
-                    right-4
-
+                    left-5
+                    right-5
                     h-px
 
                     origin-left
