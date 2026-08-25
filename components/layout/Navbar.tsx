@@ -2,7 +2,9 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState, useSyncExternalStore } from "react";
+import { usePathname } from "next/navigation";
+import { useEffect, useRef, useState, useSyncExternalStore } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   Menu,
   X,
@@ -11,9 +13,49 @@ import {
   ContactRound,
 } from "lucide-react";
 
-const navItems = [
+const DROPDOWN_EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
+
+/* next.config.ts sets trailingSlash: true, so usePathname() returns
+   "/about/" rather than "/about" — normalize before comparing. */
+function isAboutPath(pathname: string | null) {
+  return pathname === "/about" || pathname === "/about/";
+}
+
+function isContactPath(pathname: string | null) {
+  return pathname === "/contact" || pathname === "/contact/";
+}
+
+/* Strips a trailing hash/anchor so a dropdown item's href can be
+   compared against the current pathname (both "/about" and
+   "/about#story" should read as "on the About page"). */
+function basePath(href: string) {
+  return href.split("#")[0];
+}
+
+/* ========================================
+   ABOUT DROPDOWN ITEMS
+
+   Only routes/anchors that genuinely exist in this codebase —
+   the About page itself, its Journey/Timeline section, and the
+   dedicated /contact page. No Careers route exists yet, so it
+   is intentionally left out rather than fabricated.
+======================================== */
+
+const aboutDropdownItems = [
+  { label: "About BH Ventures", href: "/about" },
+  { label: "Our Journey", href: "/about#story" },
+  { label: "Contact / Connect With Us", href: "/contact" },
+];
+
+type NavItem = {
+  label: string;
+  href: string;
+  dropdown?: typeof aboutDropdownItems;
+};
+
+const navItems: NavItem[] = [
   { label: "Home", href: "/" },
-  { label: "About", href: "/about" },
+  { label: "About", href: "/about", dropdown: aboutDropdownItems },
   { label: "Ventures", href: "/ventures" },
   { label: "Services", href: "/services" },
   { label: "Portfolio", href: "/portfolio" },
@@ -333,6 +375,245 @@ function setGoogleLanguage(languageCode: string): boolean {
 }
 
 /* ========================================
+   ABOUT DROPDOWN (DESKTOP)
+======================================== */
+
+function AboutNavDropdown({
+  isLightMode,
+  navText,
+  navHover,
+}: {
+  isLightMode: boolean;
+  navText: string;
+  navHover: string;
+}) {
+  const [open, setOpen] = useState(false);
+  const pathname = usePathname();
+  const isActive = isAboutPath(pathname);
+
+  const containerRef = useRef<HTMLDivElement>(null);
+  const triggerRef = useRef<HTMLButtonElement>(null);
+  const closeTimeoutRef = useRef<number | undefined>(undefined);
+
+  useEffect(() => {
+    if (!open) return;
+
+    const handlePointerDown = (event: MouseEvent) => {
+      if (!containerRef.current?.contains(event.target as Node)) {
+        setOpen(false);
+      }
+    };
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setOpen(false);
+        triggerRef.current?.focus();
+      }
+    };
+
+    document.addEventListener("mousedown", handlePointerDown);
+    document.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.removeEventListener("mousedown", handlePointerDown);
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [open]);
+
+  useEffect(() => {
+    return () => {
+      window.clearTimeout(closeTimeoutRef.current);
+    };
+  }, []);
+
+  const openOnHover = () => {
+    window.clearTimeout(closeTimeoutRef.current);
+    setOpen(true);
+  };
+
+  const closeOnHover = () => {
+    window.clearTimeout(closeTimeoutRef.current);
+    closeTimeoutRef.current = window.setTimeout(() => {
+      setOpen(false);
+    }, 150);
+  };
+
+  return (
+    <div
+      ref={containerRef}
+      className="relative"
+      onMouseEnter={openOnHover}
+      onMouseLeave={closeOnHover}
+    >
+      <button
+        ref={triggerRef}
+        type="button"
+        onClick={() => setOpen((prev) => !prev)}
+        aria-haspopup="menu"
+        aria-expanded={open}
+        className={`
+          group relative flex items-center justify-center gap-1
+          rounded-full px-3 py-2
+          text-[12px] font-extrabold tracking-[0.01em]
+          transition-all duration-300
+          xl:px-3.5
+          ${navText}
+          ${
+            isActive
+              ? isLightMode
+                ? "bg-[#0B1220]/[0.06]"
+                : "bg-[#14B8A6]/[0.14]"
+              : navHover
+          }
+        `}
+      >
+        <span
+          aria-hidden="true"
+          className={`pointer-events-none absolute inset-x-3 bottom-0 h-px origin-center bg-gradient-to-r from-transparent via-[#2DD4BF] to-transparent transition-all duration-300 ${
+            isActive
+              ? "scale-x-100 opacity-100"
+              : "scale-x-0 opacity-0 group-hover:scale-x-100 group-hover:opacity-100"
+          }`}
+        />
+
+        About
+
+        <ChevronDown
+          aria-hidden="true"
+          className={`h-3 w-3 shrink-0 transition-transform duration-200 ${
+            open ? "rotate-180" : ""
+          }`}
+        />
+      </button>
+
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            initial={{ opacity: 0, y: -8, scale: 0.97 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -8, scale: 0.97 }}
+            transition={{ duration: 0.22, ease: DROPDOWN_EASE }}
+            role="menu"
+            aria-label="About"
+            className={`
+              absolute left-0 top-[46px] z-[200] w-[268px]
+              overflow-hidden rounded-2xl border p-1.5
+              shadow-[0_22px_55px_rgba(0,0,0,0.35)]
+              backdrop-blur-2xl
+              ${
+                isLightMode
+                  ? "border-[#0B1220]/10 bg-white/95"
+                  : "border-white/[0.10] bg-[#0B1220]/95"
+              }
+            `}
+          >
+            {aboutDropdownItems.map((sub) => {
+              const isExactRoute = sub.href === basePath(sub.href);
+              const subActive =
+                isExactRoute &&
+                ((sub.href === "/about" && isAboutPath(pathname)) ||
+                  (sub.href === "/contact" && isContactPath(pathname)));
+
+              return (
+                <Link
+                  key={sub.label}
+                  href={sub.href}
+                  role="menuitem"
+                  onClick={() => setOpen(false)}
+                  className={`
+                    block rounded-xl px-3.5 py-2.5
+                    text-[12.5px] font-semibold
+                    transition-all duration-200
+                    focus-visible:outline-none
+                    focus-visible:ring-2
+                    focus-visible:ring-[#2DD4BF]/60
+                    ${
+                      subActive
+                        ? "bg-[#2DD4BF]/15 text-[#5EEAD4]"
+                        : isLightMode
+                        ? "text-[#0B1220]/75 hover:bg-[#0B1220]/[0.05] hover:text-[#0B1220]"
+                        : "text-white/75 hover:bg-white/[0.06] hover:text-white"
+                    }
+                  `}
+                >
+                  {sub.label}
+                </Link>
+              );
+            })}
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
+
+/* ========================================
+   ABOUT ACCORDION (MOBILE)
+======================================== */
+
+function AboutMobileAccordion({ onNavigate }: { onNavigate: () => void }) {
+  const [open, setOpen] = useState(false);
+  const pathname = usePathname();
+
+  return (
+    <div className="border-b border-white/[0.07]">
+      <button
+        type="button"
+        onClick={() => setOpen((prev) => !prev)}
+        aria-expanded={open}
+        className="flex w-full items-center justify-between py-3.5 text-[13px] font-extrabold text-white transition-all sm:py-4 sm:text-sm"
+      >
+        <span>About</span>
+
+        <ChevronDown
+          aria-hidden="true"
+          className={`h-4 w-4 text-white/40 transition-transform duration-300 ${
+            open ? "rotate-180" : ""
+          }`}
+        />
+      </button>
+
+      <AnimatePresence initial={false}>
+        {open && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.25, ease: DROPDOWN_EASE }}
+            className="overflow-hidden"
+          >
+            <div className="flex flex-col gap-1 pb-4 pl-2">
+              {aboutDropdownItems.map((sub) => {
+                const isExactRoute = sub.href === basePath(sub.href);
+                const subActive =
+                  isExactRoute &&
+                  ((sub.href === "/about" && isAboutPath(pathname)) ||
+                    (sub.href === "/contact" && isContactPath(pathname)));
+
+                return (
+                  <Link
+                    key={sub.label}
+                    href={sub.href}
+                    onClick={onNavigate}
+                    className={`rounded-lg px-3 py-2.5 text-[12px] font-bold transition-colors ${
+                      subActive
+                        ? "bg-[#2DD4BF]/15 text-[#5EEAD4]"
+                        : "text-white/55 hover:text-white"
+                    }`}
+                  >
+                    {sub.label}
+                  </Link>
+                );
+              })}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
+
+/* ========================================
    NAVBAR
 ======================================== */
 
@@ -552,28 +833,37 @@ export default function Navbar() {
               }
             `}
           >
-            {navItems.map((item) => (
-              <Link
-                key={item.label}
-                href={item.href}
-                className={`
-                  group relative flex items-center justify-center
-                  rounded-full px-3 py-2
-                  text-[12px] font-extrabold tracking-[0.01em]
-                  transition-all duration-300
-                  xl:px-3.5
-                  ${navText}
-                  ${navHover}
-                `}
-              >
-                <span
-                  aria-hidden="true"
-                  className="pointer-events-none absolute inset-x-3 bottom-0 h-px origin-center scale-x-0 bg-gradient-to-r from-transparent via-[#2DD4BF] to-transparent opacity-0 transition-all duration-300 group-hover:scale-x-100 group-hover:opacity-100"
+            {navItems.map((item) =>
+              item.dropdown ? (
+                <AboutNavDropdown
+                  key={item.label}
+                  isLightMode={isLightMode}
+                  navText={navText}
+                  navHover={navHover}
                 />
+              ) : (
+                <Link
+                  key={item.label}
+                  href={item.href}
+                  className={`
+                    group relative flex items-center justify-center
+                    rounded-full px-3 py-2
+                    text-[12px] font-extrabold tracking-[0.01em]
+                    transition-all duration-300
+                    xl:px-3.5
+                    ${navText}
+                    ${navHover}
+                  `}
+                >
+                  <span
+                    aria-hidden="true"
+                    className="pointer-events-none absolute inset-x-3 bottom-0 h-px origin-center scale-x-0 bg-gradient-to-r from-transparent via-[#2DD4BF] to-transparent opacity-0 transition-all duration-300 group-hover:scale-x-100 group-hover:opacity-100"
+                  />
 
-                {item.label}
-              </Link>
-            ))}
+                  {item.label}
+                </Link>
+              )
+            )}
           </div>
 
           {/* DESKTOP RIGHT SIDE */}
@@ -843,18 +1133,25 @@ export default function Navbar() {
           }`}
         >
           <div className="px-4 pb-5 pt-3 sm:px-6 sm:pb-6 sm:pt-4">
-            {navItems.map((item) => (
-              <Link
-                key={item.label}
-                href={item.href}
-                onClick={() => setIsOpen(false)}
-                className="group flex items-center justify-between border-b border-white/[0.07] py-3.5 text-[13px] font-extrabold text-white transition-all hover:text-white sm:py-4 sm:text-sm"
-              >
-                <span>{item.label}</span>
+            {navItems.map((item) =>
+              item.dropdown ? (
+                <AboutMobileAccordion
+                  key={item.label}
+                  onNavigate={() => setIsOpen(false)}
+                />
+              ) : (
+                <Link
+                  key={item.label}
+                  href={item.href}
+                  onClick={() => setIsOpen(false)}
+                  className="group flex items-center justify-between border-b border-white/[0.07] py-3.5 text-[13px] font-extrabold text-white transition-all hover:text-white sm:py-4 sm:text-sm"
+                >
+                  <span>{item.label}</span>
 
-                <ArrowUpRight className="h-3.5 w-3.5 text-white/20 transition-all group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-[#2DD4BF]" />
-              </Link>
-            ))}
+                  <ArrowUpRight className="h-3.5 w-3.5 text-white/20 transition-all group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-[#2DD4BF]" />
+                </Link>
+              )
+            )}
 
             <Link
               href="/contact"

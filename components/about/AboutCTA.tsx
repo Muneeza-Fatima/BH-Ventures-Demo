@@ -1,10 +1,12 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 
 export default function AboutCTA() {
+  const prefersReducedMotion = useReducedMotion();
+
   return (
     <section
       id="about-cta"
@@ -79,23 +81,56 @@ export default function AboutCTA() {
           text-center
         "
       >
-        <div className="mb-5 flex items-center justify-center gap-3">
-          <span className="h-px w-7 bg-[#14B8A6]/60 sm:w-9" />
-
-          <p
+        <div className="mb-6 flex items-center justify-center sm:mb-8">
+          <span
             className="
-              text-[9px]
-              font-semibold
-              uppercase
-              tracking-[0.3em]
-              text-[#2DD4BF]
-              sm:text-[10px]
+              story-pill
+              relative
+              inline-flex
+              items-center
+              gap-2.5
+              rounded-full
+              border
+              border-white/[0.14]
+              bg-[linear-gradient(135deg,rgba(0,255,213,0.06),rgba(255,255,255,0.04))]
+              px-4
+              py-2
+              backdrop-blur-sm
+
+              shadow-[0_10px_30px_-8px_rgba(0,205,181,0.22)]
+
+              transition-all
+              duration-300
+              ease-out
+
+              hover:-translate-y-[2.5px]
+              hover:shadow-[0_18px_42px_-8px_rgba(0,205,181,0.38)]
             "
           >
-            Let&apos;s Build Together
-          </p>
+            <span className="relative flex h-[7px] w-[7px] shrink-0 items-center justify-center">
+              {!prefersReducedMotion && (
+                <span
+                  aria-hidden="true"
+                  className="absolute inset-0 rounded-full bg-[#00FFD5] story-dot-breathe"
+                />
+              )}
 
-          <span className="h-px w-7 bg-[#14B8A6]/60 sm:w-9" />
+              <span className="relative h-[7px] w-[7px] rounded-full bg-[#00FFD5]" />
+            </span>
+
+            <span
+              className="
+                text-[9px]
+                font-extrabold
+                uppercase
+                tracking-[0.30em]
+                text-[#00FFD5]
+                sm:text-[10px]
+              "
+            >
+              Build With BH Ventures
+            </span>
+          </span>
         </div>
 
         <h2

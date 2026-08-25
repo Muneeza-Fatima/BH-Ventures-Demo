@@ -7,9 +7,7 @@ import {
   Target,
   Users,
   CheckCircle2,
-  Lock,
   FileCheck2,
-  BookOpen,
 } from "lucide-react";
 
 const values = [
@@ -39,19 +37,9 @@ const values = [
     tagline: "Precision in detail, not just direction.",
   },
   {
-    icon: Lock,
-    title: "Confidentiality",
-    tagline: "Protecting information as a standard, not a favor.",
-  },
-  {
     icon: FileCheck2,
     title: "Compliance",
     tagline: "Operating within clear regulatory standards.",
-  },
-  {
-    icon: BookOpen,
-    title: "Continuous Learning",
-    tagline: "Improving capability as markets evolve.",
   },
 ];
 
@@ -196,11 +184,11 @@ export default function AboutValues() {
           viewport={{ once: true, amount: 0.15 }}
           className="
             grid
-            grid-cols-2
+            grid-cols-1
             gap-3.5
-            sm:grid-cols-3
+            sm:grid-cols-2
             sm:gap-4
-            lg:grid-cols-4
+            lg:grid-cols-3
           "
         >
           {values.map((value, index) => {
@@ -211,9 +199,16 @@ export default function AboutValues() {
                 key={value.title}
                 variants={cardVariants}
                 whileHover={{
-                  y: -6,
+                  y: -5,
+                  scale: 1.01,
                   transition: { duration: 0.35, ease: [0.22, 1, 0.36, 1] },
                 }}
+                whileFocus={{
+                  y: -5,
+                  scale: 1.01,
+                  transition: { duration: 0.35, ease: [0.22, 1, 0.36, 1] },
+                }}
+                tabIndex={0}
                 className="
                   group
                   relative
@@ -226,11 +221,22 @@ export default function AboutValues() {
 
                   shadow-[0_8px_24px_rgba(16,42,67,0.05)]
 
-                  transition-all
-                  duration-500
+                  transition-[border-color,box-shadow,background-color]
+                  duration-[350ms]
+                  ease-[cubic-bezier(0.22,1,0.36,1)]
 
-                  hover:border-[#00BFA6]/40
-                  hover:shadow-[0_18px_40px_rgba(16,42,67,0.10)]
+                  hover:border-[#00BFA6]/50
+                  hover:bg-[#F4FBFA]
+                  hover:shadow-[0_20px_44px_rgba(16,42,67,0.08),0_0_32px_rgba(0,191,166,0.16)]
+
+                  focus:border-[#00BFA6]/50
+                  focus:bg-[#F4FBFA]
+                  focus:shadow-[0_20px_44px_rgba(16,42,67,0.08),0_0_32px_rgba(0,191,166,0.16)]
+                  focus:outline-none
+                  focus-visible:ring-2
+                  focus-visible:ring-[#00BFA6]/40
+                  focus-visible:ring-offset-2
+                  focus-visible:ring-offset-[#F4F7F5]
 
                   sm:p-6
                 "
@@ -251,6 +257,7 @@ export default function AboutValues() {
 
                 <div
                   className="
+                    relative
                     flex
                     h-11
                     w-11
@@ -269,7 +276,27 @@ export default function AboutValues() {
                     group-hover:border-[#00BFA6]/45
                   "
                 >
-                  <Icon size={18} strokeWidth={1.7} aria-hidden="true" />
+                  <span
+                    aria-hidden="true"
+                    className="
+                      pointer-events-none
+                      absolute
+                      inset-0
+                      rounded-[12px]
+                      bg-[#00BFA6]/40
+                      opacity-0
+
+                      group-hover:[animation:fact-icon-ripple_450ms_ease-out]
+                      group-focus:[animation:fact-icon-ripple_450ms_ease-out]
+                    "
+                  />
+
+                  <Icon
+                    size={18}
+                    strokeWidth={1.7}
+                    aria-hidden="true"
+                    className="relative z-10"
+                  />
                 </div>
 
                 <h3
@@ -293,17 +320,6 @@ export default function AboutValues() {
                     font-medium
                     leading-5
                     text-[#526477]
-
-                    opacity-0
-                    max-h-0
-
-                    transition-all
-                    duration-300
-                    ease-out
-
-                    group-hover:pt-2
-                    group-hover:max-h-16
-                    group-hover:opacity-100
                   "
                 >
                   {value.tagline}

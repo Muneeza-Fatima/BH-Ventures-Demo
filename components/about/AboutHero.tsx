@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, type Variants } from "framer-motion";
+import { motion, useReducedMotion, type Variants } from "framer-motion";
 
 /* ============================================================
    ANIMATION VARIANTS
@@ -57,6 +57,8 @@ const headingWord: Variants = {
 };
 
 export default function AboutHero() {
+  const prefersReducedMotion = useReducedMotion();
+
   return (
     <section
       id="about-hero"
@@ -160,37 +162,70 @@ export default function AboutHero() {
           2xl:max-w-[1600px]
         "
       >
-        {/* Eyebrow */}
+        {/* Eyebrow Pill */}
 
         <motion.div
           variants={itemVariants}
-          className="mb-6 flex items-center gap-3 sm:mb-8"
+          className="mb-6 flex items-center sm:mb-8"
         >
           <span
             className="
-              h-px
-              w-8
-              shrink-0
-              bg-gradient-to-r
-              from-[#00CDB5]
-              to-[#00FFD5]
-              sm:w-9
-            "
-          />
+              story-pill
+              hero-story-pill
+              relative
+              inline-flex
+              items-center
+              gap-2.5
+              rounded-full
+              border
+              border-[#2DD4BF]/25
+              bg-[linear-gradient(135deg,rgba(0,255,213,0.08),rgba(255,255,255,0.04))]
+              px-4
+              py-2.5
+              backdrop-blur-sm
 
-          <span
-            className="
-              text-[9px]
-              font-extrabold
-              uppercase
-              tracking-[0.30em]
-              text-[#00FFD5]
-              [text-shadow:0_0_8px_rgba(0,255,213,0.5)]
-              sm:text-[10px]
-              md:text-[11px]
+              shadow-[0_0_0_1px_rgba(45,212,191,0.06),0_14px_38px_-10px_rgba(0,205,181,0.32)]
+
+              transition-all
+              duration-300
+              ease-out
+
+              hover:-translate-y-[2.5px]
+              hover:border-[#2DD4BF]/45
+              hover:shadow-[0_0_0_1px_rgba(45,212,191,0.10),0_22px_50px_-10px_rgba(0,205,181,0.48)]
             "
           >
-            About BH Ventures
+            <span className="relative flex h-[8px] w-[8px] shrink-0 items-center justify-center">
+              {!prefersReducedMotion && (
+                <>
+                  <span
+                    aria-hidden="true"
+                    className="absolute inset-[-6px] rounded-full border border-[#2DD4BF]/35 hero-story-ring"
+                  />
+
+                  <span
+                    aria-hidden="true"
+                    className="absolute inset-0 rounded-full bg-[#00FFD5] story-dot-breathe"
+                  />
+                </>
+              )}
+
+              <span className="relative h-[8px] w-[8px] rounded-full bg-[#00FFD5] shadow-[0_0_10px_rgba(0,255,213,0.65)]" />
+            </span>
+
+            <span
+              className="
+                text-[9px]
+                font-extrabold
+                uppercase
+                tracking-[0.30em]
+                text-[#00FFD5]
+                sm:text-[10px]
+                md:text-[11px]
+              "
+            >
+              Our Story
+            </span>
           </span>
         </motion.div>
 
@@ -200,7 +235,7 @@ export default function AboutHero() {
           variants={headingContainer}
           aria-label="Where Trade Meets Technology."
           className="
-            max-w-[920px]
+            max-w-[850px]
             font-extrabold
             tracking-[-0.055em]
             text-white

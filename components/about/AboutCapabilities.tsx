@@ -1,58 +1,59 @@
 "use client";
 
+import type { CSSProperties } from "react";
 import { motion } from "framer-motion";
-import {
-  ArrowLeftRight,
-  Cpu,
-  BarChart3,
-  Megaphone,
-  Sparkles,
-  Handshake,
-  CalendarDays,
-} from "lucide-react";
+import { ArrowLeftRight, Cpu, Megaphone, Sparkles, ChevronRight } from "lucide-react";
 
-const combine = [
+const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
+
+const capabilities = [
   {
     icon: ArrowLeftRight,
-    title: "Trade",
-    description:
-      "International trading and market access across strategically selected markets.",
+    title: "International Trade",
+    accent: "#14B8A6",
+    accentSoft: "rgba(20,184,166,0.16)",
+    bullets: [
+      "Cross-border trade & market access",
+      "Strategically selected international markets",
+      "Import, export & distribution",
+      "UAE free-zone trade platform",
+    ],
   },
   {
     icon: Cpu,
-    title: "Technology",
-    description:
-      "Web3, AI, and modern digital infrastructure applied to real business problems.",
-  },
-  {
-    icon: BarChart3,
-    title: "Data",
-    description:
-      "Turning information into structured insight that supports better decisions.",
+    title: "Technology & Data",
+    accent: "#2DD4C3",
+    accentSoft: "rgba(45,212,195,0.16)",
+    bullets: [
+      "Web3, AI & modern digital infrastructure",
+      "Applied to real business problems",
+      "Structured data & insight",
+      "Smarter, faster decision-making",
+    ],
   },
   {
     icon: Megaphone,
-    title: "Marketing",
-    description:
-      "Positioning and growth strategy that gives ventures visibility and reach.",
+    title: "Marketing & Business Development",
+    accent: "#11998E",
+    accentSoft: "rgba(17,153,142,0.18)",
+    bullets: [
+      "Positioning & growth strategy",
+      "Partnerships & pipeline development",
+      "Curated events & gatherings",
+      "Visibility and reach for ventures",
+    ],
   },
   {
     icon: Sparkles,
-    title: "Innovation",
-    description:
-      "A willingness to test new models and combine disciplines others keep separate.",
-  },
-  {
-    icon: Handshake,
-    title: "Business Development",
-    description:
-      "Building the partnerships and pipelines that turn ideas into operating ventures.",
-  },
-  {
-    icon: CalendarDays,
-    title: "Events",
-    description:
-      "Bringing people, partners, and ideas together through curated gatherings.",
+    title: "Innovation & Strategic Ventures",
+    accent: "#22D3EE",
+    accentSoft: "rgba(34,211,238,0.16)",
+    bullets: [
+      "Testing new operating models",
+      "Combining disciplines others keep separate",
+      "One multi-sector venture platform",
+      "Founder-led execution",
+    ],
   },
 ];
 
@@ -76,7 +77,7 @@ const cardVariants = {
     y: 0,
     transition: {
       duration: 0.65,
-      ease: [0.22, 1, 0.36, 1] as [number, number, number, number],
+      ease: EASE,
     },
   },
 };
@@ -141,7 +142,7 @@ export default function AboutCapabilities() {
           initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.2 }}
-          transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 0.65, ease: EASE }}
           className="mx-auto mb-10 max-w-[720px] text-center sm:mb-12 lg:mb-16"
         >
           <div className="mb-4 flex items-center justify-center gap-3">
@@ -157,7 +158,7 @@ export default function AboutCapabilities() {
                 sm:text-[10px]
               "
             >
-              What We Combine
+              What We Operate
             </span>
 
             <span className="h-px w-8 bg-gradient-to-l from-transparent to-[#00FFD5] sm:w-10" />
@@ -176,7 +177,7 @@ export default function AboutCapabilities() {
               [@media(min-width:1024px)_and_(max-width:1366px)]:text-[2.75rem]!
             "
           >
-            Seven disciplines.{" "}
+            Four capabilities.{" "}
             <span
               className="
                 bg-gradient-to-r
@@ -222,21 +223,34 @@ export default function AboutCapabilities() {
             lg:gap-6
           "
         >
-          {combine.map((item, index) => {
+          {capabilities.map((item) => {
             const Icon = item.icon;
-            const isLast = index === combine.length - 1;
 
             return (
               <motion.div
                 key={item.title}
                 variants={cardVariants}
                 whileHover={{
-                  y: -7,
-                  transition: { duration: 0.35, ease: [0.22, 1, 0.36, 1] },
+                  y: -6,
+                  scale: 1.012,
+                  transition: { duration: 0.35, ease: EASE },
                 }}
-                className={`
+                whileFocus={{
+                  y: -6,
+                  scale: 1.012,
+                  transition: { duration: 0.35, ease: EASE },
+                }}
+                tabIndex={0}
+                style={
+                  {
+                    "--accent": item.accent,
+                    "--accent-soft": item.accentSoft,
+                  } as CSSProperties
+                }
+                className="
                   group
                   relative
+                  isolate
                   overflow-hidden
                   rounded-[26px]
                   border
@@ -244,18 +258,46 @@ export default function AboutCapabilities() {
                   bg-white/[0.025]
                   p-7
 
-                  transition-all
+                  transition-[border-color,background-color,box-shadow]
                   duration-500
                   ease-out
 
-                  hover:border-[#00FFD5]/30
+                  hover:border-[var(--accent)]/50
                   hover:bg-white/[0.045]
-                  hover:shadow-[0_24px_55px_rgba(0,255,213,0.08)]
+                  hover:shadow-[0_24px_55px_rgba(0,0,0,0.28),0_0_40px_var(--accent-soft)]
+
+                  focus:border-[var(--accent)]/50
+                  focus:bg-white/[0.045]
+                  focus:shadow-[0_24px_55px_rgba(0,0,0,0.28),0_0_40px_var(--accent-soft)]
+                  focus:outline-none
+                  focus-visible:ring-2
+                  focus-visible:ring-[var(--accent)]/60
+                  focus-visible:ring-offset-2
+                  focus-visible:ring-offset-[#0B1220]
 
                   sm:p-8
-                  ${isLast ? "sm:col-span-2" : ""}
-                `}
+                "
               >
+                {/* Top accent strip */}
+                <div
+                  aria-hidden="true"
+                  className="
+                    absolute
+                    inset-x-0
+                    top-0
+                    h-[3px]
+                    opacity-70
+
+                    transition-opacity
+                    duration-500
+
+                    group-hover:opacity-100
+                  "
+                  style={{
+                    background: `linear-gradient(90deg, transparent, var(--accent), transparent)`,
+                  }}
+                />
+
                 <div
                   aria-hidden="true"
                   className="
@@ -266,124 +308,97 @@ export default function AboutCapabilities() {
                     h-48
                     w-48
                     rounded-full
-                    bg-[#00FFD5]/0
                     blur-[70px]
-                    transition-all
+                    opacity-0
+                    transition-opacity
                     duration-700
                     ease-out
-                    group-hover:bg-[#00FFD5]/[0.10]
+                    group-hover:opacity-100
                   "
+                  style={{ background: "var(--accent-soft)" }}
                 />
 
-                <div
-                  className={`
-                    relative
-                    z-10
-                    flex
-                    flex-col
-                    gap-6
-                    ${
-                      isLast
-                        ? "sm:flex-row sm:items-center sm:justify-between sm:gap-10"
-                        : ""
-                    }
-                  `}
-                >
-                  <div className="flex items-center gap-4">
-                    <span
-                      className="
-                        flex
-                        h-14
-                        w-14
-                        shrink-0
-                        items-center
-                        justify-center
-                        rounded-2xl
-                        border
-                        border-[#2DD4BF]/30
-                        bg-[#064E49]/60
-                        text-[#5EEAD4]
+                <div className="relative z-10">
+                  <span
+                    className="
+                      flex
+                      h-14
+                      w-14
+                      shrink-0
+                      items-center
+                      justify-center
+                      rounded-2xl
+                      border
 
-                        transition-all
-                        duration-500
+                      transition-all
+                      duration-500
 
-                        group-hover:-translate-y-1
-                        group-hover:border-[#5EEAD4]/50
-                      "
-                    >
-                      <Icon size={24} strokeWidth={1.6} aria-hidden="true" />
-                    </span>
+                      group-hover:-translate-y-1
+                      group-hover:scale-105
+                    "
+                    style={{
+                      borderColor: "var(--accent-soft)",
+                      backgroundColor: "var(--accent-soft)",
+                      color: "var(--accent)",
+                    }}
+                  >
+                    <Icon size={24} strokeWidth={1.6} aria-hidden="true" />
+                  </span>
 
-                    <span
-                      className="
-                        text-[10px]
-                        font-bold
-                        uppercase
-                        tracking-[0.16em]
-                        text-white/25
-                      "
-                    >
-                      {String(index + 1).padStart(2, "0")}
-                    </span>
-                  </div>
+                  <h3
+                    className="
+                      pt-5
+                      text-[19px]
+                      font-bold
+                      leading-tight
+                      tracking-[-0.02em]
+                      text-white
+                      sm:text-[21px]
+                    "
+                  >
+                    {item.title}
+                  </h3>
 
-                  <div className={isLast ? "sm:max-w-[520px]" : ""}>
-                    <h3
-                      className="
-                        text-[19px]
-                        font-bold
-                        leading-tight
-                        tracking-[-0.02em]
-                        text-white
-                        transition-colors
-                        duration-500
-                        group-hover:text-[#C5FFF6]
-                        sm:text-[21px]
-                      "
-                    >
-                      {item.title}
-                    </h3>
+                  <ul className="mt-4 flex flex-col gap-2.5">
+                    {item.bullets.map((bullet) => (
+                      <li
+                        key={bullet}
+                        className="
+                          flex
+                          items-start
+                          gap-2
+                          text-[13.5px]
+                          font-medium
+                          leading-6
+                          text-white/60
 
-                    <p
-                      className="
-                        pt-2.5
-                        text-[13.5px]
-                        font-medium
-                        leading-6
-                        text-white/55
-                        transition-colors
-                        duration-500
-                        group-hover:text-white/72
-                        sm:text-[14px]
-                      "
-                    >
-                      {item.description}
-                    </p>
-                  </div>
+                          transition-colors
+                          duration-500
+
+                          group-hover:text-white/80
+                        "
+                      >
+                        <ChevronRight
+                          size={15}
+                          strokeWidth={2}
+                          aria-hidden="true"
+                          className="
+                            mt-[3px]
+                            shrink-0
+
+                            transition-transform
+                            duration-300
+
+                            group-hover:translate-x-0.5
+                          "
+                          style={{ color: "var(--accent)" }}
+                        />
+
+                        <span>{bullet}</span>
+                      </li>
+                    ))}
+                  </ul>
                 </div>
-
-                <div
-                  aria-hidden="true"
-                  className="
-                    absolute
-                    bottom-0
-                    left-7
-                    right-7
-                    h-px
-                    origin-left
-                    scale-x-0
-                    bg-gradient-to-r
-                    from-[#00FFD5]
-                    via-[#5EEAD4]
-                    to-transparent
-                    transition-transform
-                    duration-500
-                    ease-out
-                    group-hover:scale-x-100
-                    sm:left-8
-                    sm:right-8
-                  "
-                />
               </motion.div>
             );
           })}

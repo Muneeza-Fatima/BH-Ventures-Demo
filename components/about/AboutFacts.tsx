@@ -1,30 +1,62 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { motion } from "framer-motion";
-import { MapPin, ShieldCheck, ListChecks, Boxes } from "lucide-react";
+import { motion, useReducedMotion } from "framer-motion";
+import {
+  MapPin,
+  Landmark,
+  ListChecks,
+  Layers3,
+  UserRound,
+  ArrowLeftRight,
+  Cpu,
+  type LucideIcon,
+} from "lucide-react";
 
-const facts = [
+type Fact = {
+  icon: LucideIcon;
+  iconSecondary?: LucideIcon;
+  title: string;
+  detail: string;
+  countValue?: number;
+  countSuffix?: string;
+  highlight?: boolean;
+};
+
+const facts: Fact[] = [
   {
     icon: MapPin,
-    label: "UAE Based",
-    detail: "Operating out of the United Arab Emirates.",
+    title: "UAE Based",
+    detail: "Operating from the United Arab Emirates.",
   },
   {
-    icon: ShieldCheck,
-    label: "Ajman Free Zone",
-    detail: "Registered as a free-zone entity.",
+    icon: Landmark,
+    title: "Ajman Free Zone",
+    detail: "Registered as a UAE free-zone entity.",
   },
   {
     icon: ListChecks,
-    label: "Licensed Activities",
-    detail: "9 licensed business activities.",
-    count: 9,
+    title: "Licensed Activities",
+    countValue: 9,
+    countSuffix: " Licensed Activities",
+    detail: "Across trade, technology and business services.",
+    highlight: true,
   },
   {
-    icon: Boxes,
-    label: "Multi-Sector Platform",
-    detail: "One venture platform, several disciplines.",
+    icon: Layers3,
+    title: "Multi-Sector Platform",
+    detail: "Connecting multiple disciplines under one venture platform.",
+  },
+  {
+    icon: UserRound,
+    title: "Founder-Led",
+    detail: "Direct leadership and accountability.",
+  },
+  {
+    icon: ArrowLeftRight,
+    iconSecondary: Cpu,
+    title: "Trade + Technology",
+    detail: "Bridging traditional commerce with modern technology.",
   },
 ];
 
@@ -88,8 +120,19 @@ const cardVariants = {
   },
 };
 
+const POP_EASE = [0.22, 1, 0.36, 1] as [number, number, number, number];
+
 export default function AboutFacts() {
   const [visible, setVisible] = useState(false);
+  const prefersReducedMotion = useReducedMotion();
+
+  const hoverPop = prefersReducedMotion
+    ? {}
+    : {
+        y: -6,
+        scale: 1.012,
+        transition: { duration: 0.35, ease: POP_EASE },
+      };
 
   return (
     <section
@@ -210,91 +253,197 @@ export default function AboutFacts() {
             grid-cols-1
             gap-4
             sm:grid-cols-2
-            lg:grid-cols-4
+            lg:grid-cols-3
             lg:gap-5
           "
         >
           {facts.map((fact) => {
             const Icon = fact.icon;
+            const SecondaryIcon = fact.iconSecondary;
 
             return (
               <motion.div
-                key={fact.label}
+                key={fact.title}
                 variants={cardVariants}
-                whileHover={{
-                  y: -6,
-                  transition: { duration: 0.35, ease: [0.22, 1, 0.36, 1] },
-                }}
-                className="
+                whileHover={hoverPop}
+                whileFocus={hoverPop}
+                tabIndex={0}
+                className={`
                   group
                   relative
+                  isolate
                   overflow-hidden
                   rounded-[22px]
                   border
-                  border-[#E2E8E7]
                   bg-white
-                  p-6
+                  p-7
 
-                  shadow-[0_10px_30px_rgba(16,42,67,0.06)]
+                  transition-[border-color,box-shadow]
+                  duration-[350ms]
+                  ease-[cubic-bezier(0.22,1,0.36,1)]
 
-                  transition-all
-                  duration-500
+                  hover:border-[#00BFA6]/60
+                  hover:shadow-[0_22px_48px_rgba(16,42,67,0.10),0_0_36px_rgba(0,191,166,0.16)]
 
-                  hover:border-[#00BFA6]/40
-                  hover:shadow-[0_20px_45px_rgba(16,42,67,0.10)]
+                  focus:border-[#00BFA6]/60
+                  focus:shadow-[0_22px_48px_rgba(16,42,67,0.10),0_0_36px_rgba(0,191,166,0.16)]
+                  focus:outline-none
+                  focus-visible:ring-2
+                  focus-visible:ring-[#00BFA6]/40
+                  focus-visible:ring-offset-2
+                  focus-visible:ring-offset-[#F4F7F5]
 
-                  sm:p-7
-                "
+                  sm:p-8
+
+                  ${
+                    fact.highlight
+                      ? "border-[#00BFA6]/55 shadow-[0_16px_40px_rgba(16,42,67,0.08),0_0_30px_rgba(0,191,166,0.18)]"
+                      : "border-[#E2E8E7] shadow-[0_10px_30px_rgba(16,42,67,0.06)]"
+                  }
+                `}
               >
+                {fact.highlight && (
+                  <span
+                    className="
+                      absolute
+                      right-5
+                      top-5
+                      rounded-full
+                      border
+                      border-[#00BFA6]/30
+                      bg-[#EAF7F4]
+                      px-2.5
+                      py-1
+                      text-[9px]
+                      font-extrabold
+                      uppercase
+                      tracking-[0.14em]
+                      text-[#0E8C77]
+                    "
+                  >
+                    Core Stat
+                  </span>
+                )}
+
                 <div
                   className="
+                    relative
                     flex
-                    h-12
-                    w-12
+                    h-14
+                    w-14
                     items-center
                     justify-center
-                    rounded-[13px]
+                    rounded-[16px]
                     border
                     border-[#00BFA6]/25
-                    bg-[#EAF7F4]
+                    bg-gradient-to-br
+                    from-[#00BFA6]/15
+                    via-[#00BFA6]/5
+                    to-transparent
                     text-[#0E8C77]
 
-                    transition-all
-                    duration-500
+                    transition-transform
+                    duration-[350ms]
+                    ease-[cubic-bezier(0.22,1,0.36,1)]
 
-                    group-hover:-translate-y-1
-                    group-hover:border-[#00BFA6]/45
+                    group-hover:-translate-y-0.5
+                    group-focus:-translate-y-0.5
                   "
                 >
-                  <Icon size={20} strokeWidth={1.7} aria-hidden="true" />
-                </div>
+                  <span
+                    aria-hidden="true"
+                    className="
+                      pointer-events-none
+                      absolute
+                      inset-0
+                      rounded-[16px]
+                      bg-[#00BFA6]/40
+                      opacity-0
 
-                <div
-                  className="
-                    mt-5
-                    text-[26px]
-                    font-extrabold
-                    tracking-[-0.03em]
-                    text-[#102A43]
-                    sm:text-[28px]
-                  "
-                >
-                  {"count" in fact ? (
-                    <CountUp value={fact.count as number} active={visible} />
-                  ) : (
-                    <span className="text-[19px] leading-tight sm:text-[21px]">
-                      {fact.label}
+                      group-hover:[animation:fact-icon-ripple_450ms_ease-out]
+                      group-focus:[animation:fact-icon-ripple_450ms_ease-out]
+                    "
+                  />
+
+                  <Icon
+                    size={22}
+                    strokeWidth={1.6}
+                    aria-hidden="true"
+                    className="
+                      relative
+                      z-10
+
+                      transition-transform
+                      duration-[350ms]
+                      ease-[cubic-bezier(0.22,1,0.36,1)]
+
+                      group-hover:scale-105
+                      group-focus:scale-105
+                    "
+                  />
+
+                  {SecondaryIcon && (
+                    <span
+                      className="
+                        absolute
+                        -bottom-1.5
+                        -right-1.5
+                        z-20
+                        flex
+                        h-5
+                        w-5
+                        items-center
+                        justify-center
+                        rounded-full
+                        border
+                        border-white
+                        bg-[#0E8C77]
+                        text-white
+                        shadow-[0_2px_6px_rgba(16,42,67,0.25)]
+                      "
+                    >
+                      <SecondaryIcon
+                        size={11}
+                        strokeWidth={2}
+                        aria-hidden="true"
+                      />
                     </span>
                   )}
                 </div>
 
-                {"count" in fact && (
-                  <p className="pt-1 text-[15px] font-bold text-[#102A43]">
-                    {fact.label}
-                  </p>
-                )}
+                <h3
+                  className="
+                    mt-5
+                    text-[19px]
+                    font-extrabold
+                    leading-tight
+                    tracking-[-0.02em]
+                    text-[#102A43]
+                    sm:text-[21px]
+                  "
+                >
+                  {fact.countValue ? (
+                    <>
+                      <span className="text-[1.2em] text-[#00A98F]">
+                        <CountUp value={fact.countValue} active={visible} />
+                      </span>
+                      {fact.countSuffix}
+                    </>
+                  ) : (
+                    fact.title
+                  )}
+                </h3>
 
-                <p className="pt-2.5 text-[13px] font-medium leading-6 text-[#526477]">
+                <p
+                  className="
+                    mt-2.5
+                    min-h-[40px]
+                    text-[13px]
+                    font-medium
+                    leading-5
+                    text-[#526477]
+                  "
+                >
                   {fact.detail}
                 </p>
               </motion.div>
