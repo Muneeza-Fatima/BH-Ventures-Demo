@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import { directChannels } from "@/components/contact/contactData";
+import { directChannels } from "@/components/about/aboutContactData";
 
 const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
