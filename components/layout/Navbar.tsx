@@ -623,6 +623,11 @@ export default function Navbar() {
   const [contactOpen, setContactOpen] = useState(false);
   const [isLightMode, setIsLightMode] = useState(false);
 
+  /* The About dropdown/accordion is scoped to the About page only —
+     every other route keeps the original plain-link Navbar behavior. */
+  const pathname = usePathname();
+  const isAboutRoute = isAboutPath(pathname);
+
   const currentLanguage = useSyncExternalStore(
     subscribeToLanguageStore,
     getLanguageSnapshot,
@@ -834,7 +839,7 @@ export default function Navbar() {
             `}
           >
             {navItems.map((item) =>
-              item.dropdown ? (
+              item.dropdown && isAboutRoute ? (
                 <AboutNavDropdown
                   key={item.label}
                   isLightMode={isLightMode}
@@ -1134,7 +1139,7 @@ export default function Navbar() {
         >
           <div className="px-4 pb-5 pt-3 sm:px-6 sm:pb-6 sm:pt-4">
             {navItems.map((item) =>
-              item.dropdown ? (
+              item.dropdown && isAboutRoute ? (
                 <AboutMobileAccordion
                   key={item.label}
                   onNavigate={() => setIsOpen(false)}
