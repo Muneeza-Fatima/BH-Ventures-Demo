@@ -82,7 +82,10 @@ function CountUp({
 
   return (
     <>
-      <span className="text-white">
+      <span
+        translate="no"
+        className="notranslate text-white"
+      >
         {prefix}
         {count}
       </span>
@@ -170,6 +173,7 @@ export default function GlobalImpact() {
       "
     >
       {/* Ambient Glow */}
+
       <div
         aria-hidden="true"
         className="
@@ -205,6 +209,7 @@ export default function GlobalImpact() {
         "
       >
         {/* Background Video */}
+
         <video
           ref={videoRef}
           className="
@@ -235,7 +240,8 @@ export default function GlobalImpact() {
           />
         </video>
 
-        {/* Overlay */}
+        {/* Video Overlay */}
+
         <div
           aria-hidden="true"
           className="
@@ -310,27 +316,9 @@ export default function GlobalImpact() {
             lg:py-22
           "
         >
-          {/* Heading */}
-          <motion.div
-            initial={{
-              opacity: 0,
-              y: 18,
-            }}
-            animate={
-              sectionInView
-                ? {
-                    opacity: 1,
-                    y: 0,
-                  }
-                : {
-                    opacity: 0,
-                    y: 18,
-                  }
-            }
-            transition={{
-              duration: 0.6,
-              ease: [0.22, 1, 0.36, 1],
-            }}
+          {/* Header */}
+
+          <div
             className="
               mx-auto
               max-w-[650px]
@@ -400,7 +388,7 @@ export default function GlobalImpact() {
                 lg:text-[44px]
               "
             >
-              <span className="block font-bold">
+              <span className="block">
                 Global Reach.
               </span>
 
@@ -420,7 +408,7 @@ export default function GlobalImpact() {
                 Real Opportunities.
               </span>
 
-              <span className="block font-bold">
+              <span className="block">
                 Trusted by Traders
               </span>
 
@@ -487,7 +475,10 @@ export default function GlobalImpact() {
             </p>
           </motion.div>
 
-          {/* Statistics */}
+          {/* =====================================================
+              STATISTICS
+          ===================================================== */}
+
           <div
             ref={statsRef}
             className="
@@ -562,15 +553,108 @@ export default function GlobalImpact() {
 
                     sm:text-[24px]
 
-                    md:text-[26px]
-                  "
+                    transition-all
+                    duration-300
+                    ease-out
+
+                    hover:z-20
+                    hover:scale-[1.06]
+                    hover:border-[#5EEAD4]/30
+                    hover:bg-white/[0.075]
+                    hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_16px_35px_rgba(0,0,0,0.22),0_0_25px_rgba(45,212,191,0.08)]
+
+                    sm:w-[175px]
+                    sm:rounded-[20px]
+                    sm:px-4
+                    sm:py-3.5
+
+                    [@media(min-width:1024px)_and_(max-width:1366px)]:w-[165px]!
+                  `}
                 >
-                  <CountUp
-                    value={stat.value}
-                    prefix={stat.prefix}
-                    suffix={stat.suffix}
-                    active={statsInView}
+                  {/* Card Top Highlight */}
+
+                  <span
+                    aria-hidden="true"
+                    className="
+                      pointer-events-none
+                      absolute
+                      left-1/2
+                      top-0
+                      h-px
+                      w-[65%]
+                      -translate-x-1/2
+                      bg-gradient-to-r
+                      from-transparent
+                      via-[#5EEAD4]/45
+                      to-transparent
+                    "
                   />
+
+                  {/* Icon */}
+
+                  <div
+                    className="
+                      relative
+                      mb-2.5
+                      flex
+                      h-8
+                      w-8
+                      items-center
+                      justify-center
+                      rounded-[10px]
+                      border
+                      border-[#5EEAD4]/20
+                      bg-[#14B8A6]/[0.09]
+                      text-[#5EEAD4]
+                    "
+                  >
+                    <Icon
+                      size={16}
+                      strokeWidth={1.7}
+                      aria-hidden="true"
+                    />
+                  </div>
+
+                  {/* Number */}
+
+                  <div
+                    className="
+                      relative
+                      whitespace-nowrap
+                      text-[21px]
+                      font-normal
+                      leading-none
+                      tracking-[-0.035em]
+                      sm:text-[24px]
+                      md:text-[26px]
+                    "
+                  >
+                    <CountUp
+                      value={stat.value}
+                      prefix={stat.prefix}
+                      suffix={stat.suffix}
+                      active={statsVisible}
+                    />
+                  </div>
+
+                  {/* Label */}
+
+                  <p
+                    className="
+                      relative
+                      mt-1.5
+                      max-w-[125px]
+                      text-[9px]
+                      font-medium
+                      leading-4
+                      text-white/55
+                      sm:max-w-[160px]
+                      sm:text-[10px]
+                      sm:leading-5
+                    "
+                  >
+                    {stat.label}
+                  </p>
                 </div>
 
                 {/* Label */}
@@ -596,26 +680,8 @@ export default function GlobalImpact() {
           </div>
 
           {/* Bottom Accent */}
-          <motion.div
-            initial={{
-              opacity: 0,
-              scaleX: 0.6,
-            }}
-            animate={
-              statsInView
-                ? {
-                    opacity: 1,
-                    scaleX: 1,
-                  }
-                : {
-                    opacity: 0,
-                    scaleX: 0.6,
-                  }
-            }
-            transition={{
-              duration: 0.5,
-              delay: 0.3,
-            }}
+
+          <div
             className="
               mt-0
               h-px
