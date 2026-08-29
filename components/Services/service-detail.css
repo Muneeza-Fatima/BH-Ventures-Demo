@@ -1,0 +1,995 @@
+/* ========================================
+   SERVICE DETAIL PAGE — ALL STYLES
+   Used by: app/services/[slug]/page.tsx, ServiceDetailHero.tsx
+   Relies on: --accent / --accent-rgb set via [data-category] below
+   ======================================== */
+
+.service-detail-page {
+    position: relative;
+    background: #0a1628;
+    min-height: 100vh;
+    /* brand default: mint, matches homepage "Ventures." + CTA buttons */
+    --accent: #2ee6c5;
+    --accent-rgb: 46, 230, 197;
+}
+
+/* reuse the same category → color vars as the cards, scoped to this page */
+.service-detail-page[data-category="trade"] {
+    --accent: #ffb648;
+    --accent-rgb: 255, 182, 72;
+}
+
+.service-detail-page[data-category="web3"] {
+    --accent: #a78bfa;
+    --accent-rgb: 167, 139, 250;
+}
+
+.service-detail-page[data-category="ai"] {
+    --accent: #00e5ff;
+    --accent-rgb: 0, 229, 255;
+}
+
+.service-detail-page[data-category="marketing"] {
+    --accent: #ff6ec7;
+    --accent-rgb: 255, 110, 199;
+}
+
+/* categories matching the actual badge copy in use (Data & Insight, Growth,
+   Innovation, Assessment) — each gets its own distinct accent */
+.service-detail-page[data-category="data-insight"] {
+    --accent: #38bdf8;
+    --accent-rgb: 56, 189, 248;
+}
+
+.service-detail-page[data-category="growth"] {
+    --accent: #34d399;
+    --accent-rgb: 52, 211, 153;
+}
+
+.service-detail-page[data-category="innovation"] {
+    --accent: #818cf8;
+    --accent-rgb: 129, 140, 248;
+}
+
+.service-detail-page[data-category="assessment"] {
+    --accent: #fb923c;
+    --accent-rgb: 251, 146, 60;
+}
+
+.service-detail-page[data-category="default"] {
+    --accent: #2ee6c5;
+    --accent-rgb: 46, 230, 197;
+}
+
+/* ========================================
+   FOUR-COLOR ROTATION PALETTE
+   Used by Included cards + Process steps so this part of the page reads
+   as vibrant and varied, independent of the page's single --accent.
+   mint → gold → purple → pink, repeating.
+   ======================================== */
+
+:root {
+    --rot-1: #2ee6c5;
+    --rot-1-rgb: 46, 230, 197;
+    --rot-2: #ffb648;
+    --rot-2-rgb: 255, 182, 72;
+    --rot-3: #a78bfa;
+    --rot-3-rgb: 167, 139, 250;
+    --rot-4: #ff6ec7;
+    --rot-4-rgb: 255, 110, 199;
+}
+
+/* ---------- HERO (3D media stage) ---------- */
+
+.detail-hero {
+    position: relative;
+    height: 70vh;
+    min-height: 420px;
+    overflow: hidden;
+    background: #0b1220;
+}
+
+@media (min-width: 1024px) {
+    .detail-hero {
+        height: 80vh;
+    }
+}
+
+@media (max-width: 640px) {
+    .detail-hero {
+        height: 56vh;
+        min-height: 360px;
+    }
+}
+
+.detail-hero-stage {
+    position: absolute;
+    inset: 0;
+    perspective: 1400px;
+    overflow: hidden;
+}
+
+.detail-hero-media {
+    position: absolute;
+    inset: -8%;
+    height: 116%;
+    width: 116%;
+    transform-style: preserve-3d;
+    transition: transform 0.25s ease-out;
+    animation: detail-hero-kenburns 14s ease-in-out infinite;
+    /* scroll-driven vars, set from JS; default to no-op */
+    --scroll-z: 0px;
+    --scroll-scale: 1;
+    --scroll-fade: 1;
+    translate: 0 0 var(--scroll-z);
+    scale: var(--scroll-scale);
+    opacity: var(--scroll-fade);
+}
+
+/* photo keeps real color instead of being crushed dark */
+.detail-hero-media-el {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    object-position: center;
+    filter: saturate(1.3) contrast(1.08) brightness(1.02);
+}
+
+@keyframes detail-hero-kenburns {
+    0% {
+        transform: perspective(1400px) rotateY(0deg) rotateX(0deg) scale(1.02);
+    }
+
+    50% {
+        transform: perspective(1400px) rotateY(3deg) rotateX(-1.5deg) scale(1.08);
+    }
+
+    100% {
+        transform: perspective(1400px) rotateY(0deg) rotateX(0deg) scale(1.02);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .detail-hero-media {
+        animation: none;
+    }
+}
+
+/* lighter, category-tinted fade instead of a flat navy wash */
+.detail-hero-fade {
+    position: absolute;
+    inset: 0;
+    z-index: 5;
+    pointer-events: none;
+    background: linear-gradient(to bottom,
+            rgba(10, 22, 40, 0.05) 0%,
+            rgba(10, 22, 40, 0.28) 55%,
+            #0a1628 100%),
+        radial-gradient(ellipse 900px 500px at 15% 100%, rgba(var(--accent-rgb), 0.12), transparent 60%);
+}
+
+.detail-hero-content {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 3rem;
+    z-index: 10;
+    margin: 0 auto;
+    max-width: 1320px;
+    padding: 0 2rem;
+}
+
+@media (max-width: 640px) {
+    .detail-hero-content {
+        padding: 0 1.25rem;
+        bottom: 2rem;
+    }
+}
+
+.detail-hero-badge {
+    position: static;
+    display: inline-flex;
+    margin-bottom: 1rem;
+}
+
+/* title now shimmers white → the page's own category color, not fixed cyan/purple */
+.detail-hero-title {
+    font-family: var(--font-display);
+    font-size: 2.5rem;
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    max-width: 40rem;
+    background: linear-gradient(100deg,
+            #ffffff 0%,
+            var(--accent) 40%,
+            #ffffff 70%,
+            var(--accent) 100%);
+    background-size: 250% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: service-title-shimmer 6s ease-in-out infinite;
+}
+
+@keyframes service-title-shimmer {
+    0% {
+        background-position: 0% center;
+    }
+
+    50% {
+        background-position: 100% center;
+    }
+
+    100% {
+        background-position: 0% center;
+    }
+}
+
+@media (min-width: 768px) {
+    .detail-hero-title {
+        font-size: 3.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .detail-hero-title {
+        font-size: 1.85rem;
+    }
+}
+
+.detail-hero-sub {
+    margin-top: 0.75rem;
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: var(--accent);
+    text-shadow: 0 0 14px rgba(var(--accent-rgb), 0.4);
+}
+
+@media (max-width: 480px) {
+    .detail-hero-sub {
+        font-size: 0.95rem;
+    }
+}
+
+/* ---------- PAGE INNER WRAPPER ---------- */
+
+.service-detail-inner {
+    position: relative;
+    z-index: 10;
+    margin: 0 auto;
+    max-width: 960px;
+    padding: 2.5rem 2rem 6rem;
+}
+
+@media (max-width: 640px) {
+    .service-detail-inner {
+        padding: 1.75rem 1.25rem 4rem;
+    }
+}
+
+.service-detail-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-bottom: 2.5rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-silver, #8fa3b8);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.service-detail-back:hover {
+    color: var(--accent);
+}
+
+.service-detail-eyebrow {
+    display: inline-block;
+    margin-bottom: 0.75rem;
+    font-family: var(--font-display);
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.24em;
+    color: var(--accent);
+    text-shadow: 0 0 12px rgba(var(--accent-rgb), 0.4);
+}
+
+.service-detail-heading {
+    margin-bottom: 1.5rem;
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #eaf6fb;
+}
+
+/* ========================================
+   OVERVIEW — accent callout panel
+   Was: bare paragraph. Now: a glowing panel with an accent bar, a large
+   decorative quote glyph, and a soft radial wash behind the copy.
+   ======================================== */
+
+.service-detail-overview {
+    position: relative;
+    margin-bottom: 3.5rem;
+    padding: 2rem 2.25rem 2.25rem 2.5rem;
+    border-radius: 1.25rem;
+    border: 1px solid rgba(var(--accent-rgb), 0.22);
+    background:
+        radial-gradient(ellipse 640px 320px at 0% 0%, rgba(var(--accent-rgb), 0.14), transparent 65%),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.015));
+    overflow: hidden;
+}
+
+/* left accent bar, glowing */
+.service-detail-overview::before {
+    content: "";
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 3px;
+    background: linear-gradient(180deg, var(--accent), rgba(var(--accent-rgb), 0.1));
+    box-shadow: 0 0 16px rgba(var(--accent-rgb), 0.6);
+}
+
+/* oversized quote glyph sitting behind the copy */
+.service-detail-overview::after {
+    content: "\201C";
+    position: absolute;
+    top: -1.5rem;
+    right: 1rem;
+    font-family: var(--font-display);
+    font-size: 8rem;
+    line-height: 1;
+    font-weight: 700;
+    color: rgba(var(--accent-rgb), 0.1);
+    pointer-events: none;
+}
+
+.service-detail-desc {
+    position: relative;
+    z-index: 1;
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: var(--color-silver, #b7c4d1);
+    max-width: 42rem;
+}
+
+.service-detail-desc::first-letter {
+    font-family: var(--font-display);
+    font-size: 1.6em;
+    font-weight: 700;
+    color: var(--accent);
+}
+
+@media (max-width: 640px) {
+    .service-detail-overview {
+        padding: 1.5rem 1.25rem 1.75rem 1.5rem;
+    }
+
+    .service-detail-overview::after {
+        font-size: 5.5rem;
+    }
+}
+
+/* ========================================
+   WHAT'S INCLUDED — multi-color glowing cards
+   Each card cycles through the 4-color rotation palette independent of
+   the page's --accent, with a glowing checkmark badge instead of a dot.
+   ======================================== */
+
+.service-detail-included {
+    margin-bottom: 3.5rem;
+}
+
+.service-detail-included-list {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+@media (min-width: 640px) {
+    .service-detail-included-list {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+.service-detail-included-list li {
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    gap: 0.9rem;
+    padding: 1.1rem 1.2rem;
+    border-radius: 0.9rem;
+    border: 1px solid rgba(var(--item-rgb), 0.28);
+    background:
+        radial-gradient(ellipse 220px 140px at 0% 0%, rgba(var(--item-rgb), 0.16), transparent 70%),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.055), rgba(255, 255, 255, 0.015));
+    font-size: 0.9rem;
+    line-height: 1.5;
+    color: #dce8f2;
+    transition: border-color 0.3s ease, transform 0.22s ease, box-shadow 0.3s ease, background 0.3s ease;
+}
+
+/* 4-color rotation, cycling regardless of how many items exist */
+.service-detail-included-list li:nth-child(4n+1) {
+    --item: var(--rot-1);
+    --item-rgb: var(--rot-1-rgb);
+}
+
+.service-detail-included-list li:nth-child(4n+2) {
+    --item: var(--rot-2);
+    --item-rgb: var(--rot-2-rgb);
+}
+
+.service-detail-included-list li:nth-child(4n+3) {
+    --item: var(--rot-3);
+    --item-rgb: var(--rot-3-rgb);
+}
+
+.service-detail-included-list li:nth-child(4n+4) {
+    --item: var(--rot-4);
+    --item-rgb: var(--rot-4-rgb);
+}
+
+.service-detail-included-list li:hover {
+    border-color: rgba(var(--item-rgb), 0.65);
+    transform: translateY(-3px);
+    box-shadow: 0 16px 34px -16px rgba(0, 0, 0, 0.5), 0 0 26px rgba(var(--item-rgb), 0.22);
+}
+
+/* glowing checkmark badge, replaces the old plain dot */
+.service-detail-included-list li::before {
+    content: "\2713";
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 1.6rem;
+    width: 1.6rem;
+    margin-top: 0.05rem;
+    border-radius: 9999px;
+    background: linear-gradient(135deg, var(--item), rgba(var(--item-rgb), 0.55));
+    box-shadow: 0 0 14px rgba(var(--item-rgb), 0.65);
+    color: #06111f;
+    font-size: 0.8rem;
+    font-weight: 800;
+}
+
+.service-detail-included-list li span,
+.service-detail-included-list li p {
+    padding-top: 0.15rem;
+}
+
+/* ========================================
+   HOW IT WORKS / PROCESS — glowing badge timeline
+   Numbers become large gradient-ring badges (4-color rotation) linked by
+   a vertical glowing line; the whole row highlights on hover.
+   A thin spinning ring orbits each number badge continuously.
+   ======================================== */
+
+.service-detail-process {
+    margin-bottom: 3.5rem;
+}
+
+.service-detail-process-list {
+    position: relative;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+.service-detail-process-list li {
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    gap: 1.5rem;
+    padding: 1.5rem 1.25rem;
+    margin: 0 -1.25rem;
+    border-radius: 1rem;
+    border-bottom: 1px solid transparent;
+    transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.service-detail-process-list li:hover {
+    background:
+        radial-gradient(ellipse 420px 160px at 0% 50%, rgba(var(--step-rgb), 0.12), transparent 75%);
+    transform: translateX(3px);
+}
+
+/* 4-color rotation for each step */
+.service-detail-process-list li:nth-child(4n+1) {
+    --step: var(--rot-1);
+    --step-rgb: var(--rot-1-rgb);
+}
+
+.service-detail-process-list li:nth-child(4n+2) {
+    --step: var(--rot-2);
+    --step-rgb: var(--rot-2-rgb);
+}
+
+.service-detail-process-list li:nth-child(4n+3) {
+    --step: var(--rot-3);
+    --step-rgb: var(--rot-3-rgb);
+}
+
+.service-detail-process-list li:nth-child(4n+4) {
+    --step: var(--rot-4);
+    --step-rgb: var(--rot-4-rgb);
+}
+
+/* connecting vertical line, drawn behind the badges */
+.service-detail-process-list li:not(:last-child)::after {
+    content: "";
+    position: absolute;
+    left: 2.625rem;
+    top: 4.25rem;
+    bottom: -0.5rem;
+    width: 2px;
+    background: linear-gradient(180deg, rgba(var(--step-rgb), 0.55), rgba(var(--step-rgb), 0.05));
+    z-index: 0;
+}
+
+.service-detail-process-num {
+    position: relative;
+    z-index: 1;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 3.25rem;
+    width: 3.25rem;
+    border-radius: 9999px;
+    font-family: var(--font-display);
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--step);
+    background: rgba(var(--step-rgb), 0.12);
+    border: 1.5px solid rgba(var(--step-rgb), 0.55);
+    box-shadow: 0 0 0 4px rgba(var(--step-rgb), 0.08), 0 0 22px rgba(var(--step-rgb), 0.4);
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+    overflow: visible;
+    isolation: isolate;
+    /* wrapper so the spinning ring sits behind the number reliably,
+       without relying on a negative z-index that browsers can clip */
+}
+
+/* spinning "wheel" ring — a rotating conic gradient, clipped to a ring
+   shape with mask so only the rim is visible, not a filled disc */
+.service-detail-process-num::before {
+    content: "";
+    position: absolute;
+    inset: -7px;
+    z-index: -1;
+    border-radius: 9999px;
+    background: conic-gradient(from 0deg,
+            var(--step) 0deg,
+            rgba(var(--step-rgb), 0.85) 60deg,
+            transparent 140deg,
+            transparent 300deg,
+            var(--step) 360deg);
+    -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 3px), #000 calc(100% - 3px));
+    mask: radial-gradient(farthest-side, transparent calc(100% - 3px), #000 calc(100% - 3px));
+    filter: drop-shadow(0 0 6px rgba(var(--step-rgb), 0.7));
+    animation: process-num-spin 2.4s linear infinite;
+    will-change: transform;
+}
+
+@keyframes process-num-spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.service-detail-process-list li:hover .service-detail-process-num {
+    box-shadow: 0 0 0 6px rgba(var(--step-rgb), 0.14), 0 0 32px rgba(var(--step-rgb), 0.6);
+    transform: scale(1.06);
+}
+
+/* intentionally always spins, even with reduced-motion OS settings on —
+   this animation is purely decorative and doesn't move layout/content.
+   Exempted from the global `@media (prefers-reduced-motion: reduce) *`
+   reset in globals.css, which otherwise forces every animation's
+   duration/iteration-count down via !important. */
+@media (prefers-reduced-motion: reduce) {
+    .service-detail-process-num::before {
+        animation-duration: 2.4s !important;
+        animation-iteration-count: infinite !important;
+    }
+}
+
+.service-detail-process-list h3 {
+    margin-bottom: 0.35rem;
+    font-family: var(--font-display);
+    font-size: 1rem;
+    font-weight: 700;
+    color: #eaf6fb;
+    transition: color 0.3s ease;
+}
+
+.service-detail-process-list li:hover h3 {
+    color: var(--step);
+}
+
+.service-detail-process-list p {
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: var(--color-silver, #8fa3b8);
+    max-width: 34rem;
+}
+
+@media (max-width: 640px) {
+    .service-detail-process-list li {
+        margin: 0 -0.5rem;
+        gap: 1rem;
+        padding: 1.25rem 0.5rem;
+    }
+
+    .service-detail-process-num {
+        height: 2.75rem;
+        width: 2.75rem;
+        font-size: 1rem;
+    }
+
+    .service-detail-process-list li:not(:last-child)::after {
+        left: 2.25rem;
+        top: 3.75rem;
+    }
+}
+
+/* ---------- HIGHLIGHTS — white contrast cards, with "ready" hover glow ---------- */
+
+.service-detail-highlights {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-bottom: 3.5rem;
+}
+
+@media (max-width: 640px) {
+    .service-detail-highlights {
+        grid-template-columns: 1fr;
+    }
+}
+
+.service-detail-highlight-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    padding: 1.5rem 1.25rem;
+    border-radius: 1rem;
+    border: 1px solid rgba(var(--accent-rgb), 0.25);
+    background: #ffffff;
+    box-shadow: 0 12px 30px -12px rgba(0, 0, 0, 0.35);
+    transition: transform 0.25s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.service-detail-highlight-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(var(--accent-rgb), 0.7);
+    box-shadow:
+        0 16px 36px -14px rgba(0, 0, 0, 0.4),
+        0 0 0 3px rgba(var(--accent-rgb), 0.15),
+        0 0 30px rgba(var(--accent-rgb), 0.35);
+}
+
+/* "ready" status dot — hidden until hover, then pulses like a live indicator */
+.service-detail-highlight-card::after {
+    content: "";
+    position: absolute;
+    top: 0.9rem;
+    right: 0.9rem;
+    width: 10px;
+    height: 10px;
+    border-radius: 9999px;
+    background: var(--accent);
+    opacity: 0;
+    transition: opacity 0.25s ease;
+}
+
+.service-detail-highlight-card:hover::after {
+    opacity: 1;
+    animation: status-pulse 1.5s ease-out infinite;
+}
+
+@keyframes status-pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(var(--accent-rgb), 0.55);
+    }
+
+    70% {
+        box-shadow: 0 0 0 10px rgba(var(--accent-rgb), 0);
+    }
+
+    100% {
+        box-shadow: 0 0 0 0 rgba(var(--accent-rgb), 0);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .service-detail-highlight-card:hover::after {
+        animation: none;
+    }
+}
+
+.service-detail-highlight-value {
+    font-family: var(--font-display);
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #06111f;
+    transition: color 0.25s ease;
+}
+
+.service-detail-highlight-card:hover .service-detail-highlight-value {
+    color: var(--accent);
+}
+
+.service-detail-highlight-value::before {
+    content: "";
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    margin-right: 0.5rem;
+    border-radius: 9999px;
+    background: var(--accent);
+    box-shadow: 0 0 8px rgba(var(--accent-rgb), 0.6);
+}
+
+.service-detail-highlight-label {
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: rgba(6, 17, 31, 0.55);
+}
+
+/* ---------- CTA BAND — white contrast ---------- */
+
+.service-detail-cta {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 1.5rem;
+    margin-bottom: 4.5rem;
+    padding: 3rem 2rem;
+    border-radius: 1.25rem;
+    border: 1px solid rgba(var(--accent-rgb), 0.3);
+    background: radial-gradient(ellipse 700px 300px at 50% 0%, rgba(var(--accent-rgb), 0.16), transparent 70%),
+        #f4faf9;
+    box-shadow: 0 20px 50px -20px rgba(0, 0, 0, 0.4);
+}
+
+.service-detail-cta h2 {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #06111f;
+    text-transform: capitalize;
+}
+
+@media (max-width: 480px) {
+    .service-detail-cta {
+        padding: 2.25rem 1.5rem;
+    }
+
+    .service-detail-cta h2 {
+        font-size: 1.2rem;
+    }
+}
+
+.service-detail-cta-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.75rem;
+    border-radius: 9999px;
+    background: var(--accent);
+    color: #06111f;
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+    box-shadow: 0 0 30px rgba(var(--accent-rgb), 0.4);
+    transition: transform 0.2s ease, box-shadow 0.3s ease;
+}
+
+.service-detail-cta-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 40px rgba(var(--accent-rgb), 0.55);
+}
+
+/* ---------- RELATED SERVICES ---------- */
+
+.service-detail-related-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+}
+
+@media (min-width: 640px) {
+    .service-detail-related-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+.service-detail-related-card {
+    position: relative;
+    display: block;
+    border-radius: 0.875rem;
+    overflow: hidden;
+    height: 9rem;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    text-decoration: none;
+    transition: border-color 0.3s ease, transform 0.2s ease;
+}
+
+.service-detail-related-card:hover {
+    border-color: rgba(var(--accent-rgb), 0.5);
+    transform: translateY(-3px);
+}
+
+.service-detail-related-card img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    filter: saturate(1.15) brightness(0.85);
+    transition: filter 0.3s ease, transform 0.4s ease;
+}
+
+.service-detail-related-card:hover img {
+    filter: saturate(1.3) brightness(1);
+    transform: scale(1.05);
+}
+
+.service-detail-related-card span {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 0.75rem 1rem;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #fff;
+    background: linear-gradient(to top, rgba(6, 13, 24, 0.9), transparent);
+}
+
+/* ========================================
+   CONTACT MODAL — WhatsApp form triggered by the CTA button
+   ======================================== */
+
+.service-contact-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+    background: rgba(6, 13, 24, 0.72);
+    backdrop-filter: blur(6px);
+}
+
+.service-contact-modal {
+    position: relative;
+    width: 100%;
+    max-width: 26rem;
+    padding: 2rem 1.75rem 1.75rem;
+    border-radius: 1.25rem;
+    border: 1px solid rgba(var(--accent-rgb), 0.3);
+    background: #0e1b2e;
+    box-shadow: 0 30px 70px -20px rgba(0, 0, 0, 0.6), 0 0 40px rgba(var(--accent-rgb), 0.15);
+}
+
+.service-contact-close {
+    position: absolute;
+    top: 0.9rem;
+    right: 0.9rem;
+    height: 2rem;
+    width: 2rem;
+    border-radius: 9999px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: rgba(255, 255, 255, 0.04);
+    color: #dce8f2;
+    font-size: 1.2rem;
+    line-height: 1;
+    cursor: pointer;
+    transition: background 0.2s ease, color 0.2s ease;
+}
+
+.service-contact-close:hover {
+    background: rgba(var(--accent-rgb), 0.18);
+    color: var(--accent);
+}
+
+.service-contact-modal-title {
+    font-family: var(--font-display);
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #eaf6fb;
+    margin-bottom: 0.4rem;
+}
+
+.service-contact-modal-sub {
+    font-size: 0.85rem;
+    color: var(--color-silver, #8fa3b8);
+    margin-bottom: 1.5rem;
+}
+
+.service-contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.service-contact-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: rgba(220, 232, 242, 0.7);
+}
+
+.service-contact-field input,
+.service-contact-field textarea {
+    border-radius: 0.6rem;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: rgba(255, 255, 255, 0.03);
+    padding: 0.65rem 0.8rem;
+    font-size: 0.9rem;
+    font-weight: 400;
+    text-transform: none;
+    letter-spacing: normal;
+    color: #eaf6fb;
+    font-family: inherit;
+    resize: vertical;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.service-contact-field input:focus,
+.service-contact-field textarea:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(var(--accent-rgb), 0.18);
+}
+
+.service-contact-submit {
+    margin-top: 0.25rem;
+    padding: 0.75rem 1.5rem;
+    border-radius: 9999px;
+    border: none;
+    background: var(--accent);
+    color: #06111f;
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    cursor: pointer;
+    box-shadow: 0 0 24px rgba(var(--accent-rgb), 0.4);
+    transition: transform 0.2s ease, box-shadow 0.3s ease;
+}
+
+.service-contact-submit:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 34px rgba(var(--accent-rgb), 0.55);
+}

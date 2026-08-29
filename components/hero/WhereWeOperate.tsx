@@ -790,7 +790,7 @@ export default function WhereWeOperate() {
                           alt={`${country.name} flag`}
                           width={40}
                           height={28}
-                          className="h-[19px] w-[30px] object-cover"
+                          className="object-cover rounded-sm"
                         />
                       </div>
 

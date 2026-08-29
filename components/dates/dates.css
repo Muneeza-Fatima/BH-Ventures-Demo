@@ -1,0 +1,387 @@
+/* ========================================
+   DATES EXTRAS
+   Used by: components/dates/Datessection.tsx
+   Rendered on the "Dates Trading" service detail page in place of the
+   plain CTA, same slot AutomobileExtras occupies for automobiles.
+   Relies on --accent / --accent-rgb from service-detail.css's
+   .service-detail-page[data-category] wrapper.
+   ======================================== */
+
+/* ---------- VARIETY GRID ---------- */
+
+.dates-varieties {
+    margin-bottom: 3.5rem;
+}
+
+.dates-varieties-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+}
+
+@media (min-width: 640px) {
+    .dates-varieties-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+.date-variety-card {
+    display: block;
+    width: 100%;
+    text-align: left;
+    padding: 0;
+    font: inherit;
+    color: inherit;
+    cursor: pointer;
+    position: relative;
+    border-radius: 1rem;
+    overflow: hidden;
+    border: 1px solid rgba(var(--accent-rgb), 0.22);
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.015));
+    transition: border-color 0.3s ease, transform 0.22s ease, box-shadow 0.3s ease;
+}
+
+.date-variety-card:hover {
+    transform: translateY(-3px);
+    border-color: rgba(var(--accent-rgb), 0.6);
+    box-shadow: 0 16px 34px -16px rgba(0, 0, 0, 0.5), 0 0 26px rgba(var(--accent-rgb), 0.22);
+}
+
+.date-variety-card:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+}
+
+.date-variety-image-wrap {
+    position: relative;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+}
+
+.date-variety-image {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    filter: saturate(1.2) contrast(1.05);
+    transition: transform 0.4s ease;
+}
+
+.date-variety-card:hover .date-variety-image {
+    transform: scale(1.06);
+}
+
+.date-variety-origin {
+    position: absolute;
+    left: 0.75rem;
+    bottom: 0.65rem;
+    z-index: 1;
+    padding: 0.25rem 0.65rem;
+    border-radius: 9999px;
+    border: 1px solid rgba(var(--accent-rgb), 0.5);
+    background: rgba(6, 13, 24, 0.6);
+    backdrop-filter: blur(4px);
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--accent);
+}
+
+.date-variety-body {
+    padding: 0.9rem 1rem 1.1rem;
+}
+
+.date-variety-name {
+    font-family: var(--font-display);
+    font-size: 1rem;
+    font-weight: 700;
+    color: #eaf6fb;
+    margin-bottom: 0.2rem;
+}
+
+.date-variety-texture {
+    display: block;
+    font-size: 0.75rem;
+    color: var(--color-silver, #8fa3b8);
+}
+
+/* ---------- AVAILABLE GRADES ---------- */
+
+.dates-grades {
+    margin-bottom: 3.5rem;
+}
+
+.dates-grades-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin-bottom: 1rem;
+}
+
+.dates-grade-chip {
+    padding: 0.45rem 1rem;
+    border-radius: 9999px;
+    border: 1px solid rgba(var(--accent-rgb), 0.4);
+    background: rgba(var(--accent-rgb), 0.08);
+    color: var(--accent);
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: default;
+    transition: transform 0.2s ease, background 0.25s ease, color 0.25s ease,
+        border-color 0.25s ease, box-shadow 0.3s ease;
+}
+
+.dates-grade-chip:hover {
+    transform: translateY(-2px) scale(1.04);
+    background: var(--accent);
+    color: #06111f;
+    border-color: var(--accent);
+    box-shadow: 0 8px 22px -8px rgba(var(--accent-rgb), 0.6);
+}
+
+.dates-price-disclaimer {
+    font-size: 0.8rem;
+    line-height: 1.6;
+    color: var(--color-silver, #8fa3b8);
+    max-width: 40rem;
+}
+
+/* ---------- CTA (reuses .service-detail-cta layout) ---------- */
+
+.dates-quote-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.75rem;
+    border-radius: 9999px;
+    background: var(--accent);
+    color: #06111f;
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+    box-shadow: 0 0 30px rgba(var(--accent-rgb), 0.4);
+    transition: transform 0.2s ease, box-shadow 0.3s ease;
+}
+
+.dates-quote-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 40px rgba(var(--accent-rgb), 0.55);
+}
+
+/* ---------- QUOTE MODAL ---------- */
+
+.dates-quote-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    /* pushes the modal down below the fixed site header instead of
+       tucking under/behind it; bump the 6.5rem if your header height changes */
+    padding: calc(6.5rem + env(safe-area-inset-top, 0px)) 1.5rem 1.5rem;
+    overflow-y: auto;
+    background: rgba(6, 13, 24, 0.72);
+    backdrop-filter: blur(6px);
+}
+
+.dates-quote-modal {
+    position: relative;
+    width: 100%;
+    max-width: 26rem;
+    margin-bottom: 1.5rem;
+    padding: 2.25rem 2rem 2rem;
+    border-radius: 1.25rem;
+    border: 1px solid rgba(var(--accent-rgb), 0.3);
+    background: #0e1b2e;
+    box-shadow: 0 30px 70px -20px rgba(0, 0, 0, 0.6), 0 0 40px rgba(var(--accent-rgb), 0.15);
+    /* no overflow: hidden here — the close button sits partly outside
+       the modal box (top: -0.75rem; right: -0.75rem) by design, so
+       clipping at this level would cut it off. The media banner below
+       handles its own corner-clipping instead. */
+}
+
+.dates-quote-close {
+    position: absolute;
+    top: -0.75rem;
+    right: -0.75rem;
+    z-index: 5;
+    height: 2.4rem;
+    width: 2.4rem;
+    border-radius: 9999px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(6, 13, 24, 0.92);
+    color: #dce8f2;
+    font-size: 1.3rem;
+    line-height: 1;
+    cursor: pointer;
+    box-shadow: 0 6px 18px -6px rgba(0, 0, 0, 0.6);
+    transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+
+.dates-quote-close:hover {
+    background: rgba(var(--accent-rgb), 0.22);
+    color: var(--accent);
+    transform: scale(1.06);
+}
+
+/* ---------- MODAL VARIETY MEDIA ----------
+   Brand/variety photo banner at the top of the modal — bleeds
+   edge-to-edge by canceling out .dates-quote-modal's own padding,
+   then fades into the modal background, same pattern as
+   .auto-modal-media in AutomobileExtras. Clips its own corners so
+   the close button (which sits outside the modal box) never gets cut. */
+
+.dates-modal-media {
+    position: relative;
+    margin: -2.25rem -2rem 1.5rem;
+    height: 14rem;
+    overflow: hidden;
+    border-radius: 1.25rem 1.25rem 0 0;
+    background: #0b1220;
+}
+
+.dates-modal-media img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    object-position: center 40%;
+    filter: saturate(1.15) brightness(0.92);
+}
+
+.dates-modal-media-fallback {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02));
+}
+
+.dates-modal-media-placeholder {
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #eaf6fb;
+}
+
+.dates-modal-media-fade {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(to top, #0e1b2e 0%, rgba(14, 27, 46, 0.15) 55%, transparent 80%);
+}
+
+.dates-quote-title {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #f4f9fc;
+    margin-bottom: 0.6rem;
+}
+
+.dates-quote-sub {
+    font-size: 0.9rem;
+    line-height: 1.55;
+    color: rgba(220, 232, 242, 0.6);
+    margin-bottom: 1.75rem;
+}
+
+.dates-quote-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.4rem;
+}
+
+.dates-quote-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: rgba(220, 232, 242, 0.75);
+}
+
+.dates-quote-field input,
+.dates-quote-field textarea,
+.dates-quote-field select {
+    border-radius: 0.75rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.04);
+    padding: 0.9rem 1rem;
+    font-size: 0.95rem;
+    font-weight: 400;
+    text-transform: none;
+    letter-spacing: normal;
+    color: #eaf6fb;
+    font-family: inherit;
+    resize: vertical;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.dates-quote-field input::placeholder,
+.dates-quote-field textarea::placeholder {
+    color: rgba(220, 232, 242, 0.35);
+}
+
+.dates-quote-field select {
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='%238fa3b8'%3E%3Cpath fill-rule='evenodd' d='M5.23 7.21a.75.75 0 011.06.02L10 11.148l3.71-3.918a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z' clip-rule='evenodd'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    background-size: 1.1rem;
+    padding-right: 2.25rem;
+    cursor: pointer;
+}
+
+.dates-quote-field select option {
+    background: #0e1b2e;
+    color: #eaf6fb;
+}
+
+.dates-quote-field input:focus,
+.dates-quote-field textarea:focus,
+.dates-quote-field select:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(var(--accent-rgb), 0.18);
+}
+
+.dates-quote-submit {
+    margin-top: 0.5rem;
+    padding: 0.85rem 1.5rem;
+    border-radius: 9999px;
+    border: none;
+    background: var(--accent);
+    color: #06111f;
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    cursor: pointer;
+    box-shadow: 0 0 24px rgba(var(--accent-rgb), 0.4);
+    transition: transform 0.2s ease, box-shadow 0.3s ease;
+}
+
+.dates-quote-submit:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 34px rgba(var(--accent-rgb), 0.55);
+}
+
+/* ---------- LEGAL STRIP ---------- */
+
+.dates-legal-strip {
+    margin-top: -2.5rem;
+    margin-bottom: 3rem;
+    font-size: 0.75rem;
+    line-height: 1.6;
+    color: rgba(143, 163, 184, 0.65);
+    max-width: 40rem;
+}

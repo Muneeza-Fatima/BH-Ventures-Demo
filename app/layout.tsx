@@ -6,7 +6,7 @@ import "./globals.css";
 import "@/components/layout/footer-responsive.css";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
-import { SmoothScroll } from "@/components/smooth-scroll";
+import SmoothScroll from "@/components/smooth-scroll";
 
 const manrope = Manrope({
   subsets: ["latin"],

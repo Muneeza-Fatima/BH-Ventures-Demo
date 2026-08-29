@@ -1,11 +1,14 @@
 "use client";
 
-import { useRef, MouseEvent } from "react";
+import { useRef, MouseEvent, CSSProperties } from "react";
 import Link from "next/link";
 import type { Service } from "@/lib/types";
 
+import "./service-detail.css";
+
 interface ServiceCardProps {
   service: Service;
+  index: number;
 }
 
 const CATEGORY_MAP: Record<string, string> = {
@@ -18,6 +21,8 @@ const CATEGORY_MAP: Record<string, string> = {
   "advertising": "marketing",
   "consulting": "trade",
   "events": "web3",
+  "automobiles": "trade",
+  "automobile": "trade",
 };
 
 function getCategory(badge: string | undefined) {
@@ -27,9 +32,30 @@ function getCategory(badge: string | undefined) {
   return match ? CATEGORY_MAP[match] : "default";
 }
 
-export default function ServiceCard({ service }: ServiceCardProps) {
+// Distinct accent per card, assigned by position so no two cards in the
+// grid ever land on the same color — independent of badge text, which
+// is why CATEGORY_MAP alone wasn't enough (several badges share a category,
+// or don't match any key and all fall back to "default").
+const ACCENT_PALETTE: { accent: string; rgb: string }[] = [
+  { accent: "#2ee6c5", rgb: "46, 230, 197" },  // mint
+  { accent: "#ffb648", rgb: "255, 182, 72" },  // amber
+  { accent: "#a78bfa", rgb: "167, 139, 250" }, // violet
+  { accent: "#ff6ec7", rgb: "255, 110, 199" }, // pink
+  { accent: "#38bdf8", rgb: "56, 189, 248" },  // sky blue
+  { accent: "#34d399", rgb: "52, 211, 153" },  // emerald
+  { accent: "#818cf8", rgb: "129, 140, 248" }, // indigo
+  { accent: "#fb923c", rgb: "251, 146, 60" },  // orange
+];
+
+export default function ServiceCard({ service, index }: ServiceCardProps) {
   const cardRef = useRef<HTMLElement>(null);
   const category = getCategory(service.badge);
+  const { accent, rgb } = ACCENT_PALETTE[index % ACCENT_PALETTE.length];
+
+  const accentVars = {
+    "--accent": accent,
+    "--accent-rgb": rgb,
+  } as CSSProperties;
 
   function handleMouseMove(e: MouseEvent<HTMLElement>) {
     const card = cardRef.current;
@@ -51,6 +77,7 @@ export default function ServiceCard({ service }: ServiceCardProps) {
       onMouseLeave={handleMouseLeave}
       className="service-card"
       data-category={category}
+      style={accentVars}
     >
       <span className="service-corner service-corner-tl" />
       <span className="service-corner service-corner-tr" />

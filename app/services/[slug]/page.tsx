@@ -1,9 +1,16 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { SERVICES } from "@/data/services";
-import ServiceDetailHero from "@/components/ServiceDetailHero";
-import "@/components/services.css";
-import "@/components/service-detail.css";
+import ServiceDetailHero from "@/components/Services/ServiceDetailHero";
+import ServiceContactModal from "@/components/Services/ServiceContactModal";
+import AutomobileExtras from "@/components/automobiles/AutomobileExtras";
+import DatesSection from "@/components/dates/Datessection";
+import Web3Extras from "@/components/web3/Web3Extras";
+import "@/components/Services/services.css";
+import "@/components/Services/service-detail.css";
+import "@/components/automobiles/automobiles.css";
+import "@/components/dates/dates.css";
+import "@/components/web3/web3.css";
 
 const CATEGORY_MAP: Record<string, string> = {
     "global trade": "trade",
@@ -22,6 +29,14 @@ function getCategory(badge: string) {
     const match = Object.keys(CATEGORY_MAP).find((k) => key.includes(k));
     return match ? CATEGORY_MAP[match] : "default";
 }
+
+// slug(s) that should render the automobile-specific sections
+const AUTOMOBILE_SERVICE_SLUGS = ["new-automobile-trading"];
+// slug(s) that should render the dates-specific sections
+const DATES_SERVICE_SLUGS = ["foodstuff-trading"];
+// slug(s) that should render the Web3-specific sections
+// ⚠️ confirm this matches the real slug in data/services.ts
+const WEB3_SERVICE_SLUGS = ["web3-venture-studio"];
 
 export function generateStaticParams() {
     return SERVICES.map((s) => ({ slug: s.slug }));
@@ -46,6 +61,9 @@ export default async function ServiceDetailPage({ params }: { params: ParamsProm
 
     const category = getCategory(service.badge);
     const related = SERVICES.filter((s) => s.slug !== service.slug).slice(0, 3);
+    const isAutomobile = AUTOMOBILE_SERVICE_SLUGS.includes(service.slug);
+    const isDates = DATES_SERVICE_SLUGS.includes(service.slug);
+    const isWeb3 = WEB3_SERVICE_SLUGS.includes(service.slug);
 
     return (
         <main className="service-detail-page" data-category={category}>
@@ -101,12 +119,22 @@ export default async function ServiceDetailPage({ params }: { params: ParamsProm
                     ))}
                 </section>
 
-                <section className="service-detail-cta">
-                    <h2>Ready to talk {service.title.toLowerCase()}?</h2>
-                    <Link href="/#contact" className="service-detail-cta-btn">
-                        Get in touch
-                    </Link>
-                </section>
+                {/* Automobiles, Dates, and Web3 each get their own extras
+                    section — everything else (overview, included, process,
+                    highlights, related) stays the same template as every
+                    other service. */}
+                {isAutomobile ? (
+                    <AutomobileExtras />
+                ) : isDates ? (
+                    <DatesSection />
+                ) : isWeb3 ? (
+                    <Web3Extras />
+                ) : (
+                    <section className="service-detail-cta">
+                        <h2>Ready to talk {service.title.toLowerCase()}?</h2>
+                        <ServiceContactModal serviceTitle={service.title} />
+                    </section>
+                )}
 
                 <section className="service-detail-related">
                     <h2 className="service-detail-heading">Related services</h2>

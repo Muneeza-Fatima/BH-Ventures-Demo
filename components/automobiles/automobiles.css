@@ -1,0 +1,1165 @@
+/* ========================================
+   AUTOMOBILES DIVISION — ALL STYLES
+   Used by: AutomobileExtras.tsx
+   Inherits --accent / --accent-rgb from .service-detail-page[data-category]
+   ======================================== */
+
+.auto-section {
+    margin-bottom: 3.5rem;
+}
+
+/* ---------- STAT STRIP ---------- */
+
+.auto-stats {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1px;
+    margin-bottom: 3.5rem;
+    border-radius: 1rem;
+    overflow: hidden;
+    background: rgba(255, 255, 255, 0.08);
+    /* the 1px gaps + shared bg create hairline dividers between cells */
+}
+
+@media (min-width: 640px) {
+    .auto-stats {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+.auto-stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 1.5rem 1rem;
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.05), rgba(10, 22, 40, 0.98));
+    transition: background 0.3s ease, box-shadow 0.3s ease;
+}
+
+.auto-stat:hover {
+    background: linear-gradient(to bottom, rgba(var(--accent-rgb), 0.16), rgba(10, 22, 40, 0.98));
+    box-shadow: inset 0 0 0 1px rgba(var(--accent-rgb), 0.35), inset 0 0 30px rgba(var(--accent-rgb), 0.12);
+}
+
+.auto-stat-value {
+    font-family: var(--font-display);
+    font-size: 1.6rem;
+    font-weight: 700;
+    background: linear-gradient(100deg, var(--accent), #ffffff 60%, var(--accent));
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-shadow: 0 0 20px rgba(var(--accent-rgb), 0.35);
+    transition: text-shadow 0.3s ease;
+}
+
+.auto-stat:hover .auto-stat-value {
+    text-shadow: 0 0 34px rgba(var(--accent-rgb), 0.85), 0 0 60px rgba(var(--accent-rgb), 0.35);
+}
+
+.auto-stat-label {
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--color-silver, #8fa3b8);
+    text-align: center;
+}
+
+/* ---------- BRAND MARQUEE ---------- */
+
+.auto-marquee-mask {
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 1.75rem;
+    padding: 0.25rem 0;
+    -webkit-mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+    mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+}
+
+.auto-marquee-track {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    width: max-content;
+    animation: auto-marquee-scroll 34s linear infinite;
+}
+
+.auto-marquee-mask:hover .auto-marquee-track {
+    animation-play-state: paused;
+}
+
+@keyframes auto-marquee-scroll {
+    0% {
+        transform: translateX(0);
+    }
+
+    100% {
+        /* exactly half the track, since brands are duplicated once */
+        transform: translateX(-50%);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .auto-marquee-track {
+        animation: none;
+    }
+}
+
+.auto-marquee-tile {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 3.75rem;
+    width: 6.5rem;
+    padding: 0.6rem;
+    border: none;
+    border-radius: 0.75rem;
+    background: transparent;
+    cursor: pointer;
+}
+
+.auto-marquee-tile .auto-brand-logo-card {
+    height: 100%;
+    width: 100%;
+    opacity: 0.9;
+    transition: opacity 0.2s ease, transform 0.2s ease, box-shadow 0.25s ease;
+}
+
+.auto-marquee-tile:hover .auto-brand-logo-card {
+    opacity: 1;
+    transform: scale(1.08);
+    box-shadow: 0 0 20px rgba(var(--accent-rgb), 0.5), 0 0 40px rgba(var(--accent-rgb), 0.25);
+}
+
+/* ---------- AMBIENT WRAPPER GLOW ---------- */
+
+.auto-wrapper {
+    position: relative;
+}
+
+.auto-glow-bg {
+    position: absolute;
+    top: -2rem;
+    left: -2rem;
+    right: -2rem;
+    bottom: 0;
+    z-index: -1;
+    pointer-events: none;
+    background-image:
+        radial-gradient(ellipse 640px 420px at 8% 4%, rgba(var(--accent-rgb), 0.14), transparent 60%),
+        radial-gradient(ellipse 520px 400px at 95% 30%, rgba(255, 182, 72, 0.08), transparent 60%),
+        radial-gradient(ellipse 620px 460px at 15% 85%, rgba(var(--accent-rgb), 0.08), transparent 65%);
+}
+
+.auto-content {
+    position: relative;
+    z-index: 1;
+}
+
+/* ---------- BRAND PHOTO GRID ---------- */
+
+.auto-photo-grid {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    gap: 1.25rem;
+}
+
+@media (min-width: 640px) {
+    .auto-photo-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (min-width: 1024px) {
+    .auto-photo-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+.auto-photo-card {
+    position: relative;
+    display: block;
+    aspect-ratio: 16 / 10;
+    height: auto;
+    width: 100%;
+    padding: 0;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 1.1rem;
+    overflow: hidden;
+    background: #0b1220;
+    cursor: pointer;
+
+    /* scroll-reveal starting state — cards fade + rise into place the
+       first time the grid enters the viewport, staggered per-card via
+       --fx-delay (set inline in JSX based on grid index) */
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity 0.6s ease, transform 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+        border-color 0.25s ease, box-shadow 0.25s ease;
+    transition-delay: calc(var(--fx-delay, 0) * 1s);
+}
+
+.auto-photo-card.auto-in-view {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.auto-photo-card::before {
+    content: "";
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: 2px;
+    z-index: 3;
+    background: linear-gradient(90deg, var(--accent), rgba(var(--accent-rgb), 0));
+    opacity: 0;
+    transition: opacity 0.25s ease;
+}
+
+.auto-photo-card:hover {
+    border-color: rgba(var(--accent-rgb), 0.5);
+    transform: translateY(-4px);
+    box-shadow: 0 18px 34px -16px rgba(0, 0, 0, 0.55), 0 0 24px rgba(var(--accent-rgb), 0.14);
+}
+
+.auto-photo-card:hover::before {
+    opacity: 1;
+}
+
+.auto-photo-img {
+    position: absolute;
+    inset: 0;
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    object-position: center 45%;
+    filter: saturate(1.15) brightness(0.92);
+    transition: filter 0.25s ease;
+
+    /* slow continuous Ken Burns drift — gives each still photo a sense
+       of motion at rest. Negative delay (via --fx-delay) starts each
+       card mid-cycle so the whole grid doesn't breathe in sync. */
+    animation: auto-kenburns 14s ease-in-out infinite;
+    animation-delay: calc(var(--fx-delay, 0) * -1s);
+}
+
+.auto-photo-card:hover .auto-photo-img {
+    filter: saturate(1.3) brightness(1);
+    animation-play-state: paused;
+    transform: scale(1.1);
+}
+
+@keyframes auto-kenburns {
+    0% {
+        transform: scale(1) translate3d(0, 0, 0);
+    }
+
+    50% {
+        transform: scale(1.07) translate3d(-1%, -1%, 0);
+    }
+
+    100% {
+        transform: scale(1) translate3d(0, 0, 0);
+    }
+}
+
+/* sweeping showroom light glint — a soft diagonal band of light glides
+   across the card on a loop, like spotlights passing overhead */
+.auto-photo-card .auto-photo-sweep {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    pointer-events: none;
+    background: linear-gradient(100deg,
+            transparent 30%,
+            rgba(255, 255, 255, 0.14) 46%,
+            rgba(255, 255, 255, 0.26) 50%,
+            rgba(255, 255, 255, 0.14) 54%,
+            transparent 70%);
+    transform: translateX(-120%);
+    animation: auto-sweep-move 6.5s ease-in-out infinite;
+    animation-delay: calc(var(--fx-delay, 0) * 1.4s);
+}
+
+@keyframes auto-sweep-move {
+
+    0%,
+    55% {
+        transform: translateX(-120%);
+    }
+
+    78% {
+        transform: translateX(120%);
+    }
+
+    100% {
+        transform: translateX(120%);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .auto-photo-card {
+        opacity: 1;
+        transform: none;
+        transition: none;
+    }
+
+    .auto-photo-img,
+    .auto-photo-card .auto-photo-sweep {
+        animation: none;
+    }
+}
+
+/* shown instead of <img> for any brand without a photo yet — keeps
+   the same card footprint so the grid never looks patchy */
+.auto-photo-fallback {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02));
+}
+
+.auto-photo-fallback .auto-brand-logo-card {
+    height: 4.5rem;
+    width: 8rem;
+}
+
+.auto-photo-fade {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(to top, rgba(6, 13, 24, 0.94), transparent 50%);
+}
+
+.auto-photo-label {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 2;
+    padding: 1rem 1.1rem;
+    font-size: 1rem;
+    font-weight: 700;
+    color: #fff;
+    text-align: left;
+}
+
+.auto-photo-badge {
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem;
+    z-index: 3;
+    padding: 0.28rem 0.7rem;
+    border-radius: 9999px;
+    background: rgba(var(--accent-rgb), 0.85);
+    color: #06111f;
+    font-size: 0.68rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+/* ---------- BRAND GRID (legacy static tiles — still used as the
+   photo fallback content inside .auto-photo-fallback) ---------- */
+
+.auto-brand-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.875rem;
+}
+
+@media (min-width: 640px) {
+    .auto-brand-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+@media (min-width: 1024px) {
+    .auto-brand-grid {
+        grid-template-columns: repeat(6, 1fr);
+    }
+}
+
+.auto-brand-tile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 0.75rem;
+    padding: 1.1rem 0.9rem 1rem;
+    border-radius: 0.875rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02));
+    cursor: pointer;
+    transition: border-color 0.25s ease, transform 0.2s ease, background 0.25s ease, box-shadow 0.25s ease;
+}
+
+.auto-brand-tile:hover {
+    border-color: rgba(var(--accent-rgb), 0.5);
+    background: linear-gradient(to bottom, rgba(var(--accent-rgb), 0.12), rgba(255, 255, 255, 0.02));
+    transform: translateY(-3px);
+    box-shadow: 0 14px 30px -14px rgba(0, 0, 0, 0.5);
+}
+
+/* logos sit directly on the dark background — no card container —
+   with mix-blend-mode blending away any white backgrounds baked into
+   individual logo image files (jpgs like Ford/Mazda), and a soft
+   accent-colored glow on hover instead of a plain scale/opacity change */
+.auto-brand-logo-card {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 3.25rem;
+    width: 100%;
+    border-radius: 0.65rem;
+    background: #ffffff;
+    overflow: hidden;
+    transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+}
+
+.auto-brand-tile:hover .auto-brand-logo-card {
+    transform: scale(1.06);
+    box-shadow: 0 0 22px rgba(var(--accent-rgb), 0.55), 0 0 44px rgba(var(--accent-rgb), 0.28);
+}
+
+.auto-brand-logo-card img {
+    height: 68%;
+    width: 78%;
+    object-fit: contain;
+    mix-blend-mode: multiply;
+    filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.3));
+    transition: filter 0.25s ease;
+}
+
+.auto-brand-tile:hover .auto-brand-logo-card img {
+    filter: drop-shadow(0 0 8px rgba(var(--accent-rgb), 0.5));
+}
+
+.auto-brand-placeholder {
+    font-family: var(--font-display);
+    font-size: 0.95rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    color: #eaf6fb;
+}
+
+.auto-brand-tile span {
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: var(--color-silver, #8fa3b8);
+    text-align: center;
+}
+
+.auto-note {
+    margin-top: 1rem;
+    font-size: 0.75rem;
+    line-height: 1.6;
+    color: rgba(143, 163, 184, 0.7);
+    max-width: 42rem;
+}
+
+/* ---------- VEHICLE CATEGORIES ---------- */
+
+.auto-category-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.875rem;
+}
+
+@media (min-width: 640px) {
+    .auto-category-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+.auto-category-card {
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    gap: 0.9rem;
+    padding: 1.1rem 1.25rem;
+    border-radius: 0.875rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.01));
+    overflow: hidden;
+    transition: border-color 0.25s ease, background 0.25s ease, transform 0.2s ease;
+}
+
+.auto-category-card::before {
+    content: "";
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 2px;
+    background: linear-gradient(180deg, var(--accent), rgba(var(--accent-rgb), 0));
+    opacity: 0;
+    transition: opacity 0.25s ease;
+}
+
+.auto-category-card:hover {
+    border-color: rgba(var(--accent-rgb), 0.4);
+    background: linear-gradient(to bottom, rgba(var(--accent-rgb), 0.1), rgba(255, 255, 255, 0.01));
+    transform: translateY(-2px);
+}
+
+.auto-category-card:hover::before {
+    opacity: 1;
+}
+
+.auto-category-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    height: 2.5rem;
+    width: 2.5rem;
+    border-radius: 0.6rem;
+    background: rgba(var(--accent-rgb), 0.14);
+    color: var(--accent);
+}
+
+.auto-category-icon svg {
+    height: 1.3rem;
+    width: 1.3rem;
+}
+
+.auto-category-body {
+    flex: 1;
+    min-width: 0;
+}
+
+.auto-category-card h4 {
+    margin-bottom: 0.35rem;
+    font-family: var(--font-display);
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #eaf6fb;
+}
+
+.auto-category-card p {
+    font-size: 0.82rem;
+    line-height: 1.55;
+    color: var(--color-silver, #8fa3b8);
+}
+
+/* view detail toggle button */
+.auto-category-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    margin-top: 0.7rem;
+    padding: 0;
+    border: none;
+    background: none;
+    font-family: var(--font-display);
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--accent);
+    cursor: pointer;
+    transition: opacity 0.2s ease, text-shadow 0.2s ease;
+}
+
+.auto-category-toggle:hover {
+    text-shadow: 0 0 10px rgba(var(--accent-rgb), 0.5);
+}
+
+.auto-category-chevron {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-style: normal;
+    line-height: 1;
+    transform: rotate(0deg);
+    transition: transform 0.25s ease;
+}
+
+.auto-category-chevron-open {
+    transform: rotate(180deg);
+}
+
+/* expanding detail panel — grid-template-rows trick animates a smooth
+   height from 0 to auto without JS measuring the content */
+.auto-category-detail-wrap {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.3s ease;
+}
+
+.auto-category-detail-open {
+    grid-template-rows: 1fr;
+}
+
+.auto-category-detail-inner {
+    overflow: hidden;
+}
+
+.auto-category-detail-inner p {
+    margin-top: 0.7rem;
+    padding-top: 0.7rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    font-size: 0.8rem;
+    line-height: 1.6;
+    color: var(--color-silver, #8fa3b8);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .auto-category-detail-wrap {
+        transition: none;
+    }
+
+    .auto-category-chevron {
+        transition: none;
+    }
+}
+
+/* ---------- PRICE DISCLAIMER ---------- */
+
+.auto-price-disclaimer {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    margin-bottom: 3rem;
+    padding: 1.5rem 1.5rem;
+    border-radius: 1rem;
+    border: 1px solid rgba(255, 182, 72, 0.35);
+    background: linear-gradient(to bottom, rgba(255, 182, 72, 0.1), rgba(255, 182, 72, 0.02));
+}
+
+.auto-price-title {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--font-display);
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #ffb648;
+}
+
+.auto-price-title::before {
+    content: "⚠";
+    font-size: 0.9rem;
+}
+
+.auto-price-disclaimer p {
+    font-size: 0.85rem;
+    line-height: 1.65;
+    color: #dce8f2;
+}
+
+.auto-price-disclaimer ul {
+    margin: 0.25rem 0 0;
+    padding-left: 1.1rem;
+    font-size: 0.8rem;
+    line-height: 1.7;
+    color: var(--color-silver, #8fa3b8);
+}
+
+/* ---------- LEGAL STRIP ---------- */
+
+.auto-cta-sub {
+    max-width: 32rem;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: rgba(6, 17, 31, 0.65);
+    margin-top: -0.75rem;
+}
+
+.auto-legal-strip {
+    margin-top: 2rem;
+    padding: 1rem 1.25rem;
+    border-radius: 0.75rem;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.02);
+    font-size: 0.72rem;
+    line-height: 1.6;
+    color: rgba(143, 163, 184, 0.75);
+}
+
+/* ---------- INQUIRY MODAL ---------- */
+
+.auto-modal-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 6rem 1.25rem 1.25rem;
+    overflow-y: auto;
+    background: rgba(6, 13, 24, 0.72);
+    backdrop-filter: blur(4px);
+}
+
+.auto-modal {
+    position: relative;
+    width: 100%;
+    max-width: 30rem;
+    max-height: 90vh;
+    overflow-y: auto;
+    border-radius: 1.25rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: #0e1b2e;
+    padding: 2rem 1.75rem;
+    box-shadow: 0 30px 70px -20px rgba(0, 0, 0, 0.6);
+}
+
+.auto-modal-close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    z-index: 5;
+    display: flex;
+    height: 2rem;
+    width: 2rem;
+    align-items: center;
+    justify-content: center;
+    border-radius: 9999px;
+    border: none;
+    background: rgba(6, 13, 24, 0.55);
+    backdrop-filter: blur(4px);
+    color: #dce8f2;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+/* brand photo banner at the top of the modal — bleeds edge-to-edge by
+   canceling out .auto-modal's own padding, then fades into the modal
+   background so the form below reads as one continuous panel */
+.auto-modal-media {
+    position: relative;
+    margin: -2rem -1.75rem 1.5rem;
+    height: 11rem;
+    overflow: hidden;
+    border-radius: 1.25rem 1.25rem 0 0;
+    background: #0b1220;
+}
+
+.auto-modal-media img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    object-position: center 45%;
+    filter: saturate(1.15) brightness(0.92);
+}
+
+.auto-modal-media-fallback {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02));
+}
+
+.auto-modal-media-fallback .auto-brand-logo-card {
+    height: 4rem;
+    width: 9rem;
+}
+
+.auto-modal-media-fade {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(to top, #0e1b2e 0%, rgba(14, 27, 46, 0.15) 55%, transparent 80%);
+}
+
+.auto-modal-title {
+    margin-bottom: 0.4rem;
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #eaf6fb;
+}
+
+.auto-modal-sub {
+    margin-bottom: 1.5rem;
+    font-size: 0.85rem;
+    line-height: 1.55;
+    color: var(--color-silver, #8fa3b8);
+}
+
+.auto-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    margin-bottom: 1rem;
+}
+
+.auto-field label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: rgba(220, 232, 242, 0.8);
+}
+
+.auto-field input,
+.auto-field select,
+.auto-field textarea {
+    width: 100%;
+    padding: 0.65rem 0.85rem;
+    border-radius: 0.6rem;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: rgba(255, 255, 255, 0.04);
+    color: #eaf6fb;
+    font-size: 0.85rem;
+    outline: none;
+    transition: border-color 0.2s ease;
+}
+
+.auto-field input:focus,
+.auto-field select:focus,
+.auto-field textarea:focus {
+    border-color: var(--accent, #2ee6c5);
+}
+
+/* native <option> lists render on a white background regardless of
+   page theme, so options need their own explicit dark text — otherwise
+   they inherit the input's light color and become unreadable */
+.auto-field select option {
+    color: #0e1b2e;
+    background-color: #ffffff;
+}
+
+.auto-submit-btn {
+    width: 100%;
+    margin-top: 0.5rem;
+    padding: 0.8rem;
+    border: none;
+    border-radius: 9999px;
+    background: var(--accent, #2ee6c5);
+    color: #06111f;
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.3s ease;
+}
+
+.auto-submit-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 0 30px rgba(var(--accent-rgb), 0.4);
+}
+
+.auto-modal-footer {
+    margin-top: 1rem;
+    font-size: 0.7rem;
+    line-height: 1.5;
+    color: rgba(143, 163, 184, 0.7);
+    text-align: center;
+}
+
+/* ---------- CTA HOVER GLOW ----------
+   Match the glow treatment already used on .feat-btn-primary and
+   .auto-submit-btn, scoped to the "Request a Vehicle" CTA button. */
+
+.auto-cta .service-detail-cta-btn {
+    transition: transform 0.2s ease, box-shadow 0.3s ease;
+}
+
+.auto-cta .service-detail-cta-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 30px rgba(var(--accent-rgb), 0.45), 0 0 60px rgba(var(--accent-rgb), 0.22);
+}
+
+/* ========================================
+   FEATURED VEHICLES — full-width hero banners
+   (rendered by the FeaturedVehicles component inside AutomobileExtras.tsx)
+   ======================================== */
+
+.feat-section {
+    margin-bottom: 3.5rem;
+}
+
+.feat-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+/* ---------- BANNER ---------- */
+
+.feat-banner {
+    position: relative;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    width: 100%;
+    min-height: 22rem;
+    border-radius: 1.25rem;
+    overflow: hidden;
+    background: #0b1220;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+
+    /* scroll reveal — same staggered fade/rise pattern as the brand grid */
+    opacity: 0;
+    transform: translateY(32px);
+    transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+    transition-delay: calc(var(--fx-delay, 0) * 1s);
+}
+
+.feat-banner.feat-in-view {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+@media (min-width: 768px) {
+    .feat-banner {
+        min-height: 30rem;
+    }
+}
+
+@media (min-width: 1200px) {
+    .feat-banner {
+        min-height: 36rem;
+    }
+}
+
+.feat-banner-img {
+    position: absolute;
+    inset: 0;
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    object-position: center 55%;
+    filter: saturate(1.1) brightness(0.95);
+
+    /* slow continuous Ken Burns drift, staggered via negative delay */
+    animation: feat-kenburns 16s ease-in-out infinite;
+    animation-delay: calc(var(--fx-delay, 0) * -1s);
+}
+
+@keyframes feat-kenburns {
+    0% {
+        transform: scale(1.02) translate3d(0, 0, 0);
+    }
+
+    50% {
+        transform: scale(1.09) translate3d(-1.2%, -0.8%, 0);
+    }
+
+    100% {
+        transform: scale(1.02) translate3d(0, 0, 0);
+    }
+}
+
+/* video variant of the same banner media — same position/fit as the
+   img, but no Ken Burns keyframe since the footage supplies its own
+   motion. Kept as a separate class (rather than reusing .feat-banner-img
+   on a <video>) so the two elements never fight over the animation
+   property. */
+.feat-banner-video {
+    position: absolute;
+    inset: 0;
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    object-position: center 55%;
+    filter: saturate(1.1) brightness(0.95);
+}
+
+.feat-banner-fallback {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 50% 30%, rgba(255, 255, 255, 0.06), transparent 70%),
+        linear-gradient(160deg, #131f31, #0b1220);
+}
+
+/* sweeping light — showroom spotlight passing across the car */
+.feat-banner-sweep {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    background: linear-gradient(100deg,
+            transparent 25%,
+            rgba(255, 255, 255, 0.1) 45%,
+            rgba(255, 255, 255, 0.2) 50%,
+            rgba(255, 255, 255, 0.1) 55%,
+            transparent 75%);
+    transform: translateX(-130%);
+    animation: feat-sweep-move 8s ease-in-out infinite;
+    animation-delay: calc(var(--fx-delay, 0) * 1.6s);
+}
+
+@keyframes feat-sweep-move {
+
+    0%,
+    60% {
+        transform: translateX(-130%);
+    }
+
+    82% {
+        transform: translateX(130%);
+    }
+
+    100% {
+        transform: translateX(130%);
+    }
+}
+
+/* dark gradient so the title/buttons stay legible over any photo */
+.feat-banner-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    pointer-events: none;
+    background: linear-gradient(to top,
+            rgba(4, 9, 17, 0.92) 0%,
+            rgba(4, 9, 17, 0.55) 32%,
+            rgba(4, 9, 17, 0.05) 60%),
+        linear-gradient(to bottom, rgba(4, 9, 17, 0.35) 0%, transparent 22%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .feat-banner {
+        opacity: 1;
+        transform: none;
+        transition: none;
+    }
+
+    .feat-banner-img,
+    .feat-banner-sweep {
+        animation: none;
+    }
+
+    /* video autoplay can't be stopped via CSS alone — pause it in JS if
+       you want to fully respect prefers-reduced-motion for video too */
+}
+
+/* ---------- CONTENT ---------- */
+
+.feat-banner-content {
+    position: relative;
+    z-index: 3;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    width: 100%;
+    padding: 2rem 1.5rem 2.25rem;
+    text-align: center;
+}
+
+/* brand name is now the eye-catching headline — large, bold, glowing
+   accent color, with a slow pulse so it draws attention on its own */
+.feat-banner-brand {
+    font-family: var(--font-display);
+    font-size: 2.2rem;
+    font-weight: 800;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    color: #f4f9fc;
+    text-shadow:
+        0 2px 20px rgba(0, 0, 0, 0.5),
+        0 0 26px rgba(var(--accent-rgb), 0.6),
+        0 0 52px rgba(var(--accent-rgb), 0.32);
+    animation: feat-brand-pulse 3.5s ease-in-out infinite;
+}
+
+@media (min-width: 768px) {
+    .feat-banner-brand {
+        font-size: 2.9rem;
+    }
+}
+
+@keyframes feat-brand-pulse {
+    0%, 100% {
+        text-shadow:
+            0 2px 20px rgba(0, 0, 0, 0.5),
+            0 0 26px rgba(var(--accent-rgb), 0.6),
+            0 0 52px rgba(var(--accent-rgb), 0.32);
+    }
+    50% {
+        text-shadow:
+            0 2px 20px rgba(0, 0, 0, 0.5),
+            0 0 38px rgba(var(--accent-rgb), 0.9),
+            0 0 68px rgba(var(--accent-rgb), 0.5);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .feat-banner-brand {
+        animation: none;
+    }
+}
+
+/* model name is now the secondary label underneath the brand */
+.feat-banner-title {
+    font-family: var(--font-display);
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent, #2ee6c5);
+    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.4);
+}
+
+.feat-banner-tagline {
+    max-width: 32rem;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    color: rgba(220, 232, 242, 0.85);
+}
+
+.feat-banner-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    margin-top: 0.75rem;
+}
+
+.feat-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.8rem 1.6rem;
+    border-radius: 9999px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    border: 1px solid transparent;
+    text-decoration: none;
+    transition: transform 0.2s ease, box-shadow 0.3s ease, background 0.2s ease, border-color 0.2s ease;
+}
+
+.feat-btn-primary {
+    background: var(--accent, #2ee6c5);
+    color: #06111f;
+}
+
+.feat-btn-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 0 30px rgba(var(--accent-rgb), 0.4);
+}
+
+/* the single CTA per banner now carries more visual weight than the old
+   two-button pair did, so it gets a little extra size/presence */
+.feat-btn-book {
+    padding: 0.95rem 2.4rem;
+    font-size: 0.82rem;
+}
+
+.feat-btn-secondary {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.35);
+    color: #f4f9fc;
+    backdrop-filter: blur(2px);
+}
+
+.feat-btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.16);
+    border-color: rgba(255, 255, 255, 0.55);
+    transform: translateY(-1px);
+}
