@@ -19,7 +19,6 @@ export default function HeroBackground() {
         loop
         playsInline
         preload="metadata"
-        poster="/images/hero-poster.jpg"
         className="
           absolute
           inset-0

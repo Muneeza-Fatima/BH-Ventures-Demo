@@ -17,20 +17,21 @@
     inset: 0;
     z-index: 0;
     pointer-events: none;
-    background-image: linear-gradient(rgba(0, 168, 232, 0.04) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(0, 168, 232, 0.04) 1px, transparent 1px);
+    background-image: linear-gradient(rgba(46, 230, 197, 0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(46, 230, 197, 0.04) 1px, transparent 1px);
     background-size: 48px 48px;
 }
 
+/* multi-color glow instead of a single faint blue wash */
 .services-glow-bg {
     position: absolute;
     inset: 0;
     z-index: 0;
     pointer-events: none;
-    background-image: radial-gradient(ellipse 900px 500px at 15% 0%,
-            rgba(0, 168, 232, 0.1),
-            transparent 60%),
-        radial-gradient(ellipse 900px 600px at 90% 100%, rgba(0, 201, 177, 0.08), transparent 60%);
+    background-image:
+        radial-gradient(ellipse 900px 500px at 10% 0%, rgba(46, 230, 197, 0.16), transparent 60%),
+        radial-gradient(ellipse 700px 500px at 85% 20%, rgba(167, 139, 250, 0.12), transparent 60%),
+        radial-gradient(ellipse 900px 600px at 90% 100%, rgba(255, 182, 72, 0.09), transparent 60%);
 }
 
 .services-inner {
@@ -64,18 +65,18 @@
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.28em;
-    color: #00e5ff;
-    text-shadow: 0 0 12px rgba(0, 229, 255, 0.5);
+    color: #2ee6c5;
+    text-shadow: 0 0 12px rgba(46, 230, 197, 0.5);
 }
 
 .services-eyebrow-line {
     height: 1px;
     width: 1.25rem;
-    background: linear-gradient(to right, #00e5ff, #a78bfa);
+    background: linear-gradient(to right, #2ee6c5, #ffffff);
 }
 
 .services-eyebrow-line--reverse {
-    background: linear-gradient(to right, #a78bfa, #00e5ff);
+    background: linear-gradient(to right, #ffffff, #2ee6c5);
 }
 
 .services-title {
@@ -96,13 +97,13 @@
 
 .services-title-gradient {
     font-style: normal;
-    background: linear-gradient(100deg, #00e5ff 0%, #6ee7ff 30%, #a78bfa 65%, #00e5ff 100%);
+    background: linear-gradient(100deg, #2ee6c5 0%, #ffffff 30%, #a78bfa 65%, #2ee6c5 100%);
     background-size: 250% auto;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
     animation: services-title-shimmer 6s ease-in-out infinite;
-    text-shadow: 0 0 40px rgba(0, 229, 255, 0.25);
+    text-shadow: 0 0 40px rgba(46, 230, 197, 0.25);
 }
 
 @keyframes services-title-shimmer {
@@ -151,6 +152,28 @@
 .subtitle-word[data-category="marketing"] {
     color: #ff6ec7;
     text-shadow: 0 0 14px rgba(255, 110, 199, 0.4);
+}
+
+/* categories matching the actual badge copy in use (Data & Insight, Growth,
+   Innovation, Assessment) — kept in sync with .service-card below */
+.subtitle-word[data-category="data-insight"] {
+    color: #38bdf8;
+    text-shadow: 0 0 14px rgba(56, 189, 248, 0.4);
+}
+
+.subtitle-word[data-category="growth"] {
+    color: #34d399;
+    text-shadow: 0 0 14px rgba(52, 211, 153, 0.4);
+}
+
+.subtitle-word[data-category="innovation"] {
+    color: #818cf8;
+    text-shadow: 0 0 14px rgba(129, 140, 248, 0.4);
+}
+
+.subtitle-word[data-category="assessment"] {
+    color: #fb923c;
+    text-shadow: 0 0 14px rgba(251, 146, 60, 0.4);
 }
 
 .subtitle-rest {
@@ -267,12 +290,14 @@
 
 /* ---------- CATEGORY COLORS ----------
    Single source of truth for every card's accent color. ServiceCard.tsx only
-   sets data-category="trade" | "web3" | "ai" | "marketing" (derived from the
-   badge text) — every actual color value lives here. */
+   sets data-category="trade" | "web3" | "ai" | "marketing" | "data-insight" |
+   "growth" | "innovation" | "assessment" (derived from the badge text) —
+   every actual color value lives here.
+   Default (no match) is brand mint, not flat blue. */
 
 .service-card {
-    --accent: #00a8e8;
-    --accent-rgb: 0, 168, 232;
+    --accent: #2ee6c5;
+    --accent-rgb: 46, 230, 197;
 }
 
 .service-card[data-category="trade"] {
@@ -295,12 +320,83 @@
     --accent-rgb: 255, 110, 199;
 }
 
+/* NEW — the categories your badges actually use, each with its own
+   distinct accent so the grid doesn't read as one flat mint color */
+.service-card[data-category="data-insight"] {
+    --accent: #38bdf8;
+    --accent-rgb: 56, 189, 248;
+}
+
+.service-card[data-category="growth"] {
+    --accent: #34d399;
+    --accent-rgb: 52, 211, 153;
+}
+
+.service-card[data-category="innovation"] {
+    --accent: #818cf8;
+    --accent-rgb: 129, 140, 248;
+}
+
+.service-card[data-category="assessment"] {
+    --accent: #fb923c;
+    --accent-rgb: 251, 146, 60;
+}
+
+/* ---------- PER-CARD COLOR ROTATION ----------
+   Overrides the category color above. Each card gets its own accent by
+   grid position (8-color cycle) so visually adjacent cards never repeat
+   the same color, even when several share the same badge text (e.g.
+   multiple "Growth" cards). Badge, title shimmer, corner brackets, glow
+   and arrow all key off --accent, so the whole card re-themes at once. */
+.service-card:nth-child(8n+1) {
+    --accent: #2ee6c5;
+    --accent-rgb: 46, 230, 197;
+}
+
+.service-card:nth-child(8n+2) {
+    --accent: #ffb648;
+    --accent-rgb: 255, 182, 72;
+}
+
+.service-card:nth-child(8n+3) {
+    --accent: #a78bfa;
+    --accent-rgb: 167, 139, 250;
+}
+
+.service-card:nth-child(8n+4) {
+    --accent: #ff6ec7;
+    --accent-rgb: 255, 110, 199;
+}
+
+.service-card:nth-child(8n+5) {
+    --accent: #38bdf8;
+    --accent-rgb: 56, 189, 248;
+}
+
+.service-card:nth-child(8n+6) {
+    --accent: #34d399;
+    --accent-rgb: 52, 211, 153;
+}
+
+.service-card:nth-child(8n+7) {
+    --accent: #818cf8;
+    --accent-rgb: 129, 140, 248;
+}
+
+.service-card:nth-child(8n+8) {
+    --accent: #fb923c;
+    --accent-rgb: 251, 146, 60;
+}
+
+/* card body now carries a soft wash of its own category color, not flat navy */
 .service-card {
     position: relative;
     overflow: hidden;
     border-radius: 1rem;
     border: 1px solid rgba(255, 255, 255, 0.08);
-    background: linear-gradient(to bottom, rgba(18, 36, 58, 0.9), rgba(10, 22, 38, 0.95));
+    background:
+        radial-gradient(ellipse 260px 180px at 15% 0%, rgba(var(--accent-rgb), 0.16), transparent 70%),
+        linear-gradient(to bottom, rgba(18, 36, 58, 0.9), rgba(10, 22, 38, 0.95));
     transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.18s ease;
     will-change: transform;
 }
@@ -319,8 +415,9 @@
     content: "";
     position: absolute;
     inset: 0 0 auto 0;
-    height: 3px;
-    background: linear-gradient(90deg, var(--accent), transparent);
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent), rgba(var(--accent-rgb), 0));
+    box-shadow: 0 0 12px rgba(var(--accent-rgb), 0.6);
     z-index: 15;
 }
 
@@ -429,17 +526,18 @@
     }
 }
 
+/* photos now keep their real color instead of being crushed dark */
 .service-image {
     height: 100%;
     width: 100%;
     object-fit: cover;
     backface-visibility: hidden;
-    filter: saturate(1.18) contrast(1.06) brightness(0.98);
+    filter: saturate(1.35) contrast(1.08) brightness(1.05);
     transition: filter 0.3s ease;
 }
 
 .service-card:hover .service-image {
-    filter: saturate(1.3) contrast(1.1) brightness(1.04);
+    filter: saturate(1.5) contrast(1.12) brightness(1.1);
 }
 
 .service-banner-glow {
@@ -450,14 +548,15 @@
     background-image: radial-gradient(ellipse at 28% 18%, rgba(var(--accent-rgb), 0.22), transparent 62%);
 }
 
+/* lighter fade — was crushing photo colors to navy at the bottom of every card */
 .service-banner-fade {
     position: absolute;
     inset: 0;
     pointer-events: none;
     background: linear-gradient(to bottom,
-            rgba(10, 22, 40, 0.1),
-            rgba(6, 13, 24, 0.3),
-            rgba(6, 13, 24, 0.85));
+            rgba(10, 22, 40, 0.02),
+            rgba(6, 13, 24, 0.12),
+            rgba(6, 13, 24, 0.68));
 }
 
 .service-scanline {
@@ -493,14 +592,16 @@
     }
 }
 
+/* badges are filled pills in the category color with a dark scrim behind
+   them so they stay legible over bright photos regardless of accent color */
 .service-badge {
     position: absolute;
     left: 1rem;
     top: 1rem;
     z-index: 10;
     border-radius: 9999px;
-    border: 1px solid rgba(var(--accent-rgb), 0.55);
-    background: rgba(6, 13, 24, 0.65);
+    border: 1px solid rgba(var(--accent-rgb), 0.8);
+    background: rgba(6, 13, 24, 0.6);
     padding: 0.25rem 0.625rem;
     font-family: var(--font-display);
     font-size: 10.5px;
@@ -509,7 +610,7 @@
     letter-spacing: 0.06em;
     color: var(--accent);
     text-shadow: 0 0 12px rgba(var(--accent-rgb), 0.6);
-    backdrop-filter: blur(4px);
+    backdrop-filter: blur(6px);
 }
 
 .service-index {
@@ -532,13 +633,18 @@
     padding-bottom: 1.75rem;
 }
 
+/* title shimmer travels white → each card's own category color */
 .service-title {
     margin-bottom: 1rem;
     font-family: var(--font-display);
     font-size: 1.15rem;
     font-weight: 700;
     line-height: 1.375;
-    background: linear-gradient(100deg, #ffffff 0%, #6ee7ff 35%, #a78bfa 60%, #ffffff 100%);
+    background: linear-gradient(100deg,
+            #ffffff 0%,
+            var(--accent) 40%,
+            #ffffff 70%,
+            var(--accent) 100%);
     background-size: 250% auto;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -671,10 +777,14 @@
     opacity: 0.85;
 }
 
+/* was flat navy — now a soft mint glow behind the hero copy so this section
+   isn't the flattest, most monotone part of the page */
 .services-hero-overlay-tint {
     position: absolute;
     inset: 0;
-    background: rgba(11, 18, 32, 0.45);
+    background:
+        radial-gradient(ellipse 900px 500px at 50% 30%, rgba(46, 230, 197, 0.1), transparent 65%),
+        rgba(11, 18, 32, 0.4);
 }
 
 .services-hero-overlay-gradient {
@@ -735,8 +845,8 @@
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.28em;
-    color: #00e5ff;
-    text-shadow: 0 0 12px rgba(0, 229, 255, 0.5);
+    color: #2ee6c5;
+    text-shadow: 0 0 12px rgba(46, 230, 197, 0.5);
     opacity: 0;
     animation: hero-fade-up 0.7s ease forwards;
     animation-delay: 0.1s;
@@ -753,7 +863,7 @@
 .services-hero-eyebrow-line {
     height: 1px;
     width: 1.25rem;
-    background: linear-gradient(to right, #00e5ff, #a78bfa);
+    background: linear-gradient(to right, #2ee6c5, #ffffff);
 }
 
 @media (max-width: 480px) {
@@ -763,7 +873,7 @@
 }
 
 .services-hero-eyebrow-line--reverse {
-    background: linear-gradient(to right, #a78bfa, #00e5ff);
+    background: linear-gradient(to right, #ffffff, #2ee6c5);
 }
 
 .services-hero-title {
@@ -880,13 +990,13 @@
 .services-hero-title-accent {
     display: block;
     font-style: normal;
-    background: linear-gradient(100deg, #00e5ff 0%, #6ee7ff 30%, #a78bfa 65%, #00e5ff 100%);
+    background: linear-gradient(100deg, #2ee6c5 0%, #ffffff 30%, #a78bfa 65%, #2ee6c5 100%);
     background-size: 250% auto;
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
     animation: services-title-shimmer 6s ease-in-out infinite;
-    text-shadow: 0 0 40px rgba(0, 229, 255, 0.25);
+    text-shadow: 0 0 40px rgba(46, 230, 197, 0.25);
 }
 
 .services-hero-subtitle {

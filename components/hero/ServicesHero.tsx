@@ -1,6 +1,6 @@
 "use client";
 
-import "../services.css";
+import "../Services/services.css";
 
 export default function ServicesHero() {
   return (
@@ -36,12 +36,16 @@ export default function ServicesHero() {
             <span className="services-hero-eyebrow-line services-hero-eyebrow-line--reverse" />
           </span>
           <h1 className="services-hero-title">
-            Ten disciplines.
-            <em className="services-hero-title-accent">One standard.</em>
+            <span className="hero-word">Ten</span>{" "}
+            <span className="hero-word">disciplines.</span>
+            <em className="services-hero-title-accent">
+              <span className="hero-word">One</span>{" "}
+              <span className="hero-word">standard.</span>
+            </em>
           </h1>
           <p className="services-hero-subtitle">
             From global trade to Web3 Studio and AI, every service runs on the same
-            precision.See how it comes together.
+            precision. See how it comes together.
           </p>
         </div>
       </div>

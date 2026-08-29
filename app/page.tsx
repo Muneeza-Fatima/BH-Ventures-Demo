@@ -4,15 +4,18 @@ import HomeFinalCTA from "@/components/shared/HomeFinalCTA";
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-[#0B1220]">
-      {/* 1. HERO */}
-      <Hero />
+    <div className="w-full min-w-0 overflow-x-clip bg-[#0B1220]">
+      <section id="home" className="w-full min-w-0">
+        <Hero />
+      </section>
 
-      {/* 2. GLOBAL IMPACT */}
-      <GlobalImpact />
+      <section id="approach" className="w-full min-w-0">
+        <GlobalImpact />
+      </section>
 
-      {/* 3. FINAL CTA */}
-      <HomeFinalCTA />
-    </main>
+      <section id="portfolio" className="w-full min-w-0">
+        <HomeFinalCTA />
+      </section>
+    </div>
   );
-}
+}

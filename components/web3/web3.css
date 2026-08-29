@@ -1,0 +1,356 @@
+/* ========================================
+   WEB3 VENTURE STUDIO EXTRAS
+   Used by: components/web3/Web3Extras.tsx
+   Rendered on the "Web3 Venture Studio" service detail page in place
+   of the plain CTA, same slot AutomobileExtras/DatesSection occupy.
+   Relies on --accent / --accent-rgb from service-detail.css's
+   .service-detail-page[data-category] wrapper.
+   ======================================== */
+
+/* ---------- ENGAGEMENT STAGES ---------- */
+
+.web3-stages {
+    margin-bottom: 3.5rem;
+}
+
+.web3-stages-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+}
+
+@media (min-width: 768px) {
+    .web3-stages-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+.web3-stage-card {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+    width: 100%;
+    padding: 1.5rem 1.4rem;
+    border-radius: 1.1rem;
+    border: 1px solid rgba(var(--accent-rgb), 0.22);
+    background:
+        radial-gradient(ellipse 260px 160px at 0% 0%, rgba(var(--accent-rgb), 0.12), transparent 70%),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.015));
+    font: inherit;
+    color: inherit;
+    cursor: pointer;
+    transition: border-color 0.3s ease, transform 0.22s ease, box-shadow 0.3s ease;
+}
+
+.web3-stage-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(var(--accent-rgb), 0.6);
+    box-shadow: 0 18px 36px -16px rgba(0, 0, 0, 0.5), 0 0 26px rgba(var(--accent-rgb), 0.22);
+}
+
+.web3-stage-card:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+}
+
+.web3-stage-name {
+    font-family: var(--font-display);
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #eaf6fb;
+    margin-bottom: 0.25rem;
+}
+
+.web3-stage-tagline {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--accent);
+    margin-bottom: 0.85rem;
+}
+
+.web3-stage-detail {
+    font-size: 0.85rem;
+    line-height: 1.6;
+    color: var(--color-silver, #8fa3b8);
+    margin-bottom: 1.1rem;
+}
+
+.web3-stage-cta {
+    margin-top: auto;
+    font-family: var(--font-display);
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--accent);
+    transition: text-shadow 0.2s ease;
+}
+
+.web3-stage-card:hover .web3-stage-cta {
+    text-shadow: 0 0 10px rgba(var(--accent-rgb), 0.5);
+}
+
+/* ---------- SECTORS COVERED ---------- */
+
+.web3-sectors {
+    margin-bottom: 3.5rem;
+}
+
+.web3-sectors-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin-bottom: 1rem;
+}
+
+.web3-sector-chip {
+    padding: 0.45rem 1rem;
+    border-radius: 9999px;
+    border: 1px solid rgba(var(--accent-rgb), 0.4);
+    background: rgba(var(--accent-rgb), 0.08);
+    color: var(--accent);
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: default;
+    transition: transform 0.2s ease, background 0.25s ease, color 0.25s ease,
+        border-color 0.25s ease, box-shadow 0.3s ease;
+}
+
+.web3-sector-chip:hover {
+    transform: translateY(-2px) scale(1.04);
+    background: var(--accent);
+    color: #06111f;
+    border-color: var(--accent);
+    box-shadow: 0 8px 22px -8px rgba(var(--accent-rgb), 0.6);
+}
+
+.web3-sectors-note {
+    font-size: 0.8rem;
+    line-height: 1.6;
+    color: var(--color-silver, #8fa3b8);
+    max-width: 40rem;
+}
+
+/* ---------- WHY WORK WITH US NOW ---------- */
+
+.web3-why {
+    margin-bottom: 3.5rem;
+}
+
+.web3-why-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.1rem;
+}
+
+@media (min-width: 640px) {
+    .web3-why-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+.web3-why-card {
+    padding: 1.4rem 1.3rem;
+    border-radius: 1rem;
+    border: 1px solid rgba(var(--accent-rgb), 0.22);
+    background:
+        radial-gradient(ellipse 260px 160px at 0% 0%, rgba(var(--accent-rgb), 0.12), transparent 70%),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.015));
+    transition: border-color 0.3s ease, transform 0.22s ease, box-shadow 0.3s ease;
+}
+
+.web3-why-card:hover {
+    transform: translateY(-3px);
+    border-color: rgba(var(--accent-rgb), 0.6);
+    box-shadow: 0 16px 34px -16px rgba(0, 0, 0, 0.5), 0 0 26px rgba(var(--accent-rgb), 0.2);
+}
+
+.web3-why-card h3 {
+    margin-bottom: 0.4rem;
+    font-family: var(--font-display);
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #eaf6fb;
+}
+
+.web3-why-card p {
+    font-size: 0.83rem;
+    line-height: 1.6;
+    color: var(--color-silver, #8fa3b8);
+}
+
+/* ---------- CTA (reuses .service-detail-cta layout) ---------- */
+
+.web3-quote-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.75rem;
+    border-radius: 9999px;
+    background: var(--accent);
+    color: #06111f;
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+    box-shadow: 0 0 30px rgba(var(--accent-rgb), 0.4);
+    transition: transform 0.2s ease, box-shadow 0.3s ease;
+}
+
+.web3-quote-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 40px rgba(var(--accent-rgb), 0.55);
+}
+
+/* ---------- QUOTE MODAL ---------- */
+
+.web3-quote-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: calc(6.5rem + env(safe-area-inset-top, 0px)) 1.5rem 1.5rem;
+    overflow-y: auto;
+    background: rgba(6, 13, 24, 0.72);
+    backdrop-filter: blur(6px);
+}
+
+.web3-quote-modal {
+    position: relative;
+    width: 100%;
+    max-width: 26rem;
+    margin-bottom: 1.5rem;
+    padding: 2.25rem 2rem 2rem;
+    border-radius: 1.25rem;
+    border: 1px solid rgba(var(--accent-rgb), 0.3);
+    background: #0e1b2e;
+    box-shadow: 0 30px 70px -20px rgba(0, 0, 0, 0.6), 0 0 40px rgba(var(--accent-rgb), 0.15);
+}
+
+.web3-quote-close {
+    position: absolute;
+    top: -0.75rem;
+    right: -0.75rem;
+    z-index: 5;
+    height: 2.4rem;
+    width: 2.4rem;
+    border-radius: 9999px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(6, 13, 24, 0.92);
+    color: #dce8f2;
+    font-size: 1.3rem;
+    line-height: 1;
+    cursor: pointer;
+    box-shadow: 0 6px 18px -6px rgba(0, 0, 0, 0.6);
+    transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+
+.web3-quote-close:hover {
+    background: rgba(var(--accent-rgb), 0.22);
+    color: var(--accent);
+    transform: scale(1.06);
+}
+
+.web3-quote-title {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #f4f9fc;
+    margin-bottom: 0.6rem;
+}
+
+.web3-quote-sub {
+    font-size: 0.9rem;
+    line-height: 1.55;
+    color: rgba(220, 232, 242, 0.6);
+    margin-bottom: 1.75rem;
+}
+
+.web3-quote-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.4rem;
+}
+
+.web3-quote-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: rgba(220, 232, 242, 0.75);
+}
+
+.web3-quote-field input,
+.web3-quote-field select {
+    border-radius: 0.75rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.04);
+    padding: 0.9rem 1rem;
+    font-size: 0.95rem;
+    font-weight: 400;
+    text-transform: none;
+    letter-spacing: normal;
+    color: #eaf6fb;
+    font-family: inherit;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.web3-quote-field input::placeholder {
+    color: rgba(220, 232, 242, 0.35);
+}
+
+.web3-quote-field select {
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='%238fa3b8'%3E%3Cpath fill-rule='evenodd' d='M5.23 7.21a.75.75 0 011.06.02L10 11.148l3.71-3.918a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z' clip-rule='evenodd'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    background-size: 1.1rem;
+    padding-right: 2.25rem;
+    cursor: pointer;
+}
+
+.web3-quote-field select option {
+    background: #0e1b2e;
+    color: #eaf6fb;
+}
+
+.web3-quote-field input:focus,
+.web3-quote-field select:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(var(--accent-rgb), 0.18);
+}
+
+.web3-quote-submit {
+    margin-top: 0.5rem;
+    padding: 0.85rem 1.5rem;
+    border-radius: 9999px;
+    border: none;
+    background: var(--accent);
+    color: #06111f;
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    cursor: pointer;
+    box-shadow: 0 0 24px rgba(var(--accent-rgb), 0.4);
+    transition: transform 0.2s ease, box-shadow 0.3s ease;
+}
+
+.web3-quote-submit:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 34px rgba(var(--accent-rgb), 0.55);
+}

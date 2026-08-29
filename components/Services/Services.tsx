@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import ServiceCard from "@/components/ServiceCard";
+import ServiceCard from "@/components/Services/ServiceCard";
 import { SERVICES } from "@/data/services";
 import "./services.css";
 
@@ -58,7 +58,7 @@ export default function Services() {
               className="service-reveal"
               style={{ "--reveal-delay": `${i * 45}ms` } as React.CSSProperties}
             >
-              <ServiceCard service={service} />
+              <ServiceCard service={service} index={i} />
             </div>
           ))}
         </div>
