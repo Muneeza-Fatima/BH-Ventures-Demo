@@ -473,7 +473,7 @@ export default function GlobalImpact() {
               Built to create accessible opportunities and
               sustainable growth for traders worldwide.
             </p>
-          </motion.div>
+          </div>
 
           {/* =====================================================
               STATISTICS
