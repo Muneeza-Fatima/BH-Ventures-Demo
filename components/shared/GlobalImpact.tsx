@@ -2,6 +2,12 @@
 
 import { useEffect, useRef, useState } from "react";
 import { motion, useInView } from "framer-motion";
+import {
+  Globe2,
+  Clock3,
+  WalletCards,
+  UsersRound,
+} from "lucide-react";
 
 const stats = [
   {
@@ -10,6 +16,7 @@ const stats = [
     suffix: "+",
     label: "Countries Registered",
     positionClass: "left-5 sm:left-10 top-0",
+    icon: Globe2,
   },
   {
     value: 15,
@@ -18,6 +25,7 @@ const stats = [
     label: "Average Payout Processing",
     positionClass:
       "right-5 sm:right-10 top-9 sm:top-10 w-[135px] sm:w-[160px]",
+    icon: Clock3,
   },
   {
     value: 350,
@@ -25,6 +33,7 @@ const stats = [
     suffix: "K+",
     label: "Paid Out to Traders",
     positionClass: "left-5 sm:left-10 top-28 sm:top-28",
+    icon: WalletCards,
   },
   {
     value: 10,
@@ -33,6 +42,7 @@ const stats = [
     label: "Traders Worldwide",
     positionClass:
       "right-5 sm:right-10 top-[9.25rem] sm:top-[9.5rem] w-[135px] sm:w-[160px]",
+    icon: UsersRound,
   },
 ];
 
@@ -513,9 +523,11 @@ export default function GlobalImpact() {
               "
             />
 
-            {stats.map((stat, index) => (
-              <motion.div
-                key={stat.label}
+            {stats.map((stat, index) => {
+              const Icon = stat.icon;
+              return (
+                <motion.div
+                  key={stat.label}
                 initial={{
                   opacity: 0,
                   y: 10,
@@ -543,7 +555,7 @@ export default function GlobalImpact() {
               >
                 {/* Number */}
                 <div
-                  className="
+                  className={`
                     whitespace-nowrap
                     text-left
                     text-[21px]
@@ -633,7 +645,7 @@ export default function GlobalImpact() {
                       value={stat.value}
                       prefix={stat.prefix}
                       suffix={stat.suffix}
-                      active={statsVisible}
+                      active={statsInView}
                     />
                   </div>
 
@@ -675,8 +687,9 @@ export default function GlobalImpact() {
                 >
                   {stat.label}
                 </p>
-              </motion.div>
-            ))}
+                </motion.div>
+              );
+            })}
           </div>
 
           {/* Bottom Accent */}
