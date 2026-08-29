@@ -1,6 +1,10 @@
 "use client";
 
+import { useState } from "react";
+
 export default function HeroBackground() {
+  const [videoLoaded, setVideoLoaded] = useState(false);
+
   return (
     <div
       className="
@@ -19,7 +23,8 @@ export default function HeroBackground() {
         loop
         playsInline
         preload="metadata"
-        className="
+        onCanPlay={() => setVideoLoaded(true)}
+        className={`
           absolute
           inset-0
           h-full
@@ -29,11 +34,7 @@ export default function HeroBackground() {
           transition-opacity
           duration-500
           ease-out
-          ${
-            videoLoaded
-              ? "opacity-[0.92]"
-              : "opacity-0"
-          }
+          ${videoLoaded ? "opacity-95" : "opacity-0"}
         `}
       >
         <source src="/videos/hero.mp4" type="video/mp4" />
