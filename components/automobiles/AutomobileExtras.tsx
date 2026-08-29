@@ -392,7 +392,7 @@ const FEATURED_VEHICLES = [
         model: "488 GTB",
         tagline: "Iconic Italian performance, engineered to thrill",
         video: "/videos/ferrari.mp4",
-        poster: "/images/brands/photo/ferrari.jpg",
+        poster: "/images/brands/photo/ferrari.png",
     },
     {
         brand: "Toyota",

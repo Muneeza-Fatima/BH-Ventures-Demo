@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import {
   ArrowLeftRight,
@@ -81,7 +82,14 @@ const cardVariants = {
 };
 
 export default function OurCapabilities() {
-  const shouldReduceMotion = useReducedMotion();
+  const [mounted, setMounted] = useState(false);
+  const reduced = useReducedMotion();
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  const shouldReduceMotion = mounted && Boolean(reduced);
 
   return (
     <section
