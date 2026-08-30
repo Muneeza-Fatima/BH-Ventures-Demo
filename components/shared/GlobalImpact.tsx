@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useEffect, useRef, useState } from "react";
@@ -79,6 +80,7 @@ function CountUp({
 
       const elapsed = timestamp - startTime;
       const progress = Math.min(elapsed / duration, 1);
+
       const eased = 1 - Math.pow(1 - progress, 4);
 
       setCount(Math.round(eased * value));
@@ -96,19 +98,17 @@ function CountUp({
   }, [active, value]);
 
   return (
-    <>
-      <span
-        translate="no"
-        className="notranslate text-white"
-      >
+    <span
+      translate="no"
+      className="notranslate whitespace-nowrap"
+    >
+      <span className="text-white">
         {prefix}
         {count}
       </span>
 
       <span
-        translate="no"
         className="
-          notranslate
           bg-gradient-to-r
           from-[#2DD4BF]
           to-[#10B981]
@@ -119,7 +119,7 @@ function CountUp({
       >
         {suffix}
       </span>
-    </>
+    </span>
   );
 }
 
@@ -128,6 +128,10 @@ export default function GlobalImpact() {
   const videoRef = useRef<HTMLVideoElement | null>(null);
 
   const [statsVisible, setStatsVisible] = useState(false);
+
+  /* -------------------------------------------------------
+     Stats visibility
+  ------------------------------------------------------- */
 
   useEffect(() => {
     const element = statsRef.current;
@@ -151,6 +155,10 @@ export default function GlobalImpact() {
 
     return () => observer.disconnect();
   }, []);
+
+  /* -------------------------------------------------------
+     Video autoplay
+  ------------------------------------------------------- */
 
   useEffect(() => {
     const video = videoRef.current;
@@ -219,6 +227,8 @@ export default function GlobalImpact() {
           blur-[70px]
         "
       />
+
+      {/* Main Card */}
 
       <div
         className="
@@ -303,6 +313,8 @@ export default function GlobalImpact() {
           "
         />
 
+        {/* Top Accent */}
+
         <div
           aria-hidden="true"
           className="
@@ -319,6 +331,8 @@ export default function GlobalImpact() {
             to-transparent
           "
         />
+
+        {/* Content */}
 
         <div
           className="
@@ -352,6 +366,8 @@ export default function GlobalImpact() {
               text-center
             "
           >
+            {/* Eyebrow */}
+
             <div
               className="
                 mb-4
@@ -361,7 +377,15 @@ export default function GlobalImpact() {
                 gap-3
               "
             >
-              <span className="h-px w-7 bg-[#14B8A6]/60 sm:w-9" />
+              <span
+                aria-hidden="true"
+                className="
+                  h-px
+                  w-7
+                  bg-[#14B8A6]/60
+                  sm:w-9
+                "
+              />
 
               <span
                 className="
@@ -377,8 +401,18 @@ export default function GlobalImpact() {
                 Global Trading Community
               </span>
 
-              <span className="h-px w-7 bg-[#14B8A6]/60 sm:w-9" />
+              <span
+                aria-hidden="true"
+                className="
+                  h-px
+                  w-7
+                  bg-[#14B8A6]/60
+                  sm:w-9
+                "
+              />
             </div>
+
+            {/* Heading */}
 
             <h2
               className="
@@ -387,6 +421,7 @@ export default function GlobalImpact() {
                 tracking-[-0.04em]
                 text-white
                 text-[28px]
+
                 sm:text-[34px]
                 md:text-[40px]
                 lg:text-[44px]
@@ -428,7 +463,10 @@ export default function GlobalImpact() {
               </span>
             </h2>
 
+            {/* Heading Accent */}
+
             <div
+              aria-hidden="true"
               className="
                 mx-auto
                 mt-5
@@ -441,6 +479,8 @@ export default function GlobalImpact() {
               "
             />
 
+            {/* Description */}
+
             <p
               className="
                 mx-auto
@@ -450,6 +490,7 @@ export default function GlobalImpact() {
                 font-light
                 leading-6
                 text-white/65
+
                 sm:text-sm
                 sm:leading-7
               "
@@ -469,6 +510,7 @@ export default function GlobalImpact() {
                 font-medium
                 leading-5
                 text-[#99F6E4]/75
+
                 sm:text-xs
                 sm:leading-6
               "
@@ -517,6 +559,7 @@ export default function GlobalImpact() {
                     bg-white/[0.055]
                     px-3
                     py-3
+
                     shadow-[inset_0_1px_0_rgba(255,255,255,0.06),0_10px_25px_rgba(0,0,0,0.14)]
                     backdrop-blur-md
 
@@ -538,7 +581,7 @@ export default function GlobalImpact() {
                     [@media(min-width:1024px)_and_(max-width:1366px)]:w-[165px]!
                   `}
                 >
-                  {/* Card Top Highlight */}
+                  {/* Card Highlight */}
 
                   <span
                     aria-hidden="true"
@@ -560,6 +603,7 @@ export default function GlobalImpact() {
                   {/* Icon */}
 
                   <div
+                    aria-hidden="true"
                     className="
                       relative
                       mb-2.5
@@ -578,7 +622,6 @@ export default function GlobalImpact() {
                     <Icon
                       size={16}
                       strokeWidth={1.7}
-                      aria-hidden="true"
                     />
                   </div>
 
@@ -592,6 +635,7 @@ export default function GlobalImpact() {
                       font-normal
                       leading-none
                       tracking-[-0.035em]
+
                       sm:text-[24px]
                       md:text-[26px]
                     "
@@ -604,9 +648,9 @@ export default function GlobalImpact() {
                     />
                   </div>
 
-                  {/* Label */}
+                  {/* SINGLE LABEL — intentionally rendered once */}
 
-                  <p
+                  <div
                     className="
                       relative
                       mt-1.5
@@ -615,13 +659,14 @@ export default function GlobalImpact() {
                       font-medium
                       leading-4
                       text-white/55
+
                       sm:max-w-[160px]
                       sm:text-[10px]
                       sm:leading-5
                     "
                   >
                     {stat.label}
-                  </p>
+                  </div>
                 </div>
               );
             })}
@@ -630,6 +675,7 @@ export default function GlobalImpact() {
           {/* Bottom Accent */}
 
           <div
+            aria-hidden="true"
             className="
               mt-0
               h-px
