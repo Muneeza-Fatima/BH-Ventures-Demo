@@ -1,7 +1,7 @@
+
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { motion, useInView } from "framer-motion";
 import {
   Globe2,
   Clock3,
@@ -15,7 +15,7 @@ const stats = [
     prefix: "",
     suffix: "+",
     label: "Countries Registered",
-    positionClass: "left-5 sm:left-10 top-0",
+    positionClass: "left-1 sm:left-10 top-0",
     icon: Globe2,
   },
   {
@@ -23,8 +23,7 @@ const stats = [
     prefix: "",
     suffix: "h",
     label: "Average Payout Processing",
-    positionClass:
-      "right-5 sm:right-10 top-9 sm:top-10 w-[135px] sm:w-[160px]",
+    positionClass: "right-1 sm:right-10 top-10 sm:top-11",
     icon: Clock3,
   },
   {
@@ -32,7 +31,7 @@ const stats = [
     prefix: "$",
     suffix: "K+",
     label: "Paid Out to Traders",
-    positionClass: "left-5 sm:left-10 top-28 sm:top-28",
+    positionClass: "left-1 sm:left-10 top-36 sm:top-36",
     icon: WalletCards,
   },
   {
@@ -41,7 +40,7 @@ const stats = [
     suffix: "K+",
     label: "Traders Worldwide",
     positionClass:
-      "right-5 sm:right-10 top-[9.25rem] sm:top-[9.5rem] w-[135px] sm:w-[160px]",
+      "right-1 sm:right-12 top-[12rem] sm:top-[12.25rem]",
     icon: UsersRound,
   },
 ];
@@ -65,37 +64,45 @@ function CountUp({
 
     started.current = true;
 
-    let frame = 0;
-    const duration = 1800;
-    const start = performance.now();
+    let animationFrame = 0;
+    let startTime: number | null = null;
 
-    const update = (time: number) => {
-      const progress = Math.min((time - start) / duration, 1);
+    const isMobile =
+      typeof window !== "undefined" &&
+      window.innerWidth < 640;
+
+    const duration = isMobile ? 1200 : 1600;
+
+    const animate = (timestamp: number) => {
+      if (startTime === null) {
+        startTime = timestamp;
+      }
+
+      const elapsed = timestamp - startTime;
+      const progress = Math.min(elapsed / duration, 1);
 
       const eased = 1 - Math.pow(1 - progress, 4);
 
       setCount(Math.round(eased * value));
 
       if (progress < 1) {
-        frame = requestAnimationFrame(update);
-      } else {
-        setCount(value);
+        animationFrame = requestAnimationFrame(animate);
       }
     };
 
-    frame = requestAnimationFrame(update);
+    animationFrame = requestAnimationFrame(animate);
 
     return () => {
-      cancelAnimationFrame(frame);
+      cancelAnimationFrame(animationFrame);
     };
   }, [active, value]);
 
   return (
-    <>
-      <span
-        translate="no"
-        className="notranslate text-white"
-      >
+    <span
+      translate="no"
+      className="notranslate whitespace-nowrap"
+    >
+      <span className="text-white">
         {prefix}
         {count}
       </span>
@@ -112,26 +119,46 @@ function CountUp({
       >
         {suffix}
       </span>
-    </>
+    </span>
   );
 }
 
 export default function GlobalImpact() {
-  const sectionRef = useRef<HTMLElement | null>(null);
   const statsRef = useRef<HTMLDivElement | null>(null);
   const videoRef = useRef<HTMLVideoElement | null>(null);
 
-  const sectionInView = useInView(sectionRef, {
-    once: true,
-    amount: 0.12,
-  });
+  const [statsVisible, setStatsVisible] = useState(false);
 
-  const statsInView = useInView(statsRef, {
-    once: true,
-    amount: 0.25,
-  });
+  /* -------------------------------------------------------
+     Stats visibility
+  ------------------------------------------------------- */
 
-  const [videoSrc, setVideoSrc] = useState<string | null>(null);
+  useEffect(() => {
+    const element = statsRef.current;
+
+    if (!element) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setStatsVisible(true);
+          observer.disconnect();
+        }
+      },
+      {
+        threshold: 0.1,
+        rootMargin: "0px 0px -20px 0px",
+      }
+    );
+
+    observer.observe(element);
+
+    return () => observer.disconnect();
+  }, []);
+
+  /* -------------------------------------------------------
+     Video autoplay
+  ------------------------------------------------------- */
 
   useEffect(() => {
     const video = videoRef.current;
@@ -142,65 +169,44 @@ export default function GlobalImpact() {
     video.defaultMuted = true;
     video.playsInline = true;
 
-    const startVideo = () => {
-      if (video.paused) {
-        video.play().catch(() => {});
-      }
+    const playVideo = () => {
+      video.play().catch(() => {});
     };
 
     if (video.readyState >= 2) {
-      startVideo();
+      playVideo();
     } else {
-      video.addEventListener("canplay", startVideo, {
+      video.addEventListener("canplay", playVideo, {
         once: true,
       });
     }
 
     return () => {
-      video.removeEventListener("canplay", startVideo);
+      video.removeEventListener("canplay", playVideo);
     };
-  }, [videoSrc]); // re-run when src is set
-
-  // Lazy-load the video only when the section enters the viewport
-  useEffect(() => {
-    const section = sectionRef.current;
-    if (!section) return;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting) {
-          setVideoSrc("/videos/global-impact.mp4");
-          observer.disconnect();
-        }
-      },
-      { threshold: 0.05 }
-    );
-
-    observer.observe(section);
-    return () => observer.disconnect();
   }, []);
 
   return (
     <section
-      ref={sectionRef}
       className="
         relative
         w-full
+        min-w-0
         overflow-hidden
-        bg-[#111C2D]
+        bg-[#0B1220]
         px-4
-        py-12
+        py-10
         font-sans
 
-        sm:bg-[#0B1220]
-
         sm:px-6
-        sm:py-16
+        sm:py-14
 
         md:px-8
-        md:py-20
+        md:py-16
 
-        lg:py-24
+        lg:py-20
+
+        [@media(min-width:1024px)_and_(max-width:1366px)]:py-14!
       "
     >
       {/* Ambient Glow */}
@@ -212,29 +218,31 @@ export default function GlobalImpact() {
           absolute
           left-1/2
           top-1/2
-          h-[360px]
-          w-[520px]
+          h-[280px]
+          w-[420px]
           -translate-x-1/2
           -translate-y-1/2
           rounded-full
-          bg-[#14B8A6]/[0.03]
-          blur-[80px]
+          bg-[#14B8A6]/[0.025]
+          blur-[70px]
         "
       />
 
       {/* Main Card */}
+
       <div
         className="
           relative
           mx-auto
           w-full
           max-w-5xl
+          min-w-0
           overflow-hidden
           rounded-[24px]
           border
           border-white/[0.10]
           bg-[#0F1B2D]
-          shadow-[0_20px_55px_rgba(0,0,0,0.24)]
+          shadow-[0_15px_45px_rgba(0,0,0,0.20)]
 
           sm:rounded-[30px]
         "
@@ -248,7 +256,6 @@ export default function GlobalImpact() {
             inset-0
             h-full
             w-full
-
             object-contain
             object-center
             scale-[2]
@@ -261,16 +268,14 @@ export default function GlobalImpact() {
           muted
           loop
           playsInline
-          preload="none"
+          preload="auto"
           disablePictureInPicture
           disableRemotePlayback
         >
-          {videoSrc && (
-            <source
-              src={videoSrc}
-              type="video/mp4"
-            />
-          )}
+          <source
+            src="/videos/global-impact.mp4"
+            type="video/mp4"
+          />
         </video>
 
         {/* Video Overlay */}
@@ -281,22 +286,20 @@ export default function GlobalImpact() {
             pointer-events-none
             absolute
             inset-0
-            bg-[#0B1220]/75
+            bg-[#0B1220]/72
           "
         />
 
-        {/* Center Glow */}
         <div
           aria-hidden="true"
           className="
             pointer-events-none
             absolute
             inset-0
-            bg-[radial-gradient(circle_at_50%_38%,rgba(20,184,166,0.10),transparent_58%)]
+            bg-[radial-gradient(circle_at_50%_38%,rgba(20,184,166,0.08),transparent_60%)]
           "
         />
 
-        {/* Bottom Readability */}
         <div
           aria-hidden="true"
           className="
@@ -304,13 +307,14 @@ export default function GlobalImpact() {
             absolute
             inset-0
             bg-gradient-to-b
-            from-[#0B1220]/40
+            from-[#0B1220]/35
             via-transparent
-            to-[#0B1220]/60
+            to-[#0B1220]/65
           "
         />
 
         {/* Top Accent */}
+
         <div
           aria-hidden="true"
           className="
@@ -329,6 +333,7 @@ export default function GlobalImpact() {
         />
 
         {/* Content */}
+
         <div
           className="
             relative
@@ -337,16 +342,19 @@ export default function GlobalImpact() {
             flex-col
             items-center
             px-5
-            py-12
+            py-10
 
             sm:px-10
-            sm:py-16
+            sm:py-14
 
             md:px-14
-            md:py-20
+            md:py-16
 
             lg:px-20
-            lg:py-22
+            lg:py-20
+
+            [@media(min-width:1024px)_and_(max-width:1366px)]:px-14!
+            [@media(min-width:1024px)_and_(max-width:1366px)]:py-14!
           "
         >
           {/* Header */}
@@ -359,6 +367,7 @@ export default function GlobalImpact() {
             "
           >
             {/* Eyebrow */}
+
             <div
               className="
                 mb-4
@@ -369,11 +378,11 @@ export default function GlobalImpact() {
               "
             >
               <span
+                aria-hidden="true"
                 className="
                   h-px
                   w-7
                   bg-[#14B8A6]/60
-
                   sm:w-9
                 "
               />
@@ -385,7 +394,6 @@ export default function GlobalImpact() {
                   uppercase
                   tracking-[0.28em]
                   text-[#5EEAD4]
-
                   sm:text-[10px]
                   md:text-xs
                 "
@@ -394,31 +402,31 @@ export default function GlobalImpact() {
               </span>
 
               <span
+                aria-hidden="true"
                 className="
                   h-px
                   w-7
                   bg-[#14B8A6]/60
-
                   sm:w-9
                 "
               />
             </div>
 
-            {/* Main Heading */}
+            {/* Heading */}
+
             <h2
               className="
-                font-bold
+                font-semibold
                 leading-[1.08]
                 tracking-[-0.04em]
                 text-white
-
                 text-[28px]
 
                 sm:text-[34px]
-
                 md:text-[40px]
-
                 lg:text-[44px]
+
+                [@media(min-width:1024px)_and_(max-width:1366px)]:text-[38px]!
               "
             >
               <span className="block">
@@ -428,7 +436,6 @@ export default function GlobalImpact() {
               <span
                 className="
                   block
-                  font-bold
                   bg-gradient-to-r
                   from-[#2DD4BF]
                   via-[#5EEAD4]
@@ -445,16 +452,21 @@ export default function GlobalImpact() {
                 Trusted by Traders
               </span>
 
-              <span className="block font-bold">
+              <span className="block">
                 Across{" "}
-                <span className="font-bold text-[#5EEAD4]">
+                <span
+                  translate="no"
+                  className="notranslate text-[#5EEAD4]"
+                >
                   150+ Countries.
                 </span>
               </span>
             </h2>
 
-            {/* Accent */}
+            {/* Heading Accent */}
+
             <div
+              aria-hidden="true"
               className="
                 mx-auto
                 mt-5
@@ -468,6 +480,7 @@ export default function GlobalImpact() {
             />
 
             {/* Description */}
+
             <p
               className="
                 mx-auto
@@ -488,7 +501,6 @@ export default function GlobalImpact() {
               requiring them to risk their own trading capital.
             </p>
 
-            {/* Secondary Line */}
             <p
               className="
                 mx-auto
@@ -516,77 +528,40 @@ export default function GlobalImpact() {
             ref={statsRef}
             className="
               relative
-              mt-9
-              h-[215px]
+              mt-8
+              h-[275px]
               w-full
               max-w-[390px]
 
-              sm:mt-11
-              sm:h-[235px]
+              sm:mt-10
+              sm:h-[295px]
               sm:max-w-[500px]
 
               md:max-w-[540px]
             "
           >
-            {/* Subtle Center Glow */}
-            <div
-              aria-hidden="true"
-              className="
-                pointer-events-none
-                absolute
-                left-1/2
-                top-1/2
-                h-16
-                w-16
-                -translate-x-1/2
-                -translate-y-1/2
-                rounded-full
-                bg-[#14B8A6]/[0.05]
-                blur-xl
-              "
-            />
-
-            {stats.map((stat, index) => {
+            {stats.map((stat) => {
               const Icon = stat.icon;
-              return (
-                <motion.div
-                  key={stat.label}
-                initial={{
-                  opacity: 0,
-                  y: 10,
-                }}
-                animate={
-                  statsInView
-                    ? {
-                        opacity: 1,
-                        y: 0,
-                      }
-                    : {
-                        opacity: 0,
-                        y: 10,
-                      }
-                }
-                transition={{
-                  duration: 0.45,
-                  delay: 0.08 + index * 0.07,
-                  ease: [0.22, 1, 0.36, 1],
-                }}
-                className={`
-                  absolute
-                  ${stat.positionClass}
-                `}
-              >
-                {/* Number */}
-                <div
-                  className={`
-                    whitespace-nowrap
-                    text-left
-                    text-[21px]
-                    font-normal
-                    leading-none
-                    tracking-[-0.035em]
 
-                    sm:text-[24px]
+              return (
+                <div
+                  key={stat.label}
+                  className={`
+                    group
+                    absolute
+                    ${stat.positionClass}
+
+                    w-[138px]
+                    overflow-hidden
+                    rounded-[17px]
+                    border
+                    border-white/[0.12]
+                    bg-white/[0.055]
+                    px-3
+                    py-3
+
+                    shadow-[inset_0_1px_0_rgba(255,255,255,0.06),0_10px_25px_rgba(0,0,0,0.14)]
+                    backdrop-blur-md
 
                     transition-all
                     duration-300
@@ -606,7 +581,7 @@ export default function GlobalImpact() {
                     [@media(min-width:1024px)_and_(max-width:1366px)]:w-[165px]!
                   `}
                 >
-                  {/* Card Top Highlight */}
+                  {/* Card Highlight */}
 
                   <span
                     aria-hidden="true"
@@ -628,6 +603,7 @@ export default function GlobalImpact() {
                   {/* Icon */}
 
                   <div
+                    aria-hidden="true"
                     className="
                       relative
                       mb-2.5
@@ -646,7 +622,6 @@ export default function GlobalImpact() {
                     <Icon
                       size={16}
                       strokeWidth={1.7}
-                      aria-hidden="true"
                     />
                   </div>
 
@@ -660,6 +635,7 @@ export default function GlobalImpact() {
                       font-normal
                       leading-none
                       tracking-[-0.035em]
+
                       sm:text-[24px]
                       md:text-[26px]
                     "
@@ -668,13 +644,13 @@ export default function GlobalImpact() {
                       value={stat.value}
                       prefix={stat.prefix}
                       suffix={stat.suffix}
-                      active={statsInView}
+                      active={statsVisible}
                     />
                   </div>
 
-                  {/* Label */}
+                  {/* SINGLE LABEL — intentionally rendered once */}
 
-                  <p
+                  <div
                     className="
                       relative
                       mt-1.5
@@ -683,34 +659,15 @@ export default function GlobalImpact() {
                       font-medium
                       leading-4
                       text-white/55
+
                       sm:max-w-[160px]
                       sm:text-[10px]
                       sm:leading-5
                     "
                   >
                     {stat.label}
-                  </p>
+                  </div>
                 </div>
-
-                {/* Label */}
-                <p
-                  className="
-                    mt-1.5
-                    max-w-[135px]
-                    text-left
-                    text-[9px]
-                    font-medium
-                    leading-4
-                    text-white/55
-
-                    sm:max-w-[160px]
-                    sm:text-[10px]
-                    sm:leading-5
-                  "
-                >
-                  {stat.label}
-                </p>
-                </motion.div>
               );
             })}
           </div>
@@ -718,6 +675,7 @@ export default function GlobalImpact() {
           {/* Bottom Accent */}
 
           <div
+            aria-hidden="true"
             className="
               mt-0
               h-px
