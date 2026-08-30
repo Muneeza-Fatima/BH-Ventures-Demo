@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef, FormEvent, ReactElement } from "react";
+import Image from "next/image";
 
 /* ---------- BRAND MARK (logo, or initials placeholder if the logo file 404s) ---------- */
 
@@ -20,11 +21,14 @@ function BrandMark({ brand }: { brand: { name: string; logo: string } }) {
                     {initials}
                 </span>
             ) : (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img
+                <Image
                     src={brand.logo}
                     alt={`${brand.name} logo`}
+                    width={80}
+                    height={40}
+                    style={{ objectFit: "contain" }}
                     onError={() => setFailed(true)}
+                    loading="lazy"
                 />
             )}
         </span>
@@ -54,12 +58,15 @@ function BrandPhotoCard({
             {brand.popular && <span className="auto-photo-badge">Popular</span>}
 
             {brand.photo && !failed ? (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img
+                <Image
                     className="auto-photo-img"
                     src={brand.photo}
                     alt={`${brand.name} vehicle`}
+                    fill
+                    sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 20vw"
+                    style={{ objectFit: "cover" }}
                     onError={() => setFailed(true)}
+                    loading="lazy"
                 />
             ) : (
                 <div className="auto-photo-fallback">
@@ -133,11 +140,14 @@ function ModalBrandMedia({
     return (
         <div className="auto-modal-media">
             {brand.photo && !failed ? (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img
+                <Image
                     src={brand.photo}
                     alt={`${brand.name} vehicle`}
+                    fill
+                    sizes="100vw"
+                    style={{ objectFit: "cover" }}
                     onError={() => setFailed(true)}
+                    loading="lazy"
                 />
             ) : (
                 <div className="auto-modal-media-fallback">
@@ -196,21 +206,25 @@ function FeaturedBanner({
             {showVideo ? (
                 <video
                     className="feat-banner-video"
-                    src={vehicle.video}
+                    src={inView ? vehicle.video : undefined}
                     poster={vehicle.poster}
                     autoPlay
                     muted
                     loop
                     playsInline
+                    preload="none"
                     onError={() => setVideoFailed(true)}
                 />
             ) : showPoster ? (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img
+                <Image
                     className="feat-banner-img"
-                    src={vehicle.poster}
+                    src={vehicle.poster!}
                     alt={`${vehicle.brand} ${vehicle.model}`}
+                    fill
+                    sizes="100vw"
+                    style={{ objectFit: "cover" }}
                     onError={() => setPhotoFailed(true)}
+                    loading="lazy"
                 />
             ) : (
                 <div className="feat-banner-fallback" />
