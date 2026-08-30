@@ -1,10 +1,34 @@
 "use client";
 
+import { useEffect, useRef, useState } from "react";
 import "../Services/services.css";
 
 export default function ServicesHero() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const [videoSrc, setVideoSrc] = useState<string | null>(null);
+
+  useEffect(() => {
+    const section = sectionRef.current;
+    if (!section) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          setVideoSrc(
+            "/videos/Generating_animated_corporate_vi_202608210655_202608210856.mp4"
+          );
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.01 }
+    );
+
+    observer.observe(section);
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <section className="services-hero-section">
+    <section ref={sectionRef} className="services-hero-section">
       {/* Background video */}
       <div className="services-hero-video-wrap" aria-hidden="true">
         <video
@@ -12,15 +36,12 @@ export default function ServicesHero() {
           muted
           loop
           playsInline
-          preload="metadata"
+          preload="none"
           className="services-hero-video"
         >
-          {/* replace with your own video filename, placed in /public/videos/ */}
-          <source
-            src="/videos/Generating_animated_corporate_vi_202608210655_202608210856.mp4"
-            type="video/mp4"
-          />
-          Your browser does not support the video tag.
+          {videoSrc && (
+            <source src={videoSrc} type="video/mp4" />
+          )}
         </video>
 
         <div className="services-hero-overlay-tint" />

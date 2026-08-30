@@ -73,6 +73,7 @@ export default function ServiceDetailHero({
                             muted
                             loop
                             playsInline
+                            preload="none"
                         />
                     ) : (
                         // eslint-disable-next-line @next/next/no-img-element

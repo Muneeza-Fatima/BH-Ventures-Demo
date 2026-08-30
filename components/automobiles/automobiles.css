@@ -27,6 +27,12 @@
     }
 }
 
+@media (max-width: 380px) {
+    .auto-stats {
+        margin-bottom: 2.5rem;
+    }
+}
+
 .auto-stat {
     display: flex;
     flex-direction: column;
@@ -37,6 +43,12 @@
     transition: background 0.3s ease, box-shadow 0.3s ease;
 }
 
+@media (max-width: 380px) {
+    .auto-stat {
+        padding: 1.1rem 0.6rem;
+    }
+}
+
 .auto-stat:hover {
     background: linear-gradient(to bottom, rgba(var(--accent-rgb), 0.16), rgba(10, 22, 40, 0.98));
     box-shadow: inset 0 0 0 1px rgba(var(--accent-rgb), 0.35), inset 0 0 30px rgba(var(--accent-rgb), 0.12);
@@ -44,7 +56,9 @@
 
 .auto-stat-value {
     font-family: var(--font-display);
-    font-size: 1.6rem;
+    /* fluid — the fixed 1.6rem was tight in a 2-up grid on very narrow
+       phones and left space unused on large screens */
+    font-size: clamp(1.25rem, 1rem + 1.2vw, 1.6rem);
     font-weight: 700;
     background: linear-gradient(100deg, var(--accent), #ffffff 60%, var(--accent));
     background-size: 200% auto;
@@ -177,6 +191,15 @@
 @media (min-width: 1024px) {
     .auto-photo-grid {
         grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+/* ultra-wide — a 4th column keeps photo cards from stretching too wide
+   on large monitors */
+@media (min-width: 1600px) {
+    .auto-photo-grid {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 1.5rem;
     }
 }
 
@@ -371,6 +394,13 @@
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 0.875rem;
+}
+
+@media (max-width: 380px) {
+    .auto-brand-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.65rem;
+    }
 }
 
 @media (min-width: 640px) {
@@ -629,6 +659,14 @@
     border-radius: 1rem;
     border: 1px solid rgba(255, 182, 72, 0.35);
     background: linear-gradient(to bottom, rgba(255, 182, 72, 0.1), rgba(255, 182, 72, 0.02));
+    box-sizing: border-box;
+}
+
+@media (max-width: 380px) {
+    .auto-price-disclaimer {
+        padding: 1.1rem 1rem;
+        margin-bottom: 2.25rem;
+    }
 }
 
 .auto-price-title {
@@ -691,9 +729,31 @@
     align-items: flex-start;
     justify-content: center;
     padding: 6rem 1.25rem 1.25rem;
+    /* keep the modal clear of iOS/Android notches and home-indicator bars */
+    padding-left: max(1.25rem, env(safe-area-inset-left));
+    padding-right: max(1.25rem, env(safe-area-inset-right));
+    padding-bottom: max(1.25rem, env(safe-area-inset-bottom));
     overflow-y: auto;
     background: rgba(6, 13, 24, 0.72);
     backdrop-filter: blur(4px);
+    box-sizing: border-box;
+}
+
+/* on small/short screens 6rem of top padding eats too much of the
+   viewport before the modal even starts — pull it in, and use dvh so
+   mobile browser chrome (address bar) doesn't clip the modal */
+@media (max-width: 640px) {
+    .auto-modal-overlay {
+        padding-top: max(2rem, env(safe-area-inset-top));
+        align-items: center;
+    }
+}
+
+@media (max-height: 700px) {
+    .auto-modal-overlay {
+        padding-top: max(1.5rem, env(safe-area-inset-top));
+        align-items: center;
+    }
 }
 
 .auto-modal {
@@ -701,12 +761,21 @@
     width: 100%;
     max-width: 30rem;
     max-height: 90vh;
+    max-height: 90dvh;
     overflow-y: auto;
     border-radius: 1.25rem;
     border: 1px solid rgba(255, 255, 255, 0.1);
     background: #0e1b2e;
     padding: 2rem 1.75rem;
+    box-sizing: border-box;
     box-shadow: 0 30px 70px -20px rgba(0, 0, 0, 0.6);
+}
+
+@media (max-width: 380px) {
+    .auto-modal {
+        padding: 1.5rem 1.25rem;
+        border-radius: 1rem;
+    }
 }
 
 .auto-modal-close {
@@ -738,6 +807,14 @@
     overflow: hidden;
     border-radius: 1.25rem 1.25rem 0 0;
     background: #0b1220;
+}
+
+@media (max-width: 380px) {
+    .auto-modal-media {
+        margin: -1.5rem -1.25rem 1.25rem;
+        height: 9rem;
+        border-radius: 1rem 1rem 0 0;
+    }
 }
 
 .auto-modal-media img {
@@ -922,6 +999,23 @@
     }
 }
 
+/* small phones — 22rem is a lot of vertical space to hand a single
+   banner on a short screen */
+@media (max-width: 380px) {
+    .feat-banner {
+        min-height: 18rem;
+        border-radius: 1rem;
+    }
+}
+
+/* very short viewports (landscape phones, split-screen) — cap the
+   banner instead of letting min-height push content off-screen */
+@media (max-height: 500px) {
+    .feat-banner {
+        min-height: 16rem;
+    }
+}
+
 .feat-banner-img {
     position: absolute;
     inset: 0;
@@ -1046,13 +1140,23 @@
     width: 100%;
     padding: 2rem 1.5rem 2.25rem;
     text-align: center;
+    box-sizing: border-box;
+}
+
+@media (max-width: 380px) {
+    .feat-banner-content {
+        padding: 1.25rem 1rem 1.5rem;
+        gap: 0.4rem;
+    }
 }
 
 /* brand name is now the eye-catching headline — large, bold, glowing
    accent color, with a slow pulse so it draws attention on its own */
 .feat-banner-brand {
     font-family: var(--font-display);
-    font-size: 2.2rem;
+    /* fluid across the full range instead of one jump at 768px, so it
+       also grows further on very large screens */
+    font-size: clamp(1.6rem, 1.1rem + 3.2vw, 3.4rem);
     font-weight: 800;
     letter-spacing: 0.02em;
     text-transform: uppercase;
@@ -1062,12 +1166,6 @@
         0 0 26px rgba(var(--accent-rgb), 0.6),
         0 0 52px rgba(var(--accent-rgb), 0.32);
     animation: feat-brand-pulse 3.5s ease-in-out infinite;
-}
-
-@media (min-width: 768px) {
-    .feat-banner-brand {
-        font-size: 2.9rem;
-    }
 }
 
 @keyframes feat-brand-pulse {
@@ -1134,6 +1232,13 @@
     transition: transform 0.2s ease, box-shadow 0.3s ease, background 0.2s ease, border-color 0.2s ease;
 }
 
+@media (max-width: 380px) {
+    .feat-btn {
+        padding: 0.7rem 1.2rem;
+        font-size: 0.72rem;
+    }
+}
+
 .feat-btn-primary {
     background: var(--accent, #2ee6c5);
     color: #06111f;
@@ -1162,4 +1267,64 @@
     background: rgba(255, 255, 255, 0.16);
     border-color: rgba(255, 255, 255, 0.55);
     transform: translateY(-1px);
+}
+
+/* ========================================
+   TOUCH-DEVICE FALLBACKS
+   Every interactive glow/lift effect above is written as a :hover rule,
+   which never fires on phones and tablets — tapping gives no feedback
+   at all. This block mirrors the key effects onto :active so touch
+   input gets an equivalent confirmation, without changing anything on
+   mouse-driven devices.
+   ======================================== */
+
+@media (hover: none) {
+    .auto-photo-card:active {
+        border-color: rgba(var(--accent-rgb), 0.5);
+        box-shadow: 0 12px 24px -14px rgba(0, 0, 0, 0.55), 0 0 20px rgba(var(--accent-rgb), 0.14);
+    }
+
+    .auto-photo-card:active::before {
+        opacity: 1;
+    }
+
+    .auto-brand-tile:active {
+        border-color: rgba(var(--accent-rgb), 0.5);
+        background: linear-gradient(to bottom, rgba(var(--accent-rgb), 0.12), rgba(255, 255, 255, 0.02));
+    }
+
+    .auto-brand-tile:active .auto-brand-logo-card {
+        box-shadow: 0 0 18px rgba(var(--accent-rgb), 0.45);
+    }
+
+    .auto-category-card:active {
+        border-color: rgba(var(--accent-rgb), 0.4);
+        background: linear-gradient(to bottom, rgba(var(--accent-rgb), 0.1), rgba(255, 255, 255, 0.01));
+    }
+
+    .auto-category-card:active::before {
+        opacity: 1;
+    }
+
+    .auto-submit-btn:active,
+    .feat-btn-primary:active,
+    .auto-cta .service-detail-cta-btn:active {
+        box-shadow: 0 0 24px rgba(var(--accent-rgb), 0.4);
+    }
+
+    .feat-btn-secondary:active {
+        background: rgba(255, 255, 255, 0.16);
+        border-color: rgba(255, 255, 255, 0.55);
+    }
+
+    /* buttons and the toggle get a bit more room for a thumb to land */
+    .auto-category-toggle {
+        padding: 0.35rem 0;
+        margin-top: 0.5rem;
+    }
+
+    .auto-modal-close {
+        height: 2.5rem;
+        width: 2.5rem;
+    }
 }

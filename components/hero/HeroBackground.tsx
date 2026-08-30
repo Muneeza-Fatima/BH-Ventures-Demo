@@ -1,12 +1,40 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export default function HeroBackground() {
   const [videoLoaded, setVideoLoaded] = useState(false);
+  const [shouldLoad, setShouldLoad] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    // On mobile (< 768px), defer video load until page is interactive
+    const isMobile = window.matchMedia("(max-width: 767px)").matches;
+
+    if (!isMobile) {
+      // Desktop: load immediately
+      setShouldLoad(true);
+      return;
+    }
+
+    // Mobile: use IntersectionObserver — start loading only when section is visible
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          setShouldLoad(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.01 }
+    );
+
+    if (containerRef.current) observer.observe(containerRef.current);
+    return () => observer.disconnect();
+  }, []);
 
   return (
     <div
+      ref={containerRef}
       className="
         pointer-events-none
         absolute
@@ -17,29 +45,30 @@ export default function HeroBackground() {
       "
       aria-hidden="true"
     >
-      <video
-        autoPlay
-        muted
-        loop
-        playsInline
-        preload="metadata"
-        onCanPlay={() => setVideoLoaded(true)}
-        className={`
-          absolute
-          inset-0
-          h-full
-          w-full
-          object-cover
-          object-center
-          transition-opacity
-          duration-500
-          ease-out
-          ${videoLoaded ? "opacity-95" : "opacity-0"}
-        `}
-      >
-        <source src="/videos/hero.mp4" type="video/mp4" />
-        Your browser does not support the video tag.
-      </video>
+      {shouldLoad && (
+        <video
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="none"
+          onCanPlay={() => setVideoLoaded(true)}
+          className={`
+            absolute
+            inset-0
+            h-full
+            w-full
+            object-cover
+            object-center
+            transition-opacity
+            duration-700
+            ease-out
+            ${videoLoaded ? "opacity-95" : "opacity-0"}
+          `}
+        >
+          <source src="/videos/hero.mp4" type="video/mp4" />
+        </video>
+      )}
 
       {/* Light overlay taake video zinda aur clear lage */}
       <div className="absolute inset-0 bg-[#0B1220]/20" />

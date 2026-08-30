@@ -13,14 +13,14 @@ interface DateVariety {
 
 const DATE_VARIETIES: DateVariety[] = [
     { slug: "medjool", name: "Medjool", origin: "Palestine", texture: "Large, Soft & Caramel", image: "/images/dates/medjool.jpg" },
-    { slug: "ajwa", name: "Ajwa", origin: "Madinah, Saudi Arabia", texture: "Soft & Dense", image: "/images/dates/ajwa.jpg" },
-    { slug: "mabroom", name: "Mabroom", origin: "Al-Qassim, Saudi Arabia", texture: "Firm & Chewy", image: "/images/dates/mabroom.jpg" },
-    { slug: "sukkari", name: "Sukkari", origin: "Al-Qassim, Saudi Arabia", texture: "Golden & Crunchy-Soft", image: "/images/dates/sukkari.jpg" },
+    { slug: "ajwa", name: "Ajwa", origin:  "Saudi Arabia", texture: "Soft & Dense", image: "/images/dates/ajwa.jpg" },
+    { slug: "mabroom", name: "Mabroom", origin: " Saudi Arabia", texture: "Firm & Chewy", image: "/images/dates/mabroom.jpg" },
+    { slug: "sukkari", name: "Sukkari", origin: " Saudi Arabia", texture: "Golden & Crunchy-Soft", image: "/images/dates/sukkari.jpg" },
     { slug: "rabi", name: "Rabi", origin: "Gulf Region", texture: "Medium & Balanced", image: "/images/dates/rabi.jpg" },
-    { slug: "mazafati", name: "Mazafati", origin: "Bam, Iran", texture: "Very Soft & Moist", image: "/images/dates/mazafati.jpg" },
+    { slug: "mazafati", name: "Mazafati", origin: " Iran", texture: "Very Soft & Moist", image: "/images/dates/mazafati.jpg" },
     { slug: "kalute", name: "Kalute", origin: "Iran", texture: "Semi-Dry & Chewy", image: "/images/dates/kalute.jpg" },
     { slug: "deglet-noor", name: "Deglet Noor", origin: "Algeria", texture: "Semi-Dry & Translucent", image: "/images/dates/deglet-noor.jpg" },
-    { slug: "safawi", name: "Safawi", origin: "Madinah, Saudi Arabia", texture: "Soft & Dark", image: "/images/dates/safawi.jpg" },
+    { slug: "safawi", name: "Safawi", origin: " Saudi Arabia", texture: "Soft & Dark", image: "/images/dates/safawi.jpg" },
 ];
 
 const AVAILABLE_GRADES = ["Premium", "Grade A", "Grade B+", "Bulk / Industrial"];

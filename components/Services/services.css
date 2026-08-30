@@ -39,11 +39,35 @@
     z-index: 10;
     margin: 0 auto;
     max-width: 1320px;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 @media (max-width: 640px) {
     .services-section {
         padding: 5rem 1.25rem;
+    }
+}
+
+@media (max-width: 380px) {
+    .services-section {
+        padding: 3.5rem 1rem;
+    }
+}
+
+/* tablet band — sits between the 640px stacked layout and the 1024px
+   three-column layout so mid-size screens don't inherit desktop spacing */
+@media (min-width: 641px) and (max-width: 1023px) {
+    .services-section {
+        padding: 4.5rem 1.75rem;
+    }
+}
+
+/* ultra-wide — let the grid breathe instead of stretching the same
+   1320px column layout across a much wider viewport */
+@media (min-width: 1600px) {
+    .services-inner {
+        max-width: 1600px;
     }
 }
 
@@ -82,17 +106,13 @@
 .services-title {
     margin-bottom: 1.25rem;
     font-family: var(--font-display);
-    font-size: 2.25rem;
+    /* fluid scale so tablet widths don't inherit the 640px-and-below size
+       or jump straight to the 768px+ size */
+    font-size: clamp(1.75rem, 1.35rem + 2.2vw, 3rem);
     font-weight: 600;
     line-height: 1.2;
     letter-spacing: -0.02em;
     color: #eaf6fb;
-}
-
-@media (min-width: 768px) {
-    .services-title {
-        font-size: 3rem;
-    }
 }
 
 .services-title-gradient {
@@ -121,7 +141,7 @@
 }
 
 .services-subtitle {
-    font-size: 1rem;
+    font-size: clamp(0.9rem, 0.8rem + 0.4vw, 1rem);
     line-height: 1.75;
     color: var(--color-silver, #8fa3b8);
     opacity: 1;
@@ -242,9 +262,12 @@
     .services-header {
         margin-bottom: 3rem;
     }
+}
 
-    .services-title {
-        font-size: 1.75rem;
+/* tablet band for the header block */
+@media (min-width: 641px) and (max-width: 1023px) {
+    .services-header {
+        margin-bottom: 4rem;
     }
 }
 
@@ -254,6 +277,7 @@
     display: grid;
     grid-template-columns: 1fr;
     gap: 1.5rem;
+    width: 100%;
 }
 
 @media (min-width: 640px) {
@@ -268,9 +292,24 @@
     }
 }
 
+/* ultra-wide — a 4th column keeps cards from stretching too wide on very
+   large monitors while the container max-width above also grows */
+@media (min-width: 1600px) {
+    .services-grid {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 1.75rem;
+    }
+}
+
 @media (max-width: 640px) {
     .services-grid {
         gap: 1.25rem;
+    }
+}
+
+@media (max-width: 380px) {
+    .services-grid {
+        gap: 1rem;
     }
 }
 
@@ -411,6 +450,25 @@
     box-shadow: 0 30px 60px -20px rgba(0, 0, 0, 0.55), 0 0 40px rgba(var(--accent-rgb), 0.22);
 }
 
+/* touch devices never trigger :hover — give a tap-equivalent so the card
+   still confirms the interaction on phones/tablets */
+@media (hover: none) {
+    .service-card:active {
+        border-color: var(--accent);
+        box-shadow: 0 20px 40px -18px rgba(0, 0, 0, 0.5), 0 0 30px rgba(var(--accent-rgb), 0.2);
+    }
+
+    .service-card:active .service-corner {
+        border-color: var(--accent);
+    }
+
+    .service-card:active .service-arrow {
+        transform: translateX(4px);
+        background: rgba(var(--accent-rgb), 0.12);
+        box-shadow: 0 0 16px rgba(var(--accent-rgb), 0.35);
+    }
+}
+
 .service-card::before {
     content: "";
     position: absolute;
@@ -466,22 +524,18 @@
 
 .service-banner {
     position: relative;
-    height: 13rem;
+    /* fluid instead of jumping straight from 10rem to 13rem to 14rem at the
+       three old breakpoints — scales smoothly across every width */
+    height: clamp(9rem, 7.5rem + 5vw, 14rem);
     overflow: hidden;
     border-bottom: 1px solid rgba(255, 255, 255, 0.08);
     background: var(--color-navy-deep);
     perspective: 900px;
 }
 
-@media (max-width: 640px) {
+@media (max-width: 380px) {
     .service-banner {
-        height: 10rem;
-    }
-}
-
-@media (min-width: 1024px) {
-    .service-banner {
-        height: 14rem;
+        height: 8.5rem;
     }
 }
 
@@ -528,6 +582,8 @@
 
 /* photos now keep their real color instead of being crushed dark */
 .service-image {
+    display: block;
+    max-width: none;
     height: 100%;
     width: 100%;
     object-fit: cover;
@@ -633,6 +689,13 @@
     padding-bottom: 1.75rem;
 }
 
+@media (max-width: 380px) {
+    .service-body {
+        padding: 1.25rem;
+        padding-bottom: 1.5rem;
+    }
+}
+
 /* title shimmer travels white → each card's own category color */
 .service-title {
     margin-bottom: 1rem;
@@ -716,6 +779,19 @@
     transition: transform 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
+/* bump touch targets up to the ~44px minimum on devices without a mouse,
+   without changing the visual size on desktop */
+@media (hover: none) {
+    .service-arrow {
+        height: 2.75rem;
+        width: 2.75rem;
+    }
+
+    .service-detail-btn {
+        padding: 0.5rem 0;
+    }
+}
+
 .service-card:hover .service-arrow {
     transform: translateX(4px);
     background: rgba(var(--accent-rgb), 0.12);
@@ -753,6 +829,24 @@
     .services-hero-section {
         height: 100vh;
         min-height: 320px;
+    }
+}
+
+/* any short viewport (landscape tablets, small laptops with browser chrome,
+   split-screen windows) — not just narrow phones — should never force the
+   85–90vh hero to overflow the visible area */
+@media (max-height: 500px) {
+    .services-hero-section {
+        height: 100vh;
+        min-height: 300px;
+    }
+}
+
+/* cap absolute height on very large/tall desktop monitors so the hero
+   doesn't become a huge empty wall of video */
+@media (min-width: 1024px) {
+    .services-hero-section {
+        max-height: 900px;
     }
 }
 
@@ -807,6 +901,7 @@
     height: 100%;
     width: 100%;
     max-width: 1440px;
+    box-sizing: border-box;
     flex-direction: column;
     align-items: center;
     justify-content: center;
@@ -820,8 +915,16 @@
     }
 }
 
+@media (min-width: 1600px) {
+    .services-hero-content {
+        max-width: 1680px;
+    }
+}
+
 .services-hero-scrim {
     position: relative;
+    box-sizing: border-box;
+    max-width: 100%;
     padding: 2.5rem 2rem;
     border-radius: 1.5rem;
     background: radial-gradient(ellipse at center, rgba(6, 13, 24, 0.55) 0%, rgba(6, 13, 24, 0.15) 70%, transparent 100%);
@@ -832,6 +935,12 @@
     .services-hero-scrim {
         padding: 1.5rem 1rem;
         border-radius: 1rem;
+    }
+}
+
+@media (max-width: 380px) {
+    .services-hero-scrim {
+        padding: 1.25rem 0.85rem;
     }
 }
 
@@ -880,8 +989,12 @@
     position: relative;
     overflow: hidden;
     max-width: 42rem;
+    width: 100%;
+    box-sizing: border-box;
     font-family: var(--font-display);
-    font-size: 2.5rem;
+    /* fluid across the full range instead of jumping between four fixed
+       sizes — scales smoothly from small phones up to large desktops */
+    font-size: clamp(1.85rem, 1.2rem + 3.2vw, 3.75rem);
     font-weight: 600;
     line-height: 1.15;
     letter-spacing: -0.02em;
@@ -968,21 +1081,8 @@
     }
 }
 
-@media (min-width: 640px) {
-    .services-hero-title {
-        font-size: 3.25rem;
-    }
-}
-
-@media (min-width: 1280px) {
-    .services-hero-title {
-        font-size: 3.75rem;
-    }
-}
-
 @media (max-width: 480px) {
     .services-hero-title {
-        font-size: 1.85rem;
         line-height: 1.2;
     }
 }
@@ -1002,7 +1102,10 @@
 .services-hero-subtitle {
     margin-top: 1.1rem;
     max-width: 32rem;
-    font-size: 1rem;
+    width: 100%;
+    box-sizing: border-box;
+    /* fluid across the full range instead of three fixed sizes */
+    font-size: clamp(0.875rem, 0.65rem + 1.13vw, 1.1rem);
     line-height: 1.7;
     color: var(--color-silver, #b7c4d1);
     opacity: 0;
@@ -1010,15 +1113,8 @@
     animation-delay: 0.75s;
 }
 
-@media (min-width: 640px) {
-    .services-hero-subtitle {
-        font-size: 1.1rem;
-    }
-}
-
 @media (max-width: 480px) {
     .services-hero-subtitle {
-        font-size: 0.875rem;
         margin-top: 0.85rem;
     }
 }

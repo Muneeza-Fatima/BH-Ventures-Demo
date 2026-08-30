@@ -131,6 +131,8 @@ export default function GlobalImpact() {
     amount: 0.25,
   });
 
+  const [videoSrc, setVideoSrc] = useState<string | null>(null);
+
   useEffect(() => {
     const video = videoRef.current;
 
@@ -157,6 +159,25 @@ export default function GlobalImpact() {
     return () => {
       video.removeEventListener("canplay", startVideo);
     };
+  }, [videoSrc]); // re-run when src is set
+
+  // Lazy-load the video only when the section enters the viewport
+  useEffect(() => {
+    const section = sectionRef.current;
+    if (!section) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          setVideoSrc("/videos/global-impact.mp4");
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.05 }
+    );
+
+    observer.observe(section);
+    return () => observer.disconnect();
   }, []);
 
   return (
@@ -240,14 +261,16 @@ export default function GlobalImpact() {
           muted
           loop
           playsInline
-          preload="metadata"
+          preload="none"
           disablePictureInPicture
           disableRemotePlayback
         >
-          <source
-            src="/videos/global-impact.mp4"
-            type="video/mp4"
-          />
+          {videoSrc && (
+            <source
+              src={videoSrc}
+              type="video/mp4"
+            />
+          )}
         </video>
 
         {/* Video Overlay */}
