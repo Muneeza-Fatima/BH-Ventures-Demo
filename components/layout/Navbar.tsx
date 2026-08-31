@@ -25,25 +25,17 @@ function isContactPath(pathname: string | null) {
   return pathname === "/contact" || pathname === "/contact/";
 }
 
-/* Strips a trailing hash/anchor so a dropdown item's href can be
-   compared against the current pathname (both "/about" and
-   "/about#story" should read as "on the About page"). */
-function basePath(href: string) {
-  return href.split("#")[0];
+function isCareersPath(pathname: string | null) {
+  return pathname === "/careers" || pathname === "/careers/";
 }
 
 /* ========================================
    ABOUT DROPDOWN ITEMS
-
-   Only routes/anchors that genuinely exist in this codebase —
-   the About page itself, its Journey/Timeline section, and the
-   dedicated /contact page. No Careers route exists yet, so it
-   is intentionally left out rather than fabricated.
 ======================================== */
 
 const aboutDropdownItems = [
   { label: "About BH Ventures", href: "/about" },
-  { label: "Our Journey", href: "/about#story" },
+  { label: "Careers", href: "/careers" },
   { label: "Contact / Connect With Us", href: "/contact" },
 ];
 
@@ -508,11 +500,12 @@ function AboutNavDropdown({
             `}
           >
             {aboutDropdownItems.map((sub) => {
-              const isExactRoute = sub.href === basePath(sub.href);
               const subActive =
-                isExactRoute &&
-                ((sub.href === "/about" && isAboutPath(pathname)) ||
-                  (sub.href === "/contact" && isContactPath(pathname)));
+                sub.href === "/contact"
+                  ? isContactPath(pathname)
+                  : sub.href === "/careers"
+                  ? isCareersPath(pathname)
+                  : isAboutPath(pathname);
 
               return (
                 <Link
@@ -584,11 +577,12 @@ function AboutMobileAccordion({ onNavigate }: { onNavigate: () => void }) {
           >
             <div className="flex flex-col gap-1 pb-4 pl-2">
               {aboutDropdownItems.map((sub) => {
-                const isExactRoute = sub.href === basePath(sub.href);
                 const subActive =
-                  isExactRoute &&
-                  ((sub.href === "/about" && isAboutPath(pathname)) ||
-                    (sub.href === "/contact" && isContactPath(pathname)));
+                  sub.href === "/contact"
+                    ? isContactPath(pathname)
+                    : sub.href === "/careers"
+                    ? isCareersPath(pathname)
+                    : isAboutPath(pathname);
 
                 return (
                   <Link
@@ -622,11 +616,6 @@ export default function Navbar() {
   const [languageOpen, setLanguageOpen] = useState(false);
   const [contactOpen, setContactOpen] = useState(false);
   const [isLightMode, setIsLightMode] = useState(false);
-
-  /* The About dropdown/accordion is scoped to the About page only —
-     every other route keeps the original plain-link Navbar behavior. */
-  const pathname = usePathname();
-  const isAboutRoute = isAboutPath(pathname);
 
   const currentLanguage = useSyncExternalStore(
     subscribeToLanguageStore,
@@ -839,7 +828,7 @@ export default function Navbar() {
             `}
           >
             {navItems.map((item) =>
-              item.dropdown && isAboutRoute ? (
+              item.dropdown ? (
                 <AboutNavDropdown
                   key={item.label}
                   isLightMode={isLightMode}
@@ -1139,7 +1128,7 @@ export default function Navbar() {
         >
           <div className="px-4 pb-5 pt-3 sm:px-6 sm:pb-6 sm:pt-4">
             {navItems.map((item) =>
-              item.dropdown && isAboutRoute ? (
+              item.dropdown ? (
                 <AboutMobileAccordion
                   key={item.label}
                   onNavigate={() => setIsOpen(false)}
