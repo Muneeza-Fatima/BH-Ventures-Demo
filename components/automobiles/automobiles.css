@@ -973,10 +973,13 @@
 }
 
 /* small phones — 22rem is a lot of vertical space to hand a single
-   banner on a short screen */
+   banner on a short screen. Kept at 20rem (rather than the old 18rem)
+   so object-fit: cover doesn't have to crop the photo as aggressively
+   to fill the box — see the .feat-banner-img mobile object-position
+   rules below for the rest of the crop fix. */
 @media (max-width: 380px) {
     .feat-banner {
-        min-height: 18rem;
+        min-height: 20rem;
         border-radius: 1rem;
     }
 }
@@ -995,6 +998,8 @@
     height: 100%;
     width: 100%;
     object-fit: cover;
+    /* default crop window — tuned for desktop/tablet where the banner
+       is short and wide relative to the source photo */
     object-position: center 55%;
     filter: saturate(1.1) brightness(0.95);
 
@@ -1030,6 +1035,50 @@
     object-fit: cover;
     object-position: center 55%;
     filter: saturate(1.1) brightness(0.95);
+}
+
+/* ---------- MOBILE CROP FIX ----------
+   On phones the banner is both narrower AND shorter relative to the
+   photo's native aspect ratio than it is on desktop, so object-fit:
+   cover has to zoom in much further to fill the box. The 55% bias
+   tuned for desktop then crops off the roofline/badge on the photo's
+   top edge (see: Mercedes grille getting cut off). Pull the visible
+   window up progressively as the viewport narrows. */
+@media (max-width: 640px) {
+
+    .feat-banner-img,
+    .feat-banner-video {
+        object-position: center 38%;
+    }
+}
+
+@media (max-width: 380px) {
+
+    .feat-banner-img,
+    .feat-banner-video {
+        object-position: center 32%;
+    }
+
+    /* tone down the Ken Burns zoom on phones — at scale(1.09) on an
+       already-tight mobile crop it pushes key details out of frame
+       at the peak of the animation */
+    .feat-banner-img {
+        animation-name: feat-kenburns-mobile;
+    }
+}
+
+@keyframes feat-kenburns-mobile {
+    0% {
+        transform: scale(1.02) translate3d(0, 0, 0);
+    }
+
+    50% {
+        transform: scale(1.045) translate3d(-1%, -0.5%, 0);
+    }
+
+    100% {
+        transform: scale(1.02) translate3d(0, 0, 0);
+    }
 }
 
 .feat-banner-fallback {
@@ -1142,12 +1191,15 @@
 }
 
 @keyframes feat-brand-pulse {
-    0%, 100% {
+
+    0%,
+    100% {
         text-shadow:
             0 2px 20px rgba(0, 0, 0, 0.5),
             0 0 26px rgba(var(--accent-rgb), 0.6),
             0 0 52px rgba(var(--accent-rgb), 0.32);
     }
+
     50% {
         text-shadow:
             0 2px 20px rgba(0, 0, 0, 0.5),

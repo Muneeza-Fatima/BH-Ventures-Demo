@@ -144,7 +144,7 @@ function ModalBrandMedia({
                     src={brand.photo}
                     alt={`${brand.name} vehicle`}
                     fill
-                    sizes="100vw"
+                    sizes="(max-width: 640px) 100vw, 480px"
                     style={{ objectFit: "cover" }}
                     onError={() => setFailed(true)}
                     loading="lazy"
@@ -162,14 +162,28 @@ function ModalBrandMedia({
 /* ---------- FEATURED VEHICLE BANNER ----------
    Full-width photo/video banner per model — brand label, model name,
    a short spec tagline, and a "Book Now" CTA, matching the reference
-   design. Falls back video -> poster photo -> plain gradient. */
+   design. Falls back video -> poster photo -> plain gradient.
+
+   `objectPosition` is optional per-vehicle: when set, it overrides the
+   responsive CSS defaults in .feat-banner-img / .feat-banner-video (see
+   AutomobileExtras.css) on every screen size. Use it when a specific
+   photo still crops badly on mobile even after the CSS breakpoint
+   fix — e.g. a low, wide shot that needs a different vertical anchor
+   than a 3/4 front angle. */
 
 function FeaturedBanner({
     vehicle,
     index,
     onSelect,
 }: {
-    vehicle: { brand: string; model: string; tagline: string; video?: string; poster?: string };
+    vehicle: {
+        brand: string;
+        model: string;
+        tagline: string;
+        video?: string;
+        poster?: string;
+        objectPosition?: string;
+    };
     index: number;
     onSelect: () => void;
 }) {
@@ -197,6 +211,17 @@ function FeaturedBanner({
     const showVideo = Boolean(vehicle.video) && !videoFailed;
     const showPoster = !showVideo && Boolean(vehicle.poster) && !photoFailed;
 
+    // only set an inline style when the vehicle explicitly overrides the
+    // crop — otherwise leave object-position unset so the responsive CSS
+    // breakpoints (desktop / tablet / phone) apply normally
+    const imgStyle: React.CSSProperties = {
+        objectFit: "cover",
+        ...(vehicle.objectPosition ? { objectPosition: vehicle.objectPosition } : {}),
+    };
+    const videoStyle: React.CSSProperties | undefined = vehicle.objectPosition
+        ? { objectPosition: vehicle.objectPosition }
+        : undefined;
+
     return (
         <div
             ref={ref}
@@ -206,6 +231,7 @@ function FeaturedBanner({
             {showVideo ? (
                 <video
                     className="feat-banner-video"
+                    style={videoStyle}
                     poster={vehicle.poster}
                     autoPlay
                     muted
@@ -222,8 +248,8 @@ function FeaturedBanner({
                     src={vehicle.poster!}
                     alt={`${vehicle.brand} ${vehicle.model}`}
                     fill
-                    sizes="100vw"
-                    style={{ objectFit: "cover" }}
+                    sizes="(max-width: 960px) 100vw, 960px"
+                    style={imgStyle}
                     onError={() => setPhotoFailed(true)}
                     loading="lazy"
                 />
@@ -394,13 +420,18 @@ const STATS = [
 // tagline, and a "Book Now" CTA that opens the request modal
 // pre-filled with that brand. Swap in your real video/poster paths
 // and adjust model/tagline copy per vehicle as needed.
+//
+// objectPosition is optional — only set it if the responsive CSS crop
+// defaults still cut off a key part of that specific photo on mobile
+// (e.g. the Mercedes shot was losing the star/grille at the top edge).
 const FEATURED_VEHICLES = [
-     {
+    {
         brand: "Mercedes-Benz",
         model: "GLC",
         tagline: "Luxury SUV, export-ready stock",
         video: "/videos/Mercedes_SUV.mp4",
         poster: "/images/brands/photo/mercedes_benz.jpg",
+        objectPosition: "center 30%",
     },
     {
         brand: "Ferrari",
@@ -408,6 +439,7 @@ const FEATURED_VEHICLES = [
         tagline: "Iconic Italian performance, engineered to thrill",
         video: "/videos/ferrari.mp4",
         poster: "/images/brands/photo/ferrari.png",
+        objectPosition: "center 42%",
     },
     {
         brand: "Toyota",
@@ -416,7 +448,6 @@ const FEATURED_VEHICLES = [
         video: "/videos/Toyota_RAV4.mp4",
         poster: "/images/brands/photo/toyota.jpg",
     },
-   
 ];
 
 // replace with your real WhatsApp number, no + or spaces

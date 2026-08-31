@@ -97,8 +97,28 @@
 
 @media (max-width: 640px) {
     .detail-hero {
-        height: 56vh;
-        min-height: 360px;
+        height: clamp(230px, 54vw, 300px);
+        min-height: unset;
+    }
+}
+
+/* For heroes with video: match desktop layout and full bleed */
+.detail-hero--has-video {
+    height: 70vh;
+    min-height: 420px;
+    background: #0b1220;
+}
+
+@media (min-width: 1024px) {
+    .detail-hero--has-video {
+        height: 80vh;
+    }
+}
+
+@media (max-width: 640px) {
+    .detail-hero--has-video {
+        height: clamp(230px, 54vw, 300px);
+        min-height: unset;
     }
 }
 
@@ -111,9 +131,9 @@
 
 .detail-hero-media {
     position: absolute;
-    inset: -8%;
-    height: 116%;
-    width: 116%;
+    inset: 0;
+    height: 100%;
+    width: 100%;
     transform-style: preserve-3d;
     transition: transform 0.25s ease-out;
     animation: detail-hero-kenburns 14s ease-in-out infinite;
@@ -126,13 +146,34 @@
     opacity: var(--scroll-fade);
 }
 
+/* video: fill 100% edge-to-edge with no Ken Burns scale zoom so car roof is not cropped */
+.detail-hero-media--video {
+    inset: 0;
+    height: 100%;
+    width: 100%;
+    animation: none;
+    --scroll-scale: 1 !important;
+}
+
 /* photo keeps real color instead of being crushed dark */
 .detail-hero-media-el {
     height: 100%;
     width: 100%;
     object-fit: cover;
-    object-position: center;
+    object-position: center 20%;
     filter: saturate(1.3) contrast(1.08) brightness(1.02);
+}
+
+.detail-hero-media-el--video {
+    object-fit: cover;
+    object-position: center 15%;
+}
+
+@media (max-width: 640px) {
+    .detail-hero-media-el,
+    .detail-hero-media-el--video {
+        object-position: center 25%;
+    }
 }
 
 @keyframes detail-hero-kenburns {
@@ -163,7 +204,7 @@
     pointer-events: none;
     background: linear-gradient(to bottom,
             rgba(10, 22, 40, 0.05) 0%,
-            rgba(10, 22, 40, 0.28) 55%,
+            rgba(10, 22, 40, 0.32) 55%,
             #0a1628 100%),
         radial-gradient(ellipse 900px 500px at 15% 100%, rgba(var(--accent-rgb), 0.12), transparent 60%);
 }
@@ -182,7 +223,7 @@
 @media (max-width: 640px) {
     .detail-hero-content {
         padding: 0 1.25rem;
-        bottom: 2rem;
+        bottom: 1.25rem;
     }
 }
 
@@ -190,6 +231,14 @@
     position: static;
     display: inline-flex;
     margin-bottom: 1rem;
+}
+
+@media (max-width: 640px) {
+    .detail-hero-badge {
+        margin-bottom: 0.35rem;
+        font-size: 0.7rem;
+        padding: 0.2rem 0.55rem;
+    }
 }
 
 /* title now shimmers white → the page's own category color, not fixed cyan/purple */
@@ -232,9 +281,15 @@
     }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 640px) {
     .detail-hero-title {
-        font-size: 1.85rem;
+        font-size: 1.45rem;
+    }
+}
+
+@media (max-width: 400px) {
+    .detail-hero-title {
+        font-size: 1.25rem;
     }
 }
 
@@ -246,9 +301,16 @@
     text-shadow: 0 0 14px rgba(var(--accent-rgb), 0.4);
 }
 
-@media (max-width: 480px) {
+@media (max-width: 640px) {
     .detail-hero-sub {
-        font-size: 0.95rem;
+        font-size: 0.82rem;
+        margin-top: 0.25rem;
+    }
+}
+
+@media (max-width: 400px) {
+    .detail-hero-sub {
+        font-size: 0.75rem;
     }
 }
 

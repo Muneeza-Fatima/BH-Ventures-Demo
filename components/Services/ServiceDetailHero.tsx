@@ -22,7 +22,6 @@ export default function ServiceDetailHero({
     const wrapRef = useRef<HTMLDivElement>(null);
     const mediaRef = useRef<HTMLDivElement>(null);
 
-    // mouse-driven tilt, same pattern as the card hover
     function handleMouseMove(e: React.MouseEvent<HTMLDivElement>) {
         const wrap = wrapRef.current;
         if (!wrap) return;
@@ -30,7 +29,8 @@ export default function ServiceDetailHero({
         const px = (e.clientX - rect.left) / rect.width - 0.5;
         const py = (e.clientY - rect.top) / rect.height - 0.5;
         if (mediaRef.current) {
-            mediaRef.current.style.transform = `perspective(1400px) rotateY(${px * 8}deg) rotateX(${-py * 8}deg) scale(1.04)`;
+            const s = video ? 1 : 1.04;
+            mediaRef.current.style.transform = `perspective(1400px) rotateY(${px * 8}deg) rotateX(${-py * 8}deg) scale(${s})`;
         }
     }
 
@@ -58,16 +58,19 @@ export default function ServiceDetailHero({
     return (
         <div
             ref={wrapRef}
-            className="detail-hero"
+            className={`detail-hero${video ? " detail-hero--has-video" : ""}`}
             data-category={category}
             onMouseMove={handleMouseMove}
             onMouseLeave={handleMouseLeave}
         >
             <div className="detail-hero-stage">
-                <div ref={mediaRef} className="detail-hero-media">
+                <div
+                    ref={mediaRef}
+                    className={`detail-hero-media${video ? " detail-hero-media--video" : ""}`}
+                >
                     {video ? (
                         <video
-                            className="detail-hero-media-el"
+                            className="detail-hero-media-el detail-hero-media-el--video"
                             poster={image}
                             autoPlay
                             muted
