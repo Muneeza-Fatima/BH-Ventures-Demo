@@ -251,34 +251,14 @@
     object-fit: cover;
     object-position: center 45%;
     filter: saturate(1.15) brightness(0.92);
-    transition: filter 0.25s ease;
-
-    /* slow continuous Ken Burns drift — gives each still photo a sense
-       of motion at rest. Negative delay (via --fx-delay) starts each
-       card mid-cycle so the whole grid doesn't breathe in sync. */
-    animation: auto-kenburns 14s ease-in-out infinite;
-    animation-delay: calc(var(--fx-delay, 0) * -1s);
+    transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), filter 0.3s ease;
+    will-change: transform;
 }
 
 .auto-photo-card:hover .auto-photo-img,
 .auto-photo-card:hover .auto-photo-img img {
     filter: saturate(1.3) brightness(1);
-    animation-play-state: paused;
-    transform: scale(1.1);
-}
-
-@keyframes auto-kenburns {
-    0% {
-        transform: scale(1) translate3d(0, 0, 0);
-    }
-
-    50% {
-        transform: scale(1.07) translate3d(-1%, -1%, 0);
-    }
-
-    100% {
-        transform: scale(1) translate3d(0, 0, 0);
-    }
+    transform: scale(1.06);
 }
 
 /* sweeping showroom light glint — a soft diagonal band of light glides

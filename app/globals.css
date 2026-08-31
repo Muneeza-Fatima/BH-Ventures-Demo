@@ -74,10 +74,9 @@ body {
   -moz-osx-font-smoothing: grayscale;
 
   overflow-x: hidden;
-  overflow-y: auto;
+  overflow-y: visible;
 
   -webkit-overflow-scrolling: touch;
-  overscroll-behavior-y: auto;
 
   display: flex;
   flex-direction: column;
@@ -408,12 +407,18 @@ html[style*="margin-top"] {
    ========================================================= */
 
 @media (min-width: 768px) and (max-width: 1400px) {
-  html,
-  body {
+  html {
     height: auto !important;
     min-height: 100%;
     overflow-x: hidden !important;
     overflow-y: auto !important;
+  }
+
+  body {
+    height: auto !important;
+    min-height: 100%;
+    overflow-x: hidden !important;
+    overflow-y: visible !important;
   }
 
   body > div,
@@ -459,8 +464,7 @@ html[style*="margin-top"] {
    ========================================================= */
 
 @media (max-width: 767px) {
-  html,
-  body {
+  html {
     width: 100%;
     max-width: 100%;
 
@@ -468,6 +472,16 @@ html[style*="margin-top"] {
 
     overflow-x: hidden !important;
     overflow-y: auto !important;
+  }
+
+  body {
+    width: 100%;
+    max-width: 100%;
+
+    height: auto !important;
+
+    overflow-x: hidden !important;
+    overflow-y: visible !important;
   }
 
   body > div,
