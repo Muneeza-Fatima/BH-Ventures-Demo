@@ -1,14 +1,14 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { motion, useReducedMotion } from "framer-motion";
+import { motion, useReducedMotion, useInView } from "framer-motion";
 import {
-  MapPin,
+  Globe2,
   Landmark,
   ListChecks,
-  Layers3,
+  LayoutGrid,
   UserRound,
-  ArrowLeftRight,
+  Handshake,
   Cpu,
   type LucideIcon,
 } from "lucide-react";
@@ -25,13 +25,13 @@ type Fact = {
 
 const facts: Fact[] = [
   {
-    icon: MapPin,
+    icon: Globe2,
     title: "UAE Based",
     detail: "Operating from the United Arab Emirates.",
   },
   {
     icon: Landmark,
-    title: "Ajman Free Zone",
+    title: "Dubai",
     detail: "Registered as a UAE free-zone entity.",
   },
   {
@@ -43,7 +43,7 @@ const facts: Fact[] = [
     highlight: true,
   },
   {
-    icon: Layers3,
+    icon: LayoutGrid,
     title: "Multi-Sector Platform",
     detail: "Connecting multiple disciplines under one venture platform.",
   },
@@ -53,19 +53,21 @@ const facts: Fact[] = [
     detail: "Direct leadership and accountability.",
   },
   {
-    icon: ArrowLeftRight,
+    icon: Handshake,
     iconSecondary: Cpu,
     title: "Trade + Technology",
     detail: "Bridging traditional commerce with modern technology.",
   },
 ];
 
-function CountUp({ value, active }: { value: number; active: boolean }) {
+function CountUp({ value }: { value: number }) {
+  const ref = useRef<HTMLSpanElement>(null);
+  const isInView = useInView(ref, { once: true });
   const [count, setCount] = useState(0);
   const started = useRef(false);
 
   useEffect(() => {
-    if (!active || started.current) return;
+    if (!isInView || started.current) return;
 
     started.current = true;
 
@@ -90,9 +92,9 @@ function CountUp({ value, active }: { value: number; active: boolean }) {
     animationFrame = requestAnimationFrame(animate);
 
     return () => cancelAnimationFrame(animationFrame);
-  }, [active, value]);
+  }, [isInView, value]);
 
-  return <>{count}</>;
+  return <span ref={ref}>{count}</span>;
 }
 
 const containerVariants = {
@@ -123,7 +125,6 @@ const cardVariants = {
 const POP_EASE = [0.22, 1, 0.36, 1] as [number, number, number, number];
 
 export default function AboutFacts() {
-  const [visible, setVisible] = useState(false);
   const prefersReducedMotion = useReducedMotion();
 
   const hoverPop = prefersReducedMotion
@@ -192,7 +193,6 @@ export default function AboutFacts() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.3 }}
           transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-          onViewportEnter={() => setVisible(true)}
           className="mx-auto mb-10 max-w-[680px] text-center sm:mb-12 lg:mb-16"
         >
           <div className="mb-4 flex items-center justify-center gap-3">
@@ -342,12 +342,17 @@ export default function AboutFacts() {
                     to-transparent
                     text-[#0E8C77]
 
-                    transition-transform
-                    duration-[350ms]
+                    transition-[transform,border-color,box-shadow]
+                    duration-[280ms]
                     ease-[cubic-bezier(0.22,1,0.36,1)]
 
                     group-hover:-translate-y-0.5
+                    group-hover:border-[#00BFA6]/60
+                    group-hover:shadow-[0_0_16px_rgba(0,191,166,0.35)]
+
                     group-focus:-translate-y-0.5
+                    group-focus:border-[#00BFA6]/60
+                    group-focus:shadow-[0_0_16px_rgba(0,191,166,0.35)]
                   "
                 >
                   <span
@@ -374,7 +379,7 @@ export default function AboutFacts() {
                       z-10
 
                       transition-transform
-                      duration-[350ms]
+                      duration-[280ms]
                       ease-[cubic-bezier(0.22,1,0.36,1)]
 
                       group-hover:scale-105
@@ -425,7 +430,7 @@ export default function AboutFacts() {
                   {fact.countValue ? (
                     <>
                       <span className="text-[1.2em] text-[#00A98F]">
-                        <CountUp value={fact.countValue} active={visible} />
+                        <CountUp value={fact.countValue} />
                       </span>
                       {fact.countSuffix}
                     </>

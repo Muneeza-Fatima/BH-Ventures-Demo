@@ -342,7 +342,7 @@ export default function AboutHero() {
               sm:text-[12px]
             "
           >
-            UAE • Ajman Free Zone
+            UAE • Dubai
           </span>
         </motion.div>
       </motion.div>

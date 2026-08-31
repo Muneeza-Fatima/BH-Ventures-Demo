@@ -1,3 +1,6 @@
+"use client";
+
+import { useEffect } from "react";
 import AboutHero from "@/components/about/AboutHero";
 import AboutStory from "@/components/about/AboutStory";
 import AboutFacts from "@/components/about/AboutFacts";
@@ -10,6 +13,20 @@ import AboutContact from "@/components/about/AboutContact";
 import AboutCTA from "@/components/about/AboutCTA";
 
 export default function AboutPage() {
+  /* The site's Lenis smooth-scroll instance (SmoothScroll, in the root
+     layout) mounts once per app session, not once per route, and only
+     recalculates its scroll limit on an actual window resize — it has
+     no way to notice that navigating here client-side replaced a
+     shorter page's content with this taller one. Left uncorrected, it
+     keeps the previous page's (shorter) scroll limit, which hard-caps
+     scrolling partway down this page. Firing a resize event once this
+     page has mounted makes it remeasure against this page's real
+     height. Harmless on a direct/full page load, where the limit is
+     already correct. */
+  useEffect(() => {
+    window.dispatchEvent(new Event("resize"));
+  }, []);
+
   return (
     <div className="w-full min-w-0 overflow-x-clip bg-[#0B1220]">
       <section id="about" className="w-full min-w-0">

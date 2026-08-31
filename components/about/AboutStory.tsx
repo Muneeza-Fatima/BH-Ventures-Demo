@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import {
   ArrowLeftRight,
@@ -30,9 +31,9 @@ const threads = [
 /* ============================================================
    Thematic platform stages — not a year-by-year company history.
    No dates are implied; only verified, source-backed facts and
-   disciplines are referenced (Ajman Free Zone, nine licensed
-   activities, trade + technology, multi-sector platform). The
-   fact badge on each stage is drawn from the same verified set
+   disciplines are referenced (Dubai free-zone registration, nine
+   licensed activities, trade + technology, multi-sector platform).
+   The fact badge on each stage is drawn from the same verified set
    used on the Facts section — nothing here is invented.
 ============================================================ */
 
@@ -40,12 +41,14 @@ const journeySteps = [
   {
     id: "foundation",
     label: "Foundation",
-    title: "Registered in Ajman Free Zone",
+    title: "Registered in Dubai",
     description:
       "BH Ventures FZE LLC is registered as a UAE free-zone entity on a simple thesis: trade and technology belong on one platform, not two.",
     icon: Landmark,
+    image: "/images/about/story/story-foundation.jpg",
+    imageAlt: "BH Ventures foundation — registered in Dubai",
     badge: {
-      label: "Ajman Free Zone",
+      label: "Dubai",
       secondary: "Registered as a UAE free-zone entity.",
     },
   },
@@ -56,6 +59,8 @@ const journeySteps = [
     description:
       "Cross-border trade gives the platform market access and distribution reach across strategically selected regions.",
     icon: ArrowLeftRight,
+    image: "/images/about/story/story-trade.jpg",
+    imageAlt: "International trade and global reach",
     badge: {
       label: "UAE Based",
       secondary: "Headquartered in the UAE, trading globally.",
@@ -68,6 +73,8 @@ const journeySteps = [
     description:
       "Web3, AI, and modern digital infrastructure are applied to real operating ventures — tools to move faster and decide smarter.",
     icon: Cpu,
+    image: "/images/about/story/story-technology.jpg",
+    imageAlt: "Modern technology applied to real ventures",
     badge: {
       label: "Trade + Technology",
       secondary: "Modern tools applied to real ventures.",
@@ -80,6 +87,8 @@ const journeySteps = [
     description:
       "Data, marketing, business development, and events combine with trade and technology inside one coherent venture platform.",
     icon: Sparkles,
+    image: "/images/about/story/story-innovation.jpg",
+    imageAlt: "Innovation across disciplines",
     badge: {
       label: "Multi-Sector Platform",
       secondary: "One platform, spanning several disciplines.",
@@ -92,6 +101,8 @@ const journeySteps = [
     description:
       "A licensed portfolio of nine business activities operates under a single founder-led platform, built for what comes next.",
     icon: Globe,
+    image: "/images/about/story/story-global.jpg",
+    imageAlt: "Global opportunity — nine licensed activities",
     badge: {
       label: "9 Licensed Activities",
       secondary: "Nine licensed business activities, one license.",
@@ -439,7 +450,6 @@ function FactBadge({
 
 function JourneyPanel({ activeIndex }: { activeIndex: number }) {
   const step = journeySteps[activeIndex];
-  const Icon = step.icon;
 
   return (
     <div
@@ -502,21 +512,9 @@ function JourneyPanel({ activeIndex }: { activeIndex: number }) {
 
       {/* Visual pane */}
       <div className="relative order-1 flex items-center justify-center py-8 sm:order-2 sm:py-0">
-        <div
-          aria-hidden="true"
-          className="
-            pointer-events-none
-            absolute
-            inset-0
-            opacity-[0.06]
-            [background-image:linear-gradient(rgba(255,255,255,0.6)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.6)_1px,transparent_1px)]
-            [background-size:34px_34px]
-          "
-        />
-
         <AnimatePresence mode="sync">
           <motion.div
-            key={step.id}
+            key={`${step.id}-image`}
             initial={{ opacity: 0, scale: 1.04 }}
             animate={{
               opacity: 1,
@@ -528,42 +526,30 @@ function JourneyPanel({ activeIndex }: { activeIndex: number }) {
               scale: 0.96,
               transition: { duration: 0.45, ease: EASE },
             }}
-            whileHover={{ scale: 1.02, y: -5 }}
-            transition={{ duration: 0.35, ease: EASE }}
-            className="absolute flex flex-col items-center gap-4"
+            className="absolute inset-0"
           >
-            <span
-              className="
-                flex
-                h-16
-                w-16
-                items-center
-                justify-center
-                rounded-[22px]
-                border
-                border-[#2DD4BF]/30
-                bg-[#0E4A44]/50
-                text-[#5EEAD4]
-
-                shadow-[0_18px_38px_rgba(0,0,0,0.35)]
-
-                transition-shadow
-                duration-300
-
-                hover:shadow-[0_22px_46px_rgba(0,205,181,0.28)]
-
-                sm:h-20
-                sm:w-20
-              "
-            >
-              <Icon size={28} strokeWidth={1.6} aria-hidden="true" />
-            </span>
-
-            <span className="text-[13px] font-bold uppercase tracking-[0.16em] text-white/50">
-              {step.label}
-            </span>
+            <Image
+              src={step.image}
+              alt={step.imageAlt}
+              fill
+              sizes="(max-width: 639px) 100vw, 50vw"
+              className="object-cover object-center"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#0B1220]/85 via-[#0B1220]/25 to-transparent" />
           </motion.div>
         </AnimatePresence>
+
+        <div
+          aria-hidden="true"
+          className="
+            pointer-events-none
+            absolute
+            inset-0
+            opacity-[0.06]
+            [background-image:linear-gradient(rgba(255,255,255,0.6)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.6)_1px,transparent_1px)]
+            [background-size:34px_34px]
+          "
+        />
       </div>
     </div>
   );
