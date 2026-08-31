@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import {
   ArrowUpRight,
@@ -684,11 +683,12 @@ export default function Footer() {
                     hover:shadow-[0_5px_18px_rgba(11,27,43,0.08)]
                   "
                 >
-                  <Image
+                  <img
                     src={`https://flagcdn.com/w40/${market.code}.png`}
                     alt={`${market.name} flag`}
                     width={26}
                     height={19}
+                    loading="lazy"
                     className="
                       shrink-0
                       rounded-[2px]

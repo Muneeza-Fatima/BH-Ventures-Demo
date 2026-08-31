@@ -785,12 +785,13 @@ export default function WhereWeOperate() {
                           overflow-hidden
                         "
                       >
-                        <Image
+                        <img
                           src={`https://flagcdn.com/w80/${country.code}.png`}
                           alt={`${country.name} flag`}
                           width={40}
                           height={28}
-                          className="object-cover rounded-sm"
+                          loading="lazy"
+                          className="h-full w-full object-cover rounded-sm"
                         />
                       </div>
 

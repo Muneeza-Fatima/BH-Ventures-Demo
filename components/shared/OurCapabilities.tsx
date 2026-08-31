@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { motion, useReducedMotion } from "framer-motion";
+import { motion } from "framer-motion";
 import {
   ArrowLeftRight,
   Rocket,
@@ -82,14 +82,19 @@ const cardVariants = {
 };
 
 export default function OurCapabilities() {
-  const [mounted, setMounted] = useState(false);
-  const reduced = useReducedMotion();
+  const [shouldReduceMotion, setShouldReduceMotion] = useState(false);
 
   useEffect(() => {
-    setMounted(true);
-  }, []);
+    const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+    setShouldReduceMotion(mediaQuery.matches);
 
-  const shouldReduceMotion = mounted && Boolean(reduced);
+    const handler = (event: MediaQueryListEvent) => {
+      setShouldReduceMotion(event.matches);
+    };
+
+    mediaQuery.addEventListener("change", handler);
+    return () => mediaQuery.removeEventListener("change", handler);
+  }, []);
 
   return (
     <section
