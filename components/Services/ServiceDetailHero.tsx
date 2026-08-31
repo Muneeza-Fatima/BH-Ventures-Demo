@@ -68,16 +68,23 @@ export default function ServiceDetailHero({
                     {video ? (
                         <video
                             className="detail-hero-media-el"
-                            src={video}
+                            poster={image}
                             autoPlay
                             muted
                             loop
                             playsInline
-                            preload="none"
-                        />
+                            preload="metadata"
+                        >
+                            <source src={video} type="video/mp4" />
+                        </video>
                     ) : (
                         // eslint-disable-next-line @next/next/no-img-element
-                        <img src={image} alt={`${title} concept art`} className="detail-hero-media-el" />
+                        <img
+                            src={image}
+                            alt={`${title} concept art`}
+                            className="detail-hero-media-el"
+                            decoding="async"
+                        />
                     )}
                 </div>
             </div>

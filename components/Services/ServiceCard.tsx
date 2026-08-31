@@ -87,7 +87,13 @@ export default function ServiceCard({ service, index }: ServiceCardProps) {
       <div className="service-banner">
         <div className="service-image-wrap">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={service.image} alt={`${service.title} concept art`} className="service-image" />
+          <img
+            src={service.image}
+            alt={`${service.title} concept art`}
+            className="service-image"
+            loading="lazy"
+            decoding="async"
+          />
         </div>
         <div className="service-banner-glow" />
         <div className="service-banner-fade" />

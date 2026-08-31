@@ -188,7 +188,7 @@ function FeaturedBanner({
                     observer.disconnect();
                 }
             },
-            { threshold: 0.2 }
+            { rootMargin: "300px 0px", threshold: 0.05 }
         );
         observer.observe(el);
         return () => observer.disconnect();
@@ -206,15 +206,16 @@ function FeaturedBanner({
             {showVideo ? (
                 <video
                     className="feat-banner-video"
-                    src={inView ? vehicle.video : undefined}
                     poster={vehicle.poster}
                     autoPlay
                     muted
                     loop
                     playsInline
-                    preload="none"
+                    preload="metadata"
                     onError={() => setVideoFailed(true)}
-                />
+                >
+                    <source src={vehicle.video} type="video/mp4" />
+                </video>
             ) : showPoster ? (
                 <Image
                     className="feat-banner-img"

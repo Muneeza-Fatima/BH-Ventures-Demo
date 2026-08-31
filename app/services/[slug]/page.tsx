@@ -66,7 +66,7 @@ export default async function ServiceDetailPage({ params }: { params: ParamsProm
     const isWeb3 = WEB3_SERVICE_SLUGS.includes(service.slug);
 
     return (
-        <main className="service-detail-page" data-category={category}>
+        <div className="service-detail-page" data-category={category}>
             <ServiceDetailHero
                 image={service.image}
                 video={service.video}
@@ -149,6 +149,6 @@ export default async function ServiceDetailPage({ params }: { params: ParamsProm
                     </div>
                 </section>
             </div>
-        </main>
+        </div>
     );
 }
