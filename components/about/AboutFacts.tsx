@@ -37,7 +37,7 @@ const facts: Fact[] = [
   {
     icon: ListChecks,
     title: "Licensed Activities",
-    countValue: 9,
+    countValue: 10,
     countSuffix: " Licensed Activities",
     detail: "Across trade, technology and business services.",
     highlight: true,
@@ -417,15 +417,15 @@ export default function AboutFacts() {
                 </div>
 
                 <h3
-                  className="
-                    mt-5
+                  className={`
+                    ${fact.iconSecondary ? "mt-6" : "mt-5"}
                     text-[19px]
                     font-extrabold
                     leading-tight
                     tracking-[-0.02em]
                     text-[#102A43]
                     sm:text-[21px]
-                  "
+                  `}
                 >
                   {fact.countValue ? (
                     <>

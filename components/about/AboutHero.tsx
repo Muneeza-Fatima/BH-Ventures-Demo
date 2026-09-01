@@ -89,6 +89,8 @@ export default function AboutHero() {
         xl:px-16
         xl:pt-[164px]
 
+        2xl:px-20
+
         [@media(min-width:1024px)_and_(max-width:1366px)]:pt-[130px]!
       "
     >

@@ -59,7 +59,7 @@ const journeySteps = [
     description:
       "Cross-border trade gives the platform market access and distribution reach across strategically selected regions.",
     icon: ArrowLeftRight,
-    image: "/images/about/story/story-trade.jpg",
+    image: "/images/about/story/story-trade-v2.jpg",
     imageAlt: "International trade and global reach",
     badge: {
       label: "UAE Based",
@@ -97,15 +97,15 @@ const journeySteps = [
   {
     id: "global-opportunity",
     label: "Global Opportunity",
-    title: "Nine activities, one license",
+    title: "Ten activities, one license",
     description:
-      "A licensed portfolio of nine business activities operates under a single founder-led platform, built for what comes next.",
+      "A licensed portfolio of ten business activities operates under a single founder-led platform, built for what comes next.",
     icon: Globe,
     image: "/images/about/story/story-global.jpg",
-    imageAlt: "Global opportunity — nine licensed activities",
+    imageAlt: "Global opportunity — ten licensed activities",
     badge: {
-      label: "9 Licensed Activities",
-      secondary: "Nine licensed business activities, one license.",
+      label: "10 Licensed Activities",
+      secondary: "Ten licensed business activities, one license.",
     },
   },
 ];
@@ -658,6 +658,8 @@ export default function AboutStory() {
           md:px-10
           lg:px-12
           xl:px-16
+          2xl:max-w-[1600px]
+          2xl:px-20
 
           [@media(min-width:1024px)_and_(max-width:1366px)]:px-10!
         "
