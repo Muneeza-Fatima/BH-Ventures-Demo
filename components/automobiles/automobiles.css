@@ -153,6 +153,16 @@
 
 .auto-wrapper {
     position: relative;
+    /* .auto-glow-bg below intentionally bleeds 2rem past this wrapper's
+       edges for a soft ambient effect. Without a clip boundary here,
+       that negative inset silently adds to the page's scrollable width
+       on mobile, producing a faint horizontal scrollbar that shifts
+       the whole page left of true center — which reads as every card
+       and video being cropped on the right edge, even though nothing
+       in the banners themselves is misconfigured. overflow-x: hidden
+       contains the glow at this wrapper without clipping anything
+       inside .auto-content (which isn't relying on overflow to render). */
+    overflow-x: hidden;
 }
 
 .auto-glow-bg {
@@ -973,13 +983,16 @@
 }
 
 /* small phones — 22rem is a lot of vertical space to hand a single
-   banner on a short screen. Kept at 20rem (rather than the old 18rem)
-   so object-fit: cover doesn't have to crop the photo as aggressively
-   to fill the box — see the .feat-banner-img mobile object-position
-   rules below for the rest of the crop fix. */
+   banner on a short screen. Kept at 21rem (rather than the earlier
+   18rem, then 20rem) — video content moves throughout playback (e.g.
+   a car's doors lifting mid-clip occupy more vertical space than the
+   poster frame), so mobile needs enough height that a moderate crop
+   doesn't clip a taller moment in the clip. See the .feat-banner-img /
+   .feat-banner-video object-position rules below for the rest of the
+   crop fix. */
 @media (max-width: 380px) {
     .feat-banner {
-        min-height: 20rem;
+        min-height: 21rem;
         border-radius: 1rem;
     }
 }
@@ -992,6 +1005,17 @@
     }
 }
 
+/* ---------- BANNER MEDIA (image + video) ----------
+   object-position is resolved through a fallback chain of CSS custom
+   properties rather than fixed values, so a per-vehicle override set
+   in AutomobileExtras.tsx (--feat-op-base / --feat-op-mobile /
+   --feat-op-small) composes with these breakpoints instead of being
+   frozen at whatever value the inline style happened to carry. Any
+   tier a vehicle doesn't set falls through to the next-widest tier,
+   then to the plain default on the right of each var() call — so
+   vehicles that never set objectPosition at all behave exactly as
+   before. */
+
 .feat-banner-img {
     position: absolute;
     inset: 0;
@@ -1000,7 +1024,7 @@
     object-fit: cover;
     /* default crop window — tuned for desktop/tablet where the banner
        is short and wide relative to the source photo */
-    object-position: center 55%;
+    object-position: var(--feat-op-base, center 55%);
     filter: saturate(1.1) brightness(0.95);
 
     /* slow continuous Ken Burns drift, staggered via negative delay */
@@ -1033,8 +1057,23 @@
     height: 100%;
     width: 100%;
     object-fit: cover;
-    object-position: center 55%;
+    object-position: var(--feat-op-base, center 55%);
     filter: saturate(1.1) brightness(0.95);
+}
+
+/* ---------- TABLET CROP FIX ----------
+   Between the "mobile" breakpoint and the desktop default, the banner
+   is still noticeably shorter/narrower relative to the photo than on
+   desktop. This tier only needs to exist so a per-vehicle mobile
+   override doesn't "leak" upward past 640px before it should — most
+   vehicles won't set --feat-op-base differently here, so it inherits
+   the desktop tuning by default via the var() fallback. */
+@media (max-width: 960px) {
+
+    .feat-banner-img,
+    .feat-banner-video {
+        object-position: var(--feat-op-base, center 55%);
+    }
 }
 
 /* ---------- MOBILE CROP FIX ----------
@@ -1043,12 +1082,16 @@
    cover has to zoom in much further to fill the box. The 55% bias
    tuned for desktop then crops off the roofline/badge on the photo's
    top edge (see: Mercedes grille getting cut off). Pull the visible
-   window up progressively as the viewport narrows. */
+   window up progressively as the viewport narrows — using the
+   per-vehicle --feat-op-mobile override when one is supplied, falling
+   back to --feat-op-base (so a vehicle that only tunes the desktop
+   crop still gets *something* reasonable), then to the original 38%
+   default. */
 @media (max-width: 640px) {
 
     .feat-banner-img,
     .feat-banner-video {
-        object-position: center 38%;
+        object-position: var(--feat-op-mobile, var(--feat-op-base, center 38%));
     }
 }
 
@@ -1056,7 +1099,7 @@
 
     .feat-banner-img,
     .feat-banner-video {
-        object-position: center 32%;
+        object-position: var(--feat-op-small, var(--feat-op-mobile, var(--feat-op-base, center 32%)));
     }
 
     /* tone down the Ken Burns zoom on phones — at scale(1.09) on an
@@ -1069,15 +1112,15 @@
 
 @keyframes feat-kenburns-mobile {
     0% {
-        transform: scale(1.02) translate3d(0, 0, 0);
+        transform: scale(1.015) translate3d(0, 0, 0);
     }
 
     50% {
-        transform: scale(1.045) translate3d(-1%, -0.5%, 0);
+        transform: scale(1.025) translate3d(-0.5%, -0.3%, 0);
     }
 
     100% {
-        transform: scale(1.02) translate3d(0, 0, 0);
+        transform: scale(1.015) translate3d(0, 0, 0);
     }
 }
 
@@ -1128,10 +1171,27 @@
     z-index: 2;
     pointer-events: none;
     background: linear-gradient(to top,
-            rgba(4, 9, 17, 0.92) 0%,
-            rgba(4, 9, 17, 0.55) 32%,
-            rgba(4, 9, 17, 0.05) 60%),
+            rgba(4, 9, 17, 0.94) 0%,
+            rgba(4, 9, 17, 0.72) 24%,
+            rgba(4, 9, 17, 0.3) 46%,
+            rgba(4, 9, 17, 0.05) 65%),
         linear-gradient(to bottom, rgba(4, 9, 17, 0.35) 0%, transparent 22%);
+}
+
+/* mobile banners are shorter relative to their content block, so the
+   text sits over a proportionally larger share of the photo — darken
+   the bottom band further here so taglines stay legible over bright
+   panels (white bodywork, chrome, headlights) instead of relying on
+   the desktop-tuned gradient stops above */
+@media (max-width: 640px) {
+    .feat-banner-overlay {
+        background: linear-gradient(to top,
+                rgba(4, 9, 17, 0.97) 0%,
+                rgba(4, 9, 17, 0.82) 30%,
+                rgba(4, 9, 17, 0.4) 55%,
+                rgba(4, 9, 17, 0.08) 72%),
+            linear-gradient(to bottom, rgba(4, 9, 17, 0.4) 0%, transparent 22%);
+    }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -1177,8 +1237,10 @@
 .feat-banner-brand {
     font-family: var(--font-display);
     /* fluid across the full range instead of one jump at 768px, so it
-       also grows further on very large screens */
-    font-size: clamp(1.6rem, 1.1rem + 3.2vw, 3.4rem);
+       also grows further on very large screens. Ceiling brought down
+       from 3.4rem to 2.85rem — long names like "MERCEDES-BENZ" were
+       reading oversized/dominant on the banner at desktop widths. */
+    font-size: clamp(1.5rem, 1.05rem + 2.6vw, 2.85rem);
     font-weight: 800;
     letter-spacing: 0.02em;
     text-transform: uppercase;

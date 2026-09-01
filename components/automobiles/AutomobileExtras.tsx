@@ -164,12 +164,31 @@ function ModalBrandMedia({
    a short spec tagline, and a "Book Now" CTA, matching the reference
    design. Falls back video -> poster photo -> plain gradient.
 
-   `objectPosition` is optional per-vehicle: when set, it overrides the
-   responsive CSS defaults in .feat-banner-img / .feat-banner-video (see
-   AutomobileExtras.css) on every screen size. Use it when a specific
-   photo still crops badly on mobile even after the CSS breakpoint
-   fix — e.g. a low, wide shot that needs a different vertical anchor
-   than a 3/4 front angle. */
+   `objectPosition` is optional per-vehicle. It can be either:
+     - a plain string, applied at every screen size (legacy shape), or
+     - an object with per-breakpoint values: { base, mobile, small }
+       ("base" = desktop/tablet, "mobile" = <=640px, "small" = <=380px).
+
+   Rather than writing these straight onto the element's inline `style`
+   (which would out-rank the responsive breakpoint rules in
+   AutomobileExtras.css and freeze the crop at the desktop value on
+   every screen), each value is written as a CSS custom property.
+   The stylesheet's media queries read the property that matches the
+   current breakpoint, with graceful fallback to the next-widest tier
+   when a narrower one isn't supplied — so a vehicle only needs to
+   specify the breakpoints it actually wants to override. */
+
+type ObjectPositionOverride = string | { base?: string; mobile?: string; small?: string };
+
+function resolveObjectPositionVars(op?: ObjectPositionOverride): React.CSSProperties {
+    if (!op) return {};
+    const normalized = typeof op === "string" ? { base: op } : op;
+    const vars: Record<string, string> = {};
+    if (normalized.base) vars["--feat-op-base"] = normalized.base;
+    if (normalized.mobile) vars["--feat-op-mobile"] = normalized.mobile;
+    if (normalized.small) vars["--feat-op-small"] = normalized.small;
+    return vars as React.CSSProperties;
+}
 
 function FeaturedBanner({
     vehicle,
@@ -182,7 +201,7 @@ function FeaturedBanner({
         tagline: string;
         video?: string;
         poster?: string;
-        objectPosition?: string;
+        objectPosition?: ObjectPositionOverride;
     };
     index: number;
     onSelect: () => void;
@@ -211,15 +230,13 @@ function FeaturedBanner({
     const showVideo = Boolean(vehicle.video) && !videoFailed;
     const showPoster = !showVideo && Boolean(vehicle.poster) && !photoFailed;
 
-    // only set an inline style when the vehicle explicitly overrides the
-    // crop — otherwise leave object-position unset so the responsive CSS
-    // breakpoints (desktop / tablet / phone) apply normally
-    const imgStyle: React.CSSProperties = {
-        objectFit: "cover",
-        ...(vehicle.objectPosition ? { objectPosition: vehicle.objectPosition } : {}),
-    };
-    const videoStyle: React.CSSProperties | undefined = vehicle.objectPosition
-        ? { objectPosition: vehicle.objectPosition }
+    // per-breakpoint object-position, expressed as CSS custom properties
+    // so the responsive rules in the stylesheet stay in control at every
+    // screen size instead of being overridden by a single inline value
+    const posVars = resolveObjectPositionVars(vehicle.objectPosition);
+    const imgStyle: React.CSSProperties = { objectFit: "cover", ...posVars };
+    const videoStyle: React.CSSProperties | undefined = Object.keys(posVars).length
+        ? posVars
         : undefined;
 
     return (
@@ -421,9 +438,13 @@ const STATS = [
 // pre-filled with that brand. Swap in your real video/poster paths
 // and adjust model/tagline copy per vehicle as needed.
 //
-// objectPosition is optional — only set it if the responsive CSS crop
-// defaults still cut off a key part of that specific photo on mobile
-// (e.g. the Mercedes shot was losing the star/grille at the top edge).
+// objectPosition can be a plain string (applied at every breakpoint)
+// or a { base, mobile, small } object when the responsive CSS crop
+// defaults still cut off a key part of that specific photo/video on
+// narrower screens (e.g. the Mercedes grille and the Ferrari nose were
+// both losing detail once the viewport got tight). Only set the tiers
+// you actually need to override — anything you omit falls back to the
+// next-widest tier, then to the stylesheet's own defaults.
 const FEATURED_VEHICLES = [
     {
         brand: "Mercedes-Benz",
@@ -431,7 +452,7 @@ const FEATURED_VEHICLES = [
         tagline: "Luxury SUV, export-ready stock",
         video: "/videos/Mercedes_SUV.mp4",
         poster: "/images/brands/photo/mercedes_benz.jpg",
-        objectPosition: "center 30%",
+        objectPosition: { base: "center 30%", mobile: "center 38%", small: "center 40%" },
     },
     {
         brand: "Ferrari",
@@ -439,7 +460,7 @@ const FEATURED_VEHICLES = [
         tagline: "Iconic Italian performance, engineered to thrill",
         video: "/videos/ferrari.mp4",
         poster: "/images/brands/photo/ferrari.png",
-        objectPosition: "center 42%",
+        objectPosition: { base: "center 42%", mobile: "center 45%", small: "center 45%" },
     },
     {
         brand: "Toyota",
@@ -447,6 +468,7 @@ const FEATURED_VEHICLES = [
         tagline: "Full-size capability, flagship comfort",
         video: "/videos/Toyota_RAV4.mp4",
         poster: "/images/brands/photo/toyota.jpg",
+        objectPosition: { base: "center 50%", mobile: "center 45%", small: "center 45%" },
     },
 ];
 
