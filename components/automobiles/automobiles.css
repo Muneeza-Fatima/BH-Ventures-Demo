@@ -84,13 +84,51 @@
 
 /* ---------- BRAND MARQUEE ---------- */
 
+/* Wraps the mask + the two arrow buttons so the arrows can be
+   absolutely positioned relative to the whole marquee, not just the
+   masked scroll area. Padding reserves dedicated space on each side
+   so the arrows sit in their own gap instead of overlapping the
+   first/last brand tile. */
+.auto-marquee-wrap {
+    position: relative;
+    padding: 0 2.75rem;
+}
+
+@media (max-width: 380px) {
+    .auto-marquee-wrap {
+        padding: 0 2.25rem;
+    }
+}
+
 .auto-marquee-mask {
     position: relative;
     overflow: hidden;
     margin-bottom: 1.75rem;
     padding: 0.25rem 0;
-    -webkit-mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
-    mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+    -webkit-mask-image: linear-gradient(to right, transparent, #000 5%, #000 95%, transparent);
+    mask-image: linear-gradient(to right, transparent, #000 5%, #000 95%, transparent);
+}
+
+/* Desktop (mouse/trackpad): turn off the auto-scroll animation and
+   make the track a real horizontal scroll container instead, so the
+   arrow buttons (and wheel/trackpad scrolling) can actually move it.
+   This query never matches touch, so phones are untouched and keep
+   the auto-scrolling strip defined further down. */
+@media (hover: hover) and (pointer: fine) {
+    .auto-marquee-mask {
+        overflow-x: auto;
+        scroll-behavior: smooth;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+    }
+
+    .auto-marquee-mask::-webkit-scrollbar {
+        display: none;
+    }
+
+    .auto-marquee-track {
+        animation: none !important;
+    }
 }
 
 .auto-marquee-track {
@@ -99,10 +137,20 @@
     gap: 1.5rem;
     width: max-content;
     animation: auto-marquee-scroll 34s linear infinite;
+    /* belt-and-braces: if anything upstream ever leaves this unset,
+       force it to run rather than silently sitting still */
+    animation-play-state: running;
 }
 
-.auto-marquee-mask:hover .auto-marquee-track {
-    animation-play-state: paused;
+/* Only pause on genuine mouse hover — not touch. On touch devices,
+   :hover can get "stuck" active after a tap, which would otherwise
+   freeze the strip until the user taps elsewhere on the page.
+   (On desktop the animation is already disabled above, so this only
+   has any effect while that rule isn't in play.) */
+@media (hover: hover) and (pointer: fine) {
+    .auto-marquee-mask:hover .auto-marquee-track {
+        animation-play-state: paused;
+    }
 }
 
 @keyframes auto-marquee-scroll {
@@ -116,9 +164,13 @@
     }
 }
 
+/* Instead of killing motion entirely (which reads as a broken/frozen
+   strip showing only whichever handful of logos fit the viewport),
+   slow it way down for users who've asked for reduced motion — still
+   moving, just gently, so it never looks stuck. */
 @media (prefers-reduced-motion: reduce) {
     .auto-marquee-track {
-        animation: none;
+        animation-duration: 120s;
     }
 }
 
@@ -147,6 +199,58 @@
     opacity: 1;
     transform: scale(1.08);
     box-shadow: 0 0 20px rgba(var(--accent-rgb), 0.5), 0 0 40px rgba(var(--accent-rgb), 0.25);
+}
+
+/* ---------- MARQUEE ARROW BUTTONS ----------
+   Desktop/mouse only — phones keep the plain auto-scroll strip with
+   no buttons cluttering it. Sit inside the wrapper's own side padding
+   (see .auto-marquee-wrap above), so there's a clean gap between each
+   arrow and the nearest brand tile instead of an overlap. Sized down
+   from the original 2.75rem so they read as a subtle nav control
+   rather than competing visually with the logo tiles. */
+
+.auto-marquee-arrow {
+    display: none;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 4;
+    align-items: center;
+    justify-content: center;
+    height: 2.25rem;
+    width: 2.25rem;
+    border-radius: 9999px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    background: rgba(6, 13, 24, 0.78);
+    backdrop-filter: blur(4px);
+    color: #eaf6fb;
+    cursor: pointer;
+    transition: background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.auto-marquee-arrow svg {
+    height: 1rem;
+    width: 1rem;
+}
+
+.auto-marquee-arrow-left {
+    left: 0;
+}
+
+.auto-marquee-arrow-right {
+    right: 0;
+}
+
+.auto-marquee-arrow:hover {
+    background: rgba(var(--accent-rgb), 0.22);
+    border-color: rgba(var(--accent-rgb), 0.5);
+    box-shadow: 0 0 20px rgba(var(--accent-rgb), 0.3);
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .auto-marquee-arrow {
+        display: flex;
+    }
 }
 
 /* ---------- AMBIENT WRAPPER GLOW ---------- */

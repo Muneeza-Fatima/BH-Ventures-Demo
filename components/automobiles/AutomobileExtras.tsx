@@ -376,16 +376,17 @@ const VEHICLE_BRANDS = [
     { name: "Ford", logo: "/images/brands/ford.png", photo: "/images/brands/photo/ford.jpg" },
     { name: "MG", logo: "/images/brands/mg.png", photo: "/images/brands/photo/mg.jpg" },
     { name: "BYD", logo: "/images/brands/byd.png", photo: "/images/brands/photo/byd.jpg" },
-    { name: "BMW", logo: "/images/brands/bmw.jpg", photo: "/images/brands/photo/bmw.jpg", popular: true },
-    { name: "Mercedes-Benz", logo: "/images/brands/mercedes-benz.jpg", photo: "/images/brands/photo/mercedes_benz.jpg", popular: true },
-    { name: "Range Rover", logo: "/images/brands/range-rover.jpg", photo: "/images/brands/photo/range_rover.jpg" },
-    { name: "Jetour", logo: "/images/brands/jetour.png", photo: "/images/brands/photo/jetour.jpg" },
-    { name: "Ferrari", logo: "/images/brands/ferrari.png", photo: "/images/brands/photo/ferrari.png", popular: true },
-    { name: "Lamborghini", logo: "/images/brands/lamborghini.png", photo: "/images/brands/photo/Lamborghini.png", popular: true },
+    { name: "BMW", logo: "/images/brands/BMW.png", photo: "/images/brands/photo/bmw.jpg", popular: true },
+    { name: "Mercedes-Benz", logo: "/images/brands/mercedes-benz.png", photo: "/images/brands/photo/mercedes_benz.png", popular: true },
+    { name: "Range Rover", logo: "/images/brands/Range-Rover.png", photo: "/images/brands/photo/range_rover.jpg" },
+    { name: "Jetour", logo: "/images/brands/Jetour.png", photo: "/images/brands/photo/jetour.jpg" },
+    { name: "Ferrari", logo: "/images/brands/Ferrari.png", photo: "/images/brands/photo/ferrari.png", popular: true },
+    { name: "Lamborghini", logo: "/images/brands/Lamborghini.png", photo: "/images/brands/photo/Lamborghini.png", popular: true },
     { name: "Hyundai", logo: "/images/brands/Hyundai.png", photo: "/images/brands/photo/hyundai.png" },
-    { name: "Porsche", logo: "/images/brands/porsche.png", photo: "/images/brands/photo/porsche.jpg", popular: true },
-    { name: "Tesla", logo: "/images/brands/tesla.png", photo: "/images/brands/photo/tesla.png", popular: true },
-    { name: "Dodge", logo: "/images/brands/dodge.jpg", photo: "/images/brands/photo/dodge.png" },
+    { name: "Porsche", logo: "/images/brands/Porsche.png", photo: "/images/brands/photo/porsche.jpg", popular: true },
+    { name: "Tesla", logo: "/images/brands/Tesla.png", photo: "/images/brands/photo/tesla.png", popular: true },
+    { name: "Dodge", logo: "/images/brands/dodge.png", photo: "/images/brands/photo/dodge.png" },
+    { name: "Land Rover", logo: "/images/brands/land_rover.png", photo: "/images/brands/photo/Land_Rover_Defender.png", popular: true },
 ];
 
 const VEHICLE_CATEGORIES = [
@@ -463,11 +464,11 @@ const FEATURED_VEHICLES = [
         objectPosition: { base: "center 42%", mobile: "center 45%", small: "center 45%" },
     },
     {
-        brand: "Toyota",
-        model: "RAV4",
+        brand: "Land Rover",
+        model: "Defender 110",
         tagline: "Full-size capability, flagship comfort",
-        video: "/videos/Toyota_RAV4.mp4",
-        poster: "/images/brands/photo/toyota.jpg",
+        video: "/videos/Land_Rover_Defender.mp4",
+        poster: "/images/brands/photo/Land_Rover_Defender.png",
         objectPosition: { base: "center 50%", mobile: "center 45%", small: "center 45%" },
     },
 ];
@@ -486,6 +487,19 @@ export default function AutomobileExtras() {
     const [destination, setDestination] = useState("");
     const [name, setName] = useState("");
     const [contact, setContact] = useState("");
+
+    // scroll container for the brand marquee — on desktop the CSS turns
+    // this into a real horizontal scroller (auto-scroll animation off),
+    // so the arrow buttons can drive it with scrollBy. On phones the
+    // ref is unused since the CSS keeps its own auto-scroll animation.
+    const marqueeRef = useRef<HTMLDivElement | null>(null);
+
+    function scrollMarquee(direction: "left" | "right") {
+        const el = marqueeRef.current;
+        if (!el) return;
+        const amount = el.clientWidth * 0.8;
+        el.scrollBy({ left: direction === "left" ? -amount : amount, behavior: "smooth" });
+    }
 
     function openModal(brand?: string) {
         setSelectedBrand(brand ?? "");
@@ -542,21 +556,48 @@ export default function AutomobileExtras() {
                 {/* ---------- BRAND MARQUEE (motion, showroom feel) ---------- */}
                 <section className="auto-section auto-marquee-section">
                     <h2 className="service-detail-heading">Supported Brands</h2>
-                    <div className="auto-marquee-mask">
-                        <div className="auto-marquee-track">
-                            {marqueeBrands.map((brand, i) => (
-                                <button
-                                    key={`${brand.name}-${i}`}
-                                    type="button"
-                                    className="auto-marquee-tile"
-                                    onClick={() => openModal(brand.name)}
-                                    aria-label={`Enquire about ${brand.name} vehicles`}
-                                    tabIndex={i < VEHICLE_BRANDS.length ? 0 : -1}
-                                >
-                                    <BrandMark brand={brand} />
-                                </button>
-                            ))}
+
+                    <div className="auto-marquee-wrap">
+                        {/* Desktop/mouse only (hidden via CSS on touch) — moves the
+                            strip forward/back. Phones keep the auto-scroll motion. */}
+                        <button
+                            type="button"
+                            className="auto-marquee-arrow auto-marquee-arrow-left"
+                            onClick={() => scrollMarquee("left")}
+                            aria-label="Scroll brands left"
+                        >
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                <path d="M15 6l-6 6 6 6" strokeLinecap="round" strokeLinejoin="round" />
+                            </svg>
+                        </button>
+
+                        <div className="auto-marquee-mask" ref={marqueeRef}>
+                            <div className="auto-marquee-track">
+                                {marqueeBrands.map((brand, i) => (
+                                    <button
+                                        key={`${brand.name}-${i}`}
+                                        type="button"
+                                        className="auto-marquee-tile"
+                                        onClick={() => openModal(brand.name)}
+                                        aria-label={`Enquire about ${brand.name} vehicles`}
+                                        tabIndex={i < VEHICLE_BRANDS.length ? 0 : -1}
+                                    >
+                                        <BrandMark brand={brand} />
+                                    </button>
+                                ))}
+                            </div>
                         </div>
+
+                        <button
+                            type="button"
+                            className="auto-marquee-arrow auto-marquee-arrow-right"
+                            onClick={() => scrollMarquee("right")}
+                            aria-label="Scroll brands right"
+                        >
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                <path d="M9 6l6 6-6 6" strokeLinecap="round" strokeLinejoin="round" />
+                            </svg>
+                        </button>
                     </div>
 
                     {/* full clickable grid — photo cards, with names, for accessibility + direct selection */}
