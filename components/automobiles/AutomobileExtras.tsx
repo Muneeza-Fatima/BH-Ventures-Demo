@@ -209,6 +209,7 @@ function FeaturedBanner({
     const [videoFailed, setVideoFailed] = useState(false);
     const [photoFailed, setPhotoFailed] = useState(false);
     const ref = useRef<HTMLDivElement | null>(null);
+    const videoRef = useRef<HTMLVideoElement | null>(null);
     const [inView, setInView] = useState(false);
 
     useEffect(() => {
@@ -226,6 +227,19 @@ function FeaturedBanner({
         observer.observe(el);
         return () => observer.disconnect();
     }, []);
+
+    useEffect(() => {
+        if (!inView) return;
+        const vid = videoRef.current;
+        if (!vid) return;
+        vid.muted = true;
+        vid.defaultMuted = true;
+        vid.playsInline = true;
+        const playPromise = vid.play();
+        if (playPromise !== undefined) {
+            playPromise.catch(() => { });
+        }
+    }, [inView]);
 
     const showVideo = Boolean(vehicle.video) && !videoFailed;
     const showPoster = !showVideo && Boolean(vehicle.poster) && !photoFailed;
@@ -247,6 +261,7 @@ function FeaturedBanner({
         >
             {showVideo ? (
                 <video
+                    ref={videoRef}
                     className="feat-banner-video"
                     style={videoStyle}
                     poster={vehicle.poster}
@@ -377,7 +392,7 @@ const VEHICLE_BRANDS = [
     { name: "MG", logo: "/images/brands/mg.png", photo: "/images/brands/photo/mg.jpg" },
     { name: "BYD", logo: "/images/brands/byd.png", photo: "/images/brands/photo/byd.jpg" },
     { name: "BMW", logo: "/images/brands/BMW.png", photo: "/images/brands/photo/bmw.jpg", popular: true },
-    { name: "Mercedes-Benz", logo: "/images/brands/mercedes-benz.png", photo: "/images/brands/photo/mercedes_benz.png", popular: true },
+    { name: "Mercedes-Benz", logo: "/images/brands/mercedes-benz.png", photo: "/images/brands/photo/Mercedes_Benz.png", popular: true },
     { name: "Range Rover", logo: "/images/brands/Range-Rover.png", photo: "/images/brands/photo/range_rover.jpg" },
     { name: "Jetour", logo: "/images/brands/Jetour.png", photo: "/images/brands/photo/jetour.jpg" },
     { name: "Ferrari", logo: "/images/brands/Ferrari.png", photo: "/images/brands/photo/ferrari.png", popular: true },
@@ -453,7 +468,7 @@ const FEATURED_VEHICLES = [
         tagline: "Luxury SUV, export-ready stock",
         video: "/videos/Mercedes_SUV.mp4",
         poster: "/images/brands/photo/mercedes_benz.jpg",
-        objectPosition: { base: "center 30%", mobile: "center 38%", small: "center 40%" },
+        objectPosition: { base: "center 40%", mobile: "center 45%", small: "center 45%" },
     },
     {
         brand: "Ferrari",
@@ -461,7 +476,7 @@ const FEATURED_VEHICLES = [
         tagline: "Iconic Italian performance, engineered to thrill",
         video: "/videos/ferrari.mp4",
         poster: "/images/brands/photo/ferrari.png",
-        objectPosition: { base: "center 42%", mobile: "center 45%", small: "center 45%" },
+        objectPosition: { base: "center 45%", mobile: "center 48%", small: "center 50%" },
     },
     {
         brand: "Land Rover",
@@ -469,7 +484,7 @@ const FEATURED_VEHICLES = [
         tagline: "Full-size capability, flagship comfort",
         video: "/videos/Land_Rover_Defender.mp4",
         poster: "/images/brands/photo/Land_Rover_Defender.png",
-        objectPosition: { base: "center 50%", mobile: "center 45%", small: "center 45%" },
+        objectPosition: { base: "center 50%", mobile: "center 50%", small: "center 50%" },
     },
 ];
 

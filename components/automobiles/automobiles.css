@@ -1050,13 +1050,16 @@
 
 /* ---------- BANNER ---------- */
 
+/* ---------- BANNER ---------- */
+
 .feat-banner {
     position: relative;
     display: flex;
     align-items: flex-end;
     justify-content: center;
     width: 100%;
-    min-height: 22rem;
+    aspect-ratio: 16 / 10;
+    min-height: 280px;
     border-radius: 1.25rem;
     overflow: hidden;
     background: #0b1220;
@@ -1076,49 +1079,43 @@
 
 @media (min-width: 768px) {
     .feat-banner {
-        min-height: 30rem;
+        aspect-ratio: 16 / 9;
+        min-height: 26rem;
     }
 }
 
 @media (min-width: 1200px) {
     .feat-banner {
-        min-height: 36rem;
+        aspect-ratio: 21 / 9;
+        min-height: 32rem;
     }
 }
 
-/* small phones — 22rem is a lot of vertical space to hand a single
-   banner on a short screen. Kept at 21rem (rather than the earlier
-   18rem, then 20rem) — video content moves throughout playback (e.g.
-   a car's doors lifting mid-clip occupy more vertical space than the
-   poster frame), so mobile needs enough height that a moderate crop
-   doesn't clip a taller moment in the clip. See the .feat-banner-img /
-   .feat-banner-video object-position rules below for the rest of the
-   crop fix. */
-@media (max-width: 380px) {
+@media (max-width: 480px) {
     .feat-banner {
-        min-height: 21rem;
+        aspect-ratio: 16 / 11;
+        min-height: 260px;
         border-radius: 1rem;
     }
 }
 
-/* very short viewports (landscape phones, split-screen) — cap the
-   banner instead of letting min-height push content off-screen */
-@media (max-height: 500px) {
+@media (max-width: 360px) {
     .feat-banner {
-        min-height: 16rem;
+        aspect-ratio: 4 / 3;
+        min-height: 240px;
+        border-radius: 0.875rem;
     }
 }
 
-/* ---------- BANNER MEDIA (image + video) ----------
-   object-position is resolved through a fallback chain of CSS custom
-   properties rather than fixed values, so a per-vehicle override set
-   in AutomobileExtras.tsx (--feat-op-base / --feat-op-mobile /
-   --feat-op-small) composes with these breakpoints instead of being
-   frozen at whatever value the inline style happened to carry. Any
-   tier a vehicle doesn't set falls through to the next-widest tier,
-   then to the plain default on the right of each var() call — so
-   vehicles that never set objectPosition at all behave exactly as
-   before. */
+/* very short viewports (landscape phones, split-screen) */
+@media (max-height: 500px) {
+    .feat-banner {
+        min-height: 14rem;
+        aspect-ratio: 21 / 9;
+    }
+}
+
+/* ---------- BANNER MEDIA (image + video) ---------- */
 
 .feat-banner-img {
     position: absolute;
@@ -1126,10 +1123,8 @@
     height: 100%;
     width: 100%;
     object-fit: cover;
-    /* default crop window — tuned for desktop/tablet where the banner
-       is short and wide relative to the source photo */
-    object-position: var(--feat-op-base, center 55%);
-    filter: saturate(1.1) brightness(0.95);
+    object-position: var(--feat-op-base, center 48%);
+    filter: saturate(1.08) brightness(0.96);
 
     /* slow continuous Ken Burns drift, staggered via negative delay */
     animation: feat-kenburns 16s ease-in-out infinite;
@@ -1142,7 +1137,7 @@
     }
 
     50% {
-        transform: scale(1.09) translate3d(-1.2%, -0.8%, 0);
+        transform: scale(1.06) translate3d(-1%, -0.6%, 0);
     }
 
     100% {
@@ -1150,65 +1145,30 @@
     }
 }
 
-/* video variant of the same banner media — same position/fit as the
-   img, but no Ken Burns keyframe since the footage supplies its own
-   motion. Kept as a separate class (rather than reusing .feat-banner-img
-   on a <video>) so the two elements never fight over the animation
-   property. */
+/* video variant of the same banner media */
 .feat-banner-video {
     position: absolute;
     inset: 0;
     height: 100%;
     width: 100%;
     object-fit: cover;
-    object-position: var(--feat-op-base, center 55%);
-    filter: saturate(1.1) brightness(0.95);
+    object-position: var(--feat-op-base, center 48%);
+    filter: saturate(1.08) brightness(0.96);
 }
 
-/* ---------- TABLET CROP FIX ----------
-   Between the "mobile" breakpoint and the desktop default, the banner
-   is still noticeably shorter/narrower relative to the photo than on
-   desktop. This tier only needs to exist so a per-vehicle mobile
-   override doesn't "leak" upward past 640px before it should — most
-   vehicles won't set --feat-op-base differently here, so it inherits
-   the desktop tuning by default via the var() fallback. */
 @media (max-width: 960px) {
-
     .feat-banner-img,
     .feat-banner-video {
-        object-position: var(--feat-op-base, center 55%);
+        object-position: var(--feat-op-mobile, var(--feat-op-base, center 48%));
     }
 }
 
-/* ---------- MOBILE CROP FIX ----------
-   On phones the banner is both narrower AND shorter relative to the
-   photo's native aspect ratio than it is on desktop, so object-fit:
-   cover has to zoom in much further to fill the box. The 55% bias
-   tuned for desktop then crops off the roofline/badge on the photo's
-   top edge (see: Mercedes grille getting cut off). Pull the visible
-   window up progressively as the viewport narrows — using the
-   per-vehicle --feat-op-mobile override when one is supplied, falling
-   back to --feat-op-base (so a vehicle that only tunes the desktop
-   crop still gets *something* reasonable), then to the original 38%
-   default. */
-@media (max-width: 640px) {
-
+@media (max-width: 480px) {
     .feat-banner-img,
     .feat-banner-video {
-        object-position: var(--feat-op-mobile, var(--feat-op-base, center 38%));
-    }
-}
-
-@media (max-width: 380px) {
-
-    .feat-banner-img,
-    .feat-banner-video {
-        object-position: var(--feat-op-small, var(--feat-op-mobile, var(--feat-op-base, center 32%)));
+        object-position: var(--feat-op-small, var(--feat-op-mobile, var(--feat-op-base, center 48%)));
     }
 
-    /* tone down the Ken Burns zoom on phones — at scale(1.09) on an
-       already-tight mobile crop it pushes key details out of frame
-       at the peak of the animation */
     .feat-banner-img {
         animation-name: feat-kenburns-mobile;
     }
@@ -1216,15 +1176,15 @@
 
 @keyframes feat-kenburns-mobile {
     0% {
-        transform: scale(1.015) translate3d(0, 0, 0);
+        transform: scale(1.01) translate3d(0, 0, 0);
     }
 
     50% {
-        transform: scale(1.025) translate3d(-0.5%, -0.3%, 0);
+        transform: scale(1.02) translate3d(-0.4%, -0.2%, 0);
     }
 
     100% {
-        transform: scale(1.015) translate3d(0, 0, 0);
+        transform: scale(1.01) translate3d(0, 0, 0);
     }
 }
 
@@ -1253,7 +1213,6 @@
 }
 
 @keyframes feat-sweep-move {
-
     0%,
     60% {
         transform: translateX(-130%);
@@ -1277,24 +1236,19 @@
     background: linear-gradient(to top,
             rgba(4, 9, 17, 0.94) 0%,
             rgba(4, 9, 17, 0.72) 24%,
-            rgba(4, 9, 17, 0.3) 46%,
-            rgba(4, 9, 17, 0.05) 65%),
-        linear-gradient(to bottom, rgba(4, 9, 17, 0.35) 0%, transparent 22%);
+            rgba(4, 9, 17, 0.25) 48%,
+            rgba(4, 9, 17, 0.02) 65%),
+        linear-gradient(to bottom, rgba(4, 9, 17, 0.3) 0%, transparent 22%);
 }
 
-/* mobile banners are shorter relative to their content block, so the
-   text sits over a proportionally larger share of the photo — darken
-   the bottom band further here so taglines stay legible over bright
-   panels (white bodywork, chrome, headlights) instead of relying on
-   the desktop-tuned gradient stops above */
-@media (max-width: 640px) {
+@media (max-width: 768px) {
     .feat-banner-overlay {
         background: linear-gradient(to top,
-                rgba(4, 9, 17, 0.97) 0%,
-                rgba(4, 9, 17, 0.82) 30%,
-                rgba(4, 9, 17, 0.4) 55%,
-                rgba(4, 9, 17, 0.08) 72%),
-            linear-gradient(to bottom, rgba(4, 9, 17, 0.4) 0%, transparent 22%);
+                rgba(4, 9, 17, 0.96) 0%,
+                rgba(4, 9, 17, 0.78) 32%,
+                rgba(4, 9, 17, 0.22) 58%,
+                transparent 75%),
+            linear-gradient(to bottom, rgba(4, 9, 17, 0.3) 0%, transparent 20%);
     }
 }
 
@@ -1309,9 +1263,6 @@
     .feat-banner-sweep {
         animation: none;
     }
-
-    /* video autoplay can't be stopped via CSS alone — pause it in JS if
-       you want to fully respect prefers-reduced-motion for video too */
 }
 
 /* ---------- CONTENT ---------- */
@@ -1322,29 +1273,31 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 0.5rem;
+    gap: 0.45rem;
     width: 100%;
-    padding: 2rem 1.5rem 2.25rem;
+    padding: 2rem 1.5rem 2rem;
     text-align: center;
     box-sizing: border-box;
 }
 
-@media (max-width: 380px) {
+@media (max-width: 768px) {
     .feat-banner-content {
-        padding: 1.25rem 1rem 1.5rem;
-        gap: 0.4rem;
+        padding: 1.25rem 1rem 1.25rem;
+        gap: 0.3rem;
     }
 }
 
-/* brand name is now the eye-catching headline — large, bold, glowing
-   accent color, with a slow pulse so it draws attention on its own */
+@media (max-width: 480px) {
+    .feat-banner-content {
+        padding: 1rem 0.875rem 1.1rem;
+        gap: 0.25rem;
+    }
+}
+
+/* brand name headline */
 .feat-banner-brand {
     font-family: var(--font-display);
-    /* fluid across the full range instead of one jump at 768px, so it
-       also grows further on very large screens. Ceiling brought down
-       from 3.4rem to 2.85rem — long names like "MERCEDES-BENZ" were
-       reading oversized/dominant on the banner at desktop widths. */
-    font-size: clamp(1.5rem, 1.05rem + 2.6vw, 2.85rem);
+    font-size: clamp(1.35rem, 1rem + 2.4vw, 2.75rem);
     font-weight: 800;
     letter-spacing: 0.02em;
     text-transform: uppercase;
@@ -1356,8 +1309,13 @@
     animation: feat-brand-pulse 3.5s ease-in-out infinite;
 }
 
-@keyframes feat-brand-pulse {
+@media (max-width: 480px) {
+    .feat-banner-brand {
+        font-size: 1.35rem;
+    }
+}
 
+@keyframes feat-brand-pulse {
     0%,
     100% {
         text-shadow:
@@ -1380,10 +1338,10 @@
     }
 }
 
-/* model name is now the secondary label underneath the brand */
+/* model name */
 .feat-banner-title {
     font-family: var(--font-display);
-    font-size: 1rem;
+    font-size: 0.95rem;
     font-weight: 600;
     letter-spacing: 0.08em;
     text-transform: uppercase;
@@ -1391,11 +1349,26 @@
     text-shadow: 0 2px 12px rgba(0, 0, 0, 0.4);
 }
 
+@media (max-width: 480px) {
+    .feat-banner-title {
+        font-size: 0.82rem;
+        letter-spacing: 0.06em;
+    }
+}
+
 .feat-banner-tagline {
     max-width: 32rem;
-    font-size: 0.9rem;
-    line-height: 1.5;
-    color: rgba(220, 232, 242, 0.85);
+    font-size: 0.88rem;
+    line-height: 1.45;
+    color: rgba(220, 232, 242, 0.88);
+}
+
+@media (max-width: 480px) {
+    .feat-banner-tagline {
+        font-size: 0.78rem;
+        line-height: 1.35;
+        max-width: 20rem;
+    }
 }
 
 .feat-banner-actions {
@@ -1404,16 +1377,23 @@
     align-items: center;
     justify-content: center;
     gap: 0.75rem;
-    margin-top: 0.75rem;
+    margin-top: 0.6rem;
+}
+
+@media (max-width: 480px) {
+    .feat-banner-actions {
+        margin-top: 0.35rem;
+        gap: 0.5rem;
+    }
 }
 
 .feat-btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    padding: 0.8rem 1.6rem;
+    padding: 0.75rem 1.6rem;
     border-radius: 9999px;
-    font-size: 0.78rem;
+    font-size: 0.76rem;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.05em;
@@ -1423,10 +1403,10 @@
     transition: transform 0.2s ease, box-shadow 0.3s ease, background 0.2s ease, border-color 0.2s ease;
 }
 
-@media (max-width: 380px) {
+@media (max-width: 480px) {
     .feat-btn {
-        padding: 0.7rem 1.2rem;
-        font-size: 0.72rem;
+        padding: 0.55rem 1.25rem;
+        font-size: 0.7rem;
     }
 }
 
