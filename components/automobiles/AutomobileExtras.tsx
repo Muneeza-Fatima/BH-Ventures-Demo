@@ -392,7 +392,7 @@ const VEHICLE_BRANDS = [
     { name: "MG", logo: "/images/brands/mg.png", photo: "/images/brands/photo/mg.jpg" },
     { name: "BYD", logo: "/images/brands/byd.png", photo: "/images/brands/photo/byd.jpg" },
     { name: "BMW", logo: "/images/brands/BMW.png", photo: "/images/brands/photo/bmw.jpg", popular: true },
-    { name: "Mercedes-Benz", logo: "/images/brands/mercedes-benz.png", photo: "/images/brands/photo/Mercedes_Benz.png", popular: true },
+    { name: "Mercedes-Benz", logo: "/images/brands/mercedes-benz.png", photo: "/images/brands/photo/mercendez.png", popular: true },
     { name: "Range Rover", logo: "/images/brands/Range-Rover.png", photo: "/images/brands/photo/range_rover.jpg" },
     { name: "Jetour", logo: "/images/brands/Jetour.png", photo: "/images/brands/photo/jetour.jpg" },
     { name: "Ferrari", logo: "/images/brands/Ferrari.png", photo: "/images/brands/photo/ferrari.png", popular: true },
