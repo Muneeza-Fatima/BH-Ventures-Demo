@@ -467,7 +467,7 @@ const FEATURED_VEHICLES = [
         model: "GLC",
         tagline: "Luxury SUV, export-ready stock",
         video: "/videos/Mercedes_SUV.mp4",
-        poster: "/images/brands/photo/mercedes_benz.jpg",
+        poster: "/images/brands/photo/mercedes_benz.png",
         objectPosition: { base: "center 40%", mobile: "center 45%", small: "center 45%" },
     },
     {
