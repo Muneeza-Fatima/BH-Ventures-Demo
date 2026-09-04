@@ -2,6 +2,7 @@
 
 import { useRef, MouseEvent, CSSProperties } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import type { Service } from "@/lib/types";
 
 import "./service-detail.css";
@@ -51,6 +52,8 @@ export default function ServiceCard({ service, index }: ServiceCardProps) {
   const cardRef = useRef<HTMLElement>(null);
   const category = getCategory(service.badge);
   const { accent, rgb } = ACCENT_PALETTE[index % ACCENT_PALETTE.length];
+  // First card gets priority (eager load + preload link); rest lazy-load.
+  const isFirst = index === 0;
 
   const accentVars = {
     "--accent": accent,
@@ -86,13 +89,19 @@ export default function ServiceCard({ service, index }: ServiceCardProps) {
 
       <div className="service-banner">
         <div className="service-image-wrap">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
+          {/* next/image with fill + sizes → WebP/AVIF conversion, responsive
+              srcsets, and lazy loading out of the box. The parent
+              .service-image-wrap is position:absolute so fill works correctly. */}
+          <Image
             src={service.image}
             alt={`${service.title} concept art`}
+            fill
+            sizes="(max-width: 639px) 100vw, (max-width: 1023px) 50vw, 33vw"
             className="service-image"
-            loading="lazy"
+            priority={isFirst}
+            loading={isFirst ? "eager" : "lazy"}
             decoding="async"
+            quality={75}
           />
         </div>
         <div className="service-banner-glow" />

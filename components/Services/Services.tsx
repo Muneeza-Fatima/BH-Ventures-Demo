@@ -16,7 +16,10 @@ export default function Services() {
           if (entry.isIntersecting) entry.target.classList.add("in");
         });
       },
-      { threshold: 0.12 }
+      // rootMargin keeps cards invisible until they are genuinely close
+      // to the viewport, so the browser doesn’t trigger all CSS transitions
+      // at once while the section is still far below the fold.
+      { threshold: 0.08, rootMargin: "0px 0px -60px 0px" }
     );
     els.forEach((el) => io.observe(el));
     return () => io.disconnect();
@@ -56,7 +59,9 @@ export default function Services() {
             <div
               key={service.key}
               className="service-reveal"
-              style={{ "--reveal-delay": `${i * 45}ms` } as React.CSSProperties}
+              // Cap the stagger at 300 ms so the last card (index 9)
+              // doesn’t wait 405 ms before starting its reveal.
+              style={{ "--reveal-delay": `${Math.min(i * 40, 300)}ms` } as React.CSSProperties}
             >
               <ServiceCard service={service} index={i} />
             </div>
