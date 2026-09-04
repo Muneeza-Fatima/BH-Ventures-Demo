@@ -7,10 +7,175 @@
    .service-detail-page[data-category] wrapper.
    ======================================== */
 
+/* ---------- SHARED HOVER SHEEN (site-wide hover accent animation) ---------- */
+
+@keyframes web3-sheen-sweep {
+    from {
+        transform: translateX(-140%) skewX(-12deg);
+    }
+
+    to {
+        transform: translateX(140%) skewX(-12deg);
+    }
+}
+
+.web3-sheen {
+    position: relative;
+    overflow: hidden;
+}
+
+.web3-sheen::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 45%;
+    height: 100%;
+    background: linear-gradient(115deg,
+            transparent,
+            rgba(var(--accent-rgb), 0.32),
+            transparent);
+    transform: translateX(-140%) skewX(-12deg);
+    pointer-events: none;
+    z-index: 1;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+
+    .web3-sheen:hover::before,
+    .web3-sheen:focus-visible::before {
+        animation: web3-sheen-sweep 0.85s ease forwards;
+    }
+}
+
+/* ---------- ABOUT (from internal briefing) ---------- */
+
+.web3-about {
+    margin-bottom: 1.25rem;
+}
+
+.web3-about-card {
+    position: relative;
+    overflow: hidden;
+    padding: 2rem 2.25rem;
+    border-radius: 1.1rem;
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    border-left: 3px solid var(--accent);
+    background:
+        radial-gradient(ellipse 480px 260px at 0% 0%, rgba(var(--accent-rgb), 0.16), transparent 65%),
+        linear-gradient(160deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0.005) 55%);
+    box-shadow: 0 20px 45px -24px rgba(0, 0, 0, 0.55);
+    transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.25s ease;
+}
+
+.web3-about-card:hover {
+    transform: translateY(-2px);
+    border-left-color: var(--accent);
+    box-shadow: 0 26px 55px -22px rgba(0, 0, 0, 0.6), 0 0 34px rgba(var(--accent-rgb), 0.18);
+}
+
+.web3-about-quote-mark {
+    position: absolute;
+    top: 0.4rem;
+    right: 1.5rem;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 4.5rem;
+    font-weight: 700;
+    line-height: 1;
+    color: rgba(var(--accent-rgb), 0.16);
+    pointer-events: none;
+    user-select: none;
+}
+
+.web3-about-eyebrow {
+    display: block;
+    margin-bottom: 1rem;
+    font-family: var(--font-display);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: var(--accent);
+    text-shadow: 0 0 12px rgba(var(--accent-rgb), 0.4);
+}
+
+.web3-about-body {
+    font-size: 0.95rem;
+    line-height: 1.75;
+    color: #dce8f2;
+    max-width: 44rem;
+}
+
+.web3-about-body p {
+    margin-bottom: 1rem;
+}
+
+.web3-about-body p:last-child {
+    margin-bottom: 0;
+}
+
+.web3-about-dropcap {
+    float: left;
+    font-family: var(--font-display);
+    font-size: 2.6rem;
+    line-height: 0.85;
+    font-weight: 800;
+    color: var(--accent);
+    margin-right: 0.55rem;
+    margin-top: 0.1rem;
+    text-shadow: 0 0 18px rgba(var(--accent-rgb), 0.4);
+}
+
+/* ---------- LICENSED ACTIVITY NOTE ---------- */
+
+.web3-license {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.5rem 0.6rem;
+    margin-top: 1rem;
+    margin-bottom: 3rem;
+    padding: 0.9rem 1.15rem;
+    border-radius: 0.7rem;
+    border: 1px solid rgba(var(--accent-rgb), 0.25);
+    background: rgba(var(--accent-rgb), 0.07);
+    transition: border-color 0.25s ease, background 0.25s ease;
+}
+
+.web3-license:hover {
+    border-color: rgba(var(--accent-rgb), 0.5);
+    background: rgba(var(--accent-rgb), 0.1);
+}
+
+.web3-license-text {
+    font-size: 0.82rem;
+    line-height: 1.5;
+    color: #dce8f2;
+}
+
+.web3-license-text strong {
+    color: var(--accent);
+    font-weight: 700;
+}
+
+.web3-license-source {
+    font-size: 0.72rem;
+    color: rgba(143, 163, 184, 0.75);
+}
+
 /* ---------- ENGAGEMENT STAGES ---------- */
 
 .web3-stages {
     margin-bottom: 3.5rem;
+}
+
+.web3-stages-intro {
+    font-size: 0.88rem;
+    line-height: 1.6;
+    color: var(--color-silver, #8fa3b8);
+    max-width: 40rem;
+    margin-top: 0.4rem;
+    margin-bottom: 1.5rem;
 }
 
 .web3-stages-grid {
@@ -54,6 +219,34 @@
     outline-offset: 2px;
 }
 
+/* Accent color for each card now comes from an inline style
+   (--accent / --accent-rgb) set per-stage in Web3Extras.tsx, so it stays
+   in sync with the same color used on that stage's icon and matching
+   process-step palette. No nth-child overrides needed here anymore. */
+
+.web3-stage-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.4rem;
+    height: 2.4rem;
+    margin-bottom: 1rem;
+    border-radius: 0.7rem;
+    background: rgba(var(--accent-rgb), 0.14);
+    color: var(--accent);
+    transition: transform 0.25s ease, background 0.25s ease;
+}
+
+.web3-stage-icon svg {
+    width: 1.3rem;
+    height: 1.3rem;
+}
+
+.web3-stage-card:hover .web3-stage-icon {
+    transform: scale(1.08);
+    background: rgba(var(--accent-rgb), 0.22);
+}
+
 .web3-stage-name {
     font-family: var(--font-display);
     font-size: 1.05rem;
@@ -94,41 +287,144 @@
     text-shadow: 0 0 10px rgba(var(--accent-rgb), 0.5);
 }
 
-/* ---------- SECTORS COVERED ---------- */
+.web3-stages-note {
+    margin-top: 1.5rem;
+    font-size: 0.85rem;
+    line-height: 1.6;
+    color: var(--color-silver, #8fa3b8);
+}
 
-.web3-sectors {
+.web3-stages-note-link {
+    background: none;
+    border: none;
+    padding: 0;
+    font: inherit;
+    font-weight: 700;
+    color: var(--accent);
+    cursor: pointer;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    transition: text-shadow 0.2s ease;
+}
+
+.web3-stages-note-link:hover,
+.web3-stages-note-link:focus-visible {
+    text-shadow: 0 0 10px rgba(var(--accent-rgb), 0.5);
+}
+
+/* ---------- WHAT WE FOCUS ON ---------- */
+/* Replaces the old pill-style "Sectors we work in" chip list. Icon cards
+   read as more considered / less like an unvetted tag cloud, and reuse the
+   same card language as the engagement-stage and why-us sections for
+   visual consistency across the page. */
+
+.web3-focus {
     margin-bottom: 3.5rem;
 }
 
-.web3-sectors-list {
+.web3-focus-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    margin-bottom: 1.1rem;
+}
+
+@media (min-width: 640px) {
+    .web3-focus-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+.web3-focus-card {
+    position: relative;
     display: flex;
-    flex-wrap: wrap;
-    gap: 0.6rem;
-    margin-bottom: 1rem;
+    align-items: flex-end;
+    min-height: 11rem;
+    padding: 1.1rem 1.15rem;
+    border-radius: 1rem;
+    border: 1px solid rgba(var(--accent-rgb), 0.22);
+    overflow: hidden;
+    background: rgba(255, 255, 255, 0.02);
+    transition: border-color 0.3s ease, transform 0.22s ease, box-shadow 0.3s ease;
 }
 
-.web3-sector-chip {
-    padding: 0.45rem 1rem;
-    border-radius: 9999px;
-    border: 1px solid rgba(var(--accent-rgb), 0.4);
-    background: rgba(var(--accent-rgb), 0.08);
-    color: var(--accent);
-    font-size: 0.8rem;
-    font-weight: 600;
-    cursor: default;
-    transition: transform 0.2s ease, background 0.25s ease, color 0.25s ease,
-        border-color 0.25s ease, box-shadow 0.3s ease;
+.web3-focus-card:hover {
+    transform: translateY(-3px);
+    border-color: rgba(var(--accent-rgb), 0.6);
+    box-shadow: 0 16px 34px -16px rgba(0, 0, 0, 0.5), 0 0 26px rgba(var(--accent-rgb), 0.2);
 }
 
-.web3-sector-chip:hover {
-    transform: translateY(-2px) scale(1.04);
-    background: var(--accent);
-    color: #06111f;
-    border-color: var(--accent);
-    box-shadow: 0 8px 22px -8px rgba(var(--accent-rgb), 0.6);
+/* Multi-color variants — one accent per focus card, same override pattern
+   as the engagement-stage cards above. */
+.web3-focus-grid>.web3-focus-card:nth-child(1) {
+    --accent: #2fd9c4;
+    --accent-rgb: 47, 217, 196;
 }
 
-.web3-sectors-note {
+.web3-focus-grid>.web3-focus-card:nth-child(2) {
+    --accent: #8c7cf0;
+    --accent-rgb: 140, 124, 240;
+}
+
+.web3-focus-grid>.web3-focus-card:nth-child(3) {
+    --accent: #f0609b;
+    --accent-rgb: 240, 96, 155;
+}
+
+.web3-focus-grid>.web3-focus-card:nth-child(4) {
+    --accent: #4baef2;
+    --accent-rgb: 75, 174, 242;
+}
+
+/* The image fills the entire card as a background layer. object-fit: cover
+   crops it to the card's box instead of squashing it; swap to "contain" if
+   you'd rather see the whole image letterboxed. */
+.web3-focus-image {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 0;
+    transition: transform 0.3s ease;
+}
+
+.web3-focus-card:hover .web3-focus-image {
+    transform: scale(1.05);
+}
+
+/* Gradient scrim so the label stays readable over any image. */
+.web3-focus-scrim {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: linear-gradient(to top,
+            rgba(6, 13, 24, 0.88) 0%,
+            rgba(6, 13, 24, 0.35) 55%,
+            rgba(6, 13, 24, 0.05) 100%);
+    pointer-events: none;
+}
+
+.web3-focus-label {
+    position: relative;
+    z-index: 2;
+    font-family: var(--font-display);
+    font-size: 0.92rem;
+    font-weight: 700;
+    line-height: 1.3;
+    color: #eaf6fb;
+    text-shadow: 0 1px 6px rgba(0, 0, 0, 0.6);
+}
+
+.web3-focus-label {
+    font-family: var(--font-display);
+    font-size: 0.92rem;
+    font-weight: 700;
+    line-height: 1.3;
+    color: #eaf6fb;
+}
+
+.web3-focus-note {
     font-size: 0.8rem;
     line-height: 1.6;
     color: var(--color-silver, #8fa3b8);
@@ -182,6 +478,277 @@
     line-height: 1.6;
     color: var(--color-silver, #8fa3b8);
 }
+
+/* ---------- BUILDING PROCESS ---------- */
+
+.web3-process {
+    margin-bottom: 3.5rem;
+}
+
+.web3-process-intro {
+    font-size: 0.88rem;
+    line-height: 1.6;
+    color: var(--color-silver, #8fa3b8);
+    max-width: 40rem;
+    margin-bottom: 1.5rem;
+}
+
+/* ---------- ANIMATED BOX BORDER ---------- */
+/* Registers an animatable angle so the conic-gradient "comet" can rotate
+   smoothly (plain custom properties can't be animated without this).
+   Unsupported browsers (older Firefox) just see a static colored ring —
+   harmless fallback, no layout break. */
+@property --web3-border-angle {
+    syntax: '<angle>';
+    inherits: false;
+    initial-value: 0deg;
+}
+
+.web3-process-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.85rem;
+}
+
+@media (min-width: 640px) {
+    .web3-process-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (min-width: 900px) {
+    .web3-process-grid {
+        grid-template-columns: repeat(5, 1fr);
+        gap: 0.75rem;
+    }
+}
+
+.web3-process-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+    padding: 1.15rem 1.1rem 1.3rem;
+    border-radius: 0.9rem;
+    border: 1px solid rgba(var(--step-rgb), 0.22);
+    background:
+        radial-gradient(ellipse 220px 140px at 0% 0%, rgba(var(--step-rgb), 0.1), transparent 70%),
+        rgba(255, 255, 255, 0.02);
+    overflow: hidden;
+    font: inherit;
+    color: inherit;
+    text-align: left;
+    cursor: pointer;
+    transition: transform 0.22s ease, border-color 0.25s ease, background 0.25s ease;
+}
+
+.web3-process-card:hover {
+    transform: translateY(-3px);
+    border-color: rgba(var(--step-rgb), 0.45);
+}
+
+.web3-process-card:focus-visible {
+    outline: 2px solid var(--step-color);
+    outline-offset: 2px;
+}
+
+.web3-process-card.is-active {
+    border-color: rgba(var(--step-rgb), 0.6);
+    background:
+        radial-gradient(ellipse 220px 140px at 0% 0%, rgba(var(--step-rgb), 0.18), transparent 70%),
+        rgba(255, 255, 255, 0.04);
+    box-shadow: 0 0 0 1px rgba(var(--step-rgb), 0.25), 0 14px 30px -16px rgba(0, 0, 0, 0.55);
+}
+
+/* Comet-style moving border: a bright head with a soft fading tail,
+   travelling around each card in its own theme colour. */
+.web3-process-card-border {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    border-radius: inherit;
+    padding: 1.5px;
+    background: conic-gradient(from var(--web3-border-angle),
+            transparent 0%,
+            rgba(var(--step-rgb), 0.05) 8%,
+            rgba(var(--step-rgb), 0.85) 20%,
+            #ffffff 25%,
+            rgba(var(--step-rgb), 0.85) 30%,
+            rgba(var(--step-rgb), 0.05) 42%,
+            transparent 55%,
+            transparent 100%);
+    -webkit-mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: 0.85;
+    pointer-events: none;
+    animation: web3-border-spin 4.5s linear infinite;
+}
+
+/* Stagger each card so the comets don't all travel in lockstep. */
+.web3-process-grid>.web3-process-card:nth-child(1) .web3-process-card-border {
+    animation-delay: -3.6s;
+}
+
+.web3-process-grid>.web3-process-card:nth-child(2) .web3-process-card-border {
+    animation-delay: -2.7s;
+}
+
+.web3-process-grid>.web3-process-card:nth-child(3) .web3-process-card-border {
+    animation-delay: -1.8s;
+}
+
+.web3-process-grid>.web3-process-card:nth-child(4) .web3-process-card-border {
+    animation-delay: -0.9s;
+}
+
+.web3-process-grid>.web3-process-card:nth-child(5) .web3-process-card-border {
+    animation-delay: 0s;
+}
+
+@keyframes web3-border-spin {
+    to {
+        --web3-border-angle: 360deg;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .web3-process-card-border {
+        animation: none;
+    }
+}
+
+.web3-process-card:hover .web3-process-card-border,
+.web3-process-card.is-active .web3-process-card-border {
+    opacity: 1;
+    padding: 2px;
+    animation-duration: 2.2s;
+}
+
+.web3-process-card-num {
+    position: relative;
+    z-index: 1;
+    font-family: var(--font-display);
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--step-color);
+    opacity: 0.75;
+    margin-bottom: 0.7rem;
+}
+
+.web3-process-card-icon {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.6rem;
+    height: 1.6rem;
+    margin-bottom: 0.85rem;
+    color: var(--step-color);
+    transition: transform 0.25s ease;
+}
+
+.web3-process-card:hover .web3-process-card-icon {
+    transform: scale(1.1);
+}
+
+.web3-process-card-icon svg {
+    width: 100%;
+    height: 100%;
+}
+
+.web3-process-card-name {
+    position: relative;
+    z-index: 1;
+    font-family: var(--font-display);
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #eaf6fb;
+    margin-bottom: 0.2rem;
+}
+
+.web3-process-card-line {
+    position: relative;
+    z-index: 1;
+    font-size: 0.78rem;
+    color: var(--color-silver, #8fa3b8);
+}
+
+/* ---------- PROCESS DETAIL (shown on card click) ---------- */
+
+.web3-process-detail {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.25rem;
+    margin-top: 1.1rem;
+    padding: 1.5rem 1.6rem;
+    border-radius: 1rem;
+    border: 1px solid rgba(var(--step-rgb), 0.3);
+    background:
+        radial-gradient(ellipse 320px 180px at 0% 0%, rgba(var(--step-rgb), 0.14), transparent 70%),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.01));
+    animation: web3-detail-in 0.25s ease;
+}
+
+@keyframes web3-detail-in {
+    from {
+        opacity: 0;
+        transform: translateY(-6px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .web3-process-detail {
+        animation: none;
+    }
+}
+
+.web3-process-detail-num {
+    flex-shrink: 0;
+    font-family: var(--font-display);
+    font-size: 1.9rem;
+    font-weight: 700;
+    line-height: 1;
+    color: var(--step-color);
+    text-shadow: 0 0 16px rgba(var(--step-rgb), 0.5);
+}
+
+.web3-process-detail-body {
+    flex: 1;
+    min-width: 0;
+}
+
+.web3-process-detail-title {
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #f4f9fc;
+    margin-bottom: 0.4rem;
+}
+
+.web3-process-detail-desc {
+    font-size: 0.88rem;
+    line-height: 1.6;
+    color: var(--color-silver, #8fa3b8);
+    max-width: 38rem;
+}
+
+@media (max-width: 560px) {
+    .web3-process-detail {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+}
+
 
 /* ---------- CTA (reuses .service-detail-cta layout) ---------- */
 
