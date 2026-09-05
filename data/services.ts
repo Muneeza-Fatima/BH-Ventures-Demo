@@ -150,7 +150,7 @@ export const SERVICES: Service[] = [
     key: "ai",
     slug: "ai-research-consultancy",
     image: "/images/services/Robotic_hand.jpeg",
-    video: "/videos/AI innovation.mp4",
+    video: "/videos/Innovation.mp4",
     badge: "Innovation",
     index: "06",
     title: "Innovation & AI Research & Consultancies",
