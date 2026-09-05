@@ -215,6 +215,9 @@ function FeaturedBanner({
     useEffect(() => {
         const el = ref.current;
         if (!el) return;
+        // Use a generous rootMargin so mobile starts buffering the video
+        // well before it scrolls into the viewport (600px ahead on mobile
+        // gives the browser enough runway to fetch a large video file).
         const observer = new IntersectionObserver(
             ([entry]) => {
                 if (entry.isIntersecting) {
@@ -222,7 +225,7 @@ function FeaturedBanner({
                     observer.disconnect();
                 }
             },
-            { rootMargin: "300px 0px", threshold: 0.05 }
+            { rootMargin: "600px 0px", threshold: 0.01 }
         );
         observer.observe(el);
         return () => observer.disconnect();
@@ -269,10 +272,19 @@ function FeaturedBanner({
                     muted
                     loop
                     playsInline
-                    preload="metadata"
+                    // First banner (Mercedes) uses "auto" so the browser eagerly
+                    // buffers the whole file; subsequent banners stay on "metadata"
+                    // to avoid downloading all three videos simultaneously.
+                    preload={index === 0 ? "auto" : "metadata"}
                     onError={() => setVideoFailed(true)}
                 >
-                    <source src={vehicle.video} type="video/mp4" />
+                    <source
+                        src={vehicle.video}
+                        type="video/mp4"
+                        // Boost network priority for the first (hero) video on mobile
+                        // @ts-ignore — fetchPriority is a valid HTML attribute
+                        fetchPriority={index === 0 ? "high" : "auto"}
+                    />
                 </video>
             ) : showPoster ? (
                 <Image
