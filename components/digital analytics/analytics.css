@@ -1,0 +1,454 @@
+/* ==========================================================
+   Shared section shell — reuses your site's dark/glass theme.
+   Adjust the CSS variables below to match your existing values
+   if you already define them globally.
+========================================================== */
+.da-section {
+    --bg: #0a0e1a;
+    --panel: rgba(255, 255, 255, 0.03);
+    --panel-border: rgba(255, 255, 255, 0.08);
+    --text: #ffffff;
+    --muted: #9aa3b2;
+    --teal: #2dd4bf;
+    --amber: #f5a623;
+    --purple: #8b5cf6;
+    --pink: #ec4899;
+
+    max-width: 1200px;
+    margin: 32px auto;
+    padding: 0 24px;
+    color: var(--text);
+    font-family: inherit;
+}
+
+.da-heading {
+    font-size: 32px;
+    font-weight: 600;
+    margin: 0 0 36px;
+}
+
+@keyframes da-fade-up {
+    from {
+        opacity: 0;
+        transform: translateY(16px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* ---------- WHAT WE MEASURE ---------- */
+.da-metric-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+.da-metric-card {
+    background: var(--panel);
+    border: 1px solid var(--panel-border);
+    border-radius: 16px;
+    padding: 24px;
+    backdrop-filter: blur(8px);
+    opacity: 0;
+    animation: da-fade-up 0.5s ease forwards;
+    transition: transform 0.25s ease, border-color 0.25s ease,
+        box-shadow 0.25s ease, background 0.25s ease;
+}
+
+.da-metric-card:hover {
+    transform: translateY(-6px);
+    border-color: rgba(255, 255, 255, 0.18);
+    background: rgba(255, 255, 255, 0.05);
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35);
+}
+
+.da-chip {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    font-size: 14px;
+    color: #0a0e1a;
+    margin-bottom: 16px;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.da-chip-teal {
+    background: var(--teal);
+    box-shadow: 0 0 0 rgba(45, 212, 191, 0);
+}
+
+.da-chip-amber {
+    background: var(--amber);
+    box-shadow: 0 0 0 rgba(245, 166, 35, 0);
+}
+
+.da-chip-purple {
+    background: var(--purple);
+    box-shadow: 0 0 0 rgba(139, 92, 246, 0);
+}
+
+.da-chip-pink {
+    background: var(--pink);
+    box-shadow: 0 0 0 rgba(236, 72, 153, 0);
+}
+
+.da-metric-card:hover .da-chip-teal {
+    transform: scale(1.12);
+    box-shadow: 0 0 18px rgba(45, 212, 191, 0.55);
+}
+
+.da-metric-card:hover .da-chip-amber {
+    transform: scale(1.12);
+    box-shadow: 0 0 18px rgba(245, 166, 35, 0.55);
+}
+
+.da-metric-card:hover .da-chip-purple {
+    transform: scale(1.12);
+    box-shadow: 0 0 18px rgba(139, 92, 246, 0.55);
+}
+
+.da-metric-card:hover .da-chip-pink {
+    transform: scale(1.12);
+    box-shadow: 0 0 18px rgba(236, 72, 153, 0.55);
+}
+
+.da-metric-label {
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    margin-bottom: 8px;
+}
+
+.da-metric-name {
+    font-size: 17px;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.da-metric-desc {
+    font-size: 14px;
+    line-height: 1.55;
+    color: var(--muted);
+    margin: 0;
+}
+
+/* ---------- QUESTIONS WE ANSWER (accordion) ---------- */
+.da-qa-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.da-qa-row {
+    background: var(--panel);
+    border: 1px solid var(--panel-border);
+    border-radius: 14px;
+    overflow: hidden;
+    transition: border-color 0.25s ease, background 0.25s ease,
+        box-shadow 0.25s ease;
+}
+
+.da-qa-row:hover {
+    border-color: rgba(255, 255, 255, 0.16);
+}
+
+.da-qa-row.da-qa-open {
+    border-color: var(--teal);
+    background: rgba(45, 212, 191, 0.05);
+    box-shadow: 0 12px 32px rgba(45, 212, 191, 0.12);
+}
+
+.da-qa-question {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    text-align: left;
+    padding: 22px 26px;
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--text);
+    font-family: inherit;
+}
+
+.da-qa-icon {
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    font-size: 16px;
+    line-height: 1;
+    transition: transform 0.3s ease, background 0.3s ease, border-color 0.3s ease;
+}
+
+.da-qa-open .da-qa-icon {
+    transform: rotate(135deg);
+    background: var(--teal);
+    border-color: var(--teal);
+    color: #0a0e1a;
+}
+
+/* Grid-rows trick gives a smooth height animation without measuring JS heights */
+.da-qa-answer-wrap {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.35s ease;
+}
+
+.da-qa-open .da-qa-answer-wrap {
+    grid-template-rows: 1fr;
+}
+
+.da-qa-answer-wrap>.da-qa-answer {
+    overflow: hidden;
+    min-height: 0;
+    margin: 0;
+    padding: 0 26px;
+    font-size: 14.5px;
+    line-height: 1.6;
+    color: var(--muted);
+    max-width: 68ch;
+    opacity: 0;
+    transition: opacity 0.25s ease 0.05s, padding-bottom 0.35s ease;
+}
+
+.da-qa-open .da-qa-answer-wrap>.da-qa-answer {
+    opacity: 1;
+    padding-bottom: 22px;
+}
+
+/* ---------- SAMPLE DASHBOARD ---------- */
+.da-dash {
+    background: linear-gradient(180deg, #0f1524, #0a0e1a);
+    border: 1px solid var(--panel-border);
+    border-radius: 20px;
+    padding: 32px;
+    transition: box-shadow 0.3s ease;
+}
+
+.da-dash:hover {
+    box-shadow: 0 20px 60px rgba(45, 212, 191, 0.08);
+}
+
+.da-dash-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    font-size: 12px;
+    letter-spacing: 0.05em;
+    color: var(--muted);
+}
+
+.da-kpi-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: rgba(255, 255, 255, 0.06);
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 28px;
+}
+
+.da-kpi {
+    background: #0a0e1a;
+    padding: 18px;
+    transition: background 0.25s ease;
+}
+
+.da-kpi:hover {
+    background: #121a2e;
+}
+
+.da-kpi-label {
+    font-size: 11px;
+    letter-spacing: 0.05em;
+    color: var(--muted);
+    margin-bottom: 8px;
+}
+
+.da-kpi-value {
+    font-size: 22px;
+    font-weight: 600;
+}
+
+.da-kpi-delta {
+    font-size: 12px;
+    margin-top: 4px;
+}
+
+.da-up {
+    color: #4ade80;
+}
+
+.da-down {
+    color: #f87171;
+}
+
+.da-chart-block {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: 28px;
+}
+
+.da-bars {
+    display: flex;
+    align-items: flex-end;
+    gap: 8px;
+    height: 140px;
+}
+
+@keyframes da-grow-bar {
+    from {
+        transform: scaleY(0);
+    }
+
+    to {
+        transform: scaleY(1);
+    }
+}
+
+.da-bar {
+    flex: 1;
+    background: linear-gradient(180deg, var(--teal), #0f766e);
+    border-radius: 3px 3px 0 0;
+    transform-origin: bottom;
+    animation: da-grow-bar 0.6s ease forwards;
+    transition: filter 0.2s ease;
+}
+
+.da-bar:hover {
+    filter: brightness(1.25);
+}
+
+.da-bars-caption {
+    display: flex;
+    justify-content: space-between;
+    font-size: 10px;
+    color: var(--muted);
+    margin-top: 8px;
+}
+
+.da-channel-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 9px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    font-size: 12.5px;
+    opacity: 0;
+    animation: da-fade-up 0.5s ease forwards;
+}
+
+.da-channel-name {
+    flex: 0 0 110px;
+    color: var(--muted);
+}
+
+.da-channel-track {
+    flex: 1;
+    height: 5px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 3px;
+    margin: 0 12px;
+    overflow: hidden;
+}
+
+.da-channel-fill {
+    height: 100%;
+    background: var(--purple);
+    transform-origin: left;
+    animation: da-grow-bar 0.6s ease forwards;
+}
+
+.da-channel-pct {
+    width: 32px;
+    text-align: right;
+}
+
+.da-dash-caption {
+    margin-top: 20px;
+    font-size: 13.5px;
+    color: var(--muted);
+}
+
+/* ---------- WHAT YOU RECEIVE ---------- */
+.da-receive-list {
+    display: flex;
+    flex-direction: column;
+}
+
+.da-receive-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 4px;
+    border-bottom: 1px solid var(--panel-border);
+    opacity: 0;
+    animation: da-fade-up 0.5s ease forwards;
+    transition: padding-left 0.25s ease, background 0.25s ease;
+    border-radius: 8px;
+}
+
+.da-receive-row:hover {
+    padding-left: 14px;
+    background: rgba(255, 255, 255, 0.03);
+}
+
+.da-receive-name {
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.da-receive-cadence {
+    font-size: 12px;
+    letter-spacing: 0.04em;
+    color: var(--teal);
+    white-space: nowrap;
+    padding: 4px 10px;
+    border: 1px solid rgba(45, 212, 191, 0.3);
+    border-radius: 999px;
+    transition: background 0.25s ease, color 0.25s ease;
+}
+
+.da-receive-row:hover .da-receive-cadence {
+    background: var(--teal);
+    color: #0a0e1a;
+}
+
+/* ---------- RESPONSIVE ---------- */
+@media (max-width: 760px) {
+    .da-metric-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .da-kpi-row {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .da-chart-block {
+        grid-template-columns: 1fr;
+    }
+}

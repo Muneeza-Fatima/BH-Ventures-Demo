@@ -6,11 +6,13 @@ import ServiceContactModal from "@/components/Services/ServiceContactModal";
 import AutomobileExtras from "@/components/automobiles/AutomobileExtras";
 import DatesSection from "@/components/dates/Datessection";
 import Web3Extras from "@/components/web3/Web3Extras";
+import MissingSections from "@/components/digital analytics/analytics";
 import "@/components/Services/services.css";
 import "@/components/Services/service-detail.css";
 import "@/components/automobiles/automobiles.css";
 import "@/components/dates/dates.css";
 import "@/components/web3/web3.css";
+import "@/components/digital analytics/analytics.css";
 
 const CATEGORY_MAP: Record<string, string> = {
     "global trade": "trade",
@@ -37,6 +39,8 @@ const DATES_SERVICE_SLUGS = ["foodstuff-trading"];
 // slug(s) that should render the Web3-specific sections
 // ⚠️ confirm this matches the real slug in data/services.ts
 const WEB3_SERVICE_SLUGS = ["web3-venture-studio"];
+// slug(s) that should render the digital-analytics-specific sections
+const ANALYTICS_SERVICE_SLUGS = ["digital-analytics-services"];
 
 export function generateStaticParams() {
     return SERVICES.map((s) => ({ slug: s.slug }));
@@ -64,6 +68,7 @@ export default async function ServiceDetailPage({ params }: { params: ParamsProm
     const isAutomobile = AUTOMOBILE_SERVICE_SLUGS.includes(service.slug);
     const isDates = DATES_SERVICE_SLUGS.includes(service.slug);
     const isWeb3 = WEB3_SERVICE_SLUGS.includes(service.slug);
+    const isAnalytics = ANALYTICS_SERVICE_SLUGS.includes(service.slug);
 
     return (
         <div className="service-detail-page" data-category={category}>
@@ -130,9 +135,10 @@ export default async function ServiceDetailPage({ params }: { params: ParamsProm
                 )}
 
                 {/* Automobiles, Dates, and Web3 each get their own extras
-                    section — everything else (overview, included, process,
-                    highlights, related) stays the same template as every
-                    other service. */}
+                    section and are considered fully self-contained, so they
+                    skip the generic CTA below. Analytics gets its own extras
+                    (MissingSections) but still shows the same CTA + contact
+                    modal every other plain service gets. */}
                 {isAutomobile ? (
                     <AutomobileExtras />
                 ) : isDates ? (
@@ -140,10 +146,13 @@ export default async function ServiceDetailPage({ params }: { params: ParamsProm
                 ) : isWeb3 ? (
                     <Web3Extras />
                 ) : (
-                    <section className="service-detail-cta">
-                        <h2>Ready to talk {service.title.toLowerCase()}?</h2>
-                        <ServiceContactModal serviceTitle={service.title} />
-                    </section>
+                    <>
+                        {isAnalytics && <MissingSections />}
+                        <section className="service-detail-cta">
+                            <h2>Ready to talk {service.title.toLowerCase()}?</h2>
+                            <ServiceContactModal serviceTitle={service.title} />
+                        </section>
+                    </>
                 )}
 
                 <section className="service-detail-related">
