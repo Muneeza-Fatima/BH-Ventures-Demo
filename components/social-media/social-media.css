@@ -1,0 +1,794 @@
+/* ==========================================================
+   Shared section shell — matches the dark/glass theme used
+   elsewhere on the site. Adjust variables to match your global
+   tokens if you already define them.
+========================================================== */
+.sm-section {
+    --panel: rgba(255, 255, 255, 0.03);
+    --panel-border: rgba(255, 255, 255, 0.08);
+    --text: #ffffff;
+    --muted: #9aa3b2;
+    --teal: #2dd4bf;
+    --amber: #f5a623;
+    --purple: #8b5cf6;
+    --pink: #ec4899;
+    --blue: #0ea5e9;
+    --indigo: #6366f1;
+    --red: #ef4444;
+
+    max-width: 1200px;
+    margin: 32px auto;
+    padding: 0 24px;
+    color: var(--text);
+    font-family: inherit;
+}
+
+.sm-heading {
+    font-size: 32px;
+    font-weight: 600;
+    margin: 0 0 36px;
+}
+
+@keyframes sm-fade-up {
+    from {
+        opacity: 0;
+        transform: translateY(16px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes sm-pop-in {
+    from {
+        opacity: 0;
+        transform: translateY(24px) scale(0.94);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@keyframes sm-halo-pulse {
+
+    0%,
+    100% {
+        opacity: 0.35;
+        transform: scale(1);
+    }
+
+    50% {
+        opacity: 0.7;
+        transform: scale(1.25);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* ---------- SHARED ICON BADGE COLORS ---------- */
+/* soft-fill badges: rgba background + solid-color icon/text.
+   Reused for platform icons, track icons, and ticket stubs. */
+.sm-chip-teal {
+    background: var(--teal);
+}
+
+.sm-chip-amber {
+    background: var(--amber);
+}
+
+.sm-chip-purple {
+    background: var(--purple);
+}
+
+.sm-chip-pink {
+    background: var(--pink);
+}
+
+.sm-chip-blue {
+    background: var(--blue);
+}
+
+.sm-chip-indigo {
+    background: var(--indigo);
+}
+
+.sm-chip-red {
+    background: var(--red);
+}
+
+.sm-stub-teal {
+    background: rgba(45, 212, 191, 0.14);
+    color: var(--teal);
+}
+
+.sm-stub-amber {
+    background: rgba(245, 166, 35, 0.14);
+    color: var(--amber);
+}
+
+.sm-stub-purple {
+    background: rgba(139, 92, 246, 0.14);
+    color: var(--purple);
+}
+
+.sm-stub-pink {
+    background: rgba(236, 72, 153, 0.14);
+    color: var(--pink);
+}
+
+.sm-stub-blue {
+    background: rgba(14, 165, 233, 0.14);
+    color: var(--blue);
+}
+
+.sm-stub-indigo {
+    background: rgba(99, 102, 241, 0.14);
+    color: var(--indigo);
+}
+
+.sm-stub-red {
+    background: rgba(239, 68, 68, 0.14);
+    color: var(--red);
+}
+
+/* ---------- PLATFORMS WE MANAGE (full-image cards) ---------- */
+.sm-platform-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+}
+
+.sm-platform-card {
+    position: relative;
+    display: block;
+    min-height: 160px;
+    /* was 210px — shorter card */
+    background: var(--panel);
+    border: 1px solid var(--panel-border);
+    border-top: 3px solid rgba(var(--m-rgb), 0.55);
+    border-radius: 14px;
+    overflow: hidden;
+    opacity: 0;
+    animation: sm-fade-up 0.5s ease forwards;
+    transition: transform 0.25s ease, border-color 0.25s ease,
+        box-shadow 0.3s ease;
+}
+
+.sm-platform-card:hover {
+    transform: translateY(-5px);
+    border-color: rgba(255, 255, 255, 0.25);
+    border-top-color: rgb(var(--m-rgb));
+    box-shadow: 0 18px 40px -20px rgba(0, 0, 0, 0.6),
+        0 0 0 1px rgba(var(--m-rgb), 0.3),
+        0 18px 40px -20px rgba(var(--m-rgb), 0.5);
+}
+
+/* your own photo/illustration — drop a URL into each platform's
+   `image` field and it renders here, full-bleed, cropped to fill */
+/* Ambient backdrop: same image, blurred/darkened, always fills the card
+   edge-to-edge regardless of the source image's aspect ratio or padding. */
+.sm-platform-bg-blur {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    filter: blur(22px) brightness(0.55) saturate(1.15);
+    transform: scale(1.15);
+    transition: transform 0.5s ease;
+}
+
+.sm-platform-card:hover .sm-platform-bg-blur {
+    transform: scale(1.22);
+}
+
+/* Foreground: the real image, centered and inset above the text so
+   nothing important gets cut off. Icon itself is size-capped below
+   (see .sm-platform-fg) rather than filling this whole wrap. */
+.sm-platform-fg-wrap {
+    position: absolute;
+    inset: 12px 12px 50px;
+    /* was 18px 18px 58px — tighter for shorter card */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+}
+
+.sm-platform-fg {
+    max-width: 96px;
+    /* was 100% — icon no longer fills the card */
+    max-height: 96px;
+    /* was 100% */
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    border-radius: 10px;
+    filter: drop-shadow(0 10px 22px rgba(0, 0, 0, 0.5));
+    transition: transform 0.4s ease;
+}
+
+.sm-platform-card:hover .sm-platform-fg {
+    transform: scale(1.05);
+}
+
+/* shown instead of an image until one is supplied */
+.sm-platform-fallback {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background:
+        radial-gradient(120% 140% at 100% 0%, rgba(var(--m-rgb), 0.28), transparent 60%),
+        linear-gradient(160deg, rgba(var(--m-rgb), 0.14), transparent 70%);
+    transition: transform 0.5s ease;
+}
+
+.sm-platform-card:hover .sm-platform-fallback {
+    transform: scale(1.06);
+}
+
+.sm-platform-fallback-icon {
+    width: 44px;
+    /* was 56px — scaled down to match smaller image icons */
+    height: 44px;
+    color: rgb(var(--m-rgb));
+    opacity: 0.5;
+}
+
+/* dark wash so the name/note stay legible over any image */
+.sm-platform-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg,
+            rgba(6, 9, 18, 0.05) 0%,
+            rgba(6, 9, 18, 0.35) 55%,
+            rgba(6, 9, 18, 0.92) 100%);
+}
+
+.sm-platform-content {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1;
+    padding: 18px 20px;
+}
+
+.sm-platform-name {
+    font-size: 16px;
+    font-weight: 600;
+    color: #ffffff;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+    margin-bottom: 4px;
+}
+
+.sm-platform-note {
+    font-size: 13.5px;
+    color: rgba(255, 255, 255, 0.7);
+    margin: 0;
+}
+
+/* ---------- WHAT WE TRACK ---------- */
+@keyframes sm-slide-in {
+    from {
+        opacity: 0;
+        transform: translateX(-18px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes sm-ring-spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.sm-track-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+}
+
+.sm-track-card {
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    gap: 18px;
+    background: var(--panel);
+    border: 1px solid var(--panel-border);
+    border-left: 3px solid transparent;
+    border-radius: 14px;
+    padding: 20px 22px;
+    opacity: 0;
+    animation: sm-slide-in 0.5s ease forwards;
+    transition: border-color 0.3s ease, background 0.3s ease,
+        transform 0.25s ease, box-shadow 0.3s ease;
+}
+
+.sm-track-card:hover {
+    border-left-color: rgb(var(--m-rgb));
+    background: rgba(255, 255, 255, 0.045);
+    transform: translateX(4px);
+    box-shadow: -6px 10px 30px -14px rgba(var(--m-rgb), 0.35);
+}
+
+.sm-track-icon-wrap {
+    position: relative;
+    flex-shrink: 0;
+    width: 46px;
+    height: 46px;
+}
+
+/* Instagram-story-style spinning gradient ring around the icon */
+.sm-track-ring {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: conic-gradient(from 0deg,
+            rgb(var(--m-rgb)) 0deg,
+            rgba(var(--m-rgb), 0.15) 200deg,
+            rgb(var(--m-rgb)) 360deg);
+    -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 3px), #000 calc(100% - 3px));
+    mask: radial-gradient(farthest-side, transparent calc(100% - 3px), #000 calc(100% - 3px));
+    animation: sm-ring-spin 6s linear infinite;
+}
+
+.sm-track-icon {
+    position: absolute;
+    inset: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    font-size: 14px;
+    color: #0a0e1a;
+}
+
+.sm-track-body {
+    flex: 1;
+    min-width: 0;
+}
+
+.sm-track-label {
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    margin-bottom: 6px;
+    transition: color 0.3s ease;
+}
+
+.sm-track-card:hover .sm-track-label {
+    color: rgb(var(--m-rgb));
+}
+
+.sm-track-name {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 6px;
+}
+
+.sm-track-desc {
+    font-size: 13.5px;
+    line-height: 1.55;
+    color: var(--muted);
+    margin: 0;
+}
+
+/* ---------- SAMPLE CONTENT CALENDAR ---------- */
+.sm-calendar {
+    position: relative;
+    background: linear-gradient(165deg, #131b30 0%, #0a0e1a 55%, #0a0e1a 100%);
+    border: 1px solid var(--panel-border);
+    border-radius: 24px;
+    padding: 32px;
+    overflow: hidden;
+    transition: box-shadow 0.3s ease;
+}
+
+/* soft ambient color glow behind the whole calendar for depth */
+.sm-calendar::before {
+    content: "";
+    position: absolute;
+    top: -120px;
+    right: -80px;
+    width: 340px;
+    height: 340px;
+    background: radial-gradient(circle, rgba(45, 212, 191, 0.16), transparent 70%);
+    pointer-events: none;
+}
+
+.sm-calendar::after {
+    content: "";
+    position: absolute;
+    bottom: -140px;
+    left: -60px;
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle, rgba(236, 72, 153, 0.12), transparent 70%);
+    pointer-events: none;
+}
+
+.sm-calendar:hover {
+    box-shadow: 0 20px 60px rgba(45, 212, 191, 0.1);
+}
+
+.sm-calendar-top {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    padding-bottom: 18px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.sm-calendar-title {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: var(--text);
+}
+
+.sm-calendar-range {
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    color: var(--muted);
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 5px 12px;
+    border-radius: 999px;
+}
+
+.sm-calendar-grid {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 10px;
+}
+
+.sm-calendar-day {
+    position: relative;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    border-top: 2px solid rgba(255, 255, 255, 0.12);
+    border-radius: 14px;
+    padding: 14px 10px;
+    min-height: 150px;
+    opacity: 0;
+    animation: sm-fade-up 0.5s ease forwards;
+    transition: border-color 0.25s ease, background 0.25s ease,
+        transform 0.25s ease, box-shadow 0.3s ease;
+}
+
+.sm-calendar-day:hover {
+    border-color: rgba(255, 255, 255, 0.22);
+    background: rgba(255, 255, 255, 0.055);
+    transform: translateY(-3px);
+    box-shadow: 0 12px 26px -12px rgba(0, 0, 0, 0.55);
+}
+
+/* day with posts gets a subtle colored top edge instead of plain gray */
+.sm-calendar-day.has-posts {
+    border-top-color: rgba(45, 212, 191, 0.55);
+}
+
+.sm-calendar-day.has-posts:hover {
+    border-top-color: rgb(45, 212, 191);
+}
+
+.sm-calendar-day-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 12px;
+}
+
+.sm-calendar-day-name {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.07em;
+    color: var(--muted);
+}
+
+.sm-calendar-day-date {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text);
+}
+
+.sm-calendar-posts {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.sm-calendar-empty {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 60px;
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.16);
+}
+
+.sm-post-chip {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border-radius: 10px;
+    padding: 8px 9px;
+    background: rgba(255, 255, 255, 0.045);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-left: 2.5px solid rgba(var(--chip-rgb, 255, 255, 255), 0.7);
+    font-size: 11px;
+    line-height: 1.4;
+    transition: background 0.2s ease, transform 0.2s ease;
+}
+
+/* fallback edge colors if you're not setting --chip-rgb inline from JSX */
+.sm-post-chip.sm-edge-teal {
+    --chip-rgb: 45, 212, 191;
+}
+
+.sm-post-chip.sm-edge-amber {
+    --chip-rgb: 245, 166, 35;
+}
+
+.sm-post-chip.sm-edge-purple {
+    --chip-rgb: 139, 92, 246;
+}
+
+.sm-post-chip.sm-edge-pink {
+    --chip-rgb: 236, 72, 153;
+}
+
+.sm-post-chip.sm-edge-blue {
+    --chip-rgb: 14, 165, 233;
+}
+
+.sm-post-chip.sm-edge-indigo {
+    --chip-rgb: 99, 102, 241;
+}
+
+.sm-post-chip.sm-edge-red {
+    --chip-rgb: 239, 68, 68;
+}
+
+.sm-post-chip:hover {
+    background: rgba(255, 255, 255, 0.08);
+    transform: translateX(2px);
+}
+
+.sm-post-chip-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 20px;
+    height: 20px;
+    border-radius: 7px;
+}
+
+.sm-post-chip-text {
+    min-width: 0;
+}
+
+.sm-post-type {
+    display: block;
+    font-weight: 700;
+    color: var(--text);
+}
+
+.sm-post-meta {
+    display: block;
+    color: var(--muted);
+    font-size: 10.5px;
+    margin-top: 2px;
+}
+
+.sm-calendar-caption {
+    position: relative;
+    z-index: 1;
+    margin-top: 22px;
+    font-size: 13.5px;
+    color: var(--muted);
+}
+
+/* ---------- WHAT YOU RECEIVE (full-image cards) ---------- */
+.sm-ticket-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+}
+
+.sm-ticket {
+    position: relative;
+    display: block;
+    min-height: 150px;
+    /* was 190px — shorter card, matches platform cards */
+    background: var(--panel);
+    border: 1px solid var(--panel-border);
+    border-radius: 16px;
+    overflow: hidden;
+    opacity: 0;
+    animation: sm-fade-up 0.5s ease forwards;
+    transition: transform 0.3s ease, box-shadow 0.3s ease,
+        border-color 0.25s ease;
+}
+
+.sm-ticket:hover {
+    transform: translateY(-5px);
+    border-color: rgba(255, 255, 255, 0.25);
+    box-shadow: 0 20px 44px -18px rgba(0, 0, 0, 0.6),
+        0 0 0 1px rgba(var(--m-rgb), 0.35),
+        -4px 16px 36px -16px rgba(var(--m-rgb), 0.55);
+}
+
+/* your own photo/illustration — drop a URL into each deliverable's
+   `image` field and it renders here. Icon itself is size-capped below
+   (see .sm-ticket-fg) rather than filling this whole wrap. */
+/* Ambient backdrop: same image, blurred/darkened, always fills the card
+   edge-to-edge regardless of the source image's aspect ratio or padding. */
+.sm-ticket-bg-blur {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    filter: blur(22px) brightness(0.55) saturate(1.15);
+    transform: scale(1.15);
+    transition: transform 0.5s ease;
+}
+
+.sm-ticket:hover .sm-ticket-bg-blur {
+    transform: scale(1.22);
+}
+
+.sm-ticket-fg-wrap {
+    position: absolute;
+    inset: 12px 12px 50px;
+    /* was 18px 18px 58px — tighter for shorter card */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+}
+
+.sm-ticket-fg {
+    max-width: 80px;
+    /* was 100% — icon no longer fills the card */
+    max-height: 80px;
+    /* was 100% */
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    border-radius: 10px;
+    filter: drop-shadow(0 10px 22px rgba(0, 0, 0, 0.5));
+    transition: transform 0.4s ease;
+}
+
+.sm-ticket:hover .sm-ticket-fg {
+    transform: scale(1.05);
+}
+
+/* shown instead of an image until one is supplied —
+   a big tinted icon watermark so the layout still looks intentional */
+.sm-ticket-fallback {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background:
+        radial-gradient(120% 140% at 100% 0%, rgba(var(--m-rgb), 0.28), transparent 60%),
+        linear-gradient(160deg, rgba(var(--m-rgb), 0.14), transparent 70%);
+    transition: transform 0.5s ease;
+}
+
+.sm-ticket:hover .sm-ticket-fallback {
+    transform: scale(1.06);
+}
+
+.sm-ticket-fallback-icon {
+    width: 48px;
+    /* was 64px — scaled down to match smaller image icons */
+    height: 48px;
+    color: rgb(var(--m-rgb));
+    opacity: 0.5;
+}
+
+/* dark wash so the "Included" label and title stay legible over any image */
+.sm-ticket-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg,
+            rgba(6, 9, 18, 0.05) 0%,
+            rgba(6, 9, 18, 0.35) 55%,
+            rgba(6, 9, 18, 0.92) 100%);
+}
+
+.sm-ticket-pill {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    z-index: 1;
+    padding: 5px 12px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    color: #0a0e1a;
+    box-shadow: 0 4px 14px -4px rgba(0, 0, 0, 0.4);
+}
+
+.sm-ticket-content {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1;
+    padding: 18px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.sm-ticket-eyebrow {
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.65);
+}
+
+.sm-ticket-name {
+    font-size: 16px;
+    font-weight: 600;
+    color: #ffffff;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+}
+
+/* ---------- RESPONSIVE ---------- */
+@media (max-width: 900px) {
+    .sm-calendar-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+@media (max-width: 760px) {
+    .sm-platform-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .sm-track-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .sm-ticket-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .sm-calendar-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}

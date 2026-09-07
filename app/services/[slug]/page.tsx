@@ -7,12 +7,14 @@ import AutomobileExtras from "@/components/automobiles/AutomobileExtras";
 import DatesSection from "@/components/dates/Datessection";
 import Web3Extras from "@/components/web3/Web3Extras";
 import MissingSections from "@/components/digital analytics/analytics";
+import SocialMediaExtras from "@/components/social-media/social-media";
 import "@/components/Services/services.css";
 import "@/components/Services/service-detail.css";
 import "@/components/automobiles/automobiles.css";
 import "@/components/dates/dates.css";
 import "@/components/web3/web3.css";
 import "@/components/digital analytics/analytics.css";
+import "@/components/social-media/social-media.css";
 
 const CATEGORY_MAP: Record<string, string> = {
     "global trade": "trade",
@@ -41,6 +43,8 @@ const DATES_SERVICE_SLUGS = ["foodstuff-trading"];
 const WEB3_SERVICE_SLUGS = ["web3-venture-studio"];
 // slug(s) that should render the digital-analytics-specific sections
 const ANALYTICS_SERVICE_SLUGS = ["digital-analytics-services"];
+// slug(s) that should render the social-media-specific sections
+const SOCIAL_MEDIA_SERVICE_SLUGS = ["marketing-via-social-media"];
 
 export function generateStaticParams() {
     return SERVICES.map((s) => ({ slug: s.slug }));
@@ -69,6 +73,7 @@ export default async function ServiceDetailPage({ params }: { params: ParamsProm
     const isDates = DATES_SERVICE_SLUGS.includes(service.slug);
     const isWeb3 = WEB3_SERVICE_SLUGS.includes(service.slug);
     const isAnalytics = ANALYTICS_SERVICE_SLUGS.includes(service.slug);
+    const isSocialMedia = SOCIAL_MEDIA_SERVICE_SLUGS.includes(service.slug);
 
     return (
         <div className="service-detail-page" data-category={category}>
@@ -145,6 +150,14 @@ export default async function ServiceDetailPage({ params }: { params: ParamsProm
                     <DatesSection />
                 ) : isWeb3 ? (
                     <Web3Extras />
+                ) : isSocialMedia ? (
+                    <>
+                        <SocialMediaExtras />
+                        <section className="service-detail-cta">
+                            <h2>Ready to talk {service.title.toLowerCase()}?</h2>
+                            <ServiceContactModal serviceTitle={service.title} />
+                        </section>
+                    </>
                 ) : (
                     <>
                         {isAnalytics && <MissingSections />}

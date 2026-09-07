@@ -1,6 +1,17 @@
 "use client";
 
 import React, { useState, useRef, CSSProperties, MouseEvent } from "react";
+import {
+    Radar,
+    FileText,
+    PieChart,
+    MessageCircle,
+    Compass,
+    TrendingUp,
+    AlertTriangle,
+    LineChart,
+    Target,
+} from "lucide-react";
 import "./analytics.css";
 
 /* ---------- DATA ---------- */
@@ -10,6 +21,7 @@ const COLOR_RGB: Record<string, string> = {
     amber: "245, 166, 35",
     purple: "139, 92, 246",
     pink: "236, 72, 153",
+    blue: "56, 189, 248",
 };
 
 const metrics = [
@@ -55,18 +67,26 @@ const questions = [
     {
         q: "Which channels are actually driving profitable growth?",
         a: "Attribution modeling separates the channels doing real work from the ones riding on someone else's traffic.",
+        color: "teal",
+        icon: TrendingUp,
     },
     {
         q: "Where is marketing spend being wasted?",
         a: "Cross-channel data makes it obvious where cost per result has quietly crept up.",
+        color: "amber",
+        icon: AlertTriangle,
     },
     {
         q: "Are we improving month over month, or just busy?",
         a: "A consistent reporting cadence turns activity into a trend line leadership can actually read.",
+        color: "purple",
+        icon: LineChart,
     },
     {
         q: "What should we do more of, and what should we stop?",
         a: "KPI dashboards built around decisions, not vanity metrics, make the next move obvious.",
+        color: "pink",
+        icon: Target,
     },
 ];
 
@@ -146,11 +166,41 @@ const dashboards = [
 ];
 
 const deliverables = [
-    { name: "Live dashboard access", cadence: "Always on" },
-    { name: "Written performance report", cadence: "Monthly" },
-    { name: "Attribution & spend review", cadence: "Monthly" },
-    { name: "Direct line for questions", cadence: "Ongoing" },
-    { name: "Quarterly strategy check-in", cadence: "Quarterly" },
+    {
+        name: "Live dashboard access",
+        cadence: "Always on",
+        color: "teal",
+        icon: Radar,
+        desc: "Log in any time and see revenue, spend, and conversion move in real time — no waiting on a report.",
+    },
+    {
+        name: "Written performance report",
+        cadence: "Monthly",
+        color: "amber",
+        icon: FileText,
+        desc: "A plain-language summary of what moved, why, and what we're doing about it.",
+    },
+    {
+        name: "Attribution & spend review",
+        cadence: "Monthly",
+        color: "purple",
+        icon: PieChart,
+        desc: "Where every dollar actually went, and what it actually returned.",
+    },
+    {
+        name: "Direct line for questions",
+        cadence: "Ongoing",
+        color: "pink",
+        icon: MessageCircle,
+        desc: "No ticket queue — ask and get a real answer from someone who knows your account.",
+    },
+    {
+        name: "Quarterly strategy check-in",
+        cadence: "Quarterly",
+        color: "blue",
+        icon: Compass,
+        desc: "A step back from the day-to-day to reset priorities against the bigger goal.",
+    },
 ];
 
 /* ---------- SECTIONS ---------- */
@@ -161,7 +211,8 @@ export function WhatWeMeasure() {
         const rect = card.getBoundingClientRect();
         const px = (e.clientX - rect.left) / rect.width - 0.5;
         const py = (e.clientY - rect.top) / rect.height - 0.5;
-        card.style.transform = `perspective(800px) rotateY(${px * 8}deg) rotateX(${-py * 8
+        card.style.transform = `perspective(800px) rotateY(${px * 8
+            }deg) rotateX(${-py * 8
             }deg) translateY(-6px)`;
     };
 
@@ -213,17 +264,24 @@ export function QuestionsWeAnswer() {
             <div className="da-qa-list">
                 {questions.map((item, i) => {
                     const isOpen = openIndex === i;
+                    const Icon = item.icon;
                     return (
                         <div
                             className={`da-qa-row ${isOpen ? "da-qa-open" : ""}`}
                             key={item.q}
+                            style={{ "--q-rgb": COLOR_RGB[item.color] } as CSSProperties}
                         >
                             <button
                                 className="da-qa-question"
                                 onClick={() => toggle(i)}
                                 aria-expanded={isOpen}
                             >
-                                <span>{item.q}</span>
+                                <span className="da-qa-question-text">
+                                    <span className="da-qa-icon-bubble">
+                                        <Icon size={18} strokeWidth={2} />
+                                    </span>
+                                    <span>{item.q}</span>
+                                </span>
                                 <span className="da-qa-icon" aria-hidden="true">
                                     +
                                 </span>
@@ -387,21 +445,40 @@ export function SampleDashboard() {
     );
 }
 
+/* What you receive — cards now sit above a colored mesh-gradient banner
+   (see .da-receive-wrap / .da-receive-banner in analytics.css). */
 export function WhatYouReceive() {
     return (
         <section className="da-section">
             <h2 className="da-heading">What you receive</h2>
-            <div className="da-receive-list">
-                {deliverables.map((d, i) => (
-                    <div
-                        className="da-receive-row"
-                        key={d.name}
-                        style={{ animationDelay: `${i * 70}ms` }}
-                    >
-                        <span className="da-receive-name">{d.name}</span>
-                        <span className="da-receive-cadence">{d.cadence}</span>
-                    </div>
-                ))}
+            <div className="da-receive-wrap">
+                <div className="da-receive-banner" />
+                <div className="da-receive-grid">
+                    {deliverables.map((d, i) => {
+                        const Icon = d.icon;
+                        return (
+                            <div
+                                className="da-receive-card"
+                                key={d.name}
+                                style={
+                                    {
+                                        animationDelay: `${i * 80}ms`,
+                                        "--r-rgb": COLOR_RGB[d.color],
+                                    } as CSSProperties
+                                }
+                            >
+                                <div className="da-receive-card-top">
+                                    <span className="da-receive-icon">
+                                        <Icon size={20} strokeWidth={2} />
+                                    </span>
+                                    <span className="da-receive-cadence">{d.cadence}</span>
+                                </div>
+                                <div className="da-receive-name">{d.name}</div>
+                                <p className="da-receive-desc">{d.desc}</p>
+                            </div>
+                        );
+                    })}
+                </div>
             </div>
         </section>
     );

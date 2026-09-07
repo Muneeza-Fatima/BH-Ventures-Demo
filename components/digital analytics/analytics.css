@@ -236,25 +236,51 @@
 }
 
 .da-qa-row {
+    position: relative;
     background: var(--panel);
     border: 1px solid var(--panel-border);
     border-radius: 14px;
     overflow: hidden;
     transition: border-color 0.25s ease, background 0.25s ease,
-        box-shadow 0.25s ease;
+        box-shadow 0.25s ease, transform 0.25s ease;
+}
+
+/* soft colored wash keyed to this row's accent, on hover or while open */
+.da-qa-row::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(320px circle at 92% -20%,
+            rgba(var(--q-rgb), 0.14),
+            transparent 70%);
+    opacity: 0;
+    transition: opacity 0.35s ease;
+    pointer-events: none;
 }
 
 .da-qa-row:hover {
-    border-color: rgba(255, 255, 255, 0.16);
+    border-color: rgba(var(--q-rgb), 0.35);
+    transform: translateY(-2px);
+}
+
+.da-qa-row:hover::before {
+    opacity: 1;
 }
 
 .da-qa-row.da-qa-open {
-    border-color: var(--teal);
-    background: rgba(45, 212, 191, 0.05);
-    box-shadow: 0 12px 32px rgba(45, 212, 191, 0.12);
+    border-color: rgb(var(--q-rgb));
+    background: rgba(var(--q-rgb), 0.06);
+    box-shadow: 0 14px 34px -10px rgba(var(--q-rgb), 0.28);
+    transform: translateY(-2px);
+}
+
+.da-qa-row.da-qa-open::before {
+    opacity: 1;
 }
 
 .da-qa-question {
+    position: relative;
+    z-index: 1;
     width: 100%;
     display: flex;
     align-items: center;
@@ -264,11 +290,36 @@
     border: none;
     cursor: pointer;
     text-align: left;
-    padding: 22px 26px;
+    padding: 20px 26px;
     font-size: 17px;
     font-weight: 600;
     color: var(--text);
     font-family: inherit;
+}
+
+.da-qa-question-text {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.da-qa-icon-bubble {
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 11px;
+    background: rgba(var(--q-rgb), 0.14);
+    color: rgb(var(--q-rgb));
+    transition: background 0.3s ease, color 0.3s ease, transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.da-qa-open .da-qa-icon-bubble {
+    background: rgb(var(--q-rgb));
+    color: #0a0e1a;
+    transform: scale(1.06);
 }
 
 .da-qa-icon {
@@ -287,8 +338,8 @@
 
 .da-qa-open .da-qa-icon {
     transform: rotate(135deg);
-    background: var(--teal);
-    border-color: var(--teal);
+    background: rgb(var(--q-rgb));
+    border-color: rgb(var(--q-rgb));
     color: #0a0e1a;
 }
 
@@ -304,10 +355,12 @@
 }
 
 .da-qa-answer-wrap>.da-qa-answer {
+    position: relative;
+    z-index: 1;
     overflow: hidden;
     min-height: 0;
     margin: 0;
-    padding: 0 26px;
+    padding: 0 26px 0 80px;
     font-size: 14.5px;
     line-height: 1.6;
     color: var(--muted);
@@ -584,47 +637,168 @@
 }
 
 /* ---------- WHAT YOU RECEIVE ---------- */
-.da-receive-list {
-    display: flex;
-    flex-direction: column;
+
+/* backdrop wrapper: holds the colored banner behind the card grid */
+.da-receive-wrap {
+    position: relative;
+    padding: 44px 28px;
+    border-radius: 28px;
+    overflow: hidden;
+    isolation: isolate;
 }
 
-.da-receive-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px 4px;
-    border-bottom: 1px solid var(--panel-border);
+.da-receive-banner {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background:
+        radial-gradient(620px circle at 12% 15%, rgba(45, 212, 191, 0.38), transparent 55%),
+        radial-gradient(520px circle at 88% 8%, rgba(139, 92, 246, 0.34), transparent 55%),
+        radial-gradient(680px circle at 55% 95%, rgba(236, 72, 153, 0.28), transparent 55%),
+        linear-gradient(160deg, #10182e, #0a0e1a 65%);
+}
+
+.da-receive-grid {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+}
+
+/* first two cards get a wider footprint on a 3-col grid, last three fill in */
+.da-receive-card:nth-child(1),
+.da-receive-card:nth-child(2) {
+    grid-column: span 3;
+}
+
+@media (min-width: 761px) {
+    .da-receive-card:nth-child(1) {
+        grid-column: span 2;
+    }
+
+    .da-receive-card:nth-child(2) {
+        grid-column: span 1;
+    }
+}
+
+.da-receive-card {
+    position: relative;
+    background: linear-gradient(160deg,
+            rgba(255, 255, 255, 0.05),
+            rgba(255, 255, 255, 0.015));
+    border: 1px solid var(--panel-border);
+    border-radius: 18px;
+    padding: 26px;
+    overflow: hidden;
     opacity: 0;
-    animation: da-fade-up 0.5s ease forwards;
-    transition: padding-left 0.25s ease, background 0.25s ease;
-    border-radius: 8px;
+    animation: da-pop-in 0.55s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    transition: border-color 0.3s ease, box-shadow 0.35s ease, transform 0.25s ease;
 }
 
-.da-receive-row:hover {
-    padding-left: 14px;
-    background: rgba(255, 255, 255, 0.03);
+.da-receive-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(220px circle at 85% -10%,
+            rgba(var(--r-rgb), 0.22),
+            transparent 70%);
+    opacity: 0;
+    transition: opacity 0.35s ease;
+    pointer-events: none;
 }
 
-.da-receive-name {
-    font-size: 16px;
-    font-weight: 500;
+.da-receive-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(var(--r-rgb), 0.5);
+    box-shadow: 0 18px 44px -18px rgba(0, 0, 0, 0.6),
+        0 0 26px rgba(var(--r-rgb), 0.14);
+}
+
+.da-receive-card:hover::before {
+    opacity: 1;
+}
+
+.da-receive-card-top {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 34px;
+}
+
+.da-receive-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    background: rgba(var(--r-rgb), 0.14);
+    color: rgb(var(--r-rgb));
+    flex-shrink: 0;
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.3s ease;
+}
+
+.da-receive-card:hover .da-receive-icon {
+    transform: scale(1.1) rotate(-6deg);
+    background: rgba(var(--r-rgb), 0.24);
 }
 
 .da-receive-cadence {
-    font-size: 12px;
-    letter-spacing: 0.04em;
-    color: var(--teal);
+    position: relative;
+    z-index: 1;
+    flex-shrink: 0;
+    font-size: 11.5px;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    color: rgb(var(--r-rgb));
     white-space: nowrap;
-    padding: 4px 10px;
-    border: 1px solid rgba(45, 212, 191, 0.3);
+    padding: 5px 12px;
+    border: 1px solid rgba(var(--r-rgb), 0.35);
     border-radius: 999px;
     transition: background 0.25s ease, color 0.25s ease;
 }
 
-.da-receive-row:hover .da-receive-cadence {
-    background: var(--teal);
+.da-receive-card:hover .da-receive-cadence {
+    background: rgb(var(--r-rgb));
     color: #0a0e1a;
+}
+
+.da-receive-name {
+    position: relative;
+    z-index: 1;
+    font-size: 17px;
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: var(--text);
+}
+
+.da-receive-desc {
+    position: relative;
+    z-index: 1;
+    font-size: 13.5px;
+    line-height: 1.55;
+    color: var(--muted);
+    margin: 0;
+}
+
+@media (max-width: 760px) {
+    .da-receive-wrap {
+        padding: 28px 16px;
+        border-radius: 20px;
+    }
+
+    .da-receive-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .da-receive-card:nth-child(1),
+    .da-receive-card:nth-child(2) {
+        grid-column: span 1;
+    }
 }
 
 /* ---------- RESPONSIVE ---------- */
