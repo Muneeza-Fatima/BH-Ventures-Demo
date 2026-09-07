@@ -1,9 +1,16 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useRef, CSSProperties, MouseEvent } from "react";
 import "./analytics.css";
 
 /* ---------- DATA ---------- */
+
+const COLOR_RGB: Record<string, string> = {
+    teal: "45, 212, 191",
+    amber: "245, 166, 35",
+    purple: "139, 92, 246",
+    pink: "236, 72, 153",
+};
 
 const metrics = [
     {
@@ -63,21 +70,79 @@ const questions = [
     },
 ];
 
-const kpis = [
-    { label: "REVENUE", value: "$418K", delta: "▲ 12.4%", up: true },
-    { label: "BLENDED ROAS", value: "4.1x", delta: "▲ 0.6x", up: true },
-    { label: "CAC", value: "$38", delta: "▲ $3", up: false },
-    { label: "CONVERSION", value: "3.2%", delta: "▲ 0.4pt", up: true },
-];
-
-const barHeights = [38, 52, 44, 61, 58, 73, 69, 84, 78, 91, 88, 100];
-
-const channels = [
-    { name: "Paid social", pct: 36 },
-    { name: "Email / CRM", pct: 27 },
-    { name: "Organic search", pct: 19 },
-    { name: "Paid search", pct: 12 },
-    { name: "Other", pct: 6 },
+const dashboards = [
+    {
+        title: "GROWTH OVERVIEW — ALL CHANNELS",
+        range: "LAST 30 DAYS",
+        accent: "#2dd4bf",
+        accentRgb: "45, 212, 191",
+        accent2: "#8b5cf6",
+        accent2Rgb: "139, 92, 246",
+        kpis: [
+            { label: "REVENUE", value: "$418K", delta: "▲ 12.4%", up: true },
+            { label: "BLENDED ROAS", value: "4.1x", delta: "▲ 0.6x", up: true },
+            { label: "CAC", value: "$38", delta: "▲ $3", up: false },
+            { label: "CONVERSION", value: "3.2%", delta: "▲ 0.4pt", up: true },
+        ],
+        barHeights: [38, 52, 44, 61, 58, 73, 69, 84, 78, 91, 88, 100],
+        barCaption: ["WEEK 1", "WEEK 6", "WEEK 12"],
+        listLabel: "Channel mix",
+        items: [
+            { name: "Paid social", pct: 36 },
+            { name: "Email / CRM", pct: 27 },
+            { name: "Organic search", pct: 19 },
+            { name: "Paid search", pct: 12 },
+            { name: "Other", pct: 6 },
+        ],
+    },
+    {
+        title: "ATTRIBUTION BREAKDOWN",
+        range: "LAST 90 DAYS",
+        accent: "#f5a623",
+        accentRgb: "245, 166, 35",
+        accent2: "#ec4899",
+        accent2Rgb: "236, 72, 153",
+        kpis: [
+            { label: "ASSISTED CONVERSIONS", value: "1,240", delta: "▲ 8.1%", up: true },
+            { label: "FIRST-TOUCH REV.", value: "$162K", delta: "▲ 5.2%", up: true },
+            { label: "LAST-TOUCH REV.", value: "$256K", delta: "▲ 9.7%", up: true },
+            { label: "MULTI-TOUCH WEIGHT", value: "41%", delta: "▲ 3pt", up: true },
+        ],
+        barHeights: [45, 50, 42, 55, 60, 58, 66, 70, 68, 75, 80, 85],
+        barCaption: ["MONTH 1", "MONTH 2", "MONTH 3"],
+        listLabel: "Attribution by channel",
+        items: [
+            { name: "Paid social", pct: 31 },
+            { name: "Organic search", pct: 24 },
+            { name: "Email / CRM", pct: 22 },
+            { name: "Paid search", pct: 15 },
+            { name: "Direct", pct: 8 },
+        ],
+    },
+    {
+        title: "RETENTION & LTV",
+        range: "TRAILING 12 MONTHS",
+        accent: "#38bdf8",
+        accentRgb: "56, 189, 248",
+        accent2: "#34d399",
+        accent2Rgb: "52, 211, 153",
+        kpis: [
+            { label: "REPEAT PURCHASE RATE", value: "34%", delta: "▲ 2.5pt", up: true },
+            { label: "AVG. LTV", value: "$612", delta: "▲ $41", up: true },
+            { label: "CHURN RATE", value: "4.8%", delta: "▼ 0.6pt", up: true },
+            { label: "90-DAY RETENTION", value: "61%", delta: "▲ 4pt", up: true },
+        ],
+        barHeights: [100, 82, 74, 68, 64, 61, 59, 57, 56, 55, 54, 53],
+        barCaption: ["MONTH 1", "MONTH 6", "MONTH 12"],
+        listLabel: "Retention by cohort",
+        items: [
+            { name: "Month 1", pct: 82 },
+            { name: "Month 3", pct: 68 },
+            { name: "Month 6", pct: 59 },
+            { name: "Month 9", pct: 55 },
+            { name: "Month 12", pct: 53 },
+        ],
+    },
 ];
 
 const deliverables = [
@@ -91,6 +156,19 @@ const deliverables = [
 /* ---------- SECTIONS ---------- */
 
 export function WhatWeMeasure() {
+    const handleMouseMove = (e: MouseEvent<HTMLDivElement>) => {
+        const card = e.currentTarget;
+        const rect = card.getBoundingClientRect();
+        const px = (e.clientX - rect.left) / rect.width - 0.5;
+        const py = (e.clientY - rect.top) / rect.height - 0.5;
+        card.style.transform = `perspective(800px) rotateY(${px * 8}deg) rotateX(${-py * 8
+            }deg) translateY(-6px)`;
+    };
+
+    const handleMouseLeave = (e: MouseEvent<HTMLDivElement>) => {
+        e.currentTarget.style.transform = "";
+    };
+
     return (
         <section className="da-section">
             <h2 className="da-heading">What we measure</h2>
@@ -99,12 +177,21 @@ export function WhatWeMeasure() {
                     <div
                         className="da-metric-card"
                         key={m.name}
-                        style={{ animationDelay: `${i * 70}ms` }}
+                        onMouseMove={handleMouseMove}
+                        onMouseLeave={handleMouseLeave}
+                        style={
+                            {
+                                animationDelay: `${i * 80}ms`,
+                                "--m-rgb": COLOR_RGB[m.color],
+                            } as CSSProperties
+                        }
                     >
+                        <span className="da-chip-halo" />
                         <span className={`da-chip da-chip-${m.color}`}>✓</span>
                         <div className="da-metric-label">{m.label}</div>
                         <div className="da-metric-name">{m.name}</div>
                         <p className="da-metric-desc">{m.desc}</p>
+                        <span className="da-metric-bar" />
                     </div>
                 ))}
             </div>
@@ -153,67 +240,147 @@ export function QuestionsWeAnswer() {
 }
 
 export function SampleDashboard() {
+    const trackRef = useRef<HTMLDivElement>(null);
+    const [active, setActive] = useState(0);
+
+    const scrollToIndex = (i: number) => {
+        const el = trackRef.current;
+        if (!el) return;
+        const clamped = (i + dashboards.length) % dashboards.length;
+        el.scrollTo({ left: clamped * el.clientWidth, behavior: "smooth" });
+        setActive(clamped);
+    };
+
+    const handleScroll = () => {
+        const el = trackRef.current;
+        if (!el || el.clientWidth === 0) return;
+        const i = Math.round(el.scrollLeft / el.clientWidth);
+        setActive(i);
+    };
+
     return (
         <section className="da-section">
-            <h2 className="da-heading">Sample dashboard</h2>
-            <div className="da-dash">
-                <div className="da-dash-top">
-                    <span className="da-dash-title">GROWTH OVERVIEW — ALL CHANNELS</span>
-                    <span className="da-dash-range">LAST 30 DAYS</span>
-                </div>
+            <h2 className="da-heading">Sample dashboards</h2>
 
-                <div className="da-kpi-row">
-                    {kpis.map((k) => (
-                        <div className="da-kpi" key={k.label}>
-                            <div className="da-kpi-label">{k.label}</div>
-                            <div className="da-kpi-value">{k.value}</div>
-                            <div className={`da-kpi-delta ${k.up ? "da-up" : "da-down"}`}>
-                                {k.delta}
+            <div className="da-dash-carousel">
+                <button
+                    type="button"
+                    className="da-dash-arrow da-dash-arrow-left"
+                    onClick={() => scrollToIndex(active - 1)}
+                    aria-label="Previous dashboard"
+                >
+                    ‹
+                </button>
+
+                <div
+                    className="da-dash-track"
+                    ref={trackRef}
+                    onScroll={handleScroll}
+                >
+                    {dashboards.map((d) => (
+                        <div className="da-dash-slide" key={d.title}>
+                            <div
+                                className="da-dash"
+                                style={
+                                    {
+                                        "--d-accent": d.accent,
+                                        "--d-accent-rgb": d.accentRgb,
+                                        "--d-accent2": d.accent2,
+                                        "--d-accent2-rgb": d.accent2Rgb,
+                                    } as CSSProperties
+                                }
+                            >
+                                <div className="da-dash-top">
+                                    <span className="da-dash-title">{d.title}</span>
+                                    <span className="da-dash-range">{d.range}</span>
+                                </div>
+
+                                <div className="da-kpi-row">
+                                    {d.kpis.map((k) => (
+                                        <div className="da-kpi" key={k.label}>
+                                            <div className="da-kpi-label">{k.label}</div>
+                                            <div className="da-kpi-value">{k.value}</div>
+                                            <div
+                                                className={`da-kpi-delta ${k.up ? "da-up" : "da-down"
+                                                    }`}
+                                            >
+                                                {k.delta}
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+
+                                <div className="da-chart-block">
+                                    <div className="da-bars-wrap">
+                                        <div className="da-bars">
+                                            {d.barHeights.map((h, i) => (
+                                                <div
+                                                    className="da-bar"
+                                                    style={{
+                                                        height: `${h}%`,
+                                                        animationDelay: `${i * 60}ms`,
+                                                    }}
+                                                    key={i}
+                                                />
+                                            ))}
+                                        </div>
+                                        <div className="da-bars-caption">
+                                            {d.barCaption.map((c) => (
+                                                <span key={c}>{c}</span>
+                                            ))}
+                                        </div>
+                                    </div>
+
+                                    <div className="da-channel-list">
+                                        <div className="da-channel-list-label">{d.listLabel}</div>
+                                        {d.items.map((c, i) => (
+                                            <div
+                                                className="da-channel-row"
+                                                key={c.name}
+                                                style={{ animationDelay: `${i * 90}ms` }}
+                                            >
+                                                <span className="da-channel-name">{c.name}</span>
+                                                <div className="da-channel-track">
+                                                    <div
+                                                        className="da-channel-fill"
+                                                        style={{ width: `${c.pct * 2}%` }}
+                                                    />
+                                                </div>
+                                                <span className="da-channel-pct">{c.pct}%</span>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     ))}
                 </div>
 
-                <div className="da-chart-block">
-                    <div className="da-bars-wrap">
-                        <div className="da-bars">
-                            {barHeights.map((h, i) => (
-                                <div
-                                    className="da-bar"
-                                    style={{ height: `${h}%`, animationDelay: `${i * 60}ms` }}
-                                    key={i}
-                                />
-                            ))}
-                        </div>
-                        <div className="da-bars-caption">
-                            <span>WEEK 1</span>
-                            <span>WEEK 6</span>
-                            <span>WEEK 12</span>
-                        </div>
-                    </div>
-
-                    <div className="da-channel-list">
-                        {channels.map((c, i) => (
-                            <div
-                                className="da-channel-row"
-                                key={c.name}
-                                style={{ animationDelay: `${i * 90}ms` }}
-                            >
-                                <span className="da-channel-name">{c.name}</span>
-                                <div className="da-channel-track">
-                                    <div
-                                        className="da-channel-fill"
-                                        style={{ width: `${c.pct * 2}%` }}
-                                    />
-                                </div>
-                                <span className="da-channel-pct">{c.pct}%</span>
-                            </div>
-                        ))}
-                    </div>
-                </div>
+                <button
+                    type="button"
+                    className="da-dash-arrow da-dash-arrow-right"
+                    onClick={() => scrollToIndex(active + 1)}
+                    aria-label="Next dashboard"
+                >
+                    ›
+                </button>
             </div>
+
+            <div className="da-dash-dots">
+                {dashboards.map((d, i) => (
+                    <button
+                        type="button"
+                        key={d.title}
+                        className={`da-dash-dot ${i === active ? "da-dash-dot-active" : ""
+                            }`}
+                        onClick={() => scrollToIndex(i)}
+                        aria-label={`Go to ${d.title.toLowerCase()}`}
+                    />
+                ))}
+            </div>
+
             <p className="da-dash-caption">
-                Illustrative view — every dashboard is rebuilt around your own KPIs,
+                Illustrative views — every dashboard is rebuilt around your own KPIs,
                 channels, and reporting cadence.
             </p>
         </section>

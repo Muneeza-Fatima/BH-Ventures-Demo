@@ -54,26 +54,96 @@
     gap: 20px;
 }
 
+@keyframes da-pop-in {
+    from {
+        opacity: 0;
+        transform: translateY(24px) scale(0.94);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@keyframes da-halo-pulse {
+
+    0%,
+    100% {
+        opacity: 0.35;
+        transform: scale(1);
+    }
+
+    50% {
+        opacity: 0.7;
+        transform: scale(1.25);
+    }
+}
+
 .da-metric-card {
-    background: var(--panel);
+    position: relative;
+    background: linear-gradient(160deg,
+            rgba(255, 255, 255, 0.045),
+            rgba(255, 255, 255, 0.015));
     border: 1px solid var(--panel-border);
     border-radius: 16px;
     padding: 24px;
+    overflow: hidden;
     backdrop-filter: blur(8px);
     opacity: 0;
-    animation: da-fade-up 0.5s ease forwards;
-    transition: transform 0.25s ease, border-color 0.25s ease,
-        box-shadow 0.25s ease, background 0.25s ease;
+    animation: da-pop-in 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    transform-style: preserve-3d;
+    will-change: transform;
+    transition: border-color 0.3s ease, box-shadow 0.35s ease,
+        background 0.3s ease;
+}
+
+/* soft colored wash that fades in behind the content on hover,
+   independent of the JS tilt transform */
+.da-metric-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(260px circle at 20% 0%,
+            rgba(var(--m-rgb), 0.16),
+            transparent 70%);
+    opacity: 0;
+    transition: opacity 0.35s ease;
+    pointer-events: none;
 }
 
 .da-metric-card:hover {
-    transform: translateY(-6px);
-    border-color: rgba(255, 255, 255, 0.18);
-    background: rgba(255, 255, 255, 0.05);
-    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35);
+    border-color: rgba(var(--m-rgb), 0.55);
+    box-shadow: 0 20px 46px -14px rgba(0, 0, 0, 0.55),
+        0 0 30px rgba(var(--m-rgb), 0.18);
+}
+
+.da-metric-card:hover::before {
+    opacity: 1;
+}
+
+/* glowing halo that idles behind the chip and intensifies on hover */
+.da-chip-halo {
+    position: absolute;
+    top: 24px;
+    left: 24px;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(var(--m-rgb), 0.9), transparent 70%);
+    filter: blur(10px);
+    animation: da-halo-pulse 2.6s ease-in-out infinite;
+    pointer-events: none;
+}
+
+.da-metric-card:hover .da-chip-halo {
+    filter: blur(16px);
+    animation-duration: 1.3s;
 }
 
 .da-chip {
+    position: relative;
+    z-index: 1;
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -83,68 +153,80 @@
     font-size: 14px;
     color: #0a0e1a;
     margin-bottom: 16px;
-    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.25s ease;
 }
 
 .da-chip-teal {
     background: var(--teal);
-    box-shadow: 0 0 0 rgba(45, 212, 191, 0);
 }
 
 .da-chip-amber {
     background: var(--amber);
-    box-shadow: 0 0 0 rgba(245, 166, 35, 0);
 }
 
 .da-chip-purple {
     background: var(--purple);
-    box-shadow: 0 0 0 rgba(139, 92, 246, 0);
 }
 
 .da-chip-pink {
     background: var(--pink);
-    box-shadow: 0 0 0 rgba(236, 72, 153, 0);
 }
 
-.da-metric-card:hover .da-chip-teal {
-    transform: scale(1.12);
-    box-shadow: 0 0 18px rgba(45, 212, 191, 0.55);
-}
-
-.da-metric-card:hover .da-chip-amber {
-    transform: scale(1.12);
-    box-shadow: 0 0 18px rgba(245, 166, 35, 0.55);
-}
-
-.da-metric-card:hover .da-chip-purple {
-    transform: scale(1.12);
-    box-shadow: 0 0 18px rgba(139, 92, 246, 0.55);
-}
-
-.da-metric-card:hover .da-chip-pink {
-    transform: scale(1.12);
-    box-shadow: 0 0 18px rgba(236, 72, 153, 0.55);
+.da-metric-card:hover .da-chip {
+    transform: scale(1.18) rotate(360deg);
+    box-shadow: 0 0 22px rgba(var(--m-rgb), 0.65);
 }
 
 .da-metric-label {
+    position: relative;
+    z-index: 1;
     font-size: 11px;
     letter-spacing: 0.08em;
     color: var(--muted);
     margin-bottom: 8px;
+    transition: color 0.3s ease;
+}
+
+.da-metric-card:hover .da-metric-label {
+    color: rgb(var(--m-rgb));
 }
 
 .da-metric-name {
+    position: relative;
+    z-index: 1;
     font-size: 17px;
     font-weight: 600;
     margin-bottom: 8px;
 }
 
 .da-metric-desc {
+    position: relative;
+    z-index: 1;
     font-size: 14px;
     line-height: 1.55;
     color: var(--muted);
     margin: 0;
 }
+
+/* accent underline that grows in from the left on hover */
+.da-metric-bar {
+    position: absolute;
+    left: 24px;
+    right: 24px;
+    bottom: 16px;
+    height: 2px;
+    border-radius: 2px;
+    background: rgb(var(--m-rgb));
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.35s ease;
+}
+
+.da-metric-card:hover .da-metric-bar {
+    transform: scaleX(1);
+}
+
+
 
 /* ---------- QUESTIONS WE ANSWER (accordion) ---------- */
 .da-qa-list {
@@ -239,17 +321,113 @@
     padding-bottom: 22px;
 }
 
-/* ---------- SAMPLE DASHBOARD ---------- */
-.da-dash {
-    background: linear-gradient(180deg, #0f1524, #0a0e1a);
+/* ---------- SAMPLE DASHBOARD (carousel) ---------- */
+
+.da-dash-carousel {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.da-dash-track {
+    flex: 1;
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    border-radius: 20px;
+}
+
+.da-dash-track::-webkit-scrollbar {
+    display: none;
+}
+
+.da-dash-slide {
+    flex: 0 0 100%;
+    scroll-snap-align: start;
+    min-width: 0;
+}
+
+.da-dash-arrow {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
     border: 1px solid var(--panel-border);
+    background: var(--panel);
+    color: var(--text);
+    font-size: 22px;
+    line-height: 1;
+    cursor: pointer;
+    transition: background 0.25s ease, border-color 0.25s ease,
+        transform 0.2s ease;
+}
+
+.da-dash-arrow:hover {
+    background: rgba(45, 212, 191, 0.12);
+    border-color: rgba(45, 212, 191, 0.5);
+    transform: scale(1.08);
+}
+
+.da-dash-dots {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.da-dash-dot {
+    width: 8px;
+    height: 8px;
+    padding: 0;
+    border: none;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.22);
+    cursor: pointer;
+    transition: background 0.25s ease, transform 0.25s ease;
+}
+
+.da-dash-dot-active {
+    background: var(--teal);
+    transform: scale(1.35);
+}
+
+.da-channel-list-label {
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    color: #9c9788;
+    margin-bottom: 4px;
+}
+
+/* mobile: hide arrows, rely on native swipe/scroll across the 3 slides */
+@media (max-width: 760px) {
+    .da-dash-carousel {
+        gap: 0;
+    }
+
+    .da-dash-arrow {
+        display: none;
+    }
+}
+
+.da-dash {
+    background: linear-gradient(160deg,
+            rgba(var(--d-accent-rgb, 45, 212, 191), 0.07),
+            #0a0e1a 55%);
+    border: 1px solid rgba(var(--d-accent-rgb, 255, 255, 255), 0.18);
     border-radius: 20px;
     padding: 32px;
-    transition: box-shadow 0.3s ease;
+    transition: box-shadow 0.3s ease, border-color 0.3s ease;
 }
 
 .da-dash:hover {
-    box-shadow: 0 20px 60px rgba(45, 212, 191, 0.08);
+    box-shadow: 0 20px 60px rgba(var(--d-accent-rgb, 45, 212, 191), 0.14);
+    border-color: rgba(var(--d-accent-rgb, 45, 212, 191), 0.4);
 }
 
 .da-dash-top {
@@ -257,9 +435,16 @@
     justify-content: space-between;
     align-items: center;
     margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid rgba(var(--d-accent-rgb, 255, 255, 255), 0.14);
     font-size: 12px;
     letter-spacing: 0.05em;
     color: var(--muted);
+}
+
+.da-dash-title {
+    color: var(--d-accent, #e5e5e5);
+    font-weight: 500;
 }
 
 .da-kpi-row {
@@ -292,6 +477,7 @@
 .da-kpi-value {
     font-size: 22px;
     font-weight: 600;
+    color: var(--d-accent, #ffffff);
 }
 
 .da-kpi-delta {
@@ -332,7 +518,9 @@
 
 .da-bar {
     flex: 1;
-    background: linear-gradient(180deg, var(--teal), #0f766e);
+    background: linear-gradient(180deg,
+            var(--d-accent, var(--teal)),
+            rgba(var(--d-accent-rgb, 45, 212, 191), 0.35));
     border-radius: 3px 3px 0 0;
     transform-origin: bottom;
     animation: da-grow-bar 0.6s ease forwards;
@@ -378,7 +566,7 @@
 
 .da-channel-fill {
     height: 100%;
-    background: var(--purple);
+    background: var(--d-accent2, var(--purple));
     transform-origin: left;
     animation: da-grow-bar 0.6s ease forwards;
 }
@@ -386,6 +574,7 @@
 .da-channel-pct {
     width: 32px;
     text-align: right;
+    color: var(--d-accent2, var(--muted));
 }
 
 .da-dash-caption {
