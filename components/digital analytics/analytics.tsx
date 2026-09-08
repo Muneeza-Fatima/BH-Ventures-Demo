@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useRef, CSSProperties, MouseEvent } from "react";
+import React, { useEffect, useRef, useState, CSSProperties, MouseEvent } from "react";
 import {
     Radar,
     FileText,
@@ -13,6 +13,70 @@ import {
     Target,
 } from "lucide-react";
 import "./analytics.css";
+
+/* ---------- SCROLL-TRIGGER HOOK ----------
+   Mounts the element in its hidden/offset state, then flips `inView` to
+   true the first time it scrolls into the viewport. CSS (the `da-visible`
+   class) does the actual translate/opacity animation — this hook only
+   decides *when* to add that class, so card entrances trigger on scroll
+   instead of all firing at once on page load. */
+function useInView<T extends HTMLElement = HTMLDivElement>(
+    options: IntersectionObserverInit = {
+        threshold: 0.15,
+        rootMargin: "0px 0px -60px 0px",
+    }
+) {
+    const ref = useRef<T | null>(null);
+    const [inView, setInView] = useState(false);
+
+    useEffect(() => {
+        const el = ref.current;
+        if (!el) return;
+
+        if (typeof IntersectionObserver === "undefined") {
+            setInView(true);
+            return;
+        }
+
+        let observer: IntersectionObserver | undefined;
+
+        // If a card is already inside the viewport on page load (e.g. it's
+        // near the top of the page), React can set state to "visible" in
+        // the same paint as the initial "hidden" state, so the browser
+        // never actually renders the hidden frame — the transition has
+        // nothing to animate *from* and the card just appears in place
+        // with no motion. Waiting two animation frames guarantees the
+        // hidden state has painted at least once before we start checking
+        // intersection, so the transition always has something to run.
+        const raf1 = requestAnimationFrame(() => {
+            const raf2 = requestAnimationFrame(() => {
+                observer = new IntersectionObserver(([entry]) => {
+                    if (entry.isIntersecting) {
+                        setInView(true);
+                        observer?.disconnect(); // animate in once, then stop watching
+                    }
+                }, options);
+                observer.observe(el);
+            });
+            (el as any)._raf2 = raf2;
+        });
+
+        // Safety net: if something (an ad blocker, a weird layout, a
+        // stacking-context quirk) ever prevents the observer from firing,
+        // don't leave the card permanently invisible.
+        const fallback = setTimeout(() => setInView(true), 2000);
+
+        return () => {
+            cancelAnimationFrame(raf1);
+            if ((el as any)._raf2) cancelAnimationFrame((el as any)._raf2);
+            clearTimeout(fallback);
+            observer?.disconnect();
+        };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    return { ref, inView };
+}
 
 /* ---------- DATA ---------- */
 
@@ -205,7 +269,19 @@ const deliverables = [
 
 /* ---------- SECTIONS ---------- */
 
-export function WhatWeMeasure() {
+/* One metric card. Each instance watches its own scroll position via
+   useInView, so cards translate/pop into place as they individually enter
+   the viewport (staggered by --pop-delay), rather than all animating the
+   instant the page mounts. */
+function MetricCard({
+    m,
+    i,
+}: {
+    m: (typeof metrics)[number];
+    i: number;
+}) {
+    const { ref, inView } = useInView<HTMLDivElement>();
+
     const handleMouseMove = (e: MouseEvent<HTMLDivElement>) => {
         const card = e.currentTarget;
         const rect = card.getBoundingClientRect();
@@ -221,29 +297,46 @@ export function WhatWeMeasure() {
     };
 
     return (
+        <div
+            className="da-metric-float"
+            ref={ref}
+            onMouseMove={handleMouseMove}
+            onMouseLeave={handleMouseLeave}
+            style={
+                {
+                    /* stagger each card's float phase so they wave independently */
+                    "--float-delay": `${i * 550}ms`,
+                } as CSSProperties
+            }
+        >
+            <div
+                className={`da-metric-card ${inView ? "da-visible" : ""}`}
+                style={
+                    {
+                        /* stagger the entrance itself so cards cascade in left-to-right */
+                        "--pop-delay": `${(i % 3) * 90}ms`,
+                        "--m-rgb": COLOR_RGB[m.color],
+                    } as CSSProperties
+                }
+            >
+                <span className="da-chip-halo" />
+                <span className={`da-chip da-chip-${m.color}`}>✓</span>
+                <div className="da-metric-label">{m.label}</div>
+                <div className="da-metric-name">{m.name}</div>
+                <p className="da-metric-desc">{m.desc}</p>
+                <span className="da-metric-bar" />
+            </div>
+        </div>
+    );
+}
+
+export function WhatWeMeasure() {
+    return (
         <section className="da-section">
             <h2 className="da-heading">What we measure</h2>
             <div className="da-metric-grid">
                 {metrics.map((m, i) => (
-                    <div
-                        className="da-metric-card"
-                        key={m.name}
-                        onMouseMove={handleMouseMove}
-                        onMouseLeave={handleMouseLeave}
-                        style={
-                            {
-                                animationDelay: `${i * 80}ms`,
-                                "--m-rgb": COLOR_RGB[m.color],
-                            } as CSSProperties
-                        }
-                    >
-                        <span className="da-chip-halo" />
-                        <span className={`da-chip da-chip-${m.color}`}>✓</span>
-                        <div className="da-metric-label">{m.label}</div>
-                        <div className="da-metric-name">{m.name}</div>
-                        <p className="da-metric-desc">{m.desc}</p>
-                        <span className="da-metric-bar" />
-                    </div>
+                    <MetricCard m={m} i={i} key={m.name} />
                 ))}
             </div>
         </section>
@@ -300,6 +393,7 @@ export function QuestionsWeAnswer() {
 export function SampleDashboard() {
     const trackRef = useRef<HTMLDivElement>(null);
     const [active, setActive] = useState(0);
+    const [isPaused, setIsPaused] = useState(false);
 
     const scrollToIndex = (i: number) => {
         const el = trackRef.current;
@@ -316,15 +410,49 @@ export function SampleDashboard() {
         setActive(i);
     };
 
+    // Auto-advance: continuously cycle through the dashboards on a timer.
+    // Pauses while the user is hovering/touching the carousel so it never
+    // fights a manual swipe, and resumes once they move away.
+    useEffect(() => {
+        if (isPaused) return;
+
+        const id = setInterval(() => {
+            setActive((prev) => {
+                const next = (prev + 1) % dashboards.length;
+                const el = trackRef.current;
+                if (el) {
+                    el.scrollTo({ left: next * el.clientWidth, behavior: "smooth" });
+                }
+                return next;
+            });
+        }, 2000);
+
+        return () => clearInterval(id);
+    }, [isPaused]);
+
+    // Manual arrow/dot clicks should also reset the timer so it doesn't
+    // jump again right after someone just navigated by hand.
+    const goTo = (i: number) => {
+        setIsPaused(true);
+        scrollToIndex(i);
+        setTimeout(() => setIsPaused(false), 3000);
+    };
+
     return (
         <section className="da-section">
             <h2 className="da-heading">Sample dashboards</h2>
 
-            <div className="da-dash-carousel">
+            <div
+                className="da-dash-carousel"
+                onMouseEnter={() => setIsPaused(true)}
+                onMouseLeave={() => setIsPaused(false)}
+                onTouchStart={() => setIsPaused(true)}
+                onTouchEnd={() => setIsPaused(false)}
+            >
                 <button
                     type="button"
                     className="da-dash-arrow da-dash-arrow-left"
-                    onClick={() => scrollToIndex(active - 1)}
+                    onClick={() => goTo(active - 1)}
                     aria-label="Previous dashboard"
                 >
                     ‹
@@ -417,7 +545,7 @@ export function SampleDashboard() {
                 <button
                     type="button"
                     className="da-dash-arrow da-dash-arrow-right"
-                    onClick={() => scrollToIndex(active + 1)}
+                    onClick={() => goTo(active + 1)}
                     aria-label="Next dashboard"
                 >
                     ›
@@ -431,7 +559,7 @@ export function SampleDashboard() {
                         key={d.title}
                         className={`da-dash-dot ${i === active ? "da-dash-dot-active" : ""
                             }`}
-                        onClick={() => scrollToIndex(i)}
+                        onClick={() => goTo(i)}
                         aria-label={`Go to ${d.title.toLowerCase()}`}
                     />
                 ))}
@@ -445,6 +573,40 @@ export function SampleDashboard() {
     );
 }
 
+/* One "what you receive" card — same per-card scroll trigger as MetricCard. */
+function ReceiveCard({
+    d,
+    i,
+}: {
+    d: (typeof deliverables)[number];
+    i: number;
+}) {
+    const { ref, inView } = useInView<HTMLDivElement>();
+    const Icon = d.icon;
+
+    return (
+        <div
+            className={`da-receive-card ${inView ? "da-visible" : ""}`}
+            ref={ref}
+            style={
+                {
+                    "--reveal-delay": `${(i % 3) * 90}ms`,
+                    "--r-rgb": COLOR_RGB[d.color],
+                } as CSSProperties
+            }
+        >
+            <div className="da-receive-card-top">
+                <span className="da-receive-icon">
+                    <Icon size={20} strokeWidth={2} />
+                </span>
+                <span className="da-receive-cadence">{d.cadence}</span>
+            </div>
+            <div className="da-receive-name">{d.name}</div>
+            <p className="da-receive-desc">{d.desc}</p>
+        </div>
+    );
+}
+
 /* What you receive — cards now sit above a colored mesh-gradient banner
    (see .da-receive-wrap / .da-receive-banner in analytics.css). */
 export function WhatYouReceive() {
@@ -454,30 +616,9 @@ export function WhatYouReceive() {
             <div className="da-receive-wrap">
                 <div className="da-receive-banner" />
                 <div className="da-receive-grid">
-                    {deliverables.map((d, i) => {
-                        const Icon = d.icon;
-                        return (
-                            <div
-                                className="da-receive-card"
-                                key={d.name}
-                                style={
-                                    {
-                                        animationDelay: `${i * 80}ms`,
-                                        "--r-rgb": COLOR_RGB[d.color],
-                                    } as CSSProperties
-                                }
-                            >
-                                <div className="da-receive-card-top">
-                                    <span className="da-receive-icon">
-                                        <Icon size={20} strokeWidth={2} />
-                                    </span>
-                                    <span className="da-receive-cadence">{d.cadence}</span>
-                                </div>
-                                <div className="da-receive-name">{d.name}</div>
-                                <p className="da-receive-desc">{d.desc}</p>
-                            </div>
-                        );
-                    })}
+                    {deliverables.map((d, i) => (
+                        <ReceiveCard d={d} i={i} key={d.name} />
+                    ))}
                 </div>
             </div>
         </section>

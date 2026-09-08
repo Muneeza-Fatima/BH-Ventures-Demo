@@ -66,6 +66,33 @@
     }
 }
 
+/* Wrapper that carries the continuous float — kept separate from the card
+   so da-pop-in and da-float never fight over the same `transform` property. */
+@keyframes da-float {
+
+    0%,
+    100% {
+        transform: translateY(0px);
+    }
+
+    50% {
+        transform: translateY(-12px);
+    }
+}
+
+.da-metric-float {
+    animation: da-float 4s ease-in-out infinite;
+    animation-delay: var(--float-delay, 0ms);
+    will-change: transform;
+    /* stretch to fill the grid cell so the inner card can match its siblings */
+    display: flex;
+    align-items: stretch;
+}
+
+.da-metric-float .da-metric-card {
+    flex: 1;
+}
+
 @keyframes da-halo-pulse {
 
     0%,
@@ -80,6 +107,12 @@
     }
 }
 
+/* ---- Scroll-triggered entrance ----
+   The card starts hidden/offset. JS (useInView) adds `.da-visible` the
+   first time the card scrolls into the viewport, which is what actually
+   plays the translate/opacity transition below. This replaces the old
+   `animation: da-pop-in ... forwards` approach, which fired once on page
+   mount regardless of whether the card was ever scrolled to. */
 .da-metric-card {
     position: relative;
     background: linear-gradient(160deg,
@@ -91,11 +124,17 @@
     overflow: hidden;
     backdrop-filter: blur(8px);
     opacity: 0;
-    animation: da-pop-in 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-    transform-style: preserve-3d;
-    will-change: transform;
-    transition: border-color 0.3s ease, box-shadow 0.35s ease,
+    transform: translateY(56px) scale(0.9);
+    will-change: opacity, transform;
+    transition: opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1) var(--pop-delay, 0ms),
+        transform 0.8s cubic-bezier(0.22, 1, 0.36, 1) var(--pop-delay, 0ms),
+        border-color 0.3s ease, box-shadow 0.35s ease,
         background 0.3s ease;
+}
+
+.da-metric-card.da-visible {
+    opacity: 1;
+    transform: translateY(0) scale(1);
 }
 
 /* soft colored wash that fades in behind the content on hover,
@@ -116,6 +155,11 @@
     border-color: rgba(var(--m-rgb), 0.55);
     box-shadow: 0 20px 46px -14px rgba(0, 0, 0, 0.55),
         0 0 30px rgba(var(--m-rgb), 0.18);
+}
+
+/* Pause the float wrapper on hover so JS tilt takes over cleanly */
+.da-metric-float:hover {
+    animation-play-state: paused;
 }
 
 .da-metric-card:hover::before {
@@ -682,6 +726,7 @@
     }
 }
 
+/* ---- Scroll-triggered entrance (see .da-metric-card note above for why) ---- */
 .da-receive-card {
     position: relative;
     background: linear-gradient(160deg,
@@ -692,8 +737,15 @@
     padding: 26px;
     overflow: hidden;
     opacity: 0;
-    animation: da-pop-in 0.55s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-    transition: border-color 0.3s ease, box-shadow 0.35s ease, transform 0.25s ease;
+    transform: translateY(48px) scale(0.9);
+    transition: opacity 0.75s cubic-bezier(0.22, 1, 0.36, 1) var(--reveal-delay, 0ms),
+        transform 0.75s cubic-bezier(0.22, 1, 0.36, 1) var(--reveal-delay, 0ms),
+        border-color 0.3s ease, box-shadow 0.35s ease;
+}
+
+.da-receive-card.da-visible {
+    opacity: 1;
+    transform: translateY(0) scale(1);
 }
 
 .da-receive-card::before {
