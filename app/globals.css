@@ -96,7 +96,7 @@ body {
    ========================================================= */
 
 #__next,
-body > div {
+body > div:not([class*="chatbot"]):not(#google_translate_element) {
   width: 100%;
   min-width: 0;
   max-width: 100%;
@@ -110,6 +110,22 @@ body > div {
   flex-direction: column;
 
   overflow: visible;
+}
+
+/* Hide Google Translate top banner & balloon frames cleanly via CSS */
+.goog-te-banner-frame,
+.goog-te-banner-frame.skiptranslate,
+.goog-te-balloon-frame,
+#goog-gt-tt {
+  display: none !important;
+  visibility: hidden !important;
+  height: 0 !important;
+  opacity: 0 !important;
+}
+
+body {
+  top: 0px !important;
+  position: static !important;
 }
 
 /* =========================================================

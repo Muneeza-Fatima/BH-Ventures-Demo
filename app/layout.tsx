@@ -7,7 +7,7 @@ import "@/components/layout/footer-responsive.css";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import SmoothScroll from "@/components/smooth-scroll";
-
+import ChatBot from "@/components/chatbot/ChatBot";   // ← add this line
 const manrope = Manrope({
   subsets: ["latin"],
   display: "swap",
@@ -31,19 +31,17 @@ export default function RootLayout({
         <div
           id="google_translate_element"
           aria-hidden="true"
-          className="hidden"
+          className="sr-only"
         />
 
-        <Navbar />
-
         <SmoothScroll>
+          <Navbar />
           <main className="w-full min-w-0 flex-1">
             {children}
           </main>
+          <Footer />
+          <ChatBot />
         </SmoothScroll>
-
-        <Footer />
-
         <Script
           src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"
           strategy="afterInteractive"
