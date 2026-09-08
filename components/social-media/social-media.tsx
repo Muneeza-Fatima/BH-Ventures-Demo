@@ -1,6 +1,7 @@
 "use client";
 
 import React, { CSSProperties } from "react";
+import { motion } from "framer-motion";
 import {
     Calendar,
     FileCheck2,
@@ -10,6 +11,47 @@ import {
     type LucideIcon,
 } from "lucide-react";
 import "./social-media.css";
+
+/* ---------- MOTION VARIANTS (matching Home Page) ---------- */
+const containerVariants = {
+    hidden: {},
+    show: {
+        transition: {
+            staggerChildren: 0.1,
+            delayChildren: 0.05,
+        },
+    },
+};
+
+const cardVariants = {
+    hidden: {
+        opacity: 0,
+        y: 40,
+    },
+    show: {
+        opacity: 1,
+        y: 0,
+        transition: {
+            duration: 0.65,
+            ease: [0.16, 1, 0.3, 1] as [number, number, number, number],
+        },
+    },
+};
+
+const trackCardVariants = {
+    hidden: {
+        opacity: 0,
+        x: -30,
+    },
+    show: {
+        opacity: 1,
+        x: 0,
+        transition: {
+            duration: 0.6,
+            ease: [0.16, 1, 0.3, 1] as [number, number, number, number],
+        },
+    },
+};
 
 /* ---------- CUSTOM BRAND ICONS ----------
    lucide-react no longer ships brand/logo icons (Instagram, Facebook,
@@ -241,19 +283,26 @@ export function PlatformsWeManage() {
     return (
         <section className="sm-section">
             <h2 className="sm-heading">Platforms we manage</h2>
-            <div className="sm-platform-grid">
-                {platforms.map((p, i) => {
+            <motion.div
+                className="sm-platform-grid"
+                variants={containerVariants}
+                initial="hidden"
+                whileInView="show"
+                viewport={{ once: true, amount: 0.15 }}
+            >
+                {platforms.map((p) => {
                     const Icon = p.icon;
                     return (
-                        <div
+                        <motion.div
                             className="sm-platform-card"
                             key={p.name}
-                            style={
-                                {
-                                    animationDelay: `${i * 60}ms`,
-                                    "--m-rgb": COLOR_RGB[p.color],
-                                } as CSSProperties
-                            }
+                            variants={cardVariants}
+                            whileHover={{
+                                y: -6,
+                                transition: { duration: 0.22, ease: [0.22, 1, 0.36, 1] },
+                            }}
+                            whileTap={{ scale: 0.98 }}
+                            style={{ "--m-rgb": COLOR_RGB[p.color] } as CSSProperties}
                         >
                             {p.image ? (
                                 <>
@@ -275,10 +324,10 @@ export function PlatformsWeManage() {
                                 <div className="sm-platform-name">{p.name}</div>
                                 <p className="sm-platform-note">{p.note}</p>
                             </div>
-                        </div>
+                        </motion.div>
                     );
                 })}
-            </div>
+            </motion.div>
         </section>
     );
 }
@@ -287,17 +336,25 @@ export function WhatWeTrack() {
     return (
         <section className="sm-section">
             <h2 className="sm-heading">What we track</h2>
-            <div className="sm-track-grid">
-                {trackedMetrics.map((m, i) => (
-                    <div
+            <motion.div
+                className="sm-track-grid"
+                variants={containerVariants}
+                initial="hidden"
+                whileInView="show"
+                viewport={{ once: true, amount: 0.15 }}
+            >
+                {trackedMetrics.map((m) => (
+                    <motion.div
                         className="sm-track-card"
                         key={m.name}
-                        style={
-                            {
-                                animationDelay: `${i * 80}ms`,
-                                "--m-rgb": COLOR_RGB[m.color],
-                            } as CSSProperties
-                        }
+                        variants={trackCardVariants}
+                        whileHover={{
+                            x: 6,
+                            y: -2,
+                            transition: { duration: 0.22, ease: [0.22, 1, 0.36, 1] },
+                        }}
+                        whileTap={{ scale: 0.98 }}
+                        style={{ "--m-rgb": COLOR_RGB[m.color] } as CSSProperties}
                     >
                         <div className="sm-track-icon-wrap">
                             <span className="sm-track-ring" />
@@ -308,9 +365,9 @@ export function WhatWeTrack() {
                             <div className="sm-track-name">{m.name}</div>
                             <p className="sm-track-desc">{m.desc}</p>
                         </div>
-                    </div>
+                    </motion.div>
                 ))}
-            </div>
+            </motion.div>
         </section>
     );
 }
@@ -378,19 +435,26 @@ export function WhatYouReceive() {
     return (
         <section className="sm-section">
             <h2 className="sm-heading">What you receive</h2>
-            <div className="sm-ticket-grid">
-                {deliverables.map((d, i) => {
+            <motion.div
+                className="sm-ticket-grid"
+                variants={containerVariants}
+                initial="hidden"
+                whileInView="show"
+                viewport={{ once: true, amount: 0.15 }}
+            >
+                {deliverables.map((d) => {
                     const Icon = d.icon;
                     return (
-                        <div
+                        <motion.div
                             className="sm-ticket"
                             key={d.name}
-                            style={
-                                {
-                                    animationDelay: `${i * 70}ms`,
-                                    "--m-rgb": COLOR_RGB[d.color],
-                                } as CSSProperties
-                            }
+                            variants={cardVariants}
+                            whileHover={{
+                                y: -6,
+                                transition: { duration: 0.22, ease: [0.22, 1, 0.36, 1] },
+                            }}
+                            whileTap={{ scale: 0.98 }}
+                            style={{ "--m-rgb": COLOR_RGB[d.color] } as CSSProperties}
                         >
                             {d.image ? (
                                 <>
@@ -415,10 +479,10 @@ export function WhatYouReceive() {
                                 <span className="sm-ticket-eyebrow">Included</span>
                                 <span className="sm-ticket-name">{d.name}</span>
                             </div>
-                        </div>
+                        </motion.div>
                     );
                 })}
-            </div>
+            </motion.div>
         </section>
     );
 }

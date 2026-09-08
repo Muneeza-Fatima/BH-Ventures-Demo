@@ -123,18 +123,9 @@
     padding: 24px;
     overflow: hidden;
     backdrop-filter: blur(8px);
-    opacity: 0;
-    transform: translateY(56px) scale(0.9);
-    will-change: opacity, transform;
-    transition: opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1) var(--pop-delay, 0ms),
-        transform 0.8s cubic-bezier(0.22, 1, 0.36, 1) var(--pop-delay, 0ms),
-        border-color 0.3s ease, box-shadow 0.35s ease,
+    will-change: transform, opacity;
+    transition: border-color 0.3s ease, box-shadow 0.35s ease,
         background 0.3s ease;
-}
-
-.da-metric-card.da-visible {
-    opacity: 1;
-    transform: translateY(0) scale(1);
 }
 
 /* soft colored wash that fades in behind the content on hover,
@@ -726,7 +717,6 @@
     }
 }
 
-/* ---- Scroll-triggered entrance (see .da-metric-card note above for why) ---- */
 .da-receive-card {
     position: relative;
     background: linear-gradient(160deg,
@@ -736,16 +726,8 @@
     border-radius: 18px;
     padding: 26px;
     overflow: hidden;
-    opacity: 0;
-    transform: translateY(48px) scale(0.9);
-    transition: opacity 0.75s cubic-bezier(0.22, 1, 0.36, 1) var(--reveal-delay, 0ms),
-        transform 0.75s cubic-bezier(0.22, 1, 0.36, 1) var(--reveal-delay, 0ms),
-        border-color 0.3s ease, box-shadow 0.35s ease;
-}
-
-.da-receive-card.da-visible {
-    opacity: 1;
-    transform: translateY(0) scale(1);
+    will-change: transform, opacity;
+    transition: border-color 0.3s ease, box-shadow 0.35s ease;
 }
 
 .da-receive-card::before {
