@@ -8,6 +8,7 @@ import DatesSection from "@/components/dates/Datessection";
 import Web3Extras from "@/components/web3/Web3Extras";
 import MissingSections from "@/components/digital analytics/analytics";
 import SocialMediaExtras from "@/components/social-media/social-media";
+import AIOpportunitySections from "@/components/AI Innovation/Ai opportunity";
 import "@/components/Services/services.css";
 import "@/components/Services/service-detail.css";
 import "@/components/automobiles/automobiles.css";
@@ -15,12 +16,14 @@ import "@/components/dates/dates.css";
 import "@/components/web3/web3.css";
 import "@/components/digital analytics/analytics.css";
 import "@/components/social-media/social-media.css";
+import "@/components/AI Innovation/ai-opportunity.css";
 
 const CATEGORY_MAP: Record<string, string> = {
     "global trade": "trade",
     "web3": "web3",
     "venture building": "web3",
     "artificial intelligence": "ai",
+    "innovation": "ai",
     "analytics": "ai",
     "marketing": "marketing",
     "advertising": "marketing",
@@ -45,6 +48,8 @@ const WEB3_SERVICE_SLUGS = ["web3-venture-studio"];
 const ANALYTICS_SERVICE_SLUGS = ["digital-analytics-services"];
 // slug(s) that should render the social-media-specific sections
 const SOCIAL_MEDIA_SERVICE_SLUGS = ["marketing-via-social-media"];
+// slug(s) that should render the AI-opportunity-consulting-specific sections
+const AI_CONSULTING_SERVICE_SLUGS = ["ai-research-consultancy"];
 
 export function generateStaticParams() {
     return SERVICES.map((s) => ({ slug: s.slug }));
@@ -74,6 +79,7 @@ export default async function ServiceDetailPage({ params }: { params: ParamsProm
     const isWeb3 = WEB3_SERVICE_SLUGS.includes(service.slug);
     const isAnalytics = ANALYTICS_SERVICE_SLUGS.includes(service.slug);
     const isSocialMedia = SOCIAL_MEDIA_SERVICE_SLUGS.includes(service.slug);
+    const isAIConsulting = AI_CONSULTING_SERVICE_SLUGS.includes(service.slug);
 
     return (
         <div className="service-detail-page" data-category={category}>
@@ -141,9 +147,9 @@ export default async function ServiceDetailPage({ params }: { params: ParamsProm
 
                 {/* Automobiles, Dates, and Web3 each get their own extras
                     section and are considered fully self-contained, so they
-                    skip the generic CTA below. Analytics gets its own extras
-                    (MissingSections) but still shows the same CTA + contact
-                    modal every other plain service gets. */}
+                    skip the generic CTA below. Analytics and AI Consulting
+                    each get their own extras section but still show the same
+                    CTA + contact modal every other plain service gets. */}
                 {isAutomobile ? (
                     <AutomobileExtras />
                 ) : isDates ? (
@@ -161,6 +167,7 @@ export default async function ServiceDetailPage({ params }: { params: ParamsProm
                 ) : (
                     <>
                         {isAnalytics && <MissingSections />}
+                        {isAIConsulting && <AIOpportunitySections />}
                         <section className="service-detail-cta">
                             <h2>Ready to talk {service.title.toLowerCase()}?</h2>
                             <ServiceContactModal serviceTitle={service.title} />

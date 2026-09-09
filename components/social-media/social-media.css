@@ -170,10 +170,6 @@
         0 18px 40px -20px rgba(var(--m-rgb), 0.5);
 }
 
-/* your own photo/illustration — drop a URL into each platform's
-   `image` field and it renders here, full-bleed, cropped to fill */
-/* Ambient backdrop: same image, blurred/darkened, always fills the card
-   edge-to-edge regardless of the source image's aspect ratio or padding. */
 .sm-platform-bg-blur {
     position: absolute;
     inset: 0;
@@ -188,13 +184,9 @@
     transform: scale(1.22);
 }
 
-/* Foreground: the real image, centered and inset above the text so
-   nothing important gets cut off. Icon itself is size-capped below
-   (see .sm-platform-fg) rather than filling this whole wrap. */
 .sm-platform-fg-wrap {
     position: absolute;
     inset: 12px 12px 50px;
-    /* was 18px 18px 58px — tighter for shorter card */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -203,9 +195,7 @@
 
 .sm-platform-fg {
     max-width: 96px;
-    /* was 100% — icon no longer fills the card */
     max-height: 96px;
-    /* was 100% */
     width: auto;
     height: auto;
     object-fit: contain;
@@ -218,7 +208,6 @@
     transform: scale(1.05);
 }
 
-/* shown instead of an image until one is supplied */
 .sm-platform-fallback {
     position: absolute;
     inset: 0;
@@ -237,13 +226,11 @@
 
 .sm-platform-fallback-icon {
     width: 44px;
-    /* was 56px — scaled down to match smaller image icons */
     height: 44px;
     color: rgb(var(--m-rgb));
     opacity: 0.5;
 }
 
-/* dark wash so the name/note stay legible over any image */
 .sm-platform-overlay {
     position: absolute;
     inset: 0;
@@ -276,86 +263,56 @@
     margin: 0;
 }
 
-/* ---------- WHAT WE TRACK ---------- */
-@keyframes sm-slide-in {
-    from {
-        opacity: 0;
-        transform: translateX(-18px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateX(0);
-    }
-}
-
-@keyframes sm-ring-spin {
-    from {
-        transform: rotate(0deg);
-    }
-
-    to {
-        transform: rotate(360deg);
-    }
-}
-
+/* ==========================================================
+   WHAT WE TRACK — gradient-corner cards matching the
+   "AI Capabilities" theme: soft radial color glow bleeding in
+   from one corner, a rounded-square icon badge, a small
+   uppercase color-tinted eyebrow, a bold title, muted body
+   copy, and a colored underline bar pinned to the bottom.
+========================================================== */
 .sm-track-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 16px;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
 }
 
 .sm-track-card {
     position: relative;
     display: flex;
-    align-items: flex-start;
-    gap: 18px;
-    background: var(--panel);
-    border: 1px solid var(--panel-border);
-    border-left: 3px solid transparent;
-    border-radius: 14px;
-    padding: 20px 22px;
+    flex-direction: column;
+    background:
+        radial-gradient(160% 130% at 100% 0%, rgba(var(--m-rgb), 0.22), transparent 62%),
+        linear-gradient(160deg, rgba(var(--m-rgb), 0.10), rgba(255, 255, 255, 0.02) 65%);
+    border: 1px solid rgba(var(--m-rgb), 0.28);
+    border-radius: 16px;
+    padding: 22px 22px 24px;
+    overflow: hidden;
     will-change: transform, opacity;
-    transition: border-color 0.3s ease, background 0.3s ease,
-        box-shadow 0.3s ease;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.25s ease;
 }
 
 .sm-track-card:hover {
-    border-left-color: rgb(var(--m-rgb));
-    background: rgba(255, 255, 255, 0.045);
-    box-shadow: -6px 10px 30px -14px rgba(var(--m-rgb), 0.35);
+    border-color: rgba(var(--m-rgb), 0.55);
+    box-shadow: 0 18px 40px -20px rgba(0, 0, 0, 0.55),
+        0 0 0 1px rgba(var(--m-rgb), 0.25),
+        0 18px 36px -18px rgba(var(--m-rgb), 0.4);
 }
 
 .sm-track-icon-wrap {
-    position: relative;
-    flex-shrink: 0;
-    width: 46px;
-    height: 46px;
-}
-
-/* Instagram-story-style spinning gradient ring around the icon */
-.sm-track-ring {
-    position: absolute;
-    inset: 0;
-    border-radius: 50%;
-    background: conic-gradient(from 0deg,
-            rgb(var(--m-rgb)) 0deg,
-            rgba(var(--m-rgb), 0.15) 200deg,
-            rgb(var(--m-rgb)) 360deg);
-    -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 3px), #000 calc(100% - 3px));
-    mask: radial-gradient(farthest-side, transparent calc(100% - 3px), #000 calc(100% - 3px));
-    animation: sm-ring-spin 6s linear infinite;
-}
-
-.sm-track-icon {
-    position: absolute;
-    inset: 6px;
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 50%;
-    font-size: 14px;
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    margin-bottom: 18px;
     color: #0a0e1a;
+    box-shadow: 0 8px 18px -8px rgba(var(--m-rgb), 0.65);
+}
+
+.sm-track-icon-wrap svg {
+    width: 20px;
+    height: 20px;
 }
 
 .sm-track-body {
@@ -365,27 +322,32 @@
 
 .sm-track-label {
     font-size: 11px;
+    font-weight: 600;
     letter-spacing: 0.08em;
-    color: var(--muted);
-    margin-bottom: 6px;
-    transition: color 0.3s ease;
-}
-
-.sm-track-card:hover .sm-track-label {
+    text-transform: uppercase;
     color: rgb(var(--m-rgb));
+    margin-bottom: 10px;
 }
 
 .sm-track-name {
-    font-size: 16px;
-    font-weight: 600;
-    margin-bottom: 6px;
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 10px;
 }
 
 .sm-track-desc {
     font-size: 13.5px;
-    line-height: 1.55;
+    line-height: 1.6;
     color: var(--muted);
-    margin: 0;
+    margin: 0 0 20px;
+}
+
+.sm-track-bar {
+    height: 3px;
+    width: 100%;
+    border-radius: 999px;
+    background: linear-gradient(90deg, rgb(var(--m-rgb)), rgba(var(--m-rgb), 0.15));
+    margin-top: auto;
 }
 
 /* ---------- SAMPLE CONTENT CALENDAR ---------- */
@@ -399,7 +361,6 @@
     transition: box-shadow 0.3s ease;
 }
 
-/* soft ambient color glow behind the whole calendar for depth */
 .sm-calendar::before {
     content: "";
     position: absolute;
@@ -483,7 +444,6 @@
     box-shadow: 0 12px 26px -12px rgba(0, 0, 0, 0.55);
 }
 
-/* day with posts gets a subtle colored top edge instead of plain gray */
 .sm-calendar-day.has-posts {
     border-top-color: rgba(45, 212, 191, 0.55);
 }
@@ -542,7 +502,6 @@
     transition: background 0.2s ease, transform 0.2s ease;
 }
 
-/* fallback edge colors if you're not setting --chip-rgb inline from JSX */
 .sm-post-chip.sm-edge-teal {
     --chip-rgb: 45, 212, 191;
 }
@@ -761,6 +720,12 @@
 }
 
 /* ---------- RESPONSIVE ---------- */
+@media (max-width: 1024px) {
+    .sm-track-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
 @media (max-width: 900px) {
     .sm-calendar-grid {
         grid-template-columns: repeat(4, 1fr);

@@ -38,21 +38,6 @@ const cardVariants = {
     },
 };
 
-const trackCardVariants = {
-    hidden: {
-        opacity: 0,
-        x: -30,
-    },
-    show: {
-        opacity: 1,
-        x: 0,
-        transition: {
-            duration: 0.6,
-            ease: [0.16, 1, 0.3, 1] as [number, number, number, number],
-        },
-    },
-};
-
 /* ---------- CUSTOM BRAND ICONS ----------
    lucide-react no longer ships brand/logo icons (Instagram, Facebook,
    LinkedIn, YouTube, Twitter/X were removed over trademark concerns),
@@ -176,44 +161,56 @@ const platforms: {
         { name: "YouTube Shorts", color: "red", note: "Vertical video, discovery", icon: YoutubeIcon, image: "/images/platforms/youtube_shorts.png" },
     ];
 
-const trackedMetrics = [
-    {
-        color: "teal",
-        label: "ENGAGEMENT",
-        name: "Engagement rate",
-        desc: "Likes, comments, and shares relative to reach — not just raw counts.",
-    },
-    {
-        color: "amber",
-        label: "GROWTH",
-        name: "Follower growth",
-        desc: "Net growth by platform, tracked month over month.",
-    },
-    {
-        color: "purple",
-        label: "VISIBILITY",
-        name: "Reach & impressions",
-        desc: "How far content is actually traveling beyond your existing audience.",
-    },
-    {
-        color: "pink",
-        label: "CONTENT",
-        name: "Performance by pillar",
-        desc: "Which content themes and formats are actually working, and which aren't.",
-    },
-    {
-        color: "teal",
-        label: "COMMUNITY",
-        name: "Response time",
-        desc: "How quickly comments and DMs get a reply — a real trust signal.",
-    },
-    {
-        color: "amber",
-        label: "CONVERSION",
-        name: "Social-to-site conversion",
-        desc: "Clicks and leads driven from social back to your site or store.",
-    },
-];
+const trackedMetrics: {
+    color: string;
+    label: string;
+    name: string;
+    desc: string;
+    icon: IconComponent;
+}[] = [
+        {
+            color: "teal",
+            label: "ENGAGEMENT",
+            name: "Engagement rate",
+            desc: "Likes, comments, and shares relative to reach — not just raw counts.",
+            icon: BarChart3,
+        },
+        {
+            color: "amber",
+            label: "GROWTH",
+            name: "Follower growth",
+            desc: "Net growth by platform, tracked month over month.",
+            icon: Compass,
+        },
+        {
+            color: "purple",
+            label: "VISIBILITY",
+            name: "Reach & impressions",
+            desc: "How far content is actually traveling beyond your existing audience.",
+            icon: Calendar,
+        },
+        {
+            color: "pink",
+            label: "CONTENT",
+            name: "Performance by pillar",
+            desc: "Which content themes and formats are actually working, and which aren't.",
+            icon: FileCheck2,
+        },
+        {
+            color: "teal",
+            label: "COMMUNITY",
+            name: "Response time",
+            desc: "How quickly comments and DMs get a reply — a real trust signal.",
+            icon: MessagesSquare,
+        },
+        {
+            color: "amber",
+            label: "CONVERSION",
+            name: "Social-to-site conversion",
+            desc: "Clicks and leads driven from social back to your site or store.",
+            icon: BarChart3,
+        },
+    ];
 
 const PLATFORM_ICONS: Record<string, IconComponent> = {
     Instagram: InstagramIcon,
@@ -343,30 +340,32 @@ export function WhatWeTrack() {
                 whileInView="show"
                 viewport={{ once: true, amount: 0.15 }}
             >
-                {trackedMetrics.map((m) => (
-                    <motion.div
-                        className="sm-track-card"
-                        key={m.name}
-                        variants={trackCardVariants}
-                        whileHover={{
-                            x: 6,
-                            y: -2,
-                            transition: { duration: 0.22, ease: [0.22, 1, 0.36, 1] },
-                        }}
-                        whileTap={{ scale: 0.98 }}
-                        style={{ "--m-rgb": COLOR_RGB[m.color] } as CSSProperties}
-                    >
-                        <div className="sm-track-icon-wrap">
-                            <span className="sm-track-ring" />
-                            <span className={`sm-track-icon sm-chip-${m.color}`}>✓</span>
-                        </div>
-                        <div className="sm-track-body">
-                            <div className="sm-track-label">{m.label}</div>
-                            <div className="sm-track-name">{m.name}</div>
-                            <p className="sm-track-desc">{m.desc}</p>
-                        </div>
-                    </motion.div>
-                ))}
+                {trackedMetrics.map((m) => {
+                    const Icon = m.icon;
+                    return (
+                        <motion.div
+                            className="sm-track-card"
+                            key={m.name}
+                            variants={cardVariants}
+                            whileHover={{
+                                y: -6,
+                                transition: { duration: 0.22, ease: [0.22, 1, 0.36, 1] },
+                            }}
+                            whileTap={{ scale: 0.98 }}
+                            style={{ "--m-rgb": COLOR_RGB[m.color] } as CSSProperties}
+                        >
+                            <div className={`sm-track-icon-wrap sm-chip-${m.color}`}>
+                                <Icon />
+                            </div>
+                            <div className="sm-track-body">
+                                <div className="sm-track-label">{m.label}</div>
+                                <div className="sm-track-name">{m.name}</div>
+                                <p className="sm-track-desc">{m.desc}</p>
+                            </div>
+                            <div className="sm-track-bar" />
+                        </motion.div>
+                    );
+                })}
             </motion.div>
         </section>
     );

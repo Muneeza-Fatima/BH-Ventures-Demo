@@ -12,6 +12,11 @@ import {
     AlertTriangle,
     LineChart,
     Target,
+    DollarSign,
+    Users,
+    Filter,
+    Repeat,
+    type LucideIcon,
 } from "lucide-react";
 import "./analytics.css";
 
@@ -53,44 +58,66 @@ const COLOR_RGB: Record<string, string> = {
     blue: "56, 189, 248",
 };
 
-const metrics = [
-    {
-        color: "teal",
-        label: "ACQUISITION",
-        name: "CAC by channel",
-        desc: "What it actually costs to win a customer, broken out by source.",
-    },
-    {
-        color: "amber",
-        label: "RETURN",
-        name: "ROAS & blended ROI",
-        desc: "Return on ad spend per channel, plus the blended number leadership cares about.",
-    },
-    {
-        color: "purple",
-        label: "VALUE",
-        name: "Customer LTV",
-        desc: "Lifetime value by cohort, so acquisition cost is judged against the right horizon.",
-    },
-    {
-        color: "pink",
-        label: "CONVERSION",
-        name: "Funnel conversion rate",
-        desc: "Where prospects drop off, from first click to closed sale.",
-    },
-    {
-        color: "teal",
-        label: "MIX",
-        name: "Channel & spend mix",
-        desc: "How budget is split today, versus where it's actually earning its keep.",
-    },
-    {
-        color: "amber",
-        label: "RETENTION",
-        name: "Repeat purchase rate",
-        desc: "How well you're keeping the customers you already paid to acquire.",
-    },
-];
+const metrics: {
+    color: string;
+    label: string;
+    name: string;
+    desc: string;
+    icon: LucideIcon;
+    /** Photo shown in place of the description text below the title.
+     *  Swap these paths for your own images — falls back to the desc
+     *  text above if left blank. */
+    photo?: string;
+}[] = [
+        {
+            color: "teal",
+            label: "ACQUISITION",
+            name: "CAC by channel",
+            desc: "What it actually costs to win a customer, broken out by source.",
+            icon: DollarSign,
+            photo: "/images/analytics/cac-by-channel.jpg",
+        },
+        {
+            color: "amber",
+            label: "RETURN",
+            name: "ROAS & blended ROI",
+            desc: "Return on ad spend per channel, plus the blended number leadership cares about.",
+            icon: TrendingUp,
+            photo: "/images/analytics/roas-blended-roi.jpg",
+        },
+        {
+            color: "purple",
+            label: "VALUE",
+            name: "Customer LTV",
+            desc: "Lifetime value by cohort, so acquisition cost is judged against the right horizon.",
+            icon: Users,
+            photo: "/images/analytics/customer-ltv.jpg",
+        },
+        {
+            color: "pink",
+            label: "CONVERSION",
+            name: "Funnel conversion rate",
+            desc: "Where prospects drop off, from first click to closed sale.",
+            icon: Filter,
+            photo: "/images/analytics/funnel-conversion.jpg",
+        },
+        {
+            color: "teal",
+            label: "MIX",
+            name: "Channel & spend mix",
+            desc: "How budget is split today, versus where it's actually earning its keep.",
+            icon: PieChart,
+            photo: "/images/analytics/channel-spend-mix.jpg",
+        },
+        {
+            color: "amber",
+            label: "RETENTION",
+            name: "Repeat purchase rate",
+            desc: "How well you're keeping the customers you already paid to acquire.",
+            icon: Repeat,
+            photo: "/images/analytics/repeat-purchase.jpg",
+        },
+    ];
 
 const questions = [
     {
@@ -194,43 +221,56 @@ const dashboards = [
     },
 ];
 
-const deliverables = [
-    {
-        name: "Live dashboard access",
-        cadence: "Always on",
-        color: "teal",
-        icon: Radar,
-        desc: "Log in any time and see revenue, spend, and conversion move in real time — no waiting on a report.",
-    },
-    {
-        name: "Written performance report",
-        cadence: "Monthly",
-        color: "amber",
-        icon: FileText,
-        desc: "A plain-language summary of what moved, why, and what we're doing about it.",
-    },
-    {
-        name: "Attribution & spend review",
-        cadence: "Monthly",
-        color: "purple",
-        icon: PieChart,
-        desc: "Where every dollar actually went, and what it actually returned.",
-    },
-    {
-        name: "Direct line for questions",
-        cadence: "Ongoing",
-        color: "pink",
-        icon: MessageCircle,
-        desc: "No ticket queue — ask and get a real answer from someone who knows your account.",
-    },
-    {
-        name: "Quarterly strategy check-in",
-        cadence: "Quarterly",
-        color: "blue",
-        icon: Compass,
-        desc: "A step back from the day-to-day to reset priorities against the bigger goal.",
-    },
-];
+const deliverables: {
+    name: string;
+    cadence: string;
+    color: string;
+    icon: LucideIcon;
+    desc: string;
+    /** Background photo for the bento card (e.g. "/images/analytics/dashboard.jpg"). */
+    image: string;
+}[] = [
+        {
+            name: "Live dashboard access",
+            cadence: "Always on",
+            color: "teal",
+            icon: Radar,
+            desc: "Log in any time and see revenue, spend, and conversion move in real time — no waiting on a report.",
+            image: "/images/analytics/dashboard-access.jpg",
+        },
+        {
+            name: "Written performance report",
+            cadence: "Monthly",
+            color: "amber",
+            icon: FileText,
+            desc: "A plain-language summary of what moved, why, and what we're doing about it.",
+            image: "/images/analytics/performance-report.jpg",
+        },
+        {
+            name: "Attribution & spend review",
+            cadence: "Monthly",
+            color: "purple",
+            icon: PieChart,
+            desc: "Where every dollar actually went, and what it actually returned.",
+            image: "/images/analytics/attribution-review.jpg",
+        },
+        {
+            name: "Direct line for questions",
+            cadence: "Ongoing",
+            color: "pink",
+            icon: MessageCircle,
+            desc: "No ticket queue — ask and get a real answer from someone who knows your account.",
+            image: "/images/analytics/direct-line.jpg",
+        },
+        {
+            name: "Quarterly strategy check-in",
+            cadence: "Quarterly",
+            color: "blue",
+            icon: Compass,
+            image: "/images/analytics/strategy-checkin.jpg",
+            desc: "A step back from the day-to-day to reset priorities against the bigger goal.",
+        },
+    ];
 
 /* ---------- SECTIONS ---------- */
 
@@ -245,26 +285,40 @@ export function WhatWeMeasure() {
                 whileInView="show"
                 viewport={{ once: true, amount: 0.15 }}
             >
-                {metrics.map((m) => (
-                    <motion.div
-                        key={m.name}
-                        variants={cardVariants}
-                        whileHover={{
-                            y: -6,
-                            transition: { duration: 0.22, ease: [0.22, 1, 0.36, 1] },
-                        }}
-                        whileTap={{ scale: 0.98 }}
-                        className="da-metric-card"
-                        style={{ "--m-rgb": COLOR_RGB[m.color] } as CSSProperties}
-                    >
-                        <span className="da-chip-halo" />
-                        <span className={`da-chip da-chip-${m.color}`}>✓</span>
-                        <div className="da-metric-label">{m.label}</div>
-                        <div className="da-metric-name">{m.name}</div>
-                        <p className="da-metric-desc">{m.desc}</p>
-                        <span className="da-metric-bar" />
-                    </motion.div>
-                ))}
+                {metrics.map((m) => {
+                    const Icon = m.icon;
+                    return (
+                        <motion.div
+                            key={m.name}
+                            variants={cardVariants}
+                            whileHover={{
+                                transition: { duration: 0.22, ease: [0.22, 1, 0.36, 1] },
+                            }}
+                            whileTap={{ scale: 0.98 }}
+                            className="da-metric-card-v2"
+                            style={{ "--m-rgb": COLOR_RGB[m.color] } as CSSProperties}
+                        >
+                            <div className="da-metric-v2-top">
+                                <span className="da-metric-v2-icon">
+                                    <Icon size={20} strokeWidth={2} />
+                                </span>
+                                <span className="da-metric-v2-pill">{m.label}</span>
+                            </div>
+                            <div className="da-metric-v2-name">{m.name}</div>
+                            {m.photo ? (
+                                <div className="da-metric-v2-photo-wrap">
+                                    <img
+                                        className="da-metric-v2-photo"
+                                        src={m.photo}
+                                        alt={m.desc}
+                                    />
+                                </div>
+                            ) : (
+                                <p className="da-metric-v2-desc">{m.desc}</p>
+                            )}
+                        </motion.div>
+                    );
+                })}
             </motion.div>
         </section>
     );
@@ -504,42 +558,42 @@ export function WhatYouReceive() {
     return (
         <section className="da-section">
             <h2 className="da-heading">What you receive</h2>
-            <div className="da-receive-wrap">
-                <div className="da-receive-banner" />
-                <motion.div
-                    className="da-receive-grid"
-                    variants={containerVariants}
-                    initial="hidden"
-                    whileInView="show"
-                    viewport={{ once: true, amount: 0.15 }}
-                >
-                    {deliverables.map((d) => {
-                        const Icon = d.icon;
-                        return (
-                            <motion.div
-                                key={d.name}
-                                variants={cardVariants}
-                                whileHover={{
-                                    y: -6,
-                                    transition: { duration: 0.22, ease: [0.22, 1, 0.36, 1] },
-                                }}
-                                whileTap={{ scale: 0.98 }}
-                                className="da-receive-card"
-                                style={{ "--r-rgb": COLOR_RGB[d.color] } as CSSProperties}
-                            >
-                                <div className="da-receive-card-top">
-                                    <span className="da-receive-icon">
-                                        <Icon size={20} strokeWidth={2} />
-                                    </span>
-                                    <span className="da-receive-cadence">{d.cadence}</span>
-                                </div>
-                                <div className="da-receive-name">{d.name}</div>
+            <motion.div
+                className="da-receive-grid"
+                variants={containerVariants}
+                initial="hidden"
+                whileInView="show"
+                viewport={{ once: true, amount: 0.15 }}
+            >
+                {deliverables.map((d) => {
+                    const Icon = d.icon;
+                    return (
+                        <motion.div
+                            key={d.name}
+                            variants={cardVariants}
+                            className="da-receive-card"
+                            style={{ "--r-rgb": COLOR_RGB[d.color] } as CSSProperties}
+                        >
+                            <img
+                                src={d.image}
+                                alt=""
+                                className="da-receive-img"
+                                loading="lazy"
+                            />
+                            <span className="da-receive-tint" />
+                            <span className="da-receive-scrim" />
+                            <span className="da-receive-icon">
+                                <Icon size={17} strokeWidth={2.25} />
+                            </span>
+                            <div className="da-receive-copy">
+                                <span className="da-receive-cadence">{d.cadence}</span>
+                                <h3 className="da-receive-name">{d.name}</h3>
                                 <p className="da-receive-desc">{d.desc}</p>
-                            </motion.div>
-                        );
-                    })}
-                </motion.div>
-            </div>
+                            </div>
+                        </motion.div>
+                    );
+                })}
+            </motion.div>
         </section>
     );
 }
