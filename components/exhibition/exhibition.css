@@ -1,0 +1,445 @@
+/* ==========================================================
+   Shared section shell
+========================================================== */
+.ex-section {
+    --bg: #0a0e1a;
+    --panel-border: rgba(255, 255, 255, 0.08);
+    --text: #ffffff;
+    --muted: #9aa3b2;
+
+    max-width: 1200px;
+    margin: 32px auto;
+    padding: 0 24px;
+    color: var(--text);
+    font-family: inherit;
+}
+
+.ex-heading {
+    font-size: 32px;
+    font-weight: 600;
+    margin: 0 0 28px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* ---------- 1. EVENT TYPES (equal photo grid) ---------- */
+.ex-photo-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+}
+
+.ex-photo-tile {
+    position: relative;
+    aspect-ratio: 1 / 0.95;
+    border-radius: 16px;
+    overflow: hidden;
+    border: 1px solid rgba(var(--c-rgb), 0.35);
+    isolation: isolate;
+    background: linear-gradient(160deg, rgba(var(--c-rgb), 0.2), #10182e);
+}
+
+.ex-photo-img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transform: scale(1.03);
+    filter: saturate(0.9) brightness(0.8);
+    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), filter 0.4s ease;
+}
+
+.ex-photo-tile:hover .ex-photo-img {
+    transform: scale(1.14);
+    filter: saturate(1.05) brightness(0.7);
+}
+
+.ex-photo-scrim {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(200deg,
+            rgba(10, 14, 26, 0.1) 0%,
+            rgba(10, 14, 26, 0.55) 60%,
+            rgba(10, 14, 26, 0.92) 100%);
+}
+
+.ex-photo-icon {
+    position: absolute;
+    z-index: 2;
+    top: 12px;
+    left: 12px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    border-radius: 8px;
+    color: #0a0e1a;
+}
+
+.ex-photo-label {
+    position: absolute;
+    z-index: 2;
+    left: 12px;
+    right: 12px;
+    bottom: 12px;
+    font-size: 12.5px;
+    font-weight: 700;
+    color: #ffffff;
+    line-height: 1.3;
+}
+
+@media (max-width: 900px) {
+    .ex-photo-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* ---------- 2. WHAT WE MANAGE (photo banner + floating cards) ---------- */
+.ex-banner-wrap {
+    position: relative;
+    border-radius: 26px;
+    overflow: hidden;
+    padding: 44px 28px;
+    isolation: isolate;
+}
+
+.ex-banner-img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 0;
+    filter: saturate(0.85) brightness(0.6);
+}
+
+.ex-banner-scrim {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: linear-gradient(175deg,
+            rgba(10, 14, 26, 0.55) 0%,
+            rgba(10, 14, 26, 0.85) 70%,
+            rgba(10, 14, 26, 0.96) 100%);
+}
+
+.ex-manage-grid {
+    position: relative;
+    z-index: 2;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+}
+
+.ex-manage-card {
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(var(--c-rgb), 0.35);
+    border-radius: 16px;
+    padding: 20px;
+    backdrop-filter: blur(14px) saturate(150%);
+    -webkit-backdrop-filter: blur(14px) saturate(150%);
+    transition: border-color 0.25s ease, box-shadow 0.3s ease;
+}
+
+.ex-manage-card:hover {
+    border-color: rgba(var(--c-rgb), 0.75);
+    box-shadow: 0 16px 34px -18px rgba(var(--c-rgb), 0.5);
+}
+
+.ex-manage-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 10px;
+    color: #0a0e1a;
+    margin-bottom: 12px;
+    box-shadow: 0 6px 16px -4px rgba(var(--c-rgb), 0.6);
+}
+
+.ex-manage-name {
+    font-size: 14.5px;
+    font-weight: 700;
+    margin: 0 0 5px;
+    color: var(--text);
+}
+
+.ex-manage-desc {
+    font-size: 12.5px;
+    line-height: 1.5;
+    color: rgba(255, 255, 255, 0.72);
+    margin: 0;
+}
+
+@media (max-width: 900px) {
+    .ex-manage-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 560px) {
+    .ex-banner-wrap {
+        padding: 28px 16px;
+        border-radius: 18px;
+    }
+
+    .ex-manage-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ---------- 3. EVENT EXPERIENCE (photo strip) ---------- */
+.ex-strip {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+}
+
+.ex-strip-panel {
+    position: relative;
+    min-height: 260px;
+    border-radius: 18px;
+    overflow: hidden;
+    border: 1px solid rgba(var(--c-rgb), 0.35);
+    isolation: isolate;
+    background: linear-gradient(160deg, rgba(var(--c-rgb), 0.2), #10182e);
+}
+
+.ex-strip-img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transform: scale(1.03);
+    filter: saturate(0.9) brightness(0.85);
+    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.ex-strip-panel:hover .ex-strip-img {
+    transform: scale(1.1);
+}
+
+.ex-strip-tint {
+    position: absolute;
+    inset: 0;
+    opacity: 0.32;
+    mix-blend-mode: color;
+}
+
+.ex-strip-scrim {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(190deg,
+            rgba(10, 14, 26, 0.15) 0%,
+            rgba(10, 14, 26, 0.6) 55%,
+            rgba(10, 14, 26, 0.94) 100%);
+}
+
+.ex-strip-icon {
+    position: absolute;
+    z-index: 2;
+    top: 18px;
+    left: 18px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    color: #0a0e1a;
+}
+
+.ex-strip-copy {
+    position: absolute;
+    z-index: 2;
+    left: 18px;
+    right: 18px;
+    bottom: 18px;
+}
+
+.ex-strip-name {
+    font-size: 17px;
+    font-weight: 700;
+    color: #ffffff;
+    margin: 0 0 6px;
+}
+
+.ex-strip-desc {
+    font-size: 12.5px;
+    line-height: 1.5;
+    color: rgba(255, 255, 255, 0.8);
+    margin: 0;
+}
+
+@media (max-width: 760px) {
+    .ex-strip {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ---------- 4. EXHIBITOR SUPPORT (refined checklist) ---------- */
+.ex-support-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 2px;
+    background: rgba(255, 255, 255, 0.06);
+    border-radius: 14px;
+    overflow: hidden;
+}
+
+.ex-support-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 18px;
+    background: var(--bg);
+    border-left: 3px solid rgba(var(--c-rgb), 0.7);
+    transition: background 0.25s ease;
+}
+
+.ex-support-item:hover {
+    background: rgba(var(--c-rgb), 0.08);
+}
+
+.ex-support-icon {
+    flex-shrink: 0;
+    color: rgb(var(--c-rgb));
+}
+
+.ex-support-label {
+    font-size: 13.5px;
+    font-weight: 500;
+    color: var(--text);
+}
+
+/* ---------- 5. EVENT PLANNING CHECKLIST (photo-backed timeline) ---------- */
+.ex-timeline-wrap {
+    position: relative;
+    border-radius: 22px;
+    overflow: hidden;
+    padding: 40px 28px;
+    isolation: isolate;
+}
+
+.ex-timeline-bg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 0;
+    filter: saturate(0.7) brightness(0.4) blur(1px);
+}
+
+.ex-timeline-scrim {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: rgba(10, 14, 26, 0.82);
+}
+
+.ex-timeline {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+}
+
+.ex-timeline-line {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    right: 20px;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.2);
+    z-index: 0;
+}
+
+.ex-timeline-node {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    flex: 1;
+}
+
+.ex-timeline-dot {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--bg);
+    border: 1.5px solid rgba(255, 255, 255, 0.3);
+    color: var(--text);
+    margin-bottom: 10px;
+    transition: border-color 0.25s ease, transform 0.25s ease;
+}
+
+.ex-timeline-node:hover .ex-timeline-dot {
+    border-color: #fbbf24;
+    transform: scale(1.08);
+}
+
+.ex-timeline-num {
+    position: absolute;
+    top: -4px;
+    right: calc(50% - 28px);
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: #fbbf24;
+    color: #0a0e1a;
+    font-size: 9px;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.ex-timeline-label {
+    font-size: 12.5px;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.85);
+    max-width: 88px;
+}
+
+@media (max-width: 760px) {
+    .ex-timeline-wrap {
+        padding: 28px 16px;
+    }
+
+    .ex-timeline {
+        flex-wrap: wrap;
+        row-gap: 24px;
+        justify-content: flex-start;
+    }
+
+    .ex-timeline-node {
+        flex: 0 0 calc(25% - 6px);
+    }
+
+    .ex-timeline-line {
+        display: none;
+    }
+}
+
+@media (max-width: 420px) {
+    .ex-timeline-node {
+        flex: 0 0 calc(33.333% - 6px);
+    }
+}

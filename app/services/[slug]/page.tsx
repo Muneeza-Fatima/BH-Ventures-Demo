@@ -9,6 +9,10 @@ import Web3Extras from "@/components/web3/Web3Extras";
 import MissingSections from "@/components/digital analytics/analytics";
 import SocialMediaExtras from "@/components/social-media/social-media";
 import AIOpportunitySections from "@/components/AI Innovation/Ai opportunity";
+import AdvertisingSections from "@/components/advertising/advertising";
+import MarketingSections from "@/components/marketing/marketing";
+import SurveyingSections from "@/components/surveying/surveying";
+import ExhibitionSections from "@/components/exhibition/exhibition";
 import "@/components/Services/services.css";
 import "@/components/Services/service-detail.css";
 import "@/components/automobiles/automobiles.css";
@@ -17,6 +21,10 @@ import "@/components/web3/web3.css";
 import "@/components/digital analytics/analytics.css";
 import "@/components/social-media/social-media.css";
 import "@/components/AI Innovation/ai-opportunity.css";
+import "@/components/advertising/advertising.css";
+import "@/components/marketing/marketing.css";
+import "@/components/surveying/surveying.css";
+import "@/components/exhibition/exhibition.css";
 
 const CATEGORY_MAP: Record<string, string> = {
     "global trade": "trade",
@@ -27,7 +35,9 @@ const CATEGORY_MAP: Record<string, string> = {
     "analytics": "ai",
     "marketing": "marketing",
     "advertising": "marketing",
+    "growth": "marketing",
     "consulting": "trade",
+    "assessment": "trade",
     "events": "web3",
 };
 
@@ -50,6 +60,14 @@ const ANALYTICS_SERVICE_SLUGS = ["digital-analytics-services"];
 const SOCIAL_MEDIA_SERVICE_SLUGS = ["marketing-via-social-media"];
 // slug(s) that should render the AI-opportunity-consulting-specific sections
 const AI_CONSULTING_SERVICE_SLUGS = ["ai-research-consultancy"];
+// slug(s) that should render the advertising-specific sections
+const ADVERTISING_SERVICE_SLUGS = ["advertising"];
+// slug(s) that should render the marketing-management-specific sections
+const MARKETING_SERVICE_SLUGS = ["marketing-management"];
+// slug(s) that should render the surveying-and-evaluating-specific sections
+const SURVEYING_SERVICE_SLUGS = ["surveying-evaluating"];
+// slug(s) that should render the exhibition-organizing-specific sections
+const EXHIBITION_SERVICE_SLUGS = ["exhibition-organizing"];
 
 export function generateStaticParams() {
     return SERVICES.map((s) => ({ slug: s.slug }));
@@ -80,6 +98,10 @@ export default async function ServiceDetailPage({ params }: { params: ParamsProm
     const isAnalytics = ANALYTICS_SERVICE_SLUGS.includes(service.slug);
     const isSocialMedia = SOCIAL_MEDIA_SERVICE_SLUGS.includes(service.slug);
     const isAIConsulting = AI_CONSULTING_SERVICE_SLUGS.includes(service.slug);
+    const isAdvertising = ADVERTISING_SERVICE_SLUGS.includes(service.slug);
+    const isMarketing = MARKETING_SERVICE_SLUGS.includes(service.slug);
+    const isSurveying = SURVEYING_SERVICE_SLUGS.includes(service.slug);
+    const isExhibition = EXHIBITION_SERVICE_SLUGS.includes(service.slug);
 
     return (
         <div className="service-detail-page" data-category={category}>
@@ -168,6 +190,17 @@ export default async function ServiceDetailPage({ params }: { params: ParamsProm
                     <>
                         {isAnalytics && <MissingSections />}
                         {isAIConsulting && <AIOpportunitySections />}
+                        {isAdvertising && (
+                            <AdvertisingSections
+                                desc={service.desc}
+                                whatsIncluded={service.whatsIncluded}
+                                process={service.process}
+                                highlights={service.highlights}
+                            />
+                        )}
+                        {isMarketing && <MarketingSections />}
+                        {isSurveying && <SurveyingSections />}
+                        {isExhibition && <ExhibitionSections />}
                         <section className="service-detail-cta">
                             <h2>Ready to talk {service.title.toLowerCase()}?</h2>
                             <ServiceContactModal serviceTitle={service.title} />

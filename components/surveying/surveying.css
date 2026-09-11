@@ -1,0 +1,646 @@
+@import url('https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,500;8..60,600;8..60,700&family=IBM+Plex+Mono:wght@500;600&family=Inter:wght@400;500;600&display=swap');
+
+/* ==========================================================
+   Shared section shell — "case file pinned to a studio wall"
+========================================================== */
+.sv-section {
+    --wall: #0d1117;
+    --paper: #f4efe3;
+    --paper-2: #efe7d3;
+    --ink: #1e1c18;
+    --ink-soft: #6b6459;
+    --text: #f3efe4;
+    --muted: #9c9686;
+    --amber: 232, 185, 63;
+    --rust: 193, 84, 60;
+    --teal: 79, 179, 164;
+    --blue: 96, 149, 214;
+    --indigo: 141, 132, 214;
+
+    --f-display: "Source Serif 4", Georgia, serif;
+    --f-mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+    --f-body: "Inter", system-ui, sans-serif;
+
+    position: relative;
+    max-width: 1200px;
+    margin: 32px auto;
+    padding: 56px 28px;
+    color: var(--text);
+    font-family: var(--f-body);
+    background:
+        radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+    background-size: 22px 22px;
+    background-color: var(--wall);
+    border-radius: 6px;
+}
+
+.sv-heading {
+    font-family: var(--f-display);
+    font-size: 32px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    margin: 0 0 8px;
+    transition: color 0.2s ease;
+}
+
+.sv-heading:hover {
+    color: rgb(var(--amber));
+}
+
+.sv-subheading {
+    font-size: 14.5px;
+    color: var(--muted);
+    margin: 0 0 32px;
+    max-width: 46ch;
+    transition: color 0.2s ease;
+}
+
+.sv-subheading:hover {
+    color: var(--text);
+}
+
+.sv-section>.sv-heading:last-of-type {
+    margin-bottom: 32px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* shared paper-card surface */
+.sv-paper {
+    background:
+        linear-gradient(180deg, rgba(0, 0, 0, 0.015), transparent 40%),
+        var(--paper);
+    color: var(--ink);
+    box-shadow:
+        0 1px 0 rgba(255, 255, 255, 0.4) inset,
+        0 14px 26px -14px rgba(0, 0, 0, 0.55);
+}
+
+/* washi tape strip, reused on several cards */
+.sv-tape {
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    width: 54px;
+    height: 20px;
+    transform: translateX(-50%) rotate(-2deg);
+    background: rgba(244, 239, 227, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(1px);
+}
+
+/* ---------- 1. WHAT WE CAN EVALUATE (field-note tags) ---------- */
+.sv-check-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 22px 18px;
+}
+
+.sv-check-item {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 16px 14px 14px;
+    border-radius: 3px;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    will-change: transform;
+}
+
+.sv-check-item:nth-child(4n+1) {
+    transform: rotate(-1.1deg);
+}
+
+.sv-check-item:nth-child(4n+2) {
+    transform: rotate(0.8deg);
+}
+
+.sv-check-item:nth-child(4n+3) {
+    transform: rotate(1.3deg);
+}
+
+.sv-check-item:nth-child(4n+4) {
+    transform: rotate(-0.7deg);
+}
+
+.sv-check-item:hover {
+    transform: translateY(-4px) rotate(0deg) !important;
+    box-shadow:
+        0 1px 0 rgba(255, 255, 255, 0.4) inset,
+        0 22px 34px -16px rgba(0, 0, 0, 0.6);
+}
+
+.sv-check-box {
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    border: 1.5px solid rgba(var(--c-rgb), 0.55);
+    color: rgb(var(--c-rgb));
+    background: rgba(var(--c-rgb), 0.08);
+    transition: background 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+
+.sv-check-item:hover .sv-check-box {
+    background: rgba(var(--c-rgb), 0.2);
+    border-color: rgba(var(--c-rgb), 0.85);
+    box-shadow: 0 0 0 5px rgba(var(--c-rgb), 0.12);
+}
+
+.sv-check-label {
+    font-size: 13.5px;
+    font-weight: 500;
+    color: var(--ink);
+    line-height: 1.35;
+    transition: color 0.25s ease;
+}
+
+.sv-check-item:hover .sv-check-label {
+    color: rgb(var(--c-rgb));
+}
+
+@media (max-width: 640px) {
+    .sv-check-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ---------- 2. RESEARCH TYPES (case-file folders) ---------- */
+.sv-index-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+}
+
+.sv-index-card {
+    position: relative;
+    padding: 26px 18px 20px;
+    border-radius: 2px;
+    transition: transform 0.28s ease, box-shadow 0.28s ease;
+}
+
+.sv-index-card::before {
+    /* folder tab */
+    content: "";
+    position: absolute;
+    top: -9px;
+    left: 16px;
+    width: 46px;
+    height: 9px;
+    background: var(--paper-2);
+    border-radius: 3px 3px 0 0;
+    transition: background 0.28s ease;
+}
+
+.sv-index-card:hover {
+    transform: translateY(-6px) rotate(0deg);
+    box-shadow:
+        0 1px 0 rgba(255, 255, 255, 0.4) inset,
+        0 26px 38px -16px rgba(0, 0, 0, 0.6);
+}
+
+.sv-index-card:hover::before {
+    background: rgba(var(--c-rgb), 0.35);
+}
+
+.sv-index-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--f-mono);
+    font-size: 10.5px;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    color: rgb(var(--c-rgb));
+    margin-bottom: 18px;
+    transition: letter-spacing 0.25s ease;
+}
+
+.sv-index-tag::before {
+    content: "";
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: rgb(var(--c-rgb));
+    transition: box-shadow 0.25s ease;
+}
+
+.sv-index-card:hover .sv-index-tag {
+    letter-spacing: 0.06em;
+}
+
+.sv-index-card:hover .sv-index-tag::before {
+    box-shadow: 0 0 6px rgb(var(--c-rgb));
+}
+
+.sv-index-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    color: rgb(var(--c-rgb));
+    border: 1.5px solid rgba(var(--c-rgb), 0.4);
+    background: rgba(var(--c-rgb), 0.07);
+    margin-bottom: 14px;
+    transition: background 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
+}
+
+.sv-index-card:hover .sv-index-icon {
+    background: rgba(var(--c-rgb), 0.18);
+    border-color: rgba(var(--c-rgb), 0.8);
+    transform: scale(1.08);
+}
+
+.sv-index-name {
+    font-family: var(--f-display);
+    font-size: 17px;
+    font-weight: 600;
+    margin: 0 0 6px;
+    color: var(--ink);
+    transition: color 0.25s ease;
+}
+
+.sv-index-card:hover .sv-index-name {
+    color: rgb(var(--c-rgb));
+}
+
+.sv-index-desc {
+    font-size: 12.5px;
+    line-height: 1.55;
+    color: var(--ink-soft);
+    margin: 0;
+    transition: color 0.25s ease;
+}
+
+.sv-index-card:hover .sv-index-desc {
+    color: var(--ink);
+}
+
+@media (max-width: 900px) {
+    .sv-index-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 480px) {
+    .sv-index-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ---------- 3. OUR APPROACH (chain of custody) ---------- */
+.sv-flow {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 22px;
+}
+
+.sv-flow-line {
+    position: absolute;
+    top: 21px;
+    left: calc(12.5% - 1px);
+    right: calc(12.5% - 1px);
+    height: 0;
+    border-top: 1.5px dashed rgba(243, 239, 228, 0.22);
+    z-index: 0;
+}
+
+.sv-flow-step {
+    position: relative;
+    z-index: 1;
+    padding: 4px 4px 0 0;
+    transition: transform 0.25s ease;
+}
+
+.sv-flow-step:hover {
+    transform: translateY(-4px);
+}
+
+.sv-flow-node {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: var(--paper);
+    color: var(--ink);
+    box-shadow: 0 8px 16px -8px rgba(0, 0, 0, 0.6);
+    margin-bottom: 16px;
+    transition: box-shadow 0.25s ease, transform 0.25s ease;
+}
+
+.sv-flow-step:hover .sv-flow-node {
+    box-shadow: 0 16px 26px -10px rgba(0, 0, 0, 0.65);
+    transform: scale(1.05);
+}
+
+.sv-flow-step:hover .sv-flow-name {
+    color: rgb(var(--amber));
+}
+
+.sv-flow-num {
+    position: absolute;
+    top: -6px;
+    right: -6px;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: var(--rust-solid, #c1543c);
+    color: var(--paper);
+    font-family: var(--f-mono);
+    font-size: 9.5px;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.25s ease;
+}
+
+.sv-flow-step:hover .sv-flow-num {
+    transform: scale(1.15);
+}
+
+.sv-flow-name {
+    font-family: var(--f-display);
+    font-size: 15.5px;
+    font-weight: 600;
+    margin: 0 0 6px;
+    color: var(--text);
+    transition: color 0.25s ease;
+}
+
+.sv-flow-desc {
+    font-size: 12.5px;
+    line-height: 1.5;
+    color: var(--muted);
+    margin: 0;
+    max-width: 26ch;
+    transition: color 0.25s ease;
+}
+
+.sv-flow-step:hover .sv-flow-desc {
+    color: var(--text);
+}
+
+@media (max-width: 900px) {
+    .sv-flow {
+        grid-template-columns: repeat(2, 1fr);
+        row-gap: 34px;
+    }
+
+    .sv-flow-line {
+        display: none;
+    }
+}
+
+@media (max-width: 480px) {
+    .sv-flow {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ---------- 4. WHAT YOU RECEIVE (the ledger) ---------- */
+.sv-manifest-sheet {
+    position: relative;
+    padding: 8px 28px;
+    border-radius: 2px;
+    background-image:
+        repeating-linear-gradient(0deg, transparent, transparent 43px, rgba(30, 28, 24, 0.06) 43px, rgba(30, 28, 24, 0.06) 44px);
+}
+
+.sv-manifest-sheet::before,
+.sv-manifest-sheet::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 10px;
+    background:
+        radial-gradient(circle at 6px 5px, var(--wall) 3.5px, transparent 3.6px) repeat-x;
+    background-size: 24px 10px;
+}
+
+.sv-manifest-sheet::before {
+    top: -5px;
+}
+
+.sv-manifest-sheet::after {
+    bottom: -5px;
+    transform: scaleY(-1);
+}
+
+.sv-manifest {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    column-gap: 36px;
+}
+
+.sv-manifest-row {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    padding: 12px 8px;
+    margin: 0 -8px;
+    border-bottom: 1px solid rgba(30, 28, 24, 0.12);
+    border-radius: 3px;
+    transition: background 0.2s ease;
+}
+
+.sv-manifest-row:hover {
+    background: rgba(30, 28, 24, 0.05);
+}
+
+.sv-manifest-num {
+    font-family: var(--f-mono);
+    font-size: 11px;
+    color: var(--ink-soft);
+    flex-shrink: 0;
+    transition: color 0.2s ease;
+}
+
+.sv-manifest-icon {
+    flex-shrink: 0;
+    color: var(--ink-soft);
+    position: relative;
+    top: 2px;
+    transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.sv-manifest-name {
+    font-size: 13.5px;
+    color: var(--ink);
+    white-space: nowrap;
+    transition: color 0.2s ease;
+}
+
+.sv-manifest-row:hover .sv-manifest-num,
+.sv-manifest-row:hover .sv-manifest-icon {
+    color: var(--rust-solid, #c1543c);
+    transform: scale(1.1);
+}
+
+.sv-manifest-row:hover .sv-manifest-name {
+    color: #000;
+    font-weight: 600;
+}
+
+.sv-manifest-leader {
+    flex: 1;
+    border-bottom: 1px dotted rgba(30, 28, 24, 0.3);
+    margin: 0 6px;
+    transform: translateY(-4px);
+}
+
+.sv-manifest-check {
+    flex-shrink: 0;
+    color: #3f7a5c;
+    transition: transform 0.2s ease;
+}
+
+.sv-manifest-row:hover .sv-manifest-check {
+    transform: scale(1.2);
+}
+
+@media (max-width: 640px) {
+    .sv-manifest {
+        grid-template-columns: 1fr;
+        column-gap: 0;
+    }
+}
+
+/* ---------- 5. FROM DATA TO DECISIONS (the thread) ---------- */
+.sv-pipeline {
+    display: flex;
+    align-items: stretch;
+    gap: 0;
+    flex-wrap: wrap;
+    position: relative;
+}
+
+.sv-pipeline-card {
+    position: relative;
+    flex: 1 1 180px;
+    padding: 22px 16px 18px;
+    border-radius: 2px;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.sv-pipeline-card:hover {
+    transform: translateY(-4px);
+    box-shadow:
+        0 1px 0 rgba(255, 255, 255, 0.4) inset,
+        0 22px 32px -16px rgba(0, 0, 0, 0.6);
+}
+
+.sv-pipeline-card--final {
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0.02), transparent 40%), var(--paper);
+}
+
+.sv-pipeline-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    color: rgb(var(--c-rgb));
+    border: 1.5px solid rgba(var(--c-rgb), 0.4);
+    background: rgba(var(--c-rgb), 0.08);
+    margin-bottom: 12px;
+    transition: background 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
+}
+
+.sv-pipeline-card:hover .sv-pipeline-icon {
+    background: rgba(var(--c-rgb), 0.2);
+    border-color: rgba(var(--c-rgb), 0.85);
+    transform: scale(1.08);
+}
+
+.sv-pipeline-name {
+    font-family: var(--f-display);
+    font-size: 14.5px;
+    font-weight: 600;
+    margin: 0 0 6px;
+    color: var(--ink);
+    transition: color 0.25s ease;
+}
+
+.sv-pipeline-card:hover .sv-pipeline-name {
+    color: rgb(var(--c-rgb));
+}
+
+.sv-pipeline-desc {
+    font-size: 12px;
+    line-height: 1.5;
+    color: var(--ink-soft);
+    margin: 0;
+    transition: color 0.25s ease;
+}
+
+.sv-pipeline-card:hover .sv-pipeline-desc {
+    color: var(--ink);
+}
+
+.sv-pipeline-thread {
+    flex-shrink: 0;
+    width: 22px;
+    align-self: center;
+    height: 1.5px;
+    background: repeating-linear-gradient(90deg, rgba(243, 239, 228, 0.35) 0 4px, transparent 4px 8px);
+}
+
+.sv-stamp {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 54px;
+    height: 54px;
+    border-radius: 50%;
+    border: 2px solid rgba(193, 84, 60, 0.75);
+    color: rgba(193, 84, 60, 0.85);
+    font-family: var(--f-mono);
+    font-size: 8.5px;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    text-align: center;
+    line-height: 1.15;
+    transform: rotate(-12deg);
+    mix-blend-mode: multiply;
+    transition: transform 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+}
+
+.sv-pipeline-card:hover .sv-stamp {
+    transform: rotate(-6deg) scale(1.08);
+    border-color: rgba(193, 84, 60, 1);
+    color: rgba(193, 84, 60, 1);
+}
+
+@media (max-width: 900px) {
+    .sv-pipeline {
+        flex-direction: column;
+    }
+
+    .sv-pipeline-thread {
+        width: 1.5px;
+        height: 22px;
+        margin-left: 24px;
+        background: repeating-linear-gradient(180deg, rgba(243, 239, 228, 0.35) 0 4px, transparent 4px 8px);
+    }
+}

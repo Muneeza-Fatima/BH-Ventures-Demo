@@ -1,0 +1,706 @@
+/* ========================================
+   ADVERTISING -- section styles
+   Two registers by design:
+   - Overview: dark .adx-card matching the site's own overview card.
+   - Everything else: cream .adx-poster panels.
+   --accent / --accent-rgb pinned to blue via .adx-theme-blue.
+   ======================================== */
+
+.adx-theme-blue {
+    --accent: #2f6fed;
+    --accent-rgb: 47, 111, 237;
+}
+
+.adx-section {
+    margin-bottom: 3.25rem;
+}
+
+@keyframes adxRise {
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ---------- OVERVIEW: dark card ---------- */
+
+.adx-card {
+    position: relative;
+    border-radius: 1.1rem;
+    padding: 2.25rem;
+    background:
+        linear-gradient(#0d1526, #0d1526) padding-box,
+        linear-gradient(135deg, rgba(var(--accent-rgb), 0.55), rgba(var(--accent-rgb), 0) 55%) border-box;
+    border: 1px solid transparent;
+    overflow: hidden;
+    isolation: isolate;
+    animation: adxRise 0.5s ease both;
+}
+
+.adx-card::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(420px 180px at 0% 0%, rgba(var(--accent-rgb), 0.10), transparent 70%);
+    pointer-events: none;
+}
+
+.adx-quote {
+    position: absolute;
+    top: 0.9rem;
+    right: 1.5rem;
+    font-family: Georgia, serif;
+    font-size: 3rem;
+    line-height: 1;
+    color: rgba(var(--accent-rgb), 0.22);
+    pointer-events: none;
+}
+
+.adx-eyebrow {
+    display: block;
+    font-family: var(--font-display);
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 1rem;
+}
+
+.adx-lead-desc {
+    position: relative;
+    font-size: 1.05rem;
+    line-height: 1.7;
+    color: rgba(220, 232, 242, 0.85);
+    margin: 0;
+    max-width: 62ch;
+}
+
+.adx-dropcap {
+    color: var(--accent);
+    font-weight: 800;
+    font-size: 1.15em;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .adx-card {
+        animation: none;
+    }
+}
+
+/* ---------- EVERYTHING ELSE: cream poster panel ---------- */
+
+.adx-poster-section {
+    margin-bottom: 3.5rem;
+}
+
+.adx-poster {
+    position: relative;
+    border-radius: 1.25rem;
+    padding: 2rem;
+    background:
+        radial-gradient(ellipse 640px 260px at 100% 0%, rgba(var(--accent-rgb), 0.16), transparent 70%),
+        #f4efe1;
+    border: 1px solid rgba(var(--accent-rgb), 0.3);
+    box-shadow: 0 20px 46px -22px rgba(0, 0, 0, 0.5);
+    animation: adxRise 0.5s ease both;
+    /* isolation creates its own stacking context so page-level nav
+       dropdowns (e.g. header menus) can never visually overlap card
+       content inside the poster, regardless of their own z-index. */
+    isolation: isolate;
+}
+
+@media (max-width: 640px) {
+    .adx-poster {
+        padding: 1.5rem 1.25rem;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .adx-poster {
+        animation: none;
+    }
+}
+
+/* ---------- tear-sheet wall ("Campaign channels") ---------- */
+
+.adx-wall {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem 1.25rem;
+    align-items: flex-start;
+    justify-content: center;
+}
+
+.adx-sheet {
+    position: relative;
+    width: 150px;
+    background: #fff;
+    padding: 8px 8px 12px;
+    box-shadow: 0 10px 20px rgba(6, 17, 31, 0.22);
+    transition: transform 0.22s ease, box-shadow 0.22s ease, filter 0.22s ease;
+    cursor: pointer;
+}
+
+.adx-sheet:hover {
+    transform: translateY(-8px) rotate(0deg) !important;
+    box-shadow: 0 18px 30px rgba(6, 17, 31, 0.32);
+    filter: brightness(1.04);
+}
+
+.adx-sheet:active {
+    transform: translateY(-3px) rotate(0deg) scale(0.98) !important;
+    box-shadow: 0 8px 16px rgba(6, 17, 31, 0.28);
+    transition-duration: 0.1s;
+}
+
+.adx-sheet-tape {
+    position: absolute;
+    top: -9px;
+    left: 50%;
+    transform: translateX(-50%) rotate(-3deg);
+    width: 46px;
+    height: 18px;
+    background: rgba(var(--accent-rgb), 0.22);
+    border: 1px solid rgba(var(--accent-rgb), 0.4);
+    box-shadow: 0 3px 6px rgba(6, 17, 31, 0.25);
+}
+
+.adx-sheet-photo {
+    width: 100%;
+    aspect-ratio: 4 / 5;
+    overflow: hidden;
+    filter: grayscale(0.5) contrast(1.1);
+}
+
+.adx-sheet-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.adx-sheet-label {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 0.78rem;
+    line-height: 1.3;
+    margin: 8px 2px 0;
+    color: #06111f;
+}
+
+/* ---------- redline proof markup ("What we focus on") ---------- */
+
+.adx-proof {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 2rem;
+    align-items: start;
+}
+
+@media (max-width: 700px) {
+    .adx-proof {
+        grid-template-columns: 1fr;
+    }
+}
+
+.adx-layout-mock {
+    position: relative;
+    background: #fff;
+    border: 1px solid rgba(6, 17, 31, 0.12);
+    padding: 1.25rem;
+    box-shadow: 0 12px 26px rgba(6, 17, 31, 0.14);
+}
+
+.adx-layout-mock-head {
+    height: 18px;
+    width: 70%;
+    background: rgba(6, 17, 31, 0.82);
+    margin-bottom: 12px;
+}
+
+.adx-layout-mock-image {
+    height: 130px;
+    background: repeating-linear-gradient(135deg,
+            rgba(6, 17, 31, 0.08),
+            rgba(6, 17, 31, 0.08) 6px,
+            transparent 6px,
+            transparent 12px);
+    border: 1px solid rgba(6, 17, 31, 0.1);
+    margin-bottom: 12px;
+}
+
+.adx-layout-mock-line {
+    height: 7px;
+    background: rgba(6, 17, 31, 0.14);
+    margin-bottom: 7px;
+}
+
+.adx-layout-mock-line:nth-child(4) {
+    width: 90%;
+}
+
+.adx-layout-mock-line:nth-child(5) {
+    width: 76%;
+}
+
+.adx-layout-mock-line:nth-child(6) {
+    width: 84%;
+}
+
+.adx-mark {
+    position: absolute;
+    width: 27px;
+    height: 27px;
+    border: 2px solid var(--accent);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-display);
+    font-size: 12px;
+    color: var(--accent);
+    background: rgba(255, 255, 255, 0.92);
+    transform: rotate(-4deg);
+}
+
+.adx-notes {
+    display: flex;
+    flex-direction: column;
+    gap: 1.1rem;
+}
+
+.adx-note {
+    display: grid;
+    grid-template-columns: 24px 1fr;
+    gap: 10px;
+}
+
+.adx-note-mark {
+    width: 22px;
+    height: 22px;
+    border: 2px solid var(--accent);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-display);
+    font-size: 11px;
+    color: var(--accent);
+    flex-shrink: 0;
+}
+
+.adx-note-title {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 0.95rem;
+    margin: 0 0 3px;
+    color: #06111f;
+}
+
+.adx-note-desc {
+    font-size: 0.82rem;
+    line-height: 1.5;
+    color: rgba(6, 17, 31, 0.68);
+    margin: 0;
+}
+
+/* ---------- INCLUDED -- flex-wrap index cards (fills banner, no dead columns) ---------- */
+
+.adx-index-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem 1.25rem;
+}
+
+.adx-index-card {
+    position: relative;
+    background: #fff;
+    padding: 8px 8px 14px;
+    box-shadow: 0 10px 20px rgba(6, 17, 31, 0.18);
+    transition: transform 0.22s ease, box-shadow 0.22s ease;
+    cursor: pointer;
+    flex: 1 1 170px;
+    max-width: 220px;
+}
+
+.adx-index-card:hover {
+    transform: translateY(-6px) rotate(0deg) !important;
+    box-shadow: 0 18px 30px rgba(6, 17, 31, 0.3);
+}
+
+.adx-index-card:active {
+    transform: translateY(-2px) rotate(0deg) scale(0.98) !important;
+    box-shadow: 0 8px 14px rgba(6, 17, 31, 0.26);
+    transition-duration: 0.1s;
+}
+
+.adx-index-photo {
+    width: 100%;
+    aspect-ratio: 5 / 4;
+    overflow: hidden;
+    filter: grayscale(0.45) contrast(1.1);
+}
+
+.adx-index-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.adx-index-check {
+    position: absolute;
+    top: -10px;
+    right: -6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    border-radius: 9999px;
+    background: rgba(244, 239, 225, 0.97);
+    border: 2px solid var(--accent);
+    color: var(--accent);
+    font-size: 0.78rem;
+    font-weight: 800;
+    transform: rotate(8deg);
+}
+
+.adx-index-label {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 0.82rem;
+    line-height: 1.35;
+    margin: 9px 3px 0;
+    color: #06111f;
+}
+
+/* ---------- HOW IT WORKS -- ticket-stub poster ---------- */
+
+.adx-ticket-scroll {
+    overflow-x: auto;
+    margin: 0 -0.5rem;
+    padding: 0.75rem 0.5rem 1rem;
+    scrollbar-width: thin;
+}
+
+.adx-ticket-strip {
+    display: flex;
+    align-items: stretch;
+    width: max-content;
+    gap: 1.25rem;
+}
+
+.adx-ticket {
+    position: relative;
+    width: 230px;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+    border-radius: 0.6rem;
+    overflow: hidden;
+    box-shadow: 0 12px 24px rgba(6, 17, 31, 0.2);
+    transition: transform 0.22s ease, box-shadow 0.22s ease;
+    cursor: pointer;
+}
+
+.adx-ticket:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 18px 30px rgba(6, 17, 31, 0.28);
+}
+
+.adx-ticket:active {
+    transform: translateY(-2px) scale(0.985);
+    box-shadow: 0 8px 14px rgba(6, 17, 31, 0.24);
+    transition-duration: 0.1s;
+}
+
+.adx-ticket-photo {
+    height: 120px;
+    overflow: hidden;
+}
+
+.adx-ticket-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: grayscale(0.45) contrast(1.1);
+}
+
+.adx-ticket-perf {
+    position: relative;
+    height: 0;
+    border-top: 2px dashed rgba(6, 17, 31, 0.2);
+    margin: 0 0.9rem;
+}
+
+.adx-ticket-perf::before,
+.adx-ticket-perf::after {
+    content: "";
+    position: absolute;
+    top: -8px;
+    width: 16px;
+    height: 16px;
+    border-radius: 9999px;
+    background: #f4efe1;
+}
+
+.adx-ticket-perf::before {
+    left: -1.9rem;
+}
+
+.adx-ticket-perf::after {
+    right: -1.9rem;
+}
+
+.adx-ticket-body {
+    padding: 0.9rem 1.1rem 1.2rem;
+}
+
+.adx-ticket-num {
+    font-family: var(--font-display);
+    font-size: 0.7rem;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    color: var(--accent);
+}
+
+.adx-ticket-name {
+    font-family: var(--font-display);
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #06111f;
+    margin: 0.3rem 0 0.35rem;
+}
+
+.adx-ticket-desc {
+    font-size: 0.82rem;
+    line-height: 1.5;
+    color: rgba(6, 17, 31, 0.65);
+    margin: 0;
+}
+
+/* ---------- CAMPAIGN OBJECTIVES -- flow poster, flex-wrap (fills banner) ---------- */
+
+.adx-poster--flow {
+    padding-top: 2.75rem;
+}
+
+.adx-flow-line {
+    position: absolute;
+    top: 4.35rem;
+    left: 2.5rem;
+    right: 2.5rem;
+    height: 2px;
+    background-image: linear-gradient(to right, rgba(var(--accent-rgb), 0.45) 60%, transparent 0%);
+    background-size: 14px 2px;
+    background-repeat: repeat-x;
+    pointer-events: none;
+    z-index: 0;
+}
+
+@media (max-width: 900px) {
+    .adx-flow-line {
+        display: none;
+    }
+}
+
+.adx-flow-grid {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem 1.25rem;
+}
+
+.adx-flow-card {
+    position: relative;
+    background: #fff;
+    border-radius: 0.9rem;
+    padding: 1.5rem 1.25rem 1.25rem;
+    box-shadow: 0 12px 24px rgba(6, 17, 31, 0.16);
+    animation: adxRise 0.45s ease both;
+    transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.25s ease;
+    cursor: pointer;
+    flex: 1 1 220px;
+    max-width: 260px;
+}
+
+.adx-flow-card:hover {
+    transform: translateY(-8px) rotate(-1.5deg);
+    box-shadow: 0 20px 34px rgba(6, 17, 31, 0.3), 0 0 0 2px rgba(var(--accent-rgb), 0.3);
+}
+
+.adx-flow-card:active {
+    transform: translateY(-3px) rotate(-1.5deg) scale(0.97);
+    box-shadow: 0 10px 18px rgba(6, 17, 31, 0.26);
+    transition-duration: 0.1s;
+}
+
+.adx-flow-num {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 9999px;
+    background: var(--accent);
+    color: #fff;
+    font-family: var(--font-display);
+    font-size: 0.78rem;
+    font-weight: 800;
+    box-shadow: 0 0 0 4px #f4efe1, 0 4px 10px rgba(var(--accent-rgb), 0.4);
+    margin-bottom: 0.75rem;
+}
+
+.adx-flow-name {
+    font-family: var(--font-display);
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #06111f;
+    margin: 0 0 0.4rem;
+}
+
+.adx-flow-desc {
+    font-size: 0.82rem;
+    line-height: 1.5;
+    color: rgba(6, 17, 31, 0.65);
+    margin: 0;
+}
+
+/* ---------- HIGHLIGHTS -- stamped stat poster ---------- */
+
+.adx-stat-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.25rem;
+}
+
+@media (max-width: 640px) {
+    .adx-stat-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.adx-stat-card {
+    position: relative;
+    background: #fff;
+    border-radius: 0.9rem;
+    padding: 1.5rem 1.25rem;
+    box-shadow: 0 12px 24px rgba(6, 17, 31, 0.18);
+    text-align: center;
+    transition: transform 0.22s ease, box-shadow 0.22s ease;
+    cursor: pointer;
+}
+
+.adx-stat-card:hover {
+    transform: translateY(-6px) scale(1.02);
+    box-shadow: 0 18px 30px rgba(6, 17, 31, 0.26);
+}
+
+.adx-stat-card:active {
+    transform: translateY(-2px) scale(0.98);
+    transition-duration: 0.1s;
+}
+
+.adx-stat-pin {
+    position: absolute;
+    top: -7px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 12px;
+    height: 12px;
+    border-radius: 9999px;
+    background: var(--accent);
+    box-shadow: 0 0 0 3px rgba(244, 239, 225, 0.95), 0 4px 8px rgba(6, 17, 31, 0.3);
+}
+
+.adx-stat-value {
+    font-family: var(--font-display);
+    font-size: clamp(1.4rem, 2.4vw, 1.9rem);
+    font-weight: 800;
+    color: var(--accent);
+    margin: 0.4rem 0 0.35rem;
+}
+
+.adx-stat-label {
+    font-size: 0.72rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: rgba(6, 17, 31, 0.6);
+    margin: 0;
+}
+
+/* ---------- PERFORMANCE METRICS -- dotted stat strip ---------- */
+
+.adx-metrics-row {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 1.1rem;
+}
+
+@media (max-width: 900px) {
+    .adx-metrics-row {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 480px) {
+    .adx-metrics-row {
+        grid-template-columns: 1fr;
+    }
+}
+
+.adx-metric-card {
+    background: rgba(255, 255, 255, 0.7);
+    border: 1px solid rgba(var(--accent-rgb), 0.35);
+    border-radius: 0.85rem;
+    padding: 1.2rem 1rem;
+    text-align: center;
+    transition: transform 0.22s ease, box-shadow 0.22s ease, background 0.22s ease;
+    cursor: pointer;
+}
+
+.adx-metric-card:hover {
+    transform: translateY(-5px);
+    background: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 14px 24px rgba(6, 17, 31, 0.2);
+}
+
+.adx-metric-card:active {
+    transform: translateY(-1px) scale(0.98);
+    transition-duration: 0.1s;
+}
+
+.adx-metric-dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 9999px;
+    background: var(--accent);
+    margin-bottom: 0.6rem;
+}
+
+.adx-metric-name {
+    font-family: var(--font-display);
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #06111f;
+    margin: 0 0 0.35rem;
+}
+
+.adx-metric-desc {
+    font-size: 0.76rem;
+    line-height: 1.45;
+    color: rgba(6, 17, 31, 0.6);
+    margin: 0;
+}

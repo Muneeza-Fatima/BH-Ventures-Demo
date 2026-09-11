@@ -1,0 +1,583 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap');
+
+/* ==========================================================
+   Shared section shell — "field report" / clean tech desk
+   Light background, one signature accent (indigo) used for
+   every hover/focus state, per-section colour only touches
+   icons, borders and the photo tint.
+========================================================== */
+.mk-section {
+    --bg: #ffffff;
+    --panel: #f6f7f9;
+    --line: rgba(15, 23, 42, 0.09);
+    --text: #12141a;
+    --muted: #5b6270;
+    --signature: 79, 70, 229;
+    /* indigo — the one accent every hover shares */
+
+    --f-display: "Space Grotesk", ui-sans-serif, sans-serif;
+    --f-body: "Inter", ui-sans-serif, sans-serif;
+
+    max-width: 1200px;
+    margin: 32px auto;
+    padding: 40px 24px 48px;
+    color: var(--text);
+    font-family: var(--f-body);
+    background: var(--bg);
+}
+
+.mk-heading {
+    font-family: var(--f-display);
+    font-size: 30px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    margin: 0 0 28px;
+    color: var(--text);
+}
+
+.mk-subheading {
+    font-size: 14.5px;
+    color: var(--muted);
+    margin: -18px 0 26px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* one shared hover language across every section: text warms to the
+   signature indigo, nothing else changes colour on hover */
+.mk-heading:hover,
+.mk-subheading:hover,
+.mk-focus-name:hover,
+.mk-focus-desc:hover,
+.mk-objective-name:hover,
+.mk-objective-desc:hover,
+.mk-deliver-name:hover,
+.mk-deliver-desc:hover,
+.mk-metric-name:hover,
+.mk-metric-desc:hover {
+    color: rgb(var(--signature));
+}
+
+.mk-heading,
+.mk-subheading,
+.mk-focus-name,
+.mk-focus-desc,
+.mk-objective-name,
+.mk-objective-desc,
+.mk-deliver-name,
+.mk-deliver-desc,
+.mk-metric-name,
+.mk-metric-desc {
+    transition: color 0.2s ease;
+}
+
+/* the bento card's own hover already darkens/lights the tile, so its
+   caption gets a brighter tone rather than the shared accent, to stay
+   legible over the photo */
+.mk-bento-desc:hover {
+    color: #ffffff;
+}
+
+/* ---------- 1. MARKETING FOCUS AREAS (photo bento) ---------- */
+.mk-bento-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-auto-rows: 170px;
+    gap: 14px;
+}
+
+.mk-bento-card:nth-child(1) {
+    grid-column: span 2;
+    grid-row: span 2;
+}
+
+.mk-bento-card:nth-child(2) {
+    grid-column: span 2;
+    grid-row: span 1;
+}
+
+.mk-bento-card:nth-child(3) {
+    grid-column: span 1;
+    grid-row: span 1;
+}
+
+.mk-bento-card:nth-child(4) {
+    grid-column: span 1;
+    grid-row: span 1;
+}
+
+.mk-bento-card:nth-child(5) {
+    grid-column: span 2;
+    grid-row: span 1;
+}
+
+.mk-bento-card:nth-child(6) {
+    grid-column: span 2;
+    grid-row: span 1;
+}
+
+.mk-bento-card {
+    position: relative;
+    border-radius: 14px;
+    overflow: hidden;
+    border: 1px solid var(--line);
+    isolation: isolate;
+    background: var(--panel);
+    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+    transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.mk-bento-card:hover {
+    border-color: rgba(var(--c-rgb), 0.55);
+    box-shadow: 0 12px 28px -10px rgba(var(--c-rgb), 0.45);
+    transform: translateY(-2px);
+}
+
+.mk-bento-img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transform: scale(1.02);
+    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), filter 0.4s ease;
+    filter: saturate(0.92) brightness(0.95);
+}
+
+.mk-bento-card:hover .mk-bento-img {
+    transform: scale(1.06);
+    filter: saturate(1.05) brightness(0.9);
+}
+
+.mk-bento-tint {
+    position: absolute;
+    inset: 0;
+    opacity: 0.22;
+    mix-blend-mode: color;
+}
+
+/* photo tiles still need a dark scrim behind the caption for
+   legibility, even on an otherwise light page */
+.mk-bento-scrim {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(190deg,
+            rgba(10, 11, 15, 0.05) 0%,
+            rgba(10, 11, 15, 0.35) 55%,
+            rgba(10, 11, 15, 0.82) 100%);
+}
+
+.mk-bento-sweep {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    background: linear-gradient(115deg, transparent 42%, rgba(255, 255, 255, 0.22) 50%, transparent 58%);
+    background-size: 250% 250%;
+    background-position: -150% -150%;
+    transition: background-position 0.8s ease;
+    pointer-events: none;
+}
+
+.mk-bento-card:hover .mk-bento-sweep {
+    background-position: 150% 150%;
+}
+
+/* a plain two-digit index instead of a boxed eyebrow label — the six
+   tiles really are worked through as a sequence, so the number carries
+   real meaning rather than decorating the card */
+.mk-bento-tag {
+    position: absolute;
+    z-index: 2;
+    top: 14px;
+    left: 16px;
+    display: inline-flex;
+    align-items: baseline;
+    gap: 5px;
+    font-family: var(--f-display);
+    font-size: 13px;
+    font-weight: 600;
+    color: #ffffff;
+}
+
+.mk-bento-tag svg {
+    display: none;
+}
+
+.mk-bento-copy {
+    position: absolute;
+    z-index: 2;
+    left: 16px;
+    right: 16px;
+    bottom: 14px;
+}
+
+.mk-bento-name {
+    font-family: var(--f-display);
+    font-size: 16px;
+    font-weight: 600;
+    color: #ffffff;
+    margin: 0 0 4px;
+}
+
+.mk-bento-desc {
+    font-size: 12.5px;
+    line-height: 1.45;
+    color: rgba(255, 255, 255, 0.8);
+    margin: 0;
+    max-width: 34ch;
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    transition: max-height 0.35s ease, opacity 0.3s ease;
+}
+
+.mk-bento-card:hover .mk-bento-desc {
+    max-height: 70px;
+    opacity: 1;
+}
+
+.mk-bento-card:nth-child(1) .mk-bento-desc {
+    max-height: 70px;
+    opacity: 1;
+}
+
+.mk-bento-card:nth-child(1) .mk-bento-name {
+    font-size: 22px;
+}
+
+@media (max-width: 760px) {
+    .mk-bento-grid {
+        grid-template-columns: 1fr 1fr;
+        grid-auto-rows: 150px;
+    }
+
+    .mk-bento-card:nth-child(n) {
+        grid-column: span 2;
+        grid-row: span 1;
+    }
+
+    .mk-bento-card:nth-child(1) {
+        grid-row: span 2;
+    }
+
+    .mk-bento-desc {
+        max-height: 70px;
+        opacity: 1;
+    }
+}
+
+/* ---------- 2. WHAT WE FOCUS ON (divided strip) ---------- */
+.mk-focus-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+}
+
+.mk-focus-card {
+    padding: 4px 24px;
+    border-left: 1px solid var(--line);
+    transition: background 0.25s ease;
+}
+
+.mk-focus-card:first-child {
+    border-left: none;
+    padding-left: 4px;
+}
+
+.mk-focus-eq {
+    display: flex;
+    align-items: flex-end;
+    gap: 3px;
+    height: 26px;
+    margin-bottom: 16px;
+}
+
+.mk-focus-eq span {
+    width: 4px;
+    border-radius: 1px;
+    background: rgb(var(--c-rgb));
+    opacity: 0.85;
+    transition: transform 0.25s ease;
+}
+
+.mk-focus-card:hover .mk-focus-eq span {
+    transform: scaleY(1.12);
+}
+
+.mk-focus-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 9px;
+    color: rgb(var(--c-rgb));
+    background: rgba(var(--c-rgb), 0.1);
+    margin-bottom: 14px;
+}
+
+.mk-focus-name {
+    font-family: var(--f-display);
+    font-size: 15px;
+    font-weight: 600;
+    margin: 0 0 8px;
+    color: var(--text);
+}
+
+.mk-focus-desc {
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--muted);
+    margin: 0;
+}
+
+@media (max-width: 900px) {
+    .mk-focus-grid {
+        grid-template-columns: repeat(2, 1fr);
+        row-gap: 24px;
+    }
+
+    .mk-focus-card:nth-child(2n+1) {
+        border-left: none;
+        padding-left: 4px;
+    }
+}
+
+@media (max-width: 520px) {
+    .mk-focus-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .mk-focus-card {
+        border-left: none !important;
+        padding-left: 4px !important;
+    }
+}
+
+/* ---------- 3. MARKETING OBJECTIVES ---------- */
+.mk-objective-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+}
+
+.mk-objective-card {
+    text-align: center;
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 30px 18px 24px;
+    min-height: 220px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    transition: border-color 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.mk-objective-card:hover {
+    border-color: rgba(var(--c-rgb), 0.4);
+    box-shadow: 0 10px 24px -12px rgba(var(--c-rgb), 0.5);
+    transform: translateY(-3px);
+}
+
+.mk-objective-ring {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 58px;
+    height: 58px;
+    border-radius: 50%;
+    padding: 5px;
+    margin: 0 auto 16px;
+    background: repeating-conic-gradient(rgba(var(--c-rgb), 0.9) 0deg 3deg, transparent 3deg 12deg);
+}
+
+.mk-objective-icon {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: var(--bg);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: rgb(var(--c-rgb));
+}
+
+.mk-objective-name {
+    font-family: var(--f-display);
+    font-size: 14.5px;
+    font-weight: 600;
+    margin: 0 0 6px;
+    color: var(--text);
+}
+
+.mk-objective-desc {
+    font-size: 12.5px;
+    line-height: 1.5;
+    color: var(--muted);
+    margin: 0;
+}
+
+@media (max-width: 900px) {
+    .mk-objective-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 480px) {
+    .mk-objective-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ---------- 4. WHAT YOU GET (numbered list, real sequence) ---------- */
+.mk-deliver-list {
+    position: relative;
+    max-width: 780px;
+}
+
+.mk-deliver-line {
+    position: absolute;
+    top: 6px;
+    bottom: 6px;
+    left: 19px;
+    width: 0;
+    border-left: 1px dashed var(--line);
+}
+
+.mk-deliver-row {
+    position: relative;
+    display: grid;
+    grid-template-columns: 40px 1fr;
+    gap: 18px;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--line);
+}
+
+.mk-deliver-row:last-child {
+    border-bottom: none;
+    padding-bottom: 4px;
+}
+
+.mk-deliver-row:first-child {
+    padding-top: 0;
+}
+
+.mk-deliver-idx {
+    display: block;
+    font-family: var(--f-display);
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--muted);
+    margin-bottom: 4px;
+}
+
+.mk-deliver-node {
+    position: relative;
+    z-index: 1;
+    width: 40px;
+    height: 40px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    background: rgb(var(--c-rgb));
+    border-radius: 11px;
+}
+
+.mk-deliver-body {
+    min-width: 0;
+}
+
+.mk-deliver-name {
+    font-family: var(--f-display);
+    font-size: 15.5px;
+    font-weight: 600;
+    color: var(--text);
+    margin: 0 0 3px;
+}
+
+.mk-deliver-desc {
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--muted);
+    margin: 0;
+    max-width: 56ch;
+}
+
+@media (max-width: 560px) {
+    .mk-deliver-row {
+        grid-template-columns: 34px 1fr;
+        gap: 14px;
+    }
+
+    .mk-deliver-node {
+        width: 34px;
+        height: 34px;
+    }
+
+    .mk-deliver-line {
+        left: 16px;
+    }
+}
+
+/* ---------- 5. PERFORMANCE TRACKING (level meters) ---------- */
+.mk-metric-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+}
+
+.mk-metric-card {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex: 1 1 200px;
+    min-height: 96px;
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-top: 2px solid rgb(var(--c-rgb));
+    border-radius: 10px;
+    padding: 18px 20px;
+    transition: box-shadow 0.25s ease, transform 0.2s ease;
+}
+
+.mk-metric-card:hover {
+    box-shadow: 0 10px 20px -12px rgba(var(--c-rgb), 0.45);
+    transform: translateY(-2px);
+}
+
+.mk-metric-meter {
+    flex-shrink: 0;
+    display: flex;
+    align-items: flex-end;
+    gap: 2.5px;
+    height: 30px;
+}
+
+.mk-metric-meter span {
+    width: 4px;
+    border-radius: 1px;
+    background: rgba(var(--c-rgb), 0.85);
+}
+
+.mk-metric-name {
+    font-family: var(--f-display);
+    font-size: 13.5px;
+    font-weight: 600;
+    margin: 0 0 3px;
+    color: var(--text);
+}
+
+.mk-metric-desc {
+    font-size: 12px;
+    line-height: 1.45;
+    color: var(--muted);
+    margin: 0;
+}
