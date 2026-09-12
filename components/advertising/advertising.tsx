@@ -32,8 +32,6 @@ const FOCUS_AREAS = [
     { mark: "D", name: "Performance", desc: "Track campaign results and identify opportunities for improvement." },
 ];
 
-/* Added a 6th objective so the grid fills two even rows of 3 instead
-   of 4-then-1 with a big empty gap next to the lone last card. */
 const OBJECTIVES = [
     { num: "01", name: "Build Awareness", desc: "Increase visibility and introduce your brand to relevant audiences." },
     { num: "02", name: "Drive Traffic", desc: "Bring targeted visitors to your website, product, or campaign landing page." },
@@ -51,51 +49,33 @@ const METRICS = [
     { name: "Conversions", desc: "Actions completed against the campaign objective." },
 ];
 
-/* Colored drop-cap for the first character of the overview paragraph. */
-function DropcapText({ text }: { text: string }) {
-    if (!text) return null;
-    return (
-        <>
-            <span className="adx-dropcap">{text.charAt(0)}</span>
-            {text.slice(1)}
-        </>
-    );
-}
-
 /* ========================================
    ADVERTISING -- full replacement for the generic
-   Overview / What's included / How it works / Highlights block, plus
+   What's included / How it works / Highlights block, plus
    Campaign channels, What we focus on, Campaign objectives, and
    Performance metrics.
 
-   Overview uses the dark .adx-card. Every other section uses the cream
-   .adx-poster panel device. "What's included" and "Campaign objectives"
-   now use flex-wrap grids (not CSS grid auto-fill/auto-fit) so cards
-   flow to fill the banner width instead of leaving a large empty
-   region when the item count doesn't evenly divide the row.
+   NOTE: the Overview is intentionally NOT duplicated here — the generic
+   service-detail-overview section from page.tsx already covers it.
+   `desc` is kept in props for now in case a future section needs it,
+   but it's not rendered here.
+
+   Every section uses the cream .adx-poster panel device. "What's
+   included" and "Campaign objectives" use flex-wrap grids (not CSS grid
+   auto-fill/auto-fit) so cards flow to fill the banner width instead of
+   leaving a large empty region when the item count doesn't evenly
+   divide the row.
 
    --accent / --accent-rgb pinned to blue via .adx-theme-blue.
    Rendered only for service.slug === "advertising".
    ======================================== */
 export default function AdvertisingSections({
-    desc,
     whatsIncluded,
     process,
     highlights,
 }: AdvertisingSectionsProps) {
     return (
         <div className="adx-theme-blue">
-            {/* ---------- OVERVIEW -- dark card ---------- */}
-            <section className="adx-section">
-                <div className="adx-card adx-card--lead">
-                    <span className="adx-quote">&#8220;</span>
-                    <span className="adx-eyebrow">Overview</span>
-                    <p className="adx-lead-desc">
-                        <DropcapText text={desc} />
-                    </p>
-                </div>
-            </section>
-
             {/* ---------- CAMPAIGN CHANNELS -- cream tear-sheet wall ---------- */}
             <section className="adx-poster-section">
                 <h2 className="service-detail-heading">Campaign channels</h2>

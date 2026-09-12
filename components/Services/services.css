@@ -127,7 +127,7 @@
     -webkit-text-fill-color: transparent;
     background-clip: text;
     animation: services-title-shimmer 6s ease-in-out infinite;
-    text-shadow: 0 0 40px rgba(46, 230, 197, 0.25);
+    /* text-shadow removed: incompatible with -webkit-text-fill-color:transparent */
 }
 
 @keyframes services-title-shimmer {
@@ -449,8 +449,8 @@
         radial-gradient(ellipse 260px 180px at 15% 0%, rgba(var(--accent-rgb), 0.16), transparent 70%),
         linear-gradient(to bottom, rgba(18, 36, 58, 0.9), rgba(10, 22, 38, 0.95));
     transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.18s ease;
-    /* will-change only when the user is interacting, not always-on */
-    contain: layout;
+    /* contain:style+layout keeps reflow isolated without clipping positioned children */
+    contain: style layout;
 }
 
 .service-card:not(:hover) {
@@ -559,7 +559,10 @@
     height: 124%;
     width: 124%;
     transform-style: preserve-3d;
+    /* Stagger per card position so all 10 cards don't animate in perfect sync
+       — that simultaneous GPU load is the primary cause of perceived sluggishness */
     animation: service-card-3d 9s ease-in-out infinite;
+    animation-delay: calc(var(--reveal-delay, 0ms) * -1);
 }
 
 .service-card:hover .service-image-wrap {
@@ -625,12 +628,13 @@
     width: 100%;
     object-fit: cover;
     backface-visibility: hidden;
-    filter: saturate(1.35) contrast(1.08) brightness(1.05);
-    transition: filter 0.3s ease;
+    /* Avoid filter on non-hover — GPU layer cost on every card simultaneously */
+    filter: saturate(1.2) brightness(1.02);
+    transition: filter 0.4s ease;
 }
 
 .service-card:hover .service-image {
-    filter: saturate(1.5) contrast(1.12) brightness(1.1);
+    filter: saturate(1.5) contrast(1.1) brightness(1.08);
 }
 
 .service-banner-glow {
@@ -662,14 +666,19 @@
             transparent 2px,
             rgba(0, 0, 0, 0.04) 2px,
             rgba(0, 0, 0, 0.04) 4px);
-    animation: service-sweep 6s linear infinite;
+    /* Only animate on hover — prevents all 10 scanlines running simultaneously */
+    opacity: 0;
+    animation: none;
 }
 
-/* scanline is a paint-heavy GPU layer — disable on touch devices where
-   the animation cost outweighs the visual benefit */
+.service-card:hover .service-scanline {
+    opacity: 1;
+    animation: service-sweep 4s linear infinite;
+}
+
+/* scanline is a paint-heavy GPU layer — disable on touch devices */
 @media (hover: none) {
     .service-scanline {
-        animation: none;
         display: none;
     }
 }
@@ -746,7 +755,7 @@
 .service-title {
     margin-bottom: 1rem;
     font-family: var(--font-display);
-    font-size: 1.15rem;
+    font-size: clamp(1rem, 0.9rem + 0.4vw, 1.15rem);
     font-weight: 700;
     line-height: 1.375;
     background: linear-gradient(100deg,
@@ -758,7 +767,9 @@
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+    /* Stagger shimmer offset so all cards don't pulse in sync */
     animation: service-title-shimmer 6s ease-in-out infinite;
+    animation-delay: calc(var(--reveal-delay, 0ms) * -1);
 }
 
 @keyframes service-title-shimmer {
@@ -1142,7 +1153,7 @@
     background-clip: text;
     color: transparent;
     animation: services-title-shimmer 6s ease-in-out infinite;
-    text-shadow: 0 0 40px rgba(46, 230, 197, 0.25);
+    /* text-shadow removed: has no effect when color is transparent for gradient clip */
 }
 
 .services-hero-subtitle {

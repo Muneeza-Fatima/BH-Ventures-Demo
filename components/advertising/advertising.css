@@ -27,7 +27,7 @@
     }
 }
 
-/* ---------- OVERVIEW: dark card ---------- */
+/* ---------- OVERVIEW: dark card (unused now — see advertising.tsx) ---------- */
 
 .adx-card {
     position: relative;
@@ -194,6 +194,17 @@
     color: #06111f;
 }
 
+@media (max-width: 480px) {
+    .adx-wall {
+        gap: 1.1rem 0.9rem;
+    }
+
+    .adx-sheet {
+        width: 42%;
+        max-width: 150px;
+    }
+}
+
 /* ---------- redline proof markup ("What we focus on") ---------- */
 
 .adx-proof {
@@ -310,6 +321,56 @@
     margin: 0;
 }
 
+/* "What we focus on" — small-screen refinements.
+   Note: .adx-layout-mock-image height is intentionally left at 130px
+   here (not shrunk) so the .adx-mark badges — positioned with fixed
+   inline px offsets in the JSX — stay aligned with the mock's image
+   and lines at every width. Only spacing/sizing that doesn't affect
+   that layout math is adjusted below. */
+@media (max-width: 480px) {
+    .adx-poster--proof {
+        padding: 1.25rem 1rem;
+    }
+
+    .adx-layout-mock {
+        padding: 1rem 0.85rem;
+    }
+
+    .adx-mark {
+        width: 22px;
+        height: 22px;
+        font-size: 10px;
+        border-width: 1.5px;
+    }
+
+    .adx-proof {
+        gap: 1.5rem;
+    }
+
+    .adx-notes {
+        gap: 0.9rem;
+    }
+
+    .adx-note {
+        grid-template-columns: 20px 1fr;
+        gap: 8px;
+    }
+
+    .adx-note-mark {
+        width: 19px;
+        height: 19px;
+        font-size: 10px;
+    }
+
+    .adx-note-title {
+        font-size: 0.88rem;
+    }
+
+    .adx-note-desc {
+        font-size: 0.78rem;
+    }
+}
+
 /* ---------- INCLUDED -- flex-wrap index cards (fills banner, no dead columns) ---------- */
 
 .adx-index-grid {
@@ -381,6 +442,17 @@
     color: #06111f;
 }
 
+@media (max-width: 480px) {
+    .adx-index-grid {
+        gap: 1.1rem 0.9rem;
+    }
+
+    .adx-index-card {
+        flex: 1 1 42%;
+        max-width: none;
+    }
+}
+
 /* ---------- HOW IT WORKS -- ticket-stub poster ---------- */
 
 .adx-ticket-scroll {
@@ -388,6 +460,7 @@
     margin: 0 -0.5rem;
     padding: 0.75rem 0.5rem 1rem;
     scrollbar-width: thin;
+    -webkit-overflow-scrolling: touch;
 }
 
 .adx-ticket-strip {
@@ -487,6 +560,16 @@
     margin: 0;
 }
 
+@media (max-width: 480px) {
+    .adx-ticket {
+        width: 200px;
+    }
+
+    .adx-ticket-photo {
+        height: 100px;
+    }
+}
+
 /* ---------- CAMPAIGN OBJECTIVES -- flow poster, flex-wrap (fills banner) ---------- */
 
 .adx-poster--flow {
@@ -574,6 +657,30 @@
     line-height: 1.5;
     color: rgba(6, 17, 31, 0.65);
     margin: 0;
+}
+
+@media (max-width: 480px) {
+    .adx-poster--flow {
+        padding-top: 1.5rem;
+    }
+
+    .adx-flow-grid {
+        gap: 1.1rem;
+    }
+
+    .adx-flow-card {
+        flex: 1 1 100%;
+        max-width: none;
+        padding: 1.25rem 1.1rem 1.1rem;
+    }
+
+    .adx-flow-card:hover {
+        transform: translateY(-4px) rotate(0deg);
+    }
+
+    .adx-flow-card:active {
+        transform: translateY(-1px) rotate(0deg) scale(0.98);
+    }
 }
 
 /* ---------- HIGHLIGHTS -- stamped stat poster ---------- */
