@@ -76,7 +76,7 @@ export default function AboutContact() {
           transition={{ duration: 0.6, ease: EASE }}
           className="mx-auto max-w-[680px] text-center"
         >
-          <div className="mb-4 flex items-center justify-center gap-3">
+          <div className="mb-5 flex items-center justify-center gap-3">
             <span className="h-px w-8 bg-gradient-to-r from-transparent to-[#00FFD5] sm:w-10" />
 
             <span
@@ -97,26 +97,30 @@ export default function AboutContact() {
 
           <h2
             className="
+              font-heading
               text-[2rem]
-              font-extrabold
-              leading-[1.05]
-              tracking-[-0.05em]
-              text-white
-              sm:text-[2.6rem]
-              lg:text-[3rem]
+              font-bold
+              leading-[1.1]
+              tracking-[-0.028em]
+              text-[#E7EDF3]
+              sm:text-[2.5rem]
+              lg:text-[2.875rem]
 
-              [@media(min-width:1024px)_and_(max-width:1366px)]:text-[2.6rem]!
+              [@media(min-width:1024px)_and_(max-width:1366px)]:text-[2.5rem]!
             "
           >
             Reach the team{" "}
             <span
               className="
                 bg-gradient-to-r
-                from-white
-                via-[#EFFFFB]
-                to-[#00FFD5]
+                from-[#E7EDF3]
+                via-[#D8F1EC]
+                to-[#5EEAD4]
                 bg-clip-text
+                pb-[0.18em]
+                -mb-[0.18em]
                 text-transparent
+                [-webkit-background-clip:text]
               "
             >
               behind the platform.
@@ -126,12 +130,12 @@ export default function AboutContact() {
           <p
             className="
               mx-auto
-              pt-5
+              pt-6
               max-w-[560px]
               text-[14px]
               font-medium
-              leading-7
-              text-white/60
+              leading-[1.75]
+              text-[#AAB6C2]
               sm:text-[15px]
               lg:text-[16px]
             "
@@ -194,7 +198,7 @@ export default function AboutContact() {
                   {channel.label}
                 </span>
 
-                <span className="mt-1 block text-[13px] font-bold text-white">
+                <span className="mt-1 block text-[13px] font-bold text-[#E7EDF3]">
                   {channel.value}
                 </span>
               </>

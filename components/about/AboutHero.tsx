@@ -367,20 +367,18 @@ export default function AboutHero() {
           className="
             font-heading
             max-w-[1040px]
-            font-extrabold
-            tracking-[-0.04em]
-            text-white
-            text-[2.35rem]
-            leading-[1.02]
-            sm:text-[3.3rem]
-            sm:leading-[1]
-            md:text-[4rem]
-            md:leading-[0.98]
-            lg:text-[4.8rem]
-            lg:leading-[0.98]
-            xl:text-[5.4rem]
+            font-bold
+            tracking-[-0.035em]
+            text-[#E7EDF3]
+            text-[2.3rem]
+            leading-[1.06]
+            sm:text-[3.1rem]
+            sm:leading-[1.04]
+            md:text-[3.75rem]
+            lg:text-[4.4rem]
+            xl:text-[5rem]
 
-            [@media(min-width:1024px)_and_(max-width:1366px)]:text-[4.4rem]!
+            [@media(min-width:1024px)_and_(max-width:1366px)]:text-[4.1rem]!
           "
         >
           <span className="block">
@@ -408,14 +406,14 @@ export default function AboutHero() {
               className="
                 inline-block
                 bg-gradient-to-r
-                from-white
-                via-[#F0FFFC]
-                to-[#00FFD5]
+                from-[#E7EDF3]
+                via-[#D8F1EC]
+                to-[#5EEAD4]
                 bg-clip-text
-                pb-[0.18em]
-                -mb-[0.18em]
-                pr-[0.05em]
-                font-extrabold
+                pb-[0.2em]
+                -mb-[0.2em]
+                pr-[0.06em]
+                font-bold
                 text-transparent
                 [-webkit-background-clip:text]
               "
@@ -430,21 +428,21 @@ export default function AboutHero() {
         <motion.p
           variants={itemVariants}
           className="
-            pt-9
-            max-w-[620px]
+            pt-8
+            max-w-[600px]
             text-[15.5px]
-            font-semibold
-            leading-[1.8]
+            font-medium
+            leading-[1.75]
             tracking-[-0.005em]
-            text-white/70
-            sm:pt-11
+            text-[#B2BCC7]
+            sm:pt-9
             sm:text-[16.5px]
             md:text-[17.5px]
-            lg:pt-12
+            lg:pt-10
             lg:text-[18.5px]
           "
         >
-          <span className="font-extrabold text-white">
+          <span className="font-bold text-[#E7EDF3]">
             BH Ventures FZE LLC
           </span>{" "}
           is a UAE free-zone company built to combine international trade,
@@ -452,29 +450,17 @@ export default function AboutHero() {
           into a single, focused venture platform.
         </motion.p>
 
-        {/* Accent Line */}
+        {/* Location */}
 
         <motion.div
           variants={itemVariants}
           className="
-            mt-12
+            mt-10
             flex
             items-center
-            gap-3
-            sm:mt-14
+            sm:mt-12
           "
         >
-          <span
-            aria-hidden="true"
-            className="
-              h-px
-              w-10
-              bg-gradient-to-r
-              from-[#00CDB5]
-              to-transparent
-            "
-          />
-
           <span
             className="
               text-[11px]

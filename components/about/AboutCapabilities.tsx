@@ -143,9 +143,9 @@ export default function AboutCapabilities() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.2 }}
           transition={{ duration: 0.65, ease: EASE }}
-          className="mx-auto mb-10 max-w-[720px] text-center sm:mb-12 lg:mb-16"
+          className="mx-auto mb-12 max-w-[720px] text-center sm:mb-14 lg:mb-16"
         >
-          <div className="mb-4 flex items-center justify-center gap-3">
+          <div className="mb-5 flex items-center justify-center gap-3">
             <span className="h-px w-8 bg-gradient-to-r from-transparent to-[#00FFD5] sm:w-10" />
 
             <span
@@ -166,26 +166,30 @@ export default function AboutCapabilities() {
 
           <h2
             className="
-              text-[2.1rem]
-              font-extrabold
-              leading-[1.02]
-              tracking-[-0.05em]
-              text-white
-              sm:text-[2.75rem]
-              lg:text-[3.2rem]
+              font-heading
+              text-[2rem]
+              font-bold
+              leading-[1.1]
+              tracking-[-0.028em]
+              text-[#E7EDF3]
+              sm:text-[2.5rem]
+              lg:text-[2.875rem]
 
-              [@media(min-width:1024px)_and_(max-width:1366px)]:text-[2.75rem]!
+              [@media(min-width:1024px)_and_(max-width:1366px)]:text-[2.5rem]!
             "
           >
             Four capabilities.{" "}
             <span
               className="
                 bg-gradient-to-r
-                from-white
-                via-[#EFFFFB]
-                to-[#00FFD5]
+                from-[#E7EDF3]
+                via-[#D8F1EC]
+                to-[#5EEAD4]
                 bg-clip-text
+                pb-[0.18em]
+                -mb-[0.18em]
                 text-transparent
+                [-webkit-background-clip:text]
               "
             >
               One platform.
@@ -195,12 +199,12 @@ export default function AboutCapabilities() {
           <p
             className="
               mx-auto
-              pt-5
+              pt-6
               max-w-[560px]
               text-[14px]
               font-medium
-              leading-7
-              text-white/60
+              leading-[1.75]
+              text-[#AAB6C2]
               sm:text-[15px]
               lg:text-[16px]
             "
@@ -347,12 +351,12 @@ export default function AboutCapabilities() {
 
                   <h3
                     className="
-                      pt-5
+                      pt-6
                       text-[19px]
-                      font-bold
-                      leading-tight
-                      tracking-[-0.02em]
-                      text-white
+                      font-semibold
+                      leading-[1.25]
+                      tracking-[-0.018em]
+                      text-[#E7EDF3]
                       sm:text-[21px]
                     "
                   >
@@ -370,12 +374,12 @@ export default function AboutCapabilities() {
                           text-[13.5px]
                           font-medium
                           leading-6
-                          text-white/60
+                          text-[#AAB6C2]
 
                           transition-colors
                           duration-500
 
-                          group-hover:text-white/80
+                          group-hover:text-[#C9D2DB]
                         "
                       >
                         <ChevronRight

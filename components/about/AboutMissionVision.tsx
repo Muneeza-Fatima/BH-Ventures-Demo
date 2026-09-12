@@ -150,10 +150,7 @@ function PillarPanel({ pillar, index }: { pillar: Pillar; index: number }) {
       <motion.p
         variants={pillarItem}
         className="
-          flex
-          items-center
-          gap-3
-          pt-7
+          pt-6
           text-[10px]
           font-extrabold
           uppercase
@@ -161,7 +158,6 @@ function PillarPanel({ pillar, index }: { pillar: Pillar; index: number }) {
           text-[#00FFD5]
         "
       >
-        <span aria-hidden="true" className="h-px w-6 bg-gradient-to-r from-[#00FFD5] to-transparent" />
         {pillar.eyebrow}
       </motion.p>
 
@@ -170,18 +166,18 @@ function PillarPanel({ pillar, index }: { pillar: Pillar; index: number }) {
         className="
           font-heading
           max-w-[480px]
-          pt-4
-          text-[27px]
-          font-bold
-          leading-[1.14]
-          tracking-[-0.03em]
-          text-white
+          pt-3
+          text-[26px]
+          font-semibold
+          leading-[1.18]
+          tracking-[-0.022em]
+          text-[#E7EDF3]
 
-          sm:text-[32px]
-          lg:text-[34px]
-          xl:text-[38px]
+          sm:text-[30px]
+          lg:text-[32px]
+          xl:text-[36px]
 
-          [@media(min-width:1024px)_and_(max-width:1366px)]:text-[31px]!
+          [@media(min-width:1024px)_and_(max-width:1366px)]:text-[30px]!
         "
       >
         {pillar.title}
@@ -194,8 +190,8 @@ function PillarPanel({ pillar, index }: { pillar: Pillar; index: number }) {
           pt-5
           text-[15px]
           font-medium
-          leading-[1.8]
-          text-white/62
+          leading-[1.75]
+          text-[#AAB6C2]
           sm:text-[16px]
         "
       >
@@ -219,11 +215,11 @@ function PillarPanel({ pillar, index }: { pillar: Pillar; index: number }) {
               text-[11px]
               font-bold
               tracking-[0.02em]
-              text-white/65
+              text-[#AAB6C2]
               transition-colors
               duration-300
               group-hover:border-[#2DD4BF]/35
-              group-hover:text-white/85
+              group-hover:text-[#D5DDE5]
             "
           >
             {anchor}
@@ -297,7 +293,7 @@ export default function AboutMissionVision() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.4 }}
           transition={{ duration: 0.6, ease: EASE }}
-          className="mb-10 flex flex-col gap-5 sm:mb-12 lg:mb-14 lg:flex-row lg:items-end lg:justify-between"
+          className="mb-12 flex flex-col gap-6 sm:mb-14 lg:mb-16 lg:flex-row lg:items-end lg:justify-between"
         >
           <div>
             <div className="mb-5 flex items-center gap-3">
@@ -311,27 +307,27 @@ export default function AboutMissionVision() {
               className="
                 font-heading
                 max-w-[640px]
-                text-[2.2rem]
-                font-extrabold
-                leading-[1.04]
-                tracking-[-0.035em]
-                text-white
-                sm:text-[2.8rem]
-                lg:text-[3.2rem]
+                text-[2rem]
+                font-bold
+                leading-[1.1]
+                tracking-[-0.028em]
+                text-[#E7EDF3]
+                sm:text-[2.5rem]
+                lg:text-[2.875rem]
 
-                [@media(min-width:1024px)_and_(max-width:1366px)]:text-[2.8rem]!
+                [@media(min-width:1024px)_and_(max-width:1366px)]:text-[2.5rem]!
               "
             >
               Where we&apos;re headed,{" "}
               <span
                 className="
                   bg-gradient-to-r
-                  from-white
-                  via-[#EFFFFB]
-                  to-[#00FFD5]
+                  from-[#E7EDF3]
+                  via-[#D8F1EC]
+                  to-[#5EEAD4]
                   bg-clip-text
-                  pb-[0.16em]
-                  -mb-[0.16em]
+                  pb-[0.18em]
+                  -mb-[0.18em]
                   text-transparent
                   [-webkit-background-clip:text]
                 "
@@ -341,7 +337,7 @@ export default function AboutMissionVision() {
             </h2>
           </div>
 
-          <p className="max-w-[400px] text-[15px] font-medium leading-[1.8] text-white/55 sm:text-[16px] lg:pb-1.5 lg:text-right">
+          <p className="max-w-[400px] text-[15px] font-medium leading-[1.75] text-[#AAB6C2] sm:text-[16px] lg:pb-1.5 lg:text-right">
             The long-term ambition, and the day-to-day discipline that gets us
             there.
           </p>

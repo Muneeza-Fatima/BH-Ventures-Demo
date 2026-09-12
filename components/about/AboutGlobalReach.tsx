@@ -120,9 +120,9 @@ export default function AboutGlobalReach() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.3 }}
           transition={{ duration: 0.6, ease: EASE }}
-          className="mx-auto mb-10 max-w-[680px] text-center sm:mb-12 lg:mb-16"
+          className="mx-auto mb-12 max-w-[680px] text-center sm:mb-14 lg:mb-16"
         >
-          <div className="mb-4 flex items-center justify-center gap-3">
+          <div className="mb-5 flex items-center justify-center gap-3">
             <span className="h-px w-8 bg-gradient-to-r from-transparent to-[#00FFD5] sm:w-10" />
 
             <span
@@ -143,26 +143,30 @@ export default function AboutGlobalReach() {
 
           <h2
             className="
+              font-heading
               text-[2rem]
-              font-extrabold
-              leading-[1.05]
-              tracking-[-0.05em]
-              text-white
-              sm:text-[2.6rem]
-              lg:text-[3rem]
+              font-bold
+              leading-[1.1]
+              tracking-[-0.028em]
+              text-[#E7EDF3]
+              sm:text-[2.5rem]
+              lg:text-[2.875rem]
 
-              [@media(min-width:1024px)_and_(max-width:1366px)]:text-[2.6rem]!
+              [@media(min-width:1024px)_and_(max-width:1366px)]:text-[2.5rem]!
             "
           >
             Built to move{" "}
             <span
               className="
                 bg-gradient-to-r
-                from-white
-                via-[#EFFFFB]
-                to-[#00FFD5]
+                from-[#E7EDF3]
+                via-[#D8F1EC]
+                to-[#5EEAD4]
                 bg-clip-text
+                pb-[0.18em]
+                -mb-[0.18em]
                 text-transparent
+                [-webkit-background-clip:text]
               "
             >
               across borders.
@@ -172,12 +176,12 @@ export default function AboutGlobalReach() {
           <p
             className="
               mx-auto
-              pt-5
+              pt-6
               max-w-[560px]
               text-[14px]
               font-medium
-              leading-7
-              text-white/60
+              leading-[1.75]
+              text-[#AAB6C2]
               sm:text-[15px]
               lg:text-[16px]
             "
@@ -272,12 +276,12 @@ export default function AboutGlobalReach() {
 
                 <h3
                   className="
-                    mt-5
+                    mt-6
                     text-[17px]
-                    font-bold
-                    leading-tight
-                    tracking-[-0.02em]
-                    text-white
+                    font-semibold
+                    leading-[1.25]
+                    tracking-[-0.018em]
+                    text-[#E7EDF3]
                     sm:text-[18px]
                   "
                 >
@@ -286,17 +290,17 @@ export default function AboutGlobalReach() {
 
                 <p
                   className="
-                    mt-2.5
+                    mt-3
                     text-[13px]
                     font-medium
-                    leading-6
-                    text-white/55
+                    leading-[1.7]
+                    text-[#AAB6C2]
 
                     transition-colors
                     duration-300
 
-                    group-hover:text-white/72
-                    group-focus:text-white/72
+                    group-hover:text-[#C9D2DB]
+                    group-focus:text-[#C9D2DB]
                   "
                 >
                   {pillar.description}

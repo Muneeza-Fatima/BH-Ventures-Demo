@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import { Sora } from "next/font/google";
+import { Plus_Jakarta_Sans } from "next/font/google";
 
 import "./about.css";
 import AboutHero from "@/components/about/AboutHero";
@@ -18,11 +18,11 @@ import AboutCTA from "@/components/about/AboutCTA";
 /* Display face for About headings. Loaded here rather than in the root
    layout so it ships with this route only — next/font scopes a face to
    the component that calls it, so the rest of the site keeps Manrope.
-   Exposed as --font-sora, which app/about/about.css reads. */
-const sora = Sora({
+   Exposed as --font-jakarta, which app/about/about.css reads. */
+const jakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
   display: "swap",
-  variable: "--font-sora",
+  variable: "--font-jakarta",
 });
 
 export default function AboutPage() {
@@ -42,7 +42,7 @@ export default function AboutPage() {
 
   return (
     <div
-      className={`${sora.variable} about-page w-full min-w-0 overflow-x-clip bg-[#0B1220]`}
+      className={`${jakarta.variable} about-page w-full min-w-0 overflow-x-clip bg-[#0B1220]`}
     >
       <section id="about" className="w-full min-w-0">
         <AboutHero />

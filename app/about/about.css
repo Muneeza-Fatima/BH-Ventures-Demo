@@ -17,16 +17,26 @@
    ========================================================= */
 
 /* ---------------------------------------------------------
-   HEADING FACE (Sora)
+   HEADING FACE (Plus Jakarta Sans)
 
-   Sora is loaded locally in app/about/page.tsx via next/font
-   and exposed as --font-sora on this root only, so the rest
-   of the site keeps Manrope untouched. Falls back to Manrope
-   then the system stack if the font fails to load.
+   Plus Jakarta Sans is loaded locally in app/about/page.tsx
+   via next/font and exposed as --font-jakarta on this root
+   only, so the rest of the site keeps Manrope untouched.
+   Falls back to Manrope then the system stack if the font
+   fails to load.
    --------------------------------------------------------- */
 
 .about-page {
-  --font-heading: var(--font-sora), var(--font-manrope), sans-serif;
+  --font-heading: var(--font-jakarta), var(--font-manrope), sans-serif;
+}
+
+/* app/globals.css sets h1–h3 to weight 800 and p to 600 as
+   unlayered rules, which outrank Tailwind's layered utilities —
+   so font-bold / font-semibold / font-medium on About copy were
+   silently ignored. revert-layer hands weight back to those
+   utilities, on this page only. */
+.about-page :is(h1, h2, h3, p) {
+  font-weight: revert-layer;
 }
 
 .about-page .font-heading,

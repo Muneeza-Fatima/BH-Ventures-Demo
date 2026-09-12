@@ -193,9 +193,9 @@ export default function AboutFacts() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.3 }}
           transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-          className="mx-auto mb-10 max-w-[680px] text-center sm:mb-12 lg:mb-16"
+          className="mx-auto mb-12 max-w-[680px] text-center sm:mb-14 lg:mb-16"
         >
-          <div className="mb-4 flex items-center justify-center gap-3">
+          <div className="mb-5 flex items-center justify-center gap-3">
             <span className="h-px w-8 bg-gradient-to-r from-transparent to-[#00A98F] sm:w-10" />
 
             <span
@@ -217,15 +217,15 @@ export default function AboutFacts() {
           <h2
             className="
               font-heading
-              text-[2.2rem]
-              font-extrabold
-              leading-[1.05]
-              tracking-[-0.035em]
+              text-[2rem]
+              font-bold
+              leading-[1.1]
+              tracking-[-0.028em]
               text-[#102A43]
-              sm:text-[2.8rem]
-              lg:text-[3.3rem]
+              sm:text-[2.5rem]
+              lg:text-[2.875rem]
 
-              [@media(min-width:1024px)_and_(max-width:1366px)]:text-[2.8rem]!
+              [@media(min-width:1024px)_and_(max-width:1366px)]:text-[2.5rem]!
             "
           >
             The facts,{" "}
@@ -236,7 +236,10 @@ export default function AboutFacts() {
                 via-[#155E75]
                 to-[#00A98F]
                 bg-clip-text
+                pb-[0.18em]
+                -mb-[0.18em]
                 text-transparent
+                [-webkit-background-clip:text]
               "
             >
               plainly stated.
@@ -417,16 +420,17 @@ export default function AboutFacts() {
                   )}
                 </div>
 
-                {/* Clear air between the icon tile and the title, a
-                    slightly quieter title size, and the heading face */}
+                {/* 24px of visual air between the icon tile and the
+                    title on every card — the secondary-icon badge hangs
+                    6px below its tile, so that card adds the overhang */}
                 <h3
                   className={`
                     font-heading
-                    ${fact.iconSecondary ? "pt-9" : "pt-8"}
+                    ${fact.iconSecondary ? "pt-[30px]" : "pt-6"}
                     text-[17px]
                     font-bold
-                    leading-[1.25]
-                    tracking-[-0.015em]
+                    leading-[1.3]
+                    tracking-[-0.012em]
                     text-[#102A43]
                     sm:text-[18px]
                   `}
@@ -449,7 +453,7 @@ export default function AboutFacts() {
                     min-h-[40px]
                     text-[13.5px]
                     font-medium
-                    leading-[1.6]
+                    leading-[1.65]
                     text-[#526477]
                   "
                 >

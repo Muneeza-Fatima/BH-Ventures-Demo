@@ -191,19 +191,20 @@ export default function AboutFounder() {
             size={30}
             strokeWidth={1.5}
             aria-hidden="true"
-            className="mb-4 text-[#2DD4BF]/40"
+            className="mb-5 text-[#2DD4BF]/40"
           />
 
           <h2
             className="
+              font-heading
               max-w-[560px]
               text-[2rem]
-              font-extrabold
+              font-bold
               leading-[1.1]
-              tracking-[-0.04em]
-              text-white
-              sm:text-[2.4rem]
-              lg:text-[2.7rem]
+              tracking-[-0.028em]
+              text-[#E7EDF3]
+              sm:text-[2.375rem]
+              lg:text-[2.625rem]
             "
           >
             Badar Ul Haq
@@ -211,7 +212,7 @@ export default function AboutFounder() {
 
           <p
             className="
-              pt-2
+              pt-3
               text-[13px]
               font-bold
               uppercase
@@ -229,8 +230,8 @@ export default function AboutFounder() {
               max-w-[540px]
               text-[14px]
               font-medium
-              leading-7
-              text-white/65
+              leading-[1.75]
+              text-[#AAB6C2]
               sm:text-[15px]
               lg:text-[16px]
             "
@@ -246,8 +247,8 @@ export default function AboutFounder() {
               max-w-[540px]
               text-[14px]
               font-medium
-              leading-7
-              text-white/65
+              leading-[1.75]
+              text-[#AAB6C2]
               sm:text-[15px]
               lg:text-[16px]
             "
@@ -275,7 +276,7 @@ export default function AboutFounder() {
                   py-2
                   text-[11px]
                   font-bold
-                  text-white/70
+                  text-[#AAB6C2]
                 "
               >
                 {tag}

@@ -620,7 +620,7 @@ function JourneyPanel({
           </div>
 
           {/* Stage copy */}
-          <div className="relative mt-7 min-h-[270px] flex-1 sm:min-h-[300px] md:min-h-[250px]">
+          <div className="relative mt-8 min-h-[270px] flex-1 sm:min-h-[300px] md:min-h-[250px]">
             <AnimatePresence mode="sync">
               <motion.div
                 key={step.id}
@@ -637,30 +637,25 @@ function JourneyPanel({
                 }}
                 className="absolute inset-0"
               >
-                <span
-                  aria-hidden="true"
-                  className="mb-5 block h-px w-12 bg-gradient-to-r from-[#00FFD5] to-transparent"
-                />
-
                 <h3
                   className="
                     font-heading
                     max-w-[460px]
                     text-[24px]
-                    font-bold
-                    leading-[1.12]
-                    tracking-[-0.025em]
-                    text-white
+                    font-semibold
+                    leading-[1.16]
+                    tracking-[-0.022em]
+                    text-[#E7EDF3]
 
                     sm:text-[26px]
-                    lg:text-[31px]
-                    xl:text-[34px]
+                    lg:text-[30px]
+                    xl:text-[32px]
                   "
                 >
                   {step.title}
                 </h3>
 
-                <p className="max-w-[440px] pt-4 text-[14px] font-medium leading-[1.75] text-white/62 sm:text-[14.5px] lg:text-[15.5px]">
+                <p className="max-w-[440px] pt-4 text-[14px] font-medium leading-[1.75] text-[#AAB6C2] sm:pt-5 sm:text-[14.5px] lg:text-[15.5px]">
                   {step.description}
                 </p>
 
@@ -903,8 +898,8 @@ function TimelineStages({ revealed }: { revealed: boolean }) {
         variants={selectorRevealVariant}
         className="
           relative
-          -mx-5 mt-9 overflow-x-auto px-5 pb-1
-          sm:mx-0 sm:mt-11 sm:overflow-visible sm:px-0
+          -mx-5 mt-10 overflow-x-auto px-5 pb-1
+          sm:mx-0 sm:mt-12 sm:overflow-visible sm:px-0
           [scrollbar-width:none]
           [&::-webkit-scrollbar]:hidden
         "
@@ -943,7 +938,7 @@ function TimelineStages({ revealed }: { revealed: boolean }) {
 
 function Key({ children }: { children: React.ReactNode }) {
   return (
-    <span className="font-bold text-white underline decoration-[#00FFD5]/40 decoration-[1.5px] underline-offset-[5px]">
+    <span className="font-semibold text-[#E7EDF3]">
       {children}
     </span>
   );
@@ -1065,7 +1060,7 @@ export default function AboutStory() {
           <div className="lg:col-span-6">
             <motion.div
               variants={textItem}
-              className="mb-6 flex items-center gap-3"
+              className="mb-5 flex items-center gap-3"
             >
               <span className="h-px w-8 bg-gradient-to-r from-transparent to-[#00FFD5] sm:w-10" />
 
@@ -1088,28 +1083,29 @@ export default function AboutStory() {
               className="
                 font-heading
                 max-w-[640px]
-                text-[2.5rem]
-                font-extrabold
-                leading-[1.02]
-                tracking-[-0.035em]
-                text-white
-                sm:text-[3.3rem]
-                lg:text-[3.55rem]
-                xl:text-[4.1rem]
+                text-[2.25rem]
+                font-bold
+                leading-[1.08]
+                tracking-[-0.03em]
+                text-[#E7EDF3]
+                sm:text-[3rem]
+                sm:leading-[1.06]
+                lg:text-[3.25rem]
+                xl:text-[3.75rem]
 
-                [@media(min-width:1024px)_and_(max-width:1366px)]:text-[3.2rem]!
+                [@media(min-width:1024px)_and_(max-width:1366px)]:text-[3rem]!
               "
             >
               A founder-led platform for{" "}
               <span
                 className="
                   bg-gradient-to-r
-                  from-white
-                  via-[#EFFFFB]
-                  to-[#00FFD5]
+                  from-[#E7EDF3]
+                  via-[#D8F1EC]
+                  to-[#5EEAD4]
                   bg-clip-text
-                  pb-[0.16em]
-                  -mb-[0.16em]
+                  pb-[0.18em]
+                  -mb-[0.18em]
                   text-transparent
                   [-webkit-background-clip:text]
                 "
@@ -1126,7 +1122,7 @@ export default function AboutStory() {
           </div>
 
           {/* Copy column */}
-          <div className="lg:col-span-6 lg:pt-[52px] xl:pt-[60px]">
+          <div className="lg:col-span-6 lg:pt-9">
             {/* Lead — the one idea the whole company is built on */}
             <motion.div variants={textItem} className="relative pl-6 sm:pl-7">
               <span
@@ -1142,7 +1138,7 @@ export default function AboutStory() {
                   font-semibold
                   leading-[1.5]
                   tracking-[-0.015em]
-                  text-white/92
+                  text-[#E7EDF3]
 
                   sm:text-[21px]
                   lg:text-[22px]
@@ -1150,7 +1146,7 @@ export default function AboutStory() {
                 "
               >
                 BH Ventures FZE LLC was built around a simple idea:{" "}
-                <span className="text-[#7CFFEA]">
+                <span className="text-[#5EEAD4]">
                   the opportunities of tomorrow sit at the intersection of
                   traditional trade and modern technology.
                 </span>
@@ -1160,12 +1156,12 @@ export default function AboutStory() {
             <motion.p
               variants={textItem}
               className="
-                pt-8
-                max-w-[560px]
+                pt-6
+                max-w-[540px]
                 text-[15px]
                 font-medium
-                leading-[1.8]
-                text-white/62
+                leading-[1.75]
+                text-[#AAB6C2]
                 sm:text-[16px]
                 lg:text-[16.5px]
               "
@@ -1179,11 +1175,11 @@ export default function AboutStory() {
               variants={textItem}
               className="
                 pt-5
-                max-w-[560px]
+                max-w-[540px]
                 text-[15px]
                 font-medium
-                leading-[1.8]
-                text-white/62
+                leading-[1.75]
+                text-[#AAB6C2]
                 sm:text-[16px]
                 lg:text-[16.5px]
               "
@@ -1227,7 +1223,7 @@ export default function AboutStory() {
             <div>
               <motion.div
                 variants={timelineEntryItem}
-                className="mb-6 flex items-center gap-3"
+                className="mb-5 flex items-center gap-3"
               >
                 <span
                   className="
@@ -1254,28 +1250,29 @@ export default function AboutStory() {
                 className="
                   font-heading
                   max-w-[640px]
-                  text-[2.5rem]
-                  font-extrabold
-                  leading-[1.02]
-                  tracking-[-0.035em]
-                  text-white
-                  sm:text-[3.3rem]
-                  lg:text-[3.55rem]
-                  xl:text-[4.1rem]
+                  text-[2.25rem]
+                  font-bold
+                  leading-[1.08]
+                  tracking-[-0.03em]
+                  text-[#E7EDF3]
+                  sm:text-[3rem]
+                  sm:leading-[1.06]
+                  lg:text-[3.25rem]
+                  xl:text-[3.75rem]
 
-                  [@media(min-width:1024px)_and_(max-width:1366px)]:text-[3.2rem]!
+                  [@media(min-width:1024px)_and_(max-width:1366px)]:text-[3rem]!
                 "
               >
                 The{" "}
                 <span
                   className="
                     bg-gradient-to-r
-                    from-white
-                    via-[#EFFFFB]
-                    to-[#00FFD5]
+                    from-[#E7EDF3]
+                    via-[#D8F1EC]
+                    to-[#5EEAD4]
                     bg-clip-text
-                    pb-[0.16em]
-                    -mb-[0.16em]
+                    pb-[0.18em]
+                    -mb-[0.18em]
                     text-transparent
                     [-webkit-background-clip:text]
                   "
@@ -1291,8 +1288,8 @@ export default function AboutStory() {
                 max-w-[440px]
                 text-[15px]
                 font-medium
-                leading-[1.8]
-                text-white/60
+                leading-[1.75]
+                text-[#AAB6C2]
                 sm:text-[16px]
                 lg:pb-2
                 lg:text-right
@@ -1346,14 +1343,14 @@ function ThreadChips() {
                 pr-4
                 text-[11.5px]
                 font-bold
-                text-white/80
+                text-[#B2BCC7]
                 outline-none
 
                 transition-colors
                 duration-300
 
                 hover:border-[#2DD4BF]/45
-                hover:text-white
+                hover:text-[#E7EDF3]
                 focus-visible:border-[#2DD4BF]/60
 
                 sm:text-[12px]
