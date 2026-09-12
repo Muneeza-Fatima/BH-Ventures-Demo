@@ -1,0 +1,255 @@
+/* =========================================================
+   ABOUT PAGE — LOCAL STYLES
+
+   Everything the About page needs that isn't a Tailwind
+   utility lives here, and NOTHING here may affect another
+   route. Two rules keep that true:
+
+     1. Every selector is scoped under `.about-page`, which
+        is set only on the About page root (app/about/page.tsx).
+     2. The at-rules that CAN'T be scoped by the cascade
+        (@keyframes, @property) are namespaced `about-*` /
+        `--about-*` so they can't collide with another route's
+        animation names.
+
+   Imported only from app/about/page.tsx. Do not import this
+   from the root layout.
+   ========================================================= */
+
+/* ---------------------------------------------------------
+   HEADING FACE (Sora)
+
+   Sora is loaded locally in app/about/page.tsx via next/font
+   and exposed as --font-sora on this root only, so the rest
+   of the site keeps Manrope untouched. Falls back to Manrope
+   then the system stack if the font fails to load.
+   --------------------------------------------------------- */
+
+.about-page {
+  --font-heading: var(--font-sora), var(--font-manrope), sans-serif;
+}
+
+.about-page .font-heading,
+.about-page :is(h1, h2, h3) {
+  font-family: var(--font-heading);
+}
+
+/* ---------------------------------------------------------
+   AMBIENT MOTION
+   Slow, low-amplitude movement that keeps the large dark
+   sections from reading as empty. All of it is switched off
+   in the prefers-reduced-motion block at the end of this file.
+   --------------------------------------------------------- */
+
+/* Aurora blobs drift very slowly behind the hero copy */
+@keyframes about-aurora-drift {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(4%, -3%, 0) scale(1.08);
+  }
+}
+
+.about-page .about-aurora {
+  animation: about-aurora-drift 14s ease-in-out infinite;
+  will-change: transform;
+}
+
+.about-page .about-aurora-alt {
+  animation: about-aurora-drift 18s ease-in-out infinite reverse;
+  will-change: transform;
+}
+
+/* Orbital rings in the hero — each ring spins at its own pace.
+   --orbit-duration / --orbit-direction are set inline per ring. */
+@keyframes about-orbit-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.about-page .about-orbit {
+  animation: about-orbit-spin var(--orbit-duration, 40s) linear infinite;
+  animation-direction: var(--orbit-direction, normal);
+  will-change: transform;
+}
+
+/* Soft breathing glow for the orbital core */
+@keyframes about-core-breathe {
+  0%,
+  100% {
+    opacity: 0.55;
+    transform: scale(0.96);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.06);
+  }
+}
+
+.about-page .about-core-breathe {
+  animation: about-core-breathe 4.2s ease-in-out infinite;
+}
+
+/* ---------------------------------------------------------
+   DISCIPLINE CHIPS (light travelling around the rim)
+   A thin conic highlight orbits each chip's border. Chips are
+   staggered via --chip-delay (set inline) so the lights don't
+   sync. Browsers without @property support just show a static
+   highlight — still looks intentional.
+   --------------------------------------------------------- */
+
+@property --about-chip-angle {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+
+@keyframes about-chip-orbit {
+  to {
+    --about-chip-angle: 360deg;
+  }
+}
+
+@keyframes about-chip-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-3px);
+  }
+}
+
+.about-page .thread-chip {
+  position: relative;
+  isolation: isolate;
+  animation: about-chip-float 6s ease-in-out infinite;
+  animation-delay: var(--chip-delay, 0s);
+}
+
+.about-page .thread-chip::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  z-index: -1;
+  border-radius: inherit;
+  padding: 1px;
+
+  background: conic-gradient(
+    from var(--about-chip-angle),
+    transparent 0deg,
+    transparent 290deg,
+    rgba(0, 255, 213, 0.95) 330deg,
+    transparent 360deg
+  );
+
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+
+  pointer-events: none;
+  animation: about-chip-orbit 5s linear infinite;
+  animation-delay: var(--chip-delay, 0s);
+}
+
+.about-page .thread-chip::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background: radial-gradient(
+    120% 140% at 50% 120%,
+    rgba(0, 255, 213, 0.14),
+    transparent 60%
+  );
+  opacity: 0;
+  transition: opacity 300ms ease;
+  pointer-events: none;
+}
+
+.about-page .thread-chip:hover::after,
+.about-page .thread-chip:focus-visible::after {
+  opacity: 1;
+}
+
+/* ---------------------------------------------------------
+   JOURNEY PANEL
+   --------------------------------------------------------- */
+
+/* Slow Ken Burns push-in on the active stage visual */
+@keyframes about-journey-kenburns {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.07);
+  }
+}
+
+.about-page .journey-kenburns {
+  animation: about-journey-kenburns 14s ease-out forwards;
+  will-change: transform;
+}
+
+/* Fine diagonal sheen that sweeps across the panel once it reveals */
+@keyframes about-journey-sheen {
+  from {
+    transform: translateX(-120%) skewX(-18deg);
+  }
+  to {
+    transform: translateX(220%) skewX(-18deg);
+  }
+}
+
+.about-page .journey-sheen {
+  animation: about-journey-sheen 1.6s cubic-bezier(0.22, 1, 0.36, 1) 0.5s 1 both;
+}
+
+/* ---------------------------------------------------------
+   REDUCED MOTION
+
+   The global rule in app/globals.css already clamps animation
+   and transition durations site-wide. This block is the local
+   guarantee for the About animations specifically: it removes
+   them outright (rather than running them at 0.01ms) so no
+   element is left mid-transform, and it pins the chip rim
+   highlight to a fixed angle so the chips still look finished
+   while standing completely still.
+   --------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .about-page .about-aurora,
+  .about-page .about-aurora-alt,
+  .about-page .about-orbit,
+  .about-page .about-core-breathe,
+  .about-page .thread-chip,
+  .about-page .thread-chip::before,
+  .about-page .journey-kenburns,
+  .about-page .journey-sheen {
+    animation: none !important;
+  }
+
+  /* Keep the depth these elements were providing, minus the movement */
+  .about-page .about-core-breathe {
+    opacity: 0.8;
+    transform: scale(1);
+  }
+
+  .about-page .thread-chip::before {
+    --about-chip-angle: 320deg;
+  }
+
+  .about-page .journey-kenburns {
+    transform: none;
+  }
+
+  /* The sheen is a pure motion flourish — nothing to preserve */
+  .about-page .journey-sheen {
+    display: none;
+  }
+}

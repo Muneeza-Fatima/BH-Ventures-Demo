@@ -216,15 +216,16 @@ export default function AboutFacts() {
 
           <h2
             className="
-              text-[2rem]
+              font-heading
+              text-[2.2rem]
               font-extrabold
               leading-[1.05]
-              tracking-[-0.05em]
+              tracking-[-0.035em]
               text-[#102A43]
-              sm:text-[2.6rem]
-              lg:text-[3rem]
+              sm:text-[2.8rem]
+              lg:text-[3.3rem]
 
-              [@media(min-width:1024px)_and_(max-width:1366px)]:text-[2.6rem]!
+              [@media(min-width:1024px)_and_(max-width:1366px)]:text-[2.8rem]!
             "
           >
             The facts,{" "}
@@ -416,20 +417,23 @@ export default function AboutFacts() {
                   )}
                 </div>
 
+                {/* Clear air between the icon tile and the title, a
+                    slightly quieter title size, and the heading face */}
                 <h3
                   className={`
-                    ${fact.iconSecondary ? "mt-6" : "mt-5"}
-                    text-[19px]
-                    font-extrabold
-                    leading-tight
-                    tracking-[-0.02em]
+                    font-heading
+                    ${fact.iconSecondary ? "pt-9" : "pt-8"}
+                    text-[17px]
+                    font-bold
+                    leading-[1.25]
+                    tracking-[-0.015em]
                     text-[#102A43]
-                    sm:text-[21px]
+                    sm:text-[18px]
                   `}
                 >
                   {fact.countValue ? (
                     <>
-                      <span className="text-[1.2em] text-[#00A98F]">
+                      <span className="text-[1.35em] font-extrabold tracking-[-0.03em] text-[#00A98F]">
                         <CountUp value={fact.countValue} />
                       </span>
                       {fact.countSuffix}
@@ -441,11 +445,11 @@ export default function AboutFacts() {
 
                 <p
                   className="
-                    mt-2.5
+                    pt-3
                     min-h-[40px]
-                    text-[13px]
+                    text-[13.5px]
                     font-medium
-                    leading-5
+                    leading-[1.6]
                     text-[#526477]
                   "
                 >

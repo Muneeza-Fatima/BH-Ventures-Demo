@@ -1,10 +1,12 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import {
   ArrowLeftRight,
+  ArrowLeft,
+  ArrowRight,
   Cpu,
   BarChart3,
   Megaphone,
@@ -17,6 +19,11 @@ import {
 } from "lucide-react";
 
 const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
+
+/* How long each stage stays on screen before the timeline advances
+   on its own. Any click on a stage pill or arrow hands control back
+   to the visitor for good; hovering or focusing the timeline pauses it. */
+const AUTOPLAY_MS = 7000;
 
 const threads = [
   { label: "Trade", icon: ArrowLeftRight },
@@ -31,7 +38,7 @@ const threads = [
 /* ============================================================
    Thematic platform stages — not a year-by-year company history.
    No dates are implied; only verified, source-backed facts and
-   disciplines are referenced (Dubai free-zone registration, nine
+   disciplines are referenced (Dubai free-zone registration, ten
    licensed activities, trade + technology, multi-sector platform).
    The fact badge on each stage is drawn from the same verified set
    used on the Facts section — nothing here is invented.
@@ -47,6 +54,7 @@ const journeySteps = [
     icon: Landmark,
     image: "/images/about/story/story-foundation.jpg",
     imageAlt: "BH Ventures foundation — registered in Dubai",
+    caption: "Dubai, UAE",
     badge: {
       label: "Dubai",
       secondary: "Registered as a UAE free-zone entity.",
@@ -61,6 +69,7 @@ const journeySteps = [
     icon: ArrowLeftRight,
     image: "/images/about/story/story-trade-v2.jpg",
     imageAlt: "International trade and global reach",
+    caption: "Cross-border trade",
     badge: {
       label: "UAE Based",
       secondary: "Headquartered in the UAE, trading globally.",
@@ -75,6 +84,7 @@ const journeySteps = [
     icon: Cpu,
     image: "/images/about/story/story-technology.jpg",
     imageAlt: "Modern technology applied to real ventures",
+    caption: "Digital infrastructure",
     badge: {
       label: "Trade + Technology",
       secondary: "Modern tools applied to real ventures.",
@@ -87,8 +97,9 @@ const journeySteps = [
     description:
       "Data, marketing, business development, and events combine with trade and technology inside one coherent venture platform.",
     icon: Sparkles,
-    image: "/images/about/story/story-innovation.jpg",
-    imageAlt: "Innovation across disciplines",
+    image: "/images/about/story/story-innovation-v2.jpg",
+    imageAlt: "Innovation — disciplines connecting inside one platform",
+    caption: "Connected disciplines",
     badge: {
       label: "Multi-Sector Platform",
       secondary: "One platform, spanning several disciplines.",
@@ -101,8 +112,9 @@ const journeySteps = [
     description:
       "A licensed portfolio of ten business activities operates under a single founder-led platform, built for what comes next.",
     icon: Globe,
-    image: "/images/about/story/story-global.jpg",
-    imageAlt: "Global opportunity — ten licensed activities",
+    image: "/images/about/story/story-global-v2.jpg",
+    imageAlt: "Global opportunity — routes connecting markets worldwide",
+    caption: "Global routes",
     badge: {
       label: "10 Licensed Activities",
       secondary: "Ten licensed business activities, one license.",
@@ -177,11 +189,11 @@ const selectorRevealVariant = {
 };
 
 const cardRevealVariant = {
-  hidden: { opacity: 0, y: 18 },
+  hidden: { opacity: 0, y: 22 },
   show: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.5, ease: EASE, delay: 0.39 },
+    transition: { duration: 0.6, ease: EASE, delay: 0.39 },
   },
 };
 
@@ -291,16 +303,20 @@ function StageSignal({
 /* ============================================================
    Timeline stage selector — real buttons, horizontally arranged.
    The active fill travels between pills via layoutId rather than
-   disappearing and reappearing.
+   disappearing and reappearing. While the timeline is auto-
+   advancing, a thin progress line fills along the active pill so
+   the visitor can see the next stage is coming.
 ============================================================ */
 
 function TimelineSelector({
   activeIndex,
   onSelect,
+  autoplaying,
   className = "",
 }: {
   activeIndex: number;
   onSelect: (index: number) => void;
+  autoplaying: boolean;
   className?: string;
 }) {
   const prefersReducedMotion = useReducedMotion();
@@ -313,6 +329,7 @@ function TimelineSelector({
     >
       {journeySteps.map((step, index) => {
         const isActive = index === activeIndex;
+        const Icon = step.icon;
 
         return (
           <button
@@ -323,11 +340,15 @@ function TimelineSelector({
             className={`
               group
               relative
+              flex
               shrink-0
+              items-center
+              gap-2
+              overflow-hidden
               rounded-full
               border
               px-4
-              py-2
+              py-2.5
               text-[12px]
               font-bold
               tracking-[-0.01em]
@@ -335,12 +356,18 @@ function TimelineSelector({
               transition-colors
               duration-300
 
+              sm:text-[12.5px]
+
               focus-visible:ring-2
               focus-visible:ring-[#5EEAD4]/70
               focus-visible:ring-offset-2
               focus-visible:ring-offset-[#0F1B2D]
 
-              ${isActive ? "border-transparent" : "border-white/[0.12] hover:border-white/[0.22]"}
+              ${
+                isActive
+                  ? "border-transparent"
+                  : "border-white/[0.12] bg-white/[0.02] hover:border-[#2DD4BF]/35 hover:bg-white/[0.05]"
+              }
             `}
           >
             {isActive && (
@@ -354,9 +381,29 @@ function TimelineSelector({
               />
             )}
 
+            {isActive && autoplaying && !prefersReducedMotion && (
+              <motion.span
+                key={`progress-${activeIndex}`}
+                aria-hidden="true"
+                className="absolute inset-x-3 bottom-[5px] h-[2px] origin-left rounded-full bg-[#06251F]/35"
+                initial={{ scaleX: 0 }}
+                animate={{ scaleX: 1 }}
+                transition={{ duration: AUTOPLAY_MS / 1000, ease: "linear" }}
+              />
+            )}
+
+            <Icon
+              size={13}
+              strokeWidth={2}
+              aria-hidden="true"
+              className={`relative z-10 transition-colors duration-300 ${
+                isActive ? "text-[#06251F]" : "text-[#5EEAD4]/70 group-hover:text-[#5EEAD4]"
+              }`}
+            />
+
             <span
-              className={`relative z-10 block ${
-                isActive ? "text-[#06251F]" : "text-white/45 group-hover:text-white/75"
+              className={`relative z-10 block transition-colors duration-300 ${
+                isActive ? "text-[#06251F]" : "text-white/50 group-hover:text-white/85"
               }`}
             >
               {step.label}
@@ -402,8 +449,8 @@ function FactBadge({
         gap-1
         rounded-2xl
         border
-        border-white/[0.12]
-        bg-white/[0.03]
+        border-[#2DD4BF]/20
+        bg-[#00FFD5]/[0.05]
         px-4
         py-2.5
         text-left
@@ -412,6 +459,7 @@ function FactBadge({
         duration-300
 
         hover:border-[#2DD4BF]/50
+        hover:bg-[#00FFD5]/[0.09]
         focus-visible:outline-none
         focus-visible:ring-2
         focus-visible:ring-[#5EEAD4]/60
@@ -446,110 +494,357 @@ function FactBadge({
    change — only the inner text/visual crossfade. The visual pane
    leads by ~80ms before the text; the old visual softly fades and
    scales out while the new one crossfades in.
+
+   Premium layer on top of that: a gradient hairline frame, a big
+   ghosted stage numeral, stage progress dots, a slow push-in on
+   the active image, a glass caption on the visual, and previous /
+   next controls so the visitor never has to reach back up to the
+   pills to move on.
 ============================================================ */
 
-function JourneyPanel({ activeIndex }: { activeIndex: number }) {
+function JourneyPanel({
+  activeIndex,
+  onPrev,
+  onNext,
+  revealed,
+}: {
+  activeIndex: number;
+  onPrev: () => void;
+  onNext: () => void;
+  revealed: boolean;
+}) {
+  const prefersReducedMotion = useReducedMotion();
   const step = journeySteps[activeIndex];
+  const nextStep = journeySteps[(activeIndex + 1) % journeySteps.length];
+  const StepIcon = step.icon;
+  const stageNumber = String(activeIndex + 1).padStart(2, "0");
 
   return (
     <div
       className="
         relative
-        grid
         h-full
         w-full
-        grid-cols-1
-        overflow-hidden
-        rounded-[28px]
-        border
-        border-white/[0.10]
+        rounded-[30px]
         bg-gradient-to-br
-        from-[#132436]
-        via-[#0F1D2C]
-        to-[#0B1220]
-        shadow-[0_25px_70px_rgba(0,0,0,0.35)]
-
-        sm:grid-cols-2
+        from-white/[0.18]
+        via-white/[0.06]
+        to-[#00FFD5]/[0.28]
+        p-px
+        shadow-[0_30px_80px_rgba(0,0,0,0.42),0_0_60px_-20px_rgba(0,205,181,0.25)]
       "
     >
-      {/* Text pane */}
-      <div className="relative z-10 order-2 flex flex-col justify-center p-6 sm:order-1 sm:p-8 lg:p-12">
-        <p className="text-[11px] font-bold uppercase tracking-[0.24em] text-white/35">
-          Stage {String(activeIndex + 1).padStart(2, "0")} /{" "}
-          {String(journeySteps.length).padStart(2, "0")}
-        </p>
+      <div
+        className="
+          relative
+          grid
+          h-full
+          w-full
+          grid-cols-1
+          grid-rows-[230px_1fr]
+          overflow-hidden
+          rounded-[29px]
+          bg-gradient-to-br
+          from-[#132436]
+          via-[#0F1D2C]
+          to-[#0B1220]
 
-        <div className="relative mt-6 min-h-[250px] sm:min-h-[210px]">
+          sm:grid-cols-2
+          sm:grid-rows-1
+        "
+      >
+        {/* One-time sheen sweep when the card first reveals */}
+        {revealed && !prefersReducedMotion && (
+          <div
+            aria-hidden="true"
+            className="journey-sheen pointer-events-none absolute inset-y-[-20%] left-0 z-20 w-[28%] bg-gradient-to-r from-transparent via-white/[0.06] to-transparent"
+          />
+        )}
+
+        {/* =========================================
+            TEXT PANE
+        ========================================= */}
+        <div className="relative z-10 order-2 flex flex-col p-6 sm:order-1 sm:p-8 lg:p-11 xl:p-12">
+          {/* Ghosted stage numeral */}
+          <AnimatePresence mode="sync">
+            <motion.span
+              key={`numeral-${step.id}`}
+              aria-hidden="true"
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0, transition: { duration: 0.6, ease: EASE } }}
+              exit={{ opacity: 0, y: -12, transition: { duration: 0.4, ease: EASE } }}
+              className="
+                font-heading
+                pointer-events-none
+                absolute
+                right-5
+                top-3
+                select-none
+                text-[96px]
+                font-extrabold
+                leading-none
+                tracking-[-0.06em]
+                text-white/[0.04]
+
+                sm:right-7
+                sm:text-[124px]
+                lg:right-9
+                lg:text-[160px]
+              "
+            >
+              {stageNumber}
+            </motion.span>
+          </AnimatePresence>
+
+          {/* Stage label + progress dots */}
+          <div className="relative flex items-center justify-between gap-4">
+            <p className="text-[11px] font-bold uppercase tracking-[0.24em] text-white/40">
+              Stage {stageNumber} /{" "}
+              {String(journeySteps.length).padStart(2, "0")}
+            </p>
+
+            <div className="flex items-center gap-1.5" aria-hidden="true">
+              {journeySteps.map((s, i) => (
+                <span
+                  key={s.id}
+                  className={`h-[3px] rounded-full transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+                    i === activeIndex
+                      ? "w-7 bg-gradient-to-r from-[#00CDB5] to-[#00FFD5]"
+                      : i < activeIndex
+                        ? "w-3 bg-[#5EEAD4]/45"
+                        : "w-3 bg-white/[0.14]"
+                  }`}
+                />
+              ))}
+            </div>
+          </div>
+
+          {/* Stage copy */}
+          <div className="relative mt-7 min-h-[270px] flex-1 sm:min-h-[300px] md:min-h-[250px]">
+            <AnimatePresence mode="sync">
+              <motion.div
+                key={step.id}
+                initial={{ opacity: 0, y: 22 }}
+                animate={{
+                  opacity: 1,
+                  y: 0,
+                  transition: { duration: 0.48, delay: 0.08, ease: EASE },
+                }}
+                exit={{
+                  opacity: 0,
+                  y: -14,
+                  transition: { duration: 0.45, ease: EASE },
+                }}
+                className="absolute inset-0"
+              >
+                <span
+                  aria-hidden="true"
+                  className="mb-5 block h-px w-12 bg-gradient-to-r from-[#00FFD5] to-transparent"
+                />
+
+                <h3
+                  className="
+                    font-heading
+                    max-w-[460px]
+                    text-[24px]
+                    font-bold
+                    leading-[1.12]
+                    tracking-[-0.025em]
+                    text-white
+
+                    sm:text-[26px]
+                    lg:text-[31px]
+                    xl:text-[34px]
+                  "
+                >
+                  {step.title}
+                </h3>
+
+                <p className="max-w-[440px] pt-4 text-[14px] font-medium leading-[1.75] text-white/62 sm:text-[14.5px] lg:text-[15.5px]">
+                  {step.description}
+                </p>
+
+                <FactBadge label={step.badge.label} secondary={step.badge.secondary} />
+              </motion.div>
+            </AnimatePresence>
+          </div>
+
+          {/* Previous / next */}
+          <div className="relative mt-6 flex items-center gap-3 border-t border-white/[0.08] pt-5">
+            <button
+              type="button"
+              onClick={onPrev}
+              aria-label="Previous stage"
+              className="
+                group
+                flex
+                h-10
+                w-10
+                items-center
+                justify-center
+                rounded-full
+                border
+                border-white/[0.12]
+                bg-white/[0.03]
+                text-white/60
+                outline-none
+                transition-all
+                duration-300
+
+                hover:-translate-x-0.5
+                hover:border-[#2DD4BF]/45
+                hover:bg-[#00FFD5]/[0.08]
+                hover:text-white
+
+                focus-visible:ring-2
+                focus-visible:ring-[#5EEAD4]/60
+              "
+            >
+              <ArrowLeft size={16} strokeWidth={2} aria-hidden="true" />
+            </button>
+
+            <button
+              type="button"
+              onClick={onNext}
+              aria-label="Next stage"
+              className="
+                group
+                flex
+                h-10
+                w-10
+                items-center
+                justify-center
+                rounded-full
+                border
+                border-[#2DD4BF]/30
+                bg-[#00FFD5]/[0.08]
+                text-[#5EEAD4]
+                outline-none
+                transition-all
+                duration-300
+
+                hover:translate-x-0.5
+                hover:border-[#2DD4BF]/60
+                hover:bg-[#00FFD5]/[0.14]
+                hover:text-white
+
+                focus-visible:ring-2
+                focus-visible:ring-[#5EEAD4]/60
+              "
+            >
+              <ArrowRight size={16} strokeWidth={2} aria-hidden="true" />
+            </button>
+
+            <span className="ml-1 min-w-0 truncate text-[11px] font-bold uppercase tracking-[0.18em] text-white/35">
+              Next <span className="text-white/20">·</span>{" "}
+              <span className="text-white/55">{nextStep.label}</span>
+            </span>
+          </div>
+        </div>
+
+        {/* =========================================
+            VISUAL PANE
+        ========================================= */}
+        <div className="relative order-1 overflow-hidden sm:order-2">
           <AnimatePresence mode="sync">
             <motion.div
-              key={step.id}
-              initial={{ opacity: 0, y: 22 }}
+              key={`${step.id}-image`}
+              initial={{ opacity: 0, scale: 1.04 }}
               animate={{
                 opacity: 1,
-                y: 0,
-                transition: { duration: 0.48, delay: 0.08, ease: EASE },
+                scale: 1,
+                transition: { duration: 0.5, ease: EASE },
               }}
               exit={{
                 opacity: 0,
-                y: -14,
+                scale: 0.96,
                 transition: { duration: 0.45, ease: EASE },
               }}
               className="absolute inset-0"
             >
-              <h3 className="text-[20px] font-extrabold leading-tight tracking-[-0.02em] text-white sm:text-[22px] lg:text-[24px]">
-                {step.title}
-              </h3>
+              <div
+                className={`absolute inset-0 ${
+                  prefersReducedMotion ? "" : "journey-kenburns"
+                }`}
+              >
+                <Image
+                  src={step.image}
+                  alt={step.imageAlt}
+                  fill
+                  sizes="(max-width: 639px) 100vw, 50vw"
+                  className="object-cover object-center"
+                  priority={activeIndex === 0}
+                />
+              </div>
 
-              <p className="pt-3 max-w-[420px] text-[13.5px] font-medium leading-7 text-white/60 sm:text-[14px] lg:text-[15px]">
-                {step.description}
-              </p>
+              {/* Tonal blend into the text pane + gentle floor */}
+              <div className="absolute inset-0 bg-gradient-to-t from-[#0B1220]/85 via-[#0B1220]/15 to-transparent" />
+              <div className="absolute inset-0 hidden bg-gradient-to-r from-[#0F1D2C]/70 via-transparent to-transparent sm:block" />
+              <div className="absolute inset-0 bg-gradient-to-b from-[#0B1220]/55 via-transparent to-transparent sm:hidden" />
+            </motion.div>
+          </AnimatePresence>
 
-              <FactBadge label={step.badge.label} secondary={step.badge.secondary} />
+          {/* Fine grid */}
+          <div
+            aria-hidden="true"
+            className="
+              pointer-events-none
+              absolute
+              inset-0
+              opacity-[0.05]
+              [background-image:linear-gradient(rgba(255,255,255,0.6)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.6)_1px,transparent_1px)]
+              [background-size:34px_34px]
+            "
+          />
+
+          {/* Corner accents */}
+          <span
+            aria-hidden="true"
+            className="pointer-events-none absolute right-5 top-5 h-6 w-6 rounded-tr-lg border-r border-t border-[#5EEAD4]/45"
+          />
+          <span
+            aria-hidden="true"
+            className="pointer-events-none absolute bottom-5 right-5 h-6 w-6 rounded-br-lg border-b border-r border-[#5EEAD4]/45"
+          />
+
+          {/* Glass caption */}
+          <AnimatePresence mode="sync">
+            <motion.div
+              key={`${step.id}-caption`}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0, transition: { duration: 0.45, delay: 0.2, ease: EASE } }}
+              exit={{ opacity: 0, y: 6, transition: { duration: 0.3, ease: EASE } }}
+              className="
+                absolute
+                bottom-5
+                left-5
+                flex
+                items-center
+                gap-2.5
+                rounded-full
+                border
+                border-white/[0.14]
+                bg-[#0B1220]/55
+                py-2
+                pl-2
+                pr-4
+                backdrop-blur-md
+                shadow-[0_10px_30px_rgba(0,0,0,0.35)]
+
+                sm:bottom-6
+                sm:left-6
+              "
+            >
+              <span className="flex h-7 w-7 items-center justify-center rounded-full bg-gradient-to-br from-[#00CDB5] to-[#00FFD5] text-[#06251F]">
+                <StepIcon size={13} strokeWidth={2.2} aria-hidden="true" />
+              </span>
+
+              <span className="text-[11px] font-bold uppercase tracking-[0.16em] text-white/85">
+                {step.caption}
+              </span>
             </motion.div>
           </AnimatePresence>
         </div>
-      </div>
-
-      {/* Visual pane */}
-      <div className="relative order-1 flex items-center justify-center py-8 sm:order-2 sm:py-0">
-        <AnimatePresence mode="sync">
-          <motion.div
-            key={`${step.id}-image`}
-            initial={{ opacity: 0, scale: 1.04 }}
-            animate={{
-              opacity: 1,
-              scale: 1,
-              transition: { duration: 0.5, ease: EASE },
-            }}
-            exit={{
-              opacity: 0,
-              scale: 0.96,
-              transition: { duration: 0.45, ease: EASE },
-            }}
-            className="absolute inset-0"
-          >
-            <Image
-              src={step.image}
-              alt={step.imageAlt}
-              fill
-              sizes="(max-width: 639px) 100vw, 50vw"
-              className="object-cover object-center"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#0B1220]/85 via-[#0B1220]/25 to-transparent" />
-          </motion.div>
-        </AnimatePresence>
-
-        <div
-          aria-hidden="true"
-          className="
-            pointer-events-none
-            absolute
-            inset-0
-            opacity-[0.06]
-            [background-image:linear-gradient(rgba(255,255,255,0.6)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.6)_1px,transparent_1px)]
-            [background-size:34px_34px]
-          "
-        />
       </div>
     </div>
   );
@@ -557,38 +852,67 @@ function JourneyPanel({ activeIndex }: { activeIndex: number }) {
 
 /* ============================================================
    Timeline stages — click-driven, no scroll-jacking.
-   Normal page scroll simply moves through the page; the active
-   stage only changes when a pill is clicked (or reached via
-   keyboard), so a visitor can jump straight from Foundation to
-   Global Opportunity in one interaction. The card itself keeps
-   the premium crossfade (visual leads by ~80ms, text follows)
-   and fixed footprint per breakpoint so nothing reflows as the
-   stage changes.
+   Normal page scroll simply moves through the page. The timeline
+   advances on its own every few seconds once it is on screen so
+   the card never sits still, but the moment the visitor clicks a
+   pill or an arrow it becomes fully manual, and hovering or
+   focusing the timeline pauses it. The card itself keeps the
+   premium crossfade (visual leads by ~80ms, text follows) and a
+   fixed footprint per breakpoint so nothing reflows as the stage
+   changes.
 ============================================================ */
 
 function TimelineStages({ revealed }: { revealed: boolean }) {
+  const prefersReducedMotion = useReducedMotion();
   const [activeIndex, setActiveIndex] = useState(0);
+  const [manual, setManual] = useState(false);
+  const [paused, setPaused] = useState(false);
   const signal = useStageChangeSignal(activeIndex);
   const originPercent =
     journeySteps.length > 1 ? (activeIndex / (journeySteps.length - 1)) * 100 : 50;
 
+  const autoplaying = revealed && !manual && !paused && !prefersReducedMotion;
+
+  const select = useCallback((index: number) => {
+    setManual(true);
+    setActiveIndex(
+      ((index % journeySteps.length) + journeySteps.length) % journeySteps.length
+    );
+  }, []);
+
+  useEffect(() => {
+    if (!autoplaying) return;
+
+    const id = window.setInterval(() => {
+      setActiveIndex((i) => (i + 1) % journeySteps.length);
+    }, AUTOPLAY_MS);
+
+    return () => window.clearInterval(id);
+  }, [autoplaying, activeIndex]);
+
   return (
-    <>
+    <div
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
+      onFocusCapture={() => setPaused(true)}
+      onBlurCapture={() => setPaused(false)}
+    >
       <motion.div
         initial="hidden"
         animate={revealed ? "show" : "hidden"}
         variants={selectorRevealVariant}
         className="
           relative
-          -mx-5 mt-8 overflow-x-auto px-5 pb-1
-          sm:mx-0 sm:mt-10 sm:overflow-visible sm:px-0
+          -mx-5 mt-9 overflow-x-auto px-5 pb-1
+          sm:mx-0 sm:mt-11 sm:overflow-visible sm:px-0
           [scrollbar-width:none]
           [&::-webkit-scrollbar]:hidden
         "
       >
         <TimelineSelector
           activeIndex={activeIndex}
-          onSelect={setActiveIndex}
+          onSelect={select}
+          autoplaying={autoplaying}
           className="w-max flex-nowrap sm:w-auto sm:flex-wrap"
         />
         <StageSignal signal={signal} originPercent={originPercent} />
@@ -600,11 +924,28 @@ function TimelineStages({ revealed }: { revealed: boolean }) {
         variants={cardRevealVariant}
         className="mt-8 sm:mt-10"
       >
-        <div className="h-[560px] sm:h-[420px] lg:h-[460px]">
-          <JourneyPanel activeIndex={activeIndex} />
+        <div className="h-[700px] sm:h-[580px] md:h-[500px] lg:h-[520px]">
+          <JourneyPanel
+            activeIndex={activeIndex}
+            onPrev={() => select(activeIndex - 1)}
+            onNext={() => select(activeIndex + 1)}
+            revealed={revealed}
+          />
         </div>
       </motion.div>
-    </>
+    </div>
+  );
+}
+
+/* ============================================================
+   Highlighted phrase inside body copy.
+============================================================ */
+
+function Key({ children }: { children: React.ReactNode }) {
+  return (
+    <span className="font-bold text-white underline decoration-[#00FFD5]/40 decoration-[1.5px] underline-offset-[5px]">
+      {children}
+    </span>
   );
 }
 
@@ -621,27 +962,65 @@ export default function AboutStory() {
         min-w-0
         overflow-hidden
         bg-[#0F1B2D]
-        py-14
-        sm:py-18
-        md:py-20
-        lg:py-24
-        xl:py-28
+        py-16
+        sm:py-20
+        md:py-24
+        lg:py-28
+        xl:py-32
 
-        [@media(min-width:1024px)_and_(max-width:1366px)]:py-16!
+        [@media(min-width:1024px)_and_(max-width:1366px)]:py-20!
       "
     >
+      {/* =====================================================
+          AMBIENT BACKGROUND
+      ===================================================== */}
+
+      {/* Dot grid, held to the upper-right so it frames the intro copy */}
       <div
         aria-hidden="true"
         className="
           pointer-events-none
           absolute
+          inset-x-0
+          top-0
+          h-[900px]
+          opacity-[0.5]
+          [background-image:radial-gradient(rgba(255,255,255,0.09)_1px,transparent_1.2px)]
+          [background-size:30px_30px]
+          [mask-image:radial-gradient(ellipse_at_85%_18%,black_0%,transparent_58%)]
+          [-webkit-mask-image:radial-gradient(ellipse_at_85%_18%,black_0%,transparent_58%)]
+        "
+      />
+
+      <div
+        aria-hidden="true"
+        className="
+          about-aurora
+          pointer-events-none
+          absolute
           left-[-160px]
-          top-1/3
-          h-[360px]
-          w-[360px]
+          top-[12%]
+          h-[420px]
+          w-[420px]
           rounded-full
-          bg-[#00CDB5]/[0.045]
+          bg-[#00CDB5]/[0.06]
           blur-[120px]
+        "
+      />
+
+      <div
+        aria-hidden="true"
+        className="
+          about-aurora-alt
+          pointer-events-none
+          absolute
+          right-[-120px]
+          top-[4%]
+          h-[380px]
+          w-[520px]
+          rounded-full
+          bg-[#5A64FF]/[0.06]
+          blur-[130px]
         "
       />
 
@@ -672,174 +1051,26 @@ export default function AboutStory() {
           variants={textContainer}
           initial="hidden"
           whileInView="show"
-          viewport={{ once: true, amount: 0.25 }}
+          viewport={{ once: true, amount: 0.2 }}
+          className="
+            grid
+            grid-cols-1
+            gap-10
+            lg:grid-cols-12
+            lg:gap-12
+            xl:gap-16
+          "
         >
-          <motion.div
-            variants={textItem}
-            className="mb-5 flex items-center gap-3"
-          >
-            <span className="h-px w-8 bg-gradient-to-r from-transparent to-[#00FFD5] sm:w-10" />
-
-            <span
-              className="
-                text-[9px]
-                font-extrabold
-                uppercase
-                tracking-[0.28em]
-                text-[#00FFD5]
-                sm:text-[10px]
-              "
-            >
-              Who We Are
-            </span>
-          </motion.div>
-
-          <motion.h2
-            variants={textItem}
-            className="
-              max-w-[850px]
-              text-[2rem]
-              font-extrabold
-              leading-[1.06]
-              tracking-[-0.045em]
-              text-white
-              sm:text-[2.5rem]
-              lg:text-[2.9rem]
-
-              [@media(min-width:1024px)_and_(max-width:1366px)]:text-[2.5rem]!
-            "
-          >
-            A founder-led platform for{" "}
-            <span
-              className="
-                bg-gradient-to-r
-                from-white
-                via-[#EFFFFB]
-                to-[#00FFD5]
-                bg-clip-text
-                text-transparent
-              "
-            >
-              modern ventures.
-            </span>
-          </motion.h2>
-
-          <motion.p
-            variants={textItem}
-            className="
-              pt-6
-              max-w-[640px]
-              text-[14px]
-              font-medium
-              leading-7
-              text-white/65
-              sm:pt-7
-              sm:text-[15px]
-              lg:text-[16px]
-            "
-          >
-            BH Ventures FZE LLC was built around a simple idea: the
-            opportunities of tomorrow sit at the intersection of traditional
-            trade and modern technology. Rather than operating as a single
-            business, we work as a venture-oriented platform that connects
-            disciplines that are usually kept apart.
-          </motion.p>
-
-          <motion.p
-            variants={textItem}
-            className="
-              pt-4
-              max-w-[640px]
-              text-[14px]
-              font-medium
-              leading-7
-              text-white/65
-              sm:text-[15px]
-              lg:text-[16px]
-            "
-          >
-            International trade gives us global reach. Technology and data
-            give us the tools to move faster and decide smarter. Marketing,
-            innovation, business development, and events give ideas the
-            structure to become real, functioning ventures.
-          </motion.p>
-
-          {/* Thread Chips */}
-
-          <motion.div
-            variants={textItem}
-            className="mt-8 flex flex-wrap gap-2.5 sm:mt-10"
-          >
-            {threads.map((thread) => {
-              const Icon = thread.icon;
-
-              return (
-                <span
-                  key={thread.label}
-                  className="
-                    group
-                    flex
-                    items-center
-                    gap-2
-                    rounded-full
-                    border
-                    border-white/[0.10]
-                    bg-white/[0.03]
-                    px-3.5
-                    py-2
-                    text-[11px]
-                    font-bold
-                    text-white/75
-
-                    transition-all
-                    duration-300
-
-                    hover:-translate-y-0.5
-                    hover:border-[#2DD4BF]/40
-                    hover:bg-[#14B8A6]/[0.10]
-                    hover:text-white
-                  "
-                >
-                  <Icon
-                    size={13}
-                    strokeWidth={1.8}
-                    className="text-[#5EEAD4]"
-                    aria-hidden="true"
-                  />
-
-                  {thread.label}
-                </span>
-              );
-            })}
-          </motion.div>
-        </motion.div>
-
-        {/* =====================================================
-            TIMELINE
-        ===================================================== */}
-
-        <div className="relative mt-14 sm:mt-16 lg:mt-20">
-          <TimelineBackdrop visible={timelineRevealed} />
-
-          <motion.div
-            variants={timelineEntryContainer}
-            initial="hidden"
-            whileInView="show"
-            viewport={{ once: true, amount: 0.5 }}
-            onViewportEnter={() => setTimelineRevealed(true)}
-          >
+          {/* Heading column */}
+          <div className="lg:col-span-6">
             <motion.div
-              variants={timelineEntryItem}
-              className="mb-5 flex items-center gap-3"
+              variants={textItem}
+              className="mb-6 flex items-center gap-3"
             >
+              <span className="h-px w-8 bg-gradient-to-r from-transparent to-[#00FFD5] sm:w-10" />
+
               <span
                 className="
-                  rounded-full
-                  border
-                  border-[#2DD4BF]/25
-                  bg-[#0E4A44]/25
-                  px-3.5
-                  py-1.5
                   text-[9px]
                   font-extrabold
                   uppercase
@@ -848,41 +1079,227 @@ export default function AboutStory() {
                   sm:text-[10px]
                 "
               >
-                Timeline
+                Who We Are
               </span>
             </motion.div>
 
             <motion.h2
-              variants={timelineEntryItem}
+              variants={textItem}
               className="
-                max-w-[560px]
-                text-[2rem]
+                font-heading
+                max-w-[640px]
+                text-[2.5rem]
                 font-extrabold
-                leading-[1.1]
-                tracking-[-0.04em]
+                leading-[1.02]
+                tracking-[-0.035em]
                 text-white
-                sm:text-[2.4rem]
-                lg:text-[2.7rem]
+                sm:text-[3.3rem]
+                lg:text-[3.55rem]
+                xl:text-[4.1rem]
+
+                [@media(min-width:1024px)_and_(max-width:1366px)]:text-[3.2rem]!
               "
             >
-              The Journey
+              A founder-led platform for{" "}
+              <span
+                className="
+                  bg-gradient-to-r
+                  from-white
+                  via-[#EFFFFB]
+                  to-[#00FFD5]
+                  bg-clip-text
+                  pb-[0.16em]
+                  -mb-[0.16em]
+                  text-transparent
+                  [-webkit-background-clip:text]
+                "
+              >
+                modern ventures.
+              </span>
             </motion.h2>
+
+            {/* Discipline chips — desktop only here; on smaller
+                screens they sit under the copy, full width */}
+            <motion.div variants={textItem} className="mt-10 hidden lg:block">
+              <ThreadChips />
+            </motion.div>
+          </div>
+
+          {/* Copy column */}
+          <div className="lg:col-span-6 lg:pt-[52px] xl:pt-[60px]">
+            {/* Lead — the one idea the whole company is built on */}
+            <motion.div variants={textItem} className="relative pl-6 sm:pl-7">
+              <span
+                aria-hidden="true"
+                className="absolute left-0 top-1 bottom-1 w-[3px] rounded-full bg-gradient-to-b from-[#00FFD5] via-[#00CDB5]/70 to-transparent"
+              />
+
+              <p
+                className="
+                  font-heading
+                  max-w-[560px]
+                  text-[19px]
+                  font-semibold
+                  leading-[1.5]
+                  tracking-[-0.015em]
+                  text-white/92
+
+                  sm:text-[21px]
+                  lg:text-[22px]
+                  xl:text-[24px]
+                "
+              >
+                BH Ventures FZE LLC was built around a simple idea:{" "}
+                <span className="text-[#7CFFEA]">
+                  the opportunities of tomorrow sit at the intersection of
+                  traditional trade and modern technology.
+                </span>
+              </p>
+            </motion.div>
+
+            <motion.p
+              variants={textItem}
+              className="
+                pt-8
+                max-w-[560px]
+                text-[15px]
+                font-medium
+                leading-[1.8]
+                text-white/62
+                sm:text-[16px]
+                lg:text-[16.5px]
+              "
+            >
+              Rather than operating as a single business, we work as a
+              venture-oriented platform that connects disciplines that are
+              usually kept apart.
+            </motion.p>
+
+            <motion.p
+              variants={textItem}
+              className="
+                pt-5
+                max-w-[560px]
+                text-[15px]
+                font-medium
+                leading-[1.8]
+                text-white/62
+                sm:text-[16px]
+                lg:text-[16.5px]
+              "
+            >
+              <Key>International trade</Key> gives us global reach.{" "}
+              <Key>Technology and data</Key> give us the tools to move faster
+              and decide smarter.{" "}
+              <Key>Marketing, innovation, business development, and events</Key>{" "}
+              give ideas the structure to become real, functioning ventures.
+            </motion.p>
+
+            <motion.div variants={textItem} className="mt-10 lg:hidden">
+              <ThreadChips />
+            </motion.div>
+          </div>
+        </motion.div>
+
+        {/* =====================================================
+            TIMELINE
+        ===================================================== */}
+
+        <div className="relative mt-20 sm:mt-24 lg:mt-28">
+          <TimelineBackdrop visible={timelineRevealed} />
+
+          <motion.div
+            variants={timelineEntryContainer}
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true, amount: 0.4 }}
+            onViewportEnter={() => setTimelineRevealed(true)}
+            className="
+              flex
+              flex-col
+              gap-6
+              lg:flex-row
+              lg:items-end
+              lg:justify-between
+              lg:gap-12
+            "
+          >
+            <div>
+              <motion.div
+                variants={timelineEntryItem}
+                className="mb-6 flex items-center gap-3"
+              >
+                <span
+                  className="
+                    rounded-full
+                    border
+                    border-[#2DD4BF]/25
+                    bg-[#0E4A44]/25
+                    px-3.5
+                    py-1.5
+                    text-[9px]
+                    font-extrabold
+                    uppercase
+                    tracking-[0.28em]
+                    text-[#00FFD5]
+                    sm:text-[10px]
+                  "
+                >
+                  Timeline
+                </span>
+              </motion.div>
+
+              <motion.h2
+                variants={timelineEntryItem}
+                className="
+                  font-heading
+                  max-w-[640px]
+                  text-[2.5rem]
+                  font-extrabold
+                  leading-[1.02]
+                  tracking-[-0.035em]
+                  text-white
+                  sm:text-[3.3rem]
+                  lg:text-[3.55rem]
+                  xl:text-[4.1rem]
+
+                  [@media(min-width:1024px)_and_(max-width:1366px)]:text-[3.2rem]!
+                "
+              >
+                The{" "}
+                <span
+                  className="
+                    bg-gradient-to-r
+                    from-white
+                    via-[#EFFFFB]
+                    to-[#00FFD5]
+                    bg-clip-text
+                    pb-[0.16em]
+                    -mb-[0.16em]
+                    text-transparent
+                    [-webkit-background-clip:text]
+                  "
+                >
+                  Journey.
+                </span>
+              </motion.h2>
+            </div>
 
             <motion.p
               variants={timelineEntryItem}
               className="
-                pt-5
-                max-w-[520px]
-                text-[14px]
+                max-w-[440px]
+                text-[15px]
                 font-medium
-                leading-7
+                leading-[1.8]
                 text-white/60
-                sm:text-[15px]
-                lg:text-[16px]
+                sm:text-[16px]
+                lg:pb-2
+                lg:text-right
               "
             >
               How trade, technology, and innovation combine inside one
-              founder-led venture platform.
+              founder-led venture platform — five stages, one thesis.
             </motion.p>
           </motion.div>
 
@@ -890,5 +1307,67 @@ export default function AboutStory() {
         </div>
       </div>
     </section>
+  );
+}
+
+/* ============================================================
+   Discipline chips. Each carries a small point of light that
+   travels around its rim (see .thread-chip in globals.css),
+   staggered so the row reads as alive rather than mechanical.
+============================================================ */
+
+function ThreadChips() {
+  return (
+    <div>
+      <p className="pb-4 text-[10px] font-extrabold uppercase tracking-[0.24em] text-white/35">
+        Seven disciplines, one platform
+      </p>
+
+      <div className="flex flex-wrap gap-2.5 sm:gap-3">
+        {threads.map((thread, index) => {
+          const Icon = thread.icon;
+
+          return (
+            <span
+              key={thread.label}
+              tabIndex={0}
+              style={{ "--chip-delay": `${index * 0.65}s` } as React.CSSProperties}
+              className="
+                thread-chip
+                flex
+                items-center
+                gap-2.5
+                rounded-full
+                border
+                border-white/[0.10]
+                bg-[#0B1220]/70
+                py-2
+                pl-2
+                pr-4
+                text-[11.5px]
+                font-bold
+                text-white/80
+                outline-none
+
+                transition-colors
+                duration-300
+
+                hover:border-[#2DD4BF]/45
+                hover:text-white
+                focus-visible:border-[#2DD4BF]/60
+
+                sm:text-[12px]
+              "
+            >
+              <span className="flex h-6 w-6 items-center justify-center rounded-full bg-[#00FFD5]/[0.10] text-[#5EEAD4] ring-1 ring-inset ring-[#2DD4BF]/25">
+                <Icon size={12} strokeWidth={2} aria-hidden="true" />
+              </span>
+
+              {thread.label}
+            </span>
+          );
+        })}
+      </div>
+    </div>
   );
 }
