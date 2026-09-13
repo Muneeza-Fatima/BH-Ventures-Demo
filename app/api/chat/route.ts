@@ -19,6 +19,8 @@ const BASE_SYSTEM_PROMPT = `You are the virtual assistant for BH Ventures FZE LL
 trading and innovation company. Answer visitor questions using ONLY the "Relevant context"
 below plus the conversation so far. If the context doesn't cover something, say you don't
 have that detail and point the visitor to the contact page rather than guessing.
+When asked about services in general (e.g. "what services do you offer", "list all services",
+"what do you do"), always list EVERY service mentioned in the context — do not omit any.
 Be concise, friendly, and professional.`;
 
 export async function POST(req: NextRequest) {
@@ -32,7 +34,13 @@ export async function POST(req: NextRequest) {
         const context = relevant.map((c) => `### ${c.title}\n${c.text}`).join("\n\n");
         const systemPrompt = `${BASE_SYSTEM_PROMPT}\n\nRelevant context:\n${context}`;
 
-        const contents = messages.map((m) => ({
+        // Gemini requires conversations to start with a "user" turn.
+        // The chatbot prepends an assistant greeting, so we drop any leading
+        // assistant messages before building the contents array.
+        const firstUserIdx = messages.findIndex((m) => m.role === "user");
+        const trimmedMessages = firstUserIdx >= 0 ? messages.slice(firstUserIdx) : messages;
+
+        const contents = trimmedMessages.map((m) => ({
             role: m.role === "assistant" ? "model" : "user",
             parts: [{ text: m.content }],
         }));

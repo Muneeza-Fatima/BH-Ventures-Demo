@@ -40,6 +40,103 @@ function BHMark({ variant = "gradient" }: { variant?: "gradient" | "flat" }) {
     );
 }
 
+/**
+ * BHBotIcon — standalone mascot robot for the launcher: rounded head with
+ * antennae, glowing eyes, and a small body, on a fully transparent canvas
+ * (no shell, no background panel) so it reads as a free-standing character
+ * rather than an icon-in-a-box. This is what spins continuously in the
+ * closed launcher button — see `.chatbot-bot-icon-spin` in chatbot.css.
+ */
+function BHBotIcon() {
+    const uid = useId();
+    const bodyGrad = `bot-body-${uid}`;
+    const headGrad = `bot-head-${uid}`;
+    const eyeGrad = `bot-eye-${uid}`;
+    const shadow = `bot-shadow-${uid}`;
+
+    return (
+        <svg viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+                <linearGradient id={bodyGrad} x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stopColor="#5EEAD4" />
+                    <stop offset="100%" stopColor="#0F766E" />
+                </linearGradient>
+                <linearGradient id={headGrad} x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stopColor="#5EEAD4" />
+                    <stop offset="100%" stopColor="#0D9488" />
+                </linearGradient>
+                <radialGradient id={eyeGrad} cx="50%" cy="50%" r="50%">
+                    <stop offset="0%" stopColor="#5EEAD4" />
+                    <stop offset="100%" stopColor="#0D9488" />
+                </radialGradient>
+                <filter id={shadow} x="-30%" y="-30%" width="160%" height="160%">
+                    <feDropShadow dx="0" dy="5" stdDeviation="6" floodColor="#000000" floodOpacity="0.3" />
+                </filter>
+            </defs>
+
+            {/* No background rect here on purpose — transparent canvas,
+                robot stands alone. */}
+
+            {/* Antennae */}
+            <g stroke="#0D9488" strokeWidth="5" strokeLinecap="round">
+                <line x1="90" y1="60" x2="60" y2="30" />
+                <line x1="210" y1="60" x2="240" y2="30" />
+                <line x1="55" y1="120" x2="20" y2="105" />
+                <line x1="245" y1="120" x2="280" y2="105" />
+                <line x1="55" y1="165" x2="20" y2="180" />
+                <line x1="245" y1="165" x2="280" y2="180" />
+            </g>
+            <g fill="#5EEAD4">
+                <circle cx="60" cy="30" r="9" />
+                <circle cx="240" cy="30" r="9" />
+                <circle cx="20" cy="105" r="8" />
+                <circle cx="280" cy="105" r="8" />
+                <circle cx="20" cy="180" r="8" />
+                <circle cx="280" cy="180" r="8" />
+            </g>
+
+            {/* Body */}
+            <g filter={`url(#${shadow})`}>
+                <path d="M100 195 Q95 250 150 260 Q205 250 200 195 Z" fill={`url(#${bodyGrad})`} />
+                <ellipse cx="100" cy="205" rx="16" ry="24" fill={`url(#${bodyGrad})`} />
+                <ellipse cx="200" cy="205" rx="16" ry="24" fill={`url(#${bodyGrad})`} />
+                <ellipse cx="150" cy="270" rx="45" ry="14" fill="#134E4A" />
+            </g>
+
+            {/* Head */}
+            <g filter={`url(#${shadow})`}>
+                <rect x="65" y="55" width="170" height="145" rx="72" fill={`url(#${headGrad})`} />
+
+                {/* Face screen */}
+                <rect x="90" y="100" width="120" height="65" rx="32" fill="#0D1B2A" />
+
+                {/* Eyes */}
+                <circle cx="128" cy="132" r="14" fill="none" stroke="#5EEAD4" strokeWidth="3" />
+                <circle cx="128" cy="132" r="6" fill={`url(#${eyeGrad})`} />
+                <circle cx="172" cy="132" r="14" fill="none" stroke="#5EEAD4" strokeWidth="3" />
+                <circle cx="172" cy="132" r="6" fill={`url(#${eyeGrad})`} />
+
+                {/* Shine dots */}
+                <circle cx="200" cy="75" r="7" fill="#FFFFFF" opacity="0.45" />
+                <circle cx="185" cy="65" r="4" fill="#FFFFFF" opacity="0.35" />
+            </g>
+
+            {/* Chest label */}
+            <text
+                x="150"
+                y="222"
+                fontFamily="Arial, sans-serif"
+                fontSize="20"
+                fontWeight="bold"
+                fill="#FFFFFF"
+                textAnchor="middle"
+            >
+                HB
+            </text>
+        </svg>
+    );
+}
+
 function FormattedContent({ text }: { text: string }) {
     const paragraphs = text.split("\n\n");
 
@@ -255,8 +352,18 @@ export default function BHChatBot() {
 
             <div className="chatbot-trigger-wrap">
                 {!open && <span className="chatbot-tooltip">Chat with BH Ventures</span>}
-                <button onClick={() => setOpen((v) => !v)} className="chatbot-trigger-btn" aria-label={open ? "Close chat" : "Open chat"}>
-                    {open ? <X size={24} strokeWidth={2.4} /> : <BHMark variant="flat" />}
+                <button
+                    onClick={() => setOpen((v) => !v)}
+                    className={`chatbot-trigger-btn${open ? " is-open" : ""}`}
+                    aria-label={open ? "Close chat" : "Open chat"}
+                >
+                    {open ? (
+                        <X size={24} strokeWidth={2.4} />
+                    ) : (
+                        <span className="chatbot-bot-icon-spin">
+                            <BHBotIcon />
+                        </span>
+                    )}
                     {!open && <span className="chatbot-pulse-ring" />}
                 </button>
             </div>
