@@ -190,7 +190,7 @@ export function WhatWeManage() {
                     src="/images/exhibition/exhibition-hall.png"
                     alt=""
                     fill
-                    sizes="100vw"
+                    sizes="(max-width: 1200px) 100vw, 1200px"
                     quality={70}
                     loading="lazy"
                     className="ex-banner-img"
@@ -320,7 +320,7 @@ export function EventPlanningChecklist() {
                     src="/images/exhibition/planning-checklist-backdrop.png"
                     alt=""
                     fill
-                    sizes="100vw"
+                    sizes="(max-width: 1200px) 100vw, 1200px"
                     quality={65}
                     loading="lazy"
                     className="ex-timeline-bg"

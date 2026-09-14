@@ -12,6 +12,24 @@
     padding: 0 24px;
     color: var(--text);
     font-family: inherit;
+
+    /* Disable text selection across the section (double-click /
+       double-tap won't select words), and drop the gray tap-flash
+       on mobile browsers. Form fields are exempted below. */
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.ex-section input,
+.ex-section textarea,
+.ex-section [contenteditable="true"] {
+    -webkit-user-select: text;
+    -moz-user-select: text;
+    -ms-user-select: text;
+    user-select: text;
 }
 
 .ex-heading {

@@ -32,6 +32,7 @@
     background-size: 22px 22px;
     background-color: var(--wall);
     border-radius: 6px;
+    user-select: none;
 }
 
 .sv-heading {

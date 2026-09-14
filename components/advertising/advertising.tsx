@@ -11,10 +11,10 @@ interface AdvertisingSectionsProps {
 }
 
 const PHOTOS = [
-    "https://images.unsplash.com/photo-1551288049-bebda4e38f71",
-    "https://images.unsplash.com/photo-1762417582194-7f0978f43fa0",
-    "https://images.unsplash.com/photo-1759215524600-7971d6a4dac0",
-    "https://images.unsplash.com/photo-1686061592689-312bbfb5c055",
+    "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&q=70&auto=format",
+    "https://images.unsplash.com/photo-1762417582194-7f0978f43fa0?w=600&q=70&auto=format",
+    "https://images.unsplash.com/photo-1759215524600-7971d6a4dac0?w=600&q=70&auto=format",
+    "https://images.unsplash.com/photo-1686061592689-312bbfb5c055?w=600&q=70&auto=format",
 ];
 
 const CHANNELS = [
@@ -82,11 +82,11 @@ export default function AdvertisingSections({
                 <h2 className="service-detail-heading">Campaign channels</h2>
                 <div className="adx-poster adx-poster--wall">
                     <div className="adx-wall">
-                        {CHANNELS.map((c) => (
+                        {CHANNELS.map((c, i) => (
                             <div key={c.name} className="adx-sheet" style={{ transform: `rotate(${c.angle}deg)` }}>
                                 <span className="adx-sheet-tape" />
                                 <div className="adx-sheet-photo">
-                                    <Image src={c.photo} alt="" fill sizes="33vw" quality={70} loading="lazy" unoptimized style={{ objectFit: "cover" }} />
+                                    <Image src={c.photo} alt="" fill sizes="(max-width: 768px) 100vw, 220px" quality={70} loading={i === 0 ? "eager" : "lazy"} priority={i === 0} style={{ objectFit: "cover" }} />
                                 </div>
                                 <p className="adx-sheet-label">{c.name}</p>
                             </div>
@@ -138,7 +138,7 @@ export default function AdvertisingSections({
                                 style={{ transform: `rotate(${(i % 2 === 0 ? -1 : 1) * 1.4}deg)` }}
                             >
                                 <div className="adx-index-photo">
-                                    <Image src={PHOTOS[i % PHOTOS.length]} alt="" fill sizes="(max-width: 768px) 100vw, 25vw" quality={75} loading="lazy" unoptimized style={{ objectFit: "cover" }} />
+                                    <Image src={PHOTOS[i % PHOTOS.length]} alt="" fill sizes="(max-width: 768px) 100vw, 220px" quality={70} loading="lazy" style={{ objectFit: "cover" }} />
                                 </div>
                                 <span className="adx-index-check">✓</span>
                                 <p className="adx-index-label">{item}</p>
@@ -161,10 +161,9 @@ export default function AdvertisingSections({
                                             src={PHOTOS[i % PHOTOS.length]}
                                             alt=""
                                             fill
-                                            sizes="(max-width: 768px) 100vw, 25vw"
+                                            sizes="(max-width: 768px) 100vw, 220px"
                                             quality={65}
                                             loading="lazy"
-                                            unoptimized
                                             style={{ objectFit: "cover" }}
                                         />
                                     </div>

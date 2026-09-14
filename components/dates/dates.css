@@ -7,6 +7,12 @@
    .service-detail-page[data-category] wrapper.
    ======================================== */
 
+/* ---------- GLOBAL: disable text selection across all dates sections ---------- */
+.dates-varieties,
+.dates-grades {
+    user-select: none;
+}
+
 /* ---------- VARIETY GRID ---------- */
 
 .dates-varieties {
@@ -127,6 +133,9 @@
     font-size: 0.8rem;
     font-weight: 600;
     cursor: default;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
     transition: transform 0.2s ease, background 0.25s ease, color 0.25s ease,
         border-color 0.25s ease, box-shadow 0.3s ease;
 }

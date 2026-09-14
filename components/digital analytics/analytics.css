@@ -19,6 +19,12 @@
     padding: 0 24px;
     color: var(--text);
     font-family: inherit;
+
+    /* Disable text selection across the whole section */
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 
 .da-heading {
@@ -760,11 +766,6 @@
 
     .da-receive-card:nth-child(1) {
         grid-row: span 2;
-    }
-
-    .da-receive-desc {
-        max-height: 80px;
-        opacity: 1;
     }
 }
 

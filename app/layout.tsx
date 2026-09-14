@@ -44,26 +44,30 @@ export default function RootLayout({
         </SmoothScroll>
         <Script
           src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"
-          strategy="afterInteractive"
+          strategy="lazyOnload"
         />
 
-        <Script id="google-translate-init" strategy="afterInteractive">
+        <Script id="google-translate-init" strategy="lazyOnload">
           {`
             window.googleTranslateElementInit = function () {
-              if (
-                window.google &&
-                window.google.translate &&
-                window.google.translate.TranslateElement
-              ) {
-                new window.google.translate.TranslateElement(
-                  {
-                    pageLanguage: "en",
-                    includedLanguages:
-                      "en,ar,de,fr,it,uk,pl,es,pt,hr,sv",
-                    autoDisplay: false,
-                  },
-                  "google_translate_element"
-                );
+              try {
+                if (
+                  window.google &&
+                  window.google.translate &&
+                  window.google.translate.TranslateElement
+                ) {
+                  new window.google.translate.TranslateElement(
+                    {
+                      pageLanguage: "en",
+                      includedLanguages:
+                        "en,ar,de,fr,it,uk,pl,es,pt,hr,sv",
+                      autoDisplay: false,
+                    },
+                    "google_translate_element"
+                  );
+                }
+              } catch (e) {
+                // Storage access blocked by browser tracking prevention — safe to ignore
               }
             };
           `}

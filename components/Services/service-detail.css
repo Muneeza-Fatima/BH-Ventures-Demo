@@ -254,6 +254,9 @@
     position: static;
     display: inline-flex;
     margin-bottom: 1rem;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
 }
 
 @media (max-width: 640px) {
@@ -364,6 +367,9 @@
     letter-spacing: 0.05em;
     color: var(--color-silver, #8fa3b8);
     text-decoration: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
     transition: color 0.3s ease;
 }
 
@@ -440,6 +446,15 @@
     line-height: 1.8;
     color: var(--color-silver, #b7c4d1);
     max-width: 42rem;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+    cursor: pointer;
+    transition: color 0.15s ease;
+}
+
+.service-detail-desc:active {
+    color: var(--accent);
 }
 
 .service-detail-desc::first-letter {
@@ -498,6 +513,9 @@
     font-size: 0.9rem;
     line-height: 1.5;
     color: #dce8f2;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
     transition: border-color 0.3s ease, transform 0.22s ease, box-shadow 0.3s ease, background 0.3s ease;
 }
 
@@ -581,6 +599,9 @@
     margin: 0 -1.25rem;
     border-radius: 1rem;
     border-bottom: 1px solid transparent;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
     transition: background 0.3s ease, transform 0.2s ease;
 }
 
@@ -643,6 +664,9 @@
     transition: box-shadow 0.3s ease, transform 0.3s ease;
     overflow: visible;
     isolation: isolate;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
     /* wrapper so the spinning ring sits behind the number reliably,
        without relying on a negative z-index that browsers can clip */
 }
@@ -701,7 +725,15 @@
     font-size: 1rem;
     font-weight: 700;
     color: #eaf6fb;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+    cursor: pointer;
     transition: color 0.3s ease;
+}
+
+.service-detail-process-list h3:active {
+    color: var(--step);
 }
 
 .service-detail-process-list li:hover h3 {
@@ -713,6 +745,15 @@
     line-height: 1.6;
     color: var(--color-silver, #8fa3b8);
     max-width: 34rem;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+    cursor: pointer;
+    transition: color 0.15s ease;
+}
+
+.service-detail-process-list p:active {
+    color: var(--step);
 }
 
 @media (max-width: 640px) {
@@ -759,6 +800,9 @@
     border: 1px solid rgba(var(--accent-rgb), 0.25);
     background: #ffffff;
     box-shadow: 0 12px 30px -12px rgba(0, 0, 0, 0.35);
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
     transition: transform 0.25s ease, box-shadow 0.3s ease, border-color 0.3s ease;
 }
 
@@ -864,6 +908,9 @@
     font-weight: 700;
     color: #06111f;
     text-transform: capitalize;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
 }
 
 @media (max-width: 480px) {
@@ -893,6 +940,9 @@
     cursor: pointer;
     font-family: inherit;
     box-shadow: 0 0 30px rgba(var(--accent-rgb), 0.4);
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
     transition: transform 0.2s ease, box-shadow 0.3s ease;
 }
 
@@ -923,6 +973,9 @@
     height: 9rem;
     border: 1px solid rgba(255, 255, 255, 0.08);
     text-decoration: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
     transition: border-color 0.3s ease, transform 0.2s ease;
 }
 
@@ -945,7 +998,7 @@
 }
 
 /* Label text — must come after the image wrapper span */
-.service-detail-related-card > span:last-child {
+.service-detail-related-card>span:last-child {
     position: absolute;
     left: 0;
     right: 0;
@@ -998,6 +1051,9 @@
     font-size: 1.2rem;
     line-height: 1;
     cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
     transition: background 0.2s ease, color 0.2s ease;
 }
 
@@ -1073,6 +1129,9 @@
     letter-spacing: 0.04em;
     cursor: pointer;
     box-shadow: 0 0 24px rgba(var(--accent-rgb), 0.4);
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
     transition: transform 0.2s ease, box-shadow 0.3s ease;
 }
 

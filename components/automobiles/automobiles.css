@@ -6,6 +6,12 @@
 
 .auto-section {
     margin-bottom: 3.5rem;
+
+    /* Disable text selection across the whole section */
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 
 /* ---------- STAT STRIP ---------- */
@@ -746,6 +752,15 @@
     border: 1px solid rgba(255, 182, 72, 0.35);
     background: linear-gradient(to bottom, rgba(255, 182, 72, 0.1), rgba(255, 182, 72, 0.02));
     box-sizing: border-box;
+
+    /* prevent this block's text from being highlighted/selected on
+       click or drag, regardless of whether it's mounted inside
+       .auto-section/.feat-section (which already disable selection)
+       or reused somewhere else that doesn't */
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 
 @media (max-width: 380px) {
@@ -1040,6 +1055,12 @@
 
 .feat-section {
     margin-bottom: 3.5rem;
+
+    /* Disable text selection across the whole section */
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 
 .feat-stack {
@@ -1157,6 +1178,7 @@
 }
 
 @media (max-width: 960px) {
+
     .feat-banner-img,
     .feat-banner-video {
         object-position: var(--feat-op-mobile, var(--feat-op-base, center 48%));
@@ -1164,6 +1186,7 @@
 }
 
 @media (max-width: 480px) {
+
     .feat-banner-img,
     .feat-banner-video {
         object-position: var(--feat-op-small, var(--feat-op-mobile, var(--feat-op-base, center 48%)));
@@ -1213,6 +1236,7 @@
 }
 
 @keyframes feat-sweep-move {
+
     0%,
     60% {
         transform: translateX(-130%);
@@ -1316,6 +1340,7 @@
 }
 
 @keyframes feat-brand-pulse {
+
     0%,
     100% {
         text-shadow:

@@ -21,6 +21,7 @@
     padding: 0 24px;
     color: var(--text);
     font-family: inherit;
+    user-select: none;
 }
 
 .sm-heading {
@@ -160,6 +161,7 @@
     overflow: hidden;
     will-change: transform, opacity;
     transition: border-color 0.25s ease, box-shadow 0.3s ease;
+    user-select: none;
 }
 
 .sm-platform-card:hover {
@@ -289,6 +291,7 @@
     overflow: hidden;
     will-change: transform, opacity;
     transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.25s ease;
+    user-select: none;
 }
 
 .sm-track-card:hover {
@@ -435,6 +438,7 @@
     animation: sm-fade-up 0.5s ease forwards;
     transition: border-color 0.25s ease, background 0.25s ease,
         transform 0.25s ease, box-shadow 0.3s ease;
+    user-select: none;
 }
 
 .sm-calendar-day:hover {
@@ -500,6 +504,7 @@
     font-size: 11px;
     line-height: 1.4;
     transition: background 0.2s ease, transform 0.2s ease;
+    user-select: none;
 }
 
 .sm-post-chip.sm-edge-teal {
@@ -588,6 +593,7 @@
     overflow: hidden;
     will-change: transform, opacity;
     transition: box-shadow 0.3s ease, border-color 0.25s ease;
+    user-select: none;
 }
 
 .sm-ticket:hover {

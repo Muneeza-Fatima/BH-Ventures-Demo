@@ -79,6 +79,16 @@ const METER_PATTERNS = [
     [12, 20, 26],
 ];
 
+/* Applied to every section root so nothing on the page can be
+   selected via double-click / double-tap. Inputs/textareas/
+   contenteditable elements are exempted globally in marketing.css. */
+const noSelectStyle: CSSProperties = {
+    userSelect: "none",
+    WebkitUserSelect: "none",
+    MozUserSelect: "none",
+    msUserSelect: "none" as CSSProperties["msUserSelect"],
+};
+
 /* ---- 1. Marketing Focus Areas ----
    These six areas are genuinely worked through in order (research comes
    before you plan a campaign, brand before content, etc.), so each tile
@@ -213,10 +223,17 @@ const metrics = [
 
 /* 1. Marketing Focus Areas — a photo bento. Each tile is a real image
    with a duotone accent tint, a two-digit position in the sequence, and
-   a caption that reveals on hover (the lead tile stays open). */
+   a caption that reveals on hover on desktop, or on tap on touch
+   devices (via the mk-bento-card--active class toggled below). */
 export function MarketingFocusAreas() {
+    const [activeCard, setActiveCard] = React.useState<string | null>(null);
+
+    const handleCardInteract = (name: string) => {
+        setActiveCard((prev) => (prev === name ? null : name));
+    };
+
     return (
-        <section className="mk-section">
+        <section className="mk-section" style={noSelectStyle}>
             <h2 className="mk-heading">Marketing focus areas</h2>
             <motion.div
                 className="mk-bento-grid"
@@ -227,12 +244,23 @@ export function MarketingFocusAreas() {
             >
                 {focusAreaImages.map((m) => {
                     const sw = SWATCH[m.color];
+                    const isActive = activeCard === m.name;
                     return (
                         <motion.div
                             key={m.name}
                             variants={cardVariants}
-                            className="mk-bento-card"
+                            className={`mk-bento-card${isActive ? " mk-bento-card--active" : ""}`}
                             style={{ "--c-rgb": sw.rgb } as CSSProperties}
+                            onClick={() => handleCardInteract(m.name)}
+                            role="button"
+                            tabIndex={0}
+                            aria-pressed={isActive}
+                            onKeyDown={(e) => {
+                                if (e.key === "Enter" || e.key === " ") {
+                                    e.preventDefault();
+                                    handleCardInteract(m.name);
+                                }
+                            }}
                         >
                             <Image src={m.image} alt={m.name} fill sizes="(max-width: 768px) 100vw, 50vw" quality={75} loading="lazy" className="mk-bento-img" style={{ objectFit: "cover" }} />
                             <span className="mk-bento-tint" style={{ background: `rgb(${sw.rgb})` }} />
@@ -255,7 +283,7 @@ export function MarketingFocusAreas() {
    hairline rules, each with a small decorative level meter. */
 export function FocusAreas() {
     return (
-        <section className="mk-section">
+        <section className="mk-section" style={noSelectStyle}>
             <h2 className="mk-heading">What we focus on</h2>
             <motion.div
                 className="mk-focus-grid"
@@ -297,7 +325,7 @@ export function FocusAreas() {
    bezel built from a repeating conic gradient), like a tuned-in target. */
 export function MarketingObjectives() {
     return (
-        <section className="mk-section">
+        <section className="mk-section" style={noSelectStyle}>
             <h2 className="mk-heading">Marketing objectives</h2>
             <motion.div
                 className="mk-objective-grid"
@@ -336,7 +364,7 @@ export function MarketingObjectives() {
    index is informational, not decorative. */
 export function WhatYouGet() {
     return (
-        <section className="mk-section">
+        <section className="mk-section" style={noSelectStyle}>
             <h2 className="mk-heading">What you get</h2>
             <motion.div
                 className="mk-deliver-list"
@@ -377,7 +405,7 @@ export function WhatYouGet() {
    something being measured. */
 export function PerformanceTracking() {
     return (
-        <section className="mk-section">
+        <section className="mk-section" style={noSelectStyle}>
             <h2 className="mk-heading">Performance tracking</h2>
             <p className="mk-subheading">Marketing isn&apos;t just about launching campaigns.</p>
             <motion.div

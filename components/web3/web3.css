@@ -7,6 +7,16 @@
    .service-detail-page[data-category] wrapper.
    ======================================== */
 
+/* ---------- GLOBAL: disable text selection across all web3 sections ---------- */
+.web3-about,
+.web3-license,
+.web3-stages,
+.web3-focus,
+.web3-why,
+.web3-process {
+    user-select: none;
+}
+
 /* ---------- SHARED HOVER SHEEN (site-wide hover accent animation) ---------- */
 
 @keyframes web3-sheen-sweep {
