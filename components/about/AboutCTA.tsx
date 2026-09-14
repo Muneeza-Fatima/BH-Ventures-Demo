@@ -135,43 +135,31 @@ export default function AboutCTA() {
 
         <h2
           className="
+            font-heading
             w-full
-            text-[30px]
-            font-semibold
+            text-[2rem]
+            font-bold
             leading-[1.1]
-            tracking-[-0.045em]
-            text-white
-            sm:text-[40px]
-            md:text-[48px]
-            lg:text-[52px]
+            tracking-[-0.03em]
+            text-[#E7EDF3]
+            sm:text-[2.5rem]
+            md:text-[2.875rem]
+            lg:text-[3.125rem]
           "
         >
           Building Opportunities.
           <br className="hidden sm:block" /> Creating Value.
         </h2>
 
-        <div
-          aria-hidden="true"
-          className="
-            mt-6
-            h-px
-            w-12
-            bg-gradient-to-r
-            from-transparent
-            via-[#2DD4BF]
-            to-transparent
-          "
-        />
-
         <p
           className="
             mx-auto
-            pt-5
+            pt-6
             max-w-[600px]
             text-[14px]
             font-medium
-            leading-7
-            text-white/55
+            leading-[1.75]
+            text-[#AAB6C2]
             sm:text-[16px]
           "
         >
@@ -181,7 +169,7 @@ export default function AboutCTA() {
 
         <div
           className="
-            mt-8
+            mt-10
             flex
             w-full
             flex-col

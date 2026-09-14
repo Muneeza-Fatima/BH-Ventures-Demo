@@ -127,9 +127,9 @@ export default function AboutValues() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.3 }}
           transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-          className="mx-auto mb-10 max-w-[680px] text-center sm:mb-12 lg:mb-16"
+          className="mx-auto mb-12 max-w-[680px] text-center sm:mb-14 lg:mb-16"
         >
-          <div className="mb-4 flex items-center justify-center gap-3">
+          <div className="mb-5 flex items-center justify-center gap-3">
             <span className="h-px w-8 bg-gradient-to-r from-transparent to-[#00A98F] sm:w-10" />
 
             <span
@@ -150,15 +150,16 @@ export default function AboutValues() {
 
           <h2
             className="
+              font-heading
               text-[2rem]
-              font-extrabold
-              leading-[1.05]
-              tracking-[-0.05em]
+              font-bold
+              leading-[1.1]
+              tracking-[-0.028em]
               text-[#102A43]
-              sm:text-[2.6rem]
-              lg:text-[3rem]
+              sm:text-[2.5rem]
+              lg:text-[2.875rem]
 
-              [@media(min-width:1024px)_and_(max-width:1366px)]:text-[2.6rem]!
+              [@media(min-width:1024px)_and_(max-width:1366px)]:text-[2.5rem]!
             "
           >
             What we{" "}
@@ -169,7 +170,10 @@ export default function AboutValues() {
                 via-[#155E75]
                 to-[#00A98F]
                 bg-clip-text
+                pb-[0.18em]
+                -mb-[0.18em]
                 text-transparent
+                [-webkit-background-clip:text]
               "
             >
               hold ourselves to.
@@ -301,10 +305,10 @@ export default function AboutValues() {
 
                 <h3
                   className="
-                    pt-4
+                    pt-5
                     text-[14px]
                     font-bold
-                    leading-tight
+                    leading-[1.25]
                     tracking-[-0.01em]
                     text-[#102A43]
                     sm:text-[15px]

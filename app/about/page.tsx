@@ -1,6 +1,9 @@
 "use client";
 
 import { useEffect } from "react";
+import { Plus_Jakarta_Sans } from "next/font/google";
+
+import "./about.css";
 import AboutHero from "@/components/about/AboutHero";
 import AboutStory from "@/components/about/AboutStory";
 import AboutFacts from "@/components/about/AboutFacts";
@@ -11,6 +14,16 @@ import AboutValues from "@/components/about/AboutValues";
 import AboutFounder from "@/components/about/AboutFounder";
 import AboutContact from "@/components/about/AboutContact";
 import AboutCTA from "@/components/about/AboutCTA";
+
+/* Display face for About headings. Loaded here rather than in the root
+   layout so it ships with this route only — next/font scopes a face to
+   the component that calls it, so the rest of the site keeps Manrope.
+   Exposed as --font-jakarta, which app/about/about.css reads. */
+const jakarta = Plus_Jakarta_Sans({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-jakarta",
+});
 
 export default function AboutPage() {
   /* The site's Lenis smooth-scroll instance (SmoothScroll, in the root
@@ -28,7 +41,9 @@ export default function AboutPage() {
   }, []);
 
   return (
-    <div className="w-full min-w-0 overflow-x-clip bg-[#0B1220]">
+    <div
+      className={`${jakarta.variable} about-page w-full min-w-0 overflow-x-clip bg-[#0B1220]`}
+    >
       <section id="about" className="w-full min-w-0">
         <AboutHero />
       </section>
