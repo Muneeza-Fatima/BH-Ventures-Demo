@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useRef, useState, CSSProperties } from "react";
+import Image from "next/image";
 import { motion } from "framer-motion";
 import {
     Radar,
@@ -307,10 +308,15 @@ export function WhatWeMeasure() {
                             <div className="da-metric-v2-name">{m.name}</div>
                             {m.photo ? (
                                 <div className="da-metric-v2-photo-wrap">
-                                    <img
+                                    <Image
                                         className="da-metric-v2-photo"
                                         src={m.photo}
                                         alt={m.desc}
+                                        fill
+                                        sizes="(max-width: 768px) 100vw, 33vw"
+                                        quality={75}
+                                        loading="lazy"
+                                        style={{ objectFit: "cover" }}
                                     />
                                 </div>
                             ) : (
@@ -574,11 +580,15 @@ export function WhatYouReceive() {
                             className="da-receive-card"
                             style={{ "--r-rgb": COLOR_RGB[d.color] } as CSSProperties}
                         >
-                            <img
+                            <Image
                                 src={d.image}
                                 alt=""
+                                fill
+                                sizes="(max-width: 768px) 100vw, 50vw"
+                                quality={75}
                                 className="da-receive-img"
                                 loading="lazy"
+                                style={{ objectFit: "cover" }}
                             />
                             <span className="da-receive-tint" />
                             <span className="da-receive-scrim" />

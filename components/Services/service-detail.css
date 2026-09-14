@@ -166,24 +166,27 @@
 
 /* photo keeps real color instead of being crushed dark */
 .detail-hero-media-el {
-    height: 100%;
-    width: 100%;
     object-fit: cover;
     object-position: center 20%;
     filter: saturate(1.3) contrast(1.08) brightness(1.02);
 }
 
 .detail-hero-media-el--video {
+    width: 100%;
+    height: 100%;
     object-fit: cover;
     object-position: center 15%;
 }
 
 @media (max-width: 640px) {
-
-    .detail-hero-media-el,
-    .detail-hero-media-el--video {
+    .detail-hero-media-el {
         object-fit: contain;
         object-position: center 10%;
+    }
+
+    .detail-hero-media-el--video {
+        object-fit: cover;
+        object-position: center 15%;
     }
 }
 
@@ -941,7 +944,8 @@
     transform: scale(1.05);
 }
 
-.service-detail-related-card span {
+/* Label text — must come after the image wrapper span */
+.service-detail-related-card > span:last-child {
     position: absolute;
     left: 0;
     right: 0;
@@ -951,6 +955,7 @@
     font-weight: 700;
     color: #fff;
     background: linear-gradient(to top, rgba(6, 13, 24, 0.9), transparent);
+    z-index: 1;
 }
 
 /* ========================================

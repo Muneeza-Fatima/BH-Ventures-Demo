@@ -1,6 +1,7 @@
 "use client";
 
 import React, { CSSProperties } from "react";
+import Image from "next/image";
 import { motion } from "framer-motion";
 import {
     Search,
@@ -233,7 +234,7 @@ export function MarketingFocusAreas() {
                             className="mk-bento-card"
                             style={{ "--c-rgb": sw.rgb } as CSSProperties}
                         >
-                            <img src={m.image} alt={m.name} className="mk-bento-img" loading="lazy" />
+                            <Image src={m.image} alt={m.name} fill sizes="(max-width: 768px) 100vw, 50vw" quality={75} loading="lazy" className="mk-bento-img" style={{ objectFit: "cover" }} />
                             <span className="mk-bento-tint" style={{ background: `rgb(${sw.rgb})` }} />
                             <span className="mk-bento-scrim" />
                             <span className="mk-bento-sweep" />

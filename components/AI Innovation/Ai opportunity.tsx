@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useRef, useState, CSSProperties } from "react";
+import Image from "next/image";
 import { motion } from "framer-motion";
 import {
     Settings2,
@@ -329,11 +330,15 @@ export function OpportunityAreas() {
                             className="ai-bento-card"
                             style={{ "--m-rgb": sw.rgb } as CSSProperties}
                         >
-                            <img
+                            <Image
                                 src={m.image}
                                 alt=""
+                                fill
+                                sizes="(max-width: 768px) 100vw, 50vw"
+                                quality={75}
                                 className="ai-bento-img"
                                 loading="lazy"
+                                style={{ objectFit: "cover" }}
                             />
                             <span className="ai-bento-tint" style={{ backgroundImage: sw.grad }} />
                             <span className="ai-bento-scrim" />

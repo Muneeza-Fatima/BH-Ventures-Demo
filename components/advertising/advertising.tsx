@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import "./advertising.css";
 
 interface AdvertisingSectionsProps {
@@ -85,7 +86,7 @@ export default function AdvertisingSections({
                             <div key={c.name} className="adx-sheet" style={{ transform: `rotate(${c.angle}deg)` }}>
                                 <span className="adx-sheet-tape" />
                                 <div className="adx-sheet-photo">
-                                    <img src={`${c.photo}?w=420&q=70&auto=format&fit=crop`} alt="" loading="lazy" />
+                                    <Image src={c.photo} alt="" fill sizes="33vw" quality={70} loading="lazy" unoptimized style={{ objectFit: "cover" }} />
                                 </div>
                                 <p className="adx-sheet-label">{c.name}</p>
                             </div>
@@ -137,7 +138,7 @@ export default function AdvertisingSections({
                                 style={{ transform: `rotate(${(i % 2 === 0 ? -1 : 1) * 1.4}deg)` }}
                             >
                                 <div className="adx-index-photo">
-                                    <img src={`${PHOTOS[i % PHOTOS.length]}?w=500&q=70&auto=format&fit=crop`} alt="" loading="lazy" />
+                                    <Image src={PHOTOS[i % PHOTOS.length]} alt="" fill sizes="(max-width: 768px) 100vw, 25vw" quality={75} loading="lazy" unoptimized style={{ objectFit: "cover" }} />
                                 </div>
                                 <span className="adx-index-check">✓</span>
                                 <p className="adx-index-label">{item}</p>
@@ -156,10 +157,15 @@ export default function AdvertisingSections({
                             {process.map((step, i) => (
                                 <div key={step.title} className="adx-ticket">
                                     <div className="adx-ticket-photo">
-                                        <img
-                                            src={`${PHOTOS[i % PHOTOS.length]}?w=500&q=65&auto=format&fit=crop`}
+                                        <Image
+                                            src={PHOTOS[i % PHOTOS.length]}
                                             alt=""
+                                            fill
+                                            sizes="(max-width: 768px) 100vw, 25vw"
+                                            quality={65}
                                             loading="lazy"
+                                            unoptimized
+                                            style={{ objectFit: "cover" }}
                                         />
                                     </div>
                                     <div className="adx-ticket-perf" />

@@ -308,7 +308,7 @@ export function PlatformsWeManage() {
                                         style={{ backgroundImage: `url(${p.image})` }}
                                     />
                                     <div className="sm-platform-fg-wrap">
-                                        <img className="sm-platform-fg" src={p.image} alt="" />
+                                        <img className="sm-platform-fg" src={p.image} alt="" loading="lazy" decoding="async" />
                                     </div>
                                 </>
                             ) : (
@@ -462,7 +462,7 @@ export function WhatYouReceive() {
                                         style={{ backgroundImage: `url(${d.image})` }}
                                     />
                                     <div className="sm-ticket-fg-wrap">
-                                        <img className="sm-ticket-fg" src={d.image} alt="" />
+                                        <img className="sm-ticket-fg" src={d.image} alt="" loading="lazy" decoding="async" />
                                     </div>
                                 </>
                             ) : (

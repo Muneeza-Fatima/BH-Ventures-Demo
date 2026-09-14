@@ -108,11 +108,35 @@
         #f4efe1;
     border: 1px solid rgba(var(--accent-rgb), 0.3);
     box-shadow: 0 20px 46px -22px rgba(0, 0, 0, 0.5);
-    animation: adxRise 0.5s ease both;
+    transition: opacity 0.6s ease, translate 0.6s ease;
     /* isolation creates its own stacking context so page-level nav
        dropdowns (e.g. header menus) can never visually overlap card
        content inside the poster, regardless of their own z-index. */
     isolation: isolate;
+}
+
+/* ---------- scroll-triggered reveal ----------
+   Each .adx-poster-section starts hidden and picks up the .in-view
+   class (added by IntersectionObserver in advertising.tsx) the first
+   time it scrolls into the viewport. Cards inside stagger in via the
+   per-item --reveal-delay custom property set inline in the JSX.
+   `translate` is used (not `transform`) so it composes cleanly with
+   the rotate() tilt already applied inline on several card types. */
+
+.adx-poster-section:not(.in-view) .adx-poster {
+    opacity: 0;
+    translate: 0 20px;
+}
+
+.adx-poster-section:not(.in-view) .adx-sheet,
+.adx-poster-section:not(.in-view) .adx-note,
+.adx-poster-section:not(.in-view) .adx-index-card,
+.adx-poster-section:not(.in-view) .adx-ticket,
+.adx-poster-section:not(.in-view) .adx-flow-card,
+.adx-poster-section:not(.in-view) .adx-stat-card,
+.adx-poster-section:not(.in-view) .adx-metric-card {
+    opacity: 0;
+    translate: 0 18px;
 }
 
 @media (max-width: 640px) {
@@ -122,8 +146,19 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-    .adx-poster {
-        animation: none;
+
+    .adx-poster,
+    .adx-poster-section:not(.in-view) .adx-poster,
+    .adx-poster-section:not(.in-view) .adx-sheet,
+    .adx-poster-section:not(.in-view) .adx-note,
+    .adx-poster-section:not(.in-view) .adx-index-card,
+    .adx-poster-section:not(.in-view) .adx-ticket,
+    .adx-poster-section:not(.in-view) .adx-flow-card,
+    .adx-poster-section:not(.in-view) .adx-stat-card,
+    .adx-poster-section:not(.in-view) .adx-metric-card {
+        opacity: 1;
+        translate: none;
+        transition: none;
     }
 }
 
@@ -143,7 +178,12 @@
     background: #fff;
     padding: 8px 8px 12px;
     box-shadow: 0 10px 20px rgba(6, 17, 31, 0.22);
-    transition: transform 0.22s ease, box-shadow 0.22s ease, filter 0.22s ease;
+    transition:
+        transform 0.22s ease,
+        box-shadow 0.22s ease,
+        filter 0.22s ease,
+        opacity 0.5s ease var(--reveal-delay, 0s),
+        translate 0.5s ease var(--reveal-delay, 0s);
     cursor: pointer;
 }
 
@@ -172,6 +212,7 @@
 }
 
 .adx-sheet-photo {
+    position: relative;
     width: 100%;
     aspect-ratio: 4 / 5;
     overflow: hidden;
@@ -183,6 +224,11 @@
     height: 100%;
     object-fit: cover;
     display: block;
+    transition: transform 0.45s ease;
+}
+
+.adx-sheet:hover .adx-sheet-photo img {
+    transform: scale(1.08);
 }
 
 .adx-sheet-label {
@@ -290,6 +336,7 @@
     display: grid;
     grid-template-columns: 24px 1fr;
     gap: 10px;
+    transition: opacity 0.5s ease var(--reveal-delay, 0s), translate 0.5s ease var(--reveal-delay, 0s);
 }
 
 .adx-note-mark {
@@ -384,7 +431,11 @@
     background: #fff;
     padding: 8px 8px 14px;
     box-shadow: 0 10px 20px rgba(6, 17, 31, 0.18);
-    transition: transform 0.22s ease, box-shadow 0.22s ease;
+    transition:
+        transform 0.22s ease,
+        box-shadow 0.22s ease,
+        opacity 0.5s ease var(--reveal-delay, 0s),
+        translate 0.5s ease var(--reveal-delay, 0s);
     cursor: pointer;
     flex: 1 1 170px;
     max-width: 220px;
@@ -402,6 +453,7 @@
 }
 
 .adx-index-photo {
+    position: relative;
     width: 100%;
     aspect-ratio: 5 / 4;
     overflow: hidden;
@@ -413,6 +465,11 @@
     height: 100%;
     object-fit: cover;
     display: block;
+    transition: transform 0.45s ease;
+}
+
+.adx-index-card:hover .adx-index-photo img {
+    transform: scale(1.08);
 }
 
 .adx-index-check {
@@ -480,7 +537,11 @@
     border-radius: 0.6rem;
     overflow: hidden;
     box-shadow: 0 12px 24px rgba(6, 17, 31, 0.2);
-    transition: transform 0.22s ease, box-shadow 0.22s ease;
+    transition:
+        transform 0.22s ease,
+        box-shadow 0.22s ease,
+        opacity 0.5s ease var(--reveal-delay, 0s),
+        translate 0.5s ease var(--reveal-delay, 0s);
     cursor: pointer;
 }
 
@@ -496,6 +557,7 @@
 }
 
 .adx-ticket-photo {
+    position: relative;
     height: 120px;
     overflow: hidden;
 }
@@ -505,6 +567,11 @@
     height: 100%;
     object-fit: cover;
     filter: grayscale(0.45) contrast(1.1);
+    transition: transform 0.45s ease;
+}
+
+.adx-ticket:hover .adx-ticket-photo img {
+    transform: scale(1.08);
 }
 
 .adx-ticket-perf {
@@ -609,8 +676,11 @@
     border-radius: 0.9rem;
     padding: 1.5rem 1.25rem 1.25rem;
     box-shadow: 0 12px 24px rgba(6, 17, 31, 0.16);
-    animation: adxRise 0.45s ease both;
-    transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.25s ease;
+    transition:
+        transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1),
+        box-shadow 0.25s ease,
+        opacity 0.5s ease var(--reveal-delay, 0s),
+        translate 0.5s ease var(--reveal-delay, 0s);
     cursor: pointer;
     flex: 1 1 220px;
     max-width: 260px;
@@ -704,7 +774,11 @@
     padding: 1.5rem 1.25rem;
     box-shadow: 0 12px 24px rgba(6, 17, 31, 0.18);
     text-align: center;
-    transition: transform 0.22s ease, box-shadow 0.22s ease;
+    transition:
+        transform 0.22s ease,
+        box-shadow 0.22s ease,
+        opacity 0.5s ease var(--reveal-delay, 0s),
+        translate 0.5s ease var(--reveal-delay, 0s);
     cursor: pointer;
 }
 
@@ -773,7 +847,12 @@
     border-radius: 0.85rem;
     padding: 1.2rem 1rem;
     text-align: center;
-    transition: transform 0.22s ease, box-shadow 0.22s ease, background 0.22s ease;
+    transition:
+        transform 0.22s ease,
+        box-shadow 0.22s ease,
+        background 0.22s ease,
+        opacity 0.5s ease var(--reveal-delay, 0s),
+        translate 0.5s ease var(--reveal-delay, 0s);
     cursor: pointer;
 }
 

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import Image from "next/image";
 
 interface ServiceDetailHeroProps {
     image: string;
@@ -81,12 +82,15 @@ export default function ServiceDetailHero({
                             <source src={video} type="video/mp4" />
                         </video>
                     ) : (
-                        // eslint-disable-next-line @next/next/no-img-element
-                        <img
+                        <Image
                             src={image}
                             alt={`${title} concept art`}
+                            fill
+                            priority
+                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 70vw"
+                            quality={85}
                             className="detail-hero-media-el"
-                            decoding="async"
+                            style={{ objectFit: "cover" }}
                         />
                     )}
                 </div>

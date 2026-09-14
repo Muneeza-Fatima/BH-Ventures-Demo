@@ -1,6 +1,7 @@
 "use client";
 
 import React, { CSSProperties } from "react";
+import Image from "next/image";
 import { motion } from "framer-motion";
 import {
     Building2,
@@ -162,7 +163,7 @@ export function EventTypes() {
                             style={{ "--c-rgb": sw.rgb } as CSSProperties}
                         >
                             {/* TODO: replace with a real photo at this path */}
-                            <img src={e.image} alt="" className="ex-photo-img" loading="lazy" />
+                            <Image src={e.image} alt="" fill sizes="(max-width: 768px) 100vw, 33vw" quality={75} loading="lazy" className="ex-photo-img" style={{ objectFit: "cover" }} />
                             <span className="ex-photo-scrim" />
                             <span className="ex-photo-icon" style={{ backgroundImage: sw.grad }}>
                                 <Icon size={14} strokeWidth={2.25} />
@@ -185,11 +186,15 @@ export function WhatWeManage() {
             <div className="ex-banner-wrap">
                 {/* TODO: replace with a real photo — an exhibition hall / booth
                     setup shot works well here */}
-                <img
+                <Image
                     src="/images/exhibition/exhibition-hall.png"
                     alt=""
-                    className="ex-banner-img"
+                    fill
+                    sizes="100vw"
+                    quality={70}
                     loading="lazy"
+                    className="ex-banner-img"
+                    style={{ objectFit: "cover" }}
                 />
                 <span className="ex-banner-scrim" />
                 <motion.div
@@ -250,7 +255,7 @@ export function EventExperience() {
                             style={{ "--c-rgb": sw.rgb } as CSSProperties}
                         >
                             {/* TODO: replace with a real photo at this path */}
-                            <img src={p.image} alt="" className="ex-strip-img" loading="lazy" />
+                            <Image src={p.image} alt="" fill sizes="(max-width: 768px) 100vw, 33vw" quality={75} loading="lazy" className="ex-strip-img" style={{ objectFit: "cover" }} />
                             <span className="ex-strip-tint" style={{ backgroundImage: sw.grad }} />
                             <span className="ex-strip-scrim" />
                             <span className="ex-strip-icon" style={{ backgroundImage: sw.grad }}>
@@ -311,11 +316,15 @@ export function EventPlanningChecklist() {
                 {/* TODO: replace with a real photo — a wide, low-detail shot
                     (empty hall, floor plan, setup-in-progress) works best here
                     since it sits behind the timeline at low opacity */}
-                <img
+                <Image
                     src="/images/exhibition/planning-checklist-backdrop.png"
                     alt=""
-                    className="ex-timeline-bg"
+                    fill
+                    sizes="100vw"
+                    quality={65}
                     loading="lazy"
+                    className="ex-timeline-bg"
+                    style={{ objectFit: "cover" }}
                 />
                 <span className="ex-timeline-scrim" />
                 <motion.div

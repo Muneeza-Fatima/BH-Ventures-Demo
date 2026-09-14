@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { notFound } from "next/navigation";
 import { SERVICES } from "@/data/services";
 import ServiceDetailHero from "@/components/Services/ServiceDetailHero";
@@ -213,8 +214,17 @@ export default async function ServiceDetailPage({ params }: { params: ParamsProm
                     <div className="service-detail-related-grid">
                         {related.map((r) => (
                             <Link key={r.slug} href={`/services/${r.slug}`} className="service-detail-related-card">
-                                {/* eslint-disable-next-line @next/next/no-img-element */}
-                                <img src={r.image} alt={r.title} />
+                                <span style={{ position: "relative", display: "block", width: "100%", height: "100%" }}>
+                                    <Image
+                                        src={r.image}
+                                        alt={r.title}
+                                        fill
+                                        sizes="(max-width: 768px) 100vw, 33vw"
+                                        quality={75}
+                                        style={{ objectFit: "cover" }}
+                                        loading="lazy"
+                                    />
+                                </span>
                                 <span>{r.title}</span>
                             </Link>
                         ))}

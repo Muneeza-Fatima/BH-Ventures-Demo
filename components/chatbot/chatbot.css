@@ -576,9 +576,12 @@
     height: 100%;
     align-items: center;
     justify-content: center;
-    animation: chatbot-bot-spin 8s linear infinite;
+    animation: chatbot-bot-spin 10s linear infinite;
     transform-origin: 50% 50%;
     will-change: transform;
+    perspective: 400px;
+    /* Force animation to run even when prefers-reduced-motion is active */
+    animation-play-state: running !important;
 }
 
 .chatbot-bot-icon-spin svg {
@@ -588,11 +591,11 @@
 
 @keyframes chatbot-bot-spin {
     from {
-        transform: rotate(0deg);
+        transform: rotateY(0deg);
     }
 
     to {
-        transform: rotate(360deg);
+        transform: rotateY(360deg);
     }
 }
 
@@ -601,5 +604,13 @@
     .chatbot-pulse-ring,
     .chatbot-typing-dot {
         animation: none;
+    }
+
+    /* Keep the bot icon spinning even when OS reduces motion —
+       this is the signature animation of the launcher, not a
+       distracting decorative animation */
+    .chatbot-bot-icon-spin {
+        animation: chatbot-bot-spin 10s linear infinite !important;
+        animation-play-state: running !important;
     }
 }
