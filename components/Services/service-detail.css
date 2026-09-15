@@ -8,9 +8,28 @@
     position: relative;
     background: #0a1628;
     min-height: 100vh;
+    padding-top: 64px;
     /* brand default: mint, matches homepage "Ventures." + CTA buttons */
     --accent: #2ee6c5;
     --accent-rgb: 46, 230, 197;
+}
+
+@media (min-width: 640px) {
+    .service-detail-page {
+        padding-top: 66px;
+    }
+}
+
+@media (min-width: 768px) {
+    .service-detail-page {
+        padding-top: 68px;
+    }
+}
+
+@media (min-width: 1280px) {
+    .service-detail-page {
+        padding-top: 70px;
+    }
 }
 
 /* reuse the same category → color vars as the cards, scoped to this page */
@@ -83,44 +102,58 @@
 
 .detail-hero {
     position: relative;
-    height: 70vh;
-    min-height: 420px;
+    height: 64vh;
+    min-height: 440px;
+    max-height: 620px;
     overflow: hidden;
     background: #0b1220;
 }
 
-@media (min-width: 1024px) {
-    .detail-hero {
-        height: 80vh;
-    }
-}
-
-@media (max-width: 640px) {
-    .detail-hero {
-        height: 60vh;
-        min-height: 350px;
-        max-height: 440px;
-    }
-}
-
-/* For heroes with video: match desktop layout and full bleed */
 .detail-hero--has-video {
-    height: 70vh;
-    min-height: 420px;
+    height: 68vh;
+    min-height: 460px;
+    max-height: 640px;
     background: #0b1220;
 }
 
-@media (min-width: 1024px) {
+@media (min-width: 1440px) {
+    .detail-hero {
+        height: 66vh;
+        max-height: 680px;
+    }
+
     .detail-hero--has-video {
-        height: 80vh;
+        height: 70vh;
+        max-height: 700px;
     }
 }
 
-@media (max-width: 640px) {
+@media (max-width: 1023px) {
+    .detail-hero {
+        height: 60vh;
+        min-height: 400px;
+        max-height: 560px;
+    }
+
     .detail-hero--has-video {
-        height: 52vh;
-        min-height: 350px;
-        max-height: 440px;
+        height: 56vh;
+        min-height: 360px;
+        max-height: 500px;
+    }
+}
+
+/* ── MOBILE (≤ 768px): Exact 16:9 ratio to match video source with zero crop ── */
+@media (max-width: 768px) {
+    .detail-hero,
+    .detail-hero--has-video {
+        position: relative;
+        width: 100%;
+        height: auto !important;
+        min-height: unset !important;
+        max-height: unset !important;
+        aspect-ratio: 16 / 9;
+        overflow: hidden;
+        display: block;
     }
 }
 
@@ -131,10 +164,12 @@
     overflow: hidden;
 }
 
-@media (max-width: 640px) {
+/* On mobile: stage goes back to absolute to fill the padding-top container perfectly */
+@media (max-width: 768px) {
     .detail-hero-stage {
-        top: 2.8rem;
-        height: calc(100% - 2.8rem);
+        position: absolute;
+        inset: 0;
+        perspective: none;
     }
 }
 
@@ -164,29 +199,147 @@
     --scroll-scale: 1 !important;
 }
 
-/* photo keeps real color instead of being crushed dark */
-.detail-hero-media-el {
-    object-fit: cover;
-    object-position: center 20%;
-    filter: saturate(1.3) contrast(1.08) brightness(1.02);
+/* On mobile: kill ALL transforms and animation so nothing causes overflow/crop */
+@media (max-width: 768px) {
+    .detail-hero-media {
+        animation: none !important;
+        transform: none !important;
+        translate: none !important;
+        scale: none !important;
+        opacity: 1 !important;
+    }
+
+    .detail-hero-media--video {
+        --scroll-z: 0px !important;
+        --scroll-scale: 1 !important;
+        --scroll-fade: 1 !important;
+        translate: none !important;
+        scale: none !important;
+        transform: none !important;
+        opacity: 1 !important;
+    }
 }
 
-.detail-hero-media-el--video {
+/* photo keeps real color instead of being crushed dark */
+.detail-hero-media-el {
+    position: absolute;
+    inset: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
-    object-position: center 15%;
+    object-position: center 25%;
+    filter: saturate(1.25) contrast(1.06) brightness(1.02);
 }
 
-@media (max-width: 640px) {
+/* On mobile: center the focal point so nothing is cropped top or bottom */
+@media (max-width: 768px) {
     .detail-hero-media-el {
-        object-fit: contain;
-        object-position: center 10%;
+        object-position: center center;
+    }
+}
+
+.detail-hero-media-el--poster {
+    z-index: 1;
+    transition: opacity 0.4s ease-out;
+}
+
+.detail-hero-media-el--poster-dim {
+    opacity: 0.95;
+}
+
+.detail-hero-media-el--video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+    object-fit: cover;
+    object-position: center center;
+    opacity: 0;
+    transition: opacity 0.45s ease-in-out;
+    /* Ensure video always fills the container correctly on all viewports */
+    min-width: 100%;
+    min-height: 100%;
+}
+
+.detail-hero-media-el--video.detail-hero-media-el--ready {
+    opacity: 1;
+}
+
+/* Specific framing for Automobile Trading (Porsche car) — ensures full roof and body line are visible */
+.detail-hero[data-slug="new-automobile-trading"] .detail-hero-media-el,
+.detail-hero[data-slug="new-automobile-trading"] .detail-hero-media-el--video {
+    object-position: center 38%;
+}
+
+@media (max-width: 1024px) {
+
+    .detail-hero[data-slug="new-automobile-trading"] .detail-hero-media-el,
+    .detail-hero[data-slug="new-automobile-trading"] .detail-hero-media-el--video {
+        object-position: center 36%;
+    }
+}
+
+@media (max-width: 768px) {
+
+    .detail-hero[data-slug="new-automobile-trading"] .detail-hero-media-el,
+    .detail-hero[data-slug="new-automobile-trading"] .detail-hero-media-el--video {
+        object-position: center 38%;
+    }
+}
+
+/* Specific framing for other services with video */
+.detail-hero[data-slug="advertising"] .detail-hero-media-el--video {
+    object-position: center 35%;
+}
+
+.detail-hero[data-slug="digital-analytics-services"] .detail-hero-media-el--video {
+    object-position: center 40%;
+}
+
+.detail-hero[data-slug="marketing-via-social-media"] .detail-hero-media-el--video {
+    object-position: center 42%;
+}
+
+.detail-hero[data-slug="marketing-management"] .detail-hero-media-el--video {
+    object-position: center 40%;
+}
+
+/* ── Mobile overrides for all video slugs (≤ 768px) ── */
+@media (max-width: 768px) {
+    .detail-hero[data-slug="advertising"] .detail-hero-media-el--video {
+        object-position: center 40%;
     }
 
-    .detail-hero-media-el--video {
-        object-fit: cover;
-        object-position: center 15%;
+    .detail-hero[data-slug="digital-analytics-services"] .detail-hero-media-el--video {
+        object-position: center 45%;
+    }
+
+    .detail-hero[data-slug="marketing-via-social-media"] .detail-hero-media-el--video {
+        object-position: center 45%;
+    }
+
+    .detail-hero[data-slug="marketing-management"] .detail-hero-media-el--video {
+        object-position: center 45%;
+    }
+}
+
+/* ── Small mobile overrides (≤ 480px) ── */
+@media (max-width: 480px) {
+    .detail-hero[data-slug="advertising"] .detail-hero-media-el--video {
+        object-position: center 50%;
+    }
+
+    .detail-hero[data-slug="digital-analytics-services"] .detail-hero-media-el--video {
+        object-position: center 50%;
+    }
+
+    .detail-hero[data-slug="marketing-via-social-media"] .detail-hero-media-el--video {
+        object-position: center 50%;
+    }
+
+    .detail-hero[data-slug="marketing-management"] .detail-hero-media-el--video {
+        object-position: center 50%;
     }
 }
 
@@ -208,27 +361,36 @@
     .detail-hero-media {
         animation: none;
     }
+
+    .detail-hero-media-el--video {
+        transition: none !important;
+    }
 }
 
-/* lighter, category-tinted fade instead of a flat navy wash */
+/* lighter, category-tinted fade with clear central aperture */
 .detail-hero-fade {
     position: absolute;
     inset: 0;
     z-index: 5;
     pointer-events: none;
     background: linear-gradient(to bottom,
-            rgba(10, 22, 40, 0.05) 0%,
-            rgba(10, 22, 40, 0.32) 55%,
+            rgba(10, 22, 40, 0.12) 0%,
+            rgba(10, 22, 40, 0) 25%,
+            rgba(10, 22, 40, 0.08) 55%,
+            rgba(10, 22, 40, 0.72) 82%,
             #0a1628 100%),
         radial-gradient(ellipse 900px 500px at 15% 100%, rgba(var(--accent-rgb), 0.12), transparent 60%);
 }
 
-@media (max-width: 640px) {
+/* On mobile: soft bottom fade so text is readable while leaving top 45% crystal clear */
+@media (max-width: 768px) {
     .detail-hero-fade {
+        display: block;
         background: linear-gradient(to bottom,
                 rgba(10, 22, 40, 0) 0%,
-                rgba(10, 22, 40, 0.18) 50%,
-                #0a1628 92%);
+                rgba(10, 22, 40, 0) 40%,
+                rgba(10, 22, 40, 0.45) 70%,
+                rgba(10, 22, 40, 0.88) 100%);
     }
 }
 
@@ -241,12 +403,19 @@
     margin: 0 auto;
     max-width: 1320px;
     padding: 0 2rem;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
 }
 
-@media (max-width: 640px) {
+/* On mobile: keep text neatly placed at the bottom without crowding */
+@media (max-width: 768px) {
     .detail-hero-content {
-        padding: 0 1.25rem;
-        bottom: 1.25rem;
+        position: absolute;
+        bottom: 0.75rem;
+        padding: 0 1rem;
+        background: none;
+        border-top: none;
     }
 }
 
@@ -261,9 +430,9 @@
 
 @media (max-width: 640px) {
     .detail-hero-badge {
-        margin-bottom: 0.35rem;
-        font-size: 0.7rem;
-        padding: 0.2rem 0.55rem;
+        margin-bottom: 0.25rem;
+        font-size: 0.68rem;
+        padding: 0.18rem 0.5rem;
     }
 }
 
@@ -285,6 +454,9 @@
     -webkit-text-fill-color: transparent;
     background-clip: text;
     animation: service-title-shimmer 6s ease-in-out infinite;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
 }
 
 @keyframes service-title-shimmer {
@@ -325,6 +497,9 @@
     font-weight: 500;
     color: var(--accent);
     text-shadow: 0 0 14px rgba(var(--accent-rgb), 0.4);
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
 }
 
 @media (max-width: 640px) {

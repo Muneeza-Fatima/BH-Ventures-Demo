@@ -1,8 +1,8 @@
 "use client";
 
-import React, { CSSProperties } from "react";
+import React, { CSSProperties, useState } from "react";
 import Image from "next/image";
-import { motion } from "framer-motion";
+import { motion, type Variants } from "framer-motion";
 import {
     Search,
     Workflow,
@@ -25,7 +25,137 @@ import {
 import "./marketing.css";
 
 /* ---------- MOTION VARIANTS ---------- */
-const containerVariants = {
+const sectionHeadingVariants: Variants = {
+    hidden: { opacity: 0, y: 16 },
+    show: {
+        opacity: 1,
+        y: 0,
+        transition: {
+            duration: 0.5,
+            ease: [0.16, 1, 0.3, 1],
+        },
+    },
+};
+
+const colorBarVariants: Variants = {
+    hidden: { opacity: 0, y: -8 },
+    show: {
+        opacity: 1,
+        y: 0,
+        transition: {
+            staggerChildren: 0.05,
+            delayChildren: 0.04,
+            duration: 0.45,
+        },
+    },
+};
+
+const chipVariants: Variants = {
+    hidden: { opacity: 0, scale: 0.75, y: 6 },
+    show: {
+        opacity: 1,
+        scale: 1,
+        y: 0,
+        transition: {
+            type: "spring",
+            stiffness: 420,
+            damping: 20,
+        },
+    },
+};
+
+const bentoGridVariants: Variants = {
+    hidden: {},
+    show: {
+        transition: {
+            staggerChildren: 0.08,
+            delayChildren: 0.06,
+        },
+    },
+};
+
+const bentoCardVariants: Variants = {
+    hidden: { opacity: 0, y: 26, scale: 0.96 },
+    show: {
+        opacity: 1,
+        y: 0,
+        scale: 1,
+        transition: {
+            duration: 0.55,
+            ease: [0.16, 1, 0.3, 1],
+        },
+    },
+};
+
+const focusGridVariants: Variants = {
+    hidden: {},
+    show: {
+        transition: {
+            staggerChildren: 0.1,
+            delayChildren: 0.06,
+        },
+    },
+};
+
+const focusCardVariants: Variants = {
+    hidden: { opacity: 0, y: 22, scale: 0.97 },
+    show: {
+        opacity: 1,
+        y: 0,
+        scale: 1,
+        transition: {
+            duration: 0.5,
+            ease: [0.16, 1, 0.3, 1],
+        },
+    },
+};
+
+const objectiveGridVariants: Variants = {
+    hidden: {},
+    show: {
+        transition: {
+            staggerChildren: 0.09,
+            delayChildren: 0.05,
+        },
+    },
+};
+
+const objectiveCardVariants: Variants = {
+    hidden: { opacity: 0, y: 28, scale: 0.94 },
+    show: {
+        opacity: 1,
+        y: 0,
+        scale: 1,
+        transition: {
+            duration: 0.55,
+            ease: [0.16, 1, 0.3, 1],
+        },
+    },
+};
+
+const docketListVariants: Variants = {
+    hidden: {},
+    show: {
+        transition: {
+            staggerChildren: 0.06,
+            delayChildren: 0.04,
+        },
+    },
+};
+
+const docketRowVariants: Variants = {
+    hidden: { opacity: 0, x: -24 },
+    show: {
+        opacity: 1,
+        x: 0,
+        transition: {
+            duration: 0.45,
+            ease: [0.16, 1, 0.3, 1],
+        },
+    },
+};
+
+const metricGridVariants: Variants = {
     hidden: {},
     show: {
         transition: {
@@ -35,53 +165,34 @@ const containerVariants = {
     },
 };
 
-const cardVariants = {
-    hidden: { opacity: 0, y: 30 },
+const metricCardVariants: Variants = {
+    hidden: { opacity: 0, y: 24, scale: 0.95 },
     show: {
         opacity: 1,
         y: 0,
+        scale: 1,
         transition: {
-            duration: 0.6,
-            ease: [0.16, 1, 0.3, 1] as [number, number, number, number],
+            duration: 0.5,
+            ease: [0.16, 1, 0.3, 1],
         },
     },
 };
 
-/* ---------- COLOR SYSTEM ----------
-   A tech-forward palette: six distinct hues from the indigo/teal/rose
-   family, all built to sit cleanly on a white page (unlike the previous
-   dark "broadcast" build, every colour here is a base-600 tone chosen
-   for contrast against #fff, not a neon glow against black). */
-type Swatch = { rgb: string };
+/* ---------- COLOR SYSTEM ---------- */
+type Swatch = { rgb: string; hex: string; label: string };
 
 const SWATCH: Record<string, Swatch> = {
-    flame: { rgb: "234, 88, 12" },   // orange-600
-    gold: { rgb: "217, 119, 6" },    // amber-600
-    sky: { rgb: "2, 132, 199" },     // sky-600
-    mint: { rgb: "5, 150, 105" },    // emerald-600
-    violet: { rgb: "124, 58, 237" }, // violet-600
-    coral: { rgb: "225, 29, 72" },   // rose-600
+    cyan: { rgb: "0, 146, 184", hex: "#0092B8", label: "Process Cyan" },
+    magenta: { rgb: "214, 36, 124", hex: "#D6247C", label: "Process Magenta" },
+    yellow: { rgb: "232, 164, 0", hex: "#E8A400", label: "Process Yellow" },
+    green: { rgb: "28, 138, 94", hex: "#1C8A5E", label: "Spot Emerald" },
+    violet: { rgb: "110, 86, 207", hex: "#6E56CF", label: "Spot Violet" },
+    orange: { rgb: "225, 87, 31", hex: "#E1571F", label: "Warm Scarlet" },
 };
+const SPOT_ORDER = ["cyan", "magenta", "yellow", "green", "violet", "orange"];
 
-/* fixed decorative EQ / level-meter bar heights (px), so the strip
-   feels alive without pulling in any real analytics data */
-const EQ_PATTERNS = [
-    [10, 18, 13, 22],
-    [16, 9, 21, 12],
-    [13, 23, 10, 17],
-    [19, 12, 22, 14],
-];
-const METER_PATTERNS = [
-    [10, 22, 16],
-    [20, 12, 24],
-    [14, 26, 11],
-    [22, 15, 20],
-    [12, 20, 26],
-];
+const WEDGE_STEPS = [0.18, 0.38, 0.58, 0.8, 1];
 
-/* Applied to every section root so nothing on the page can be
-   selected via double-click / double-tap. Inputs/textareas/
-   contenteditable elements are exempted globally in marketing.css. */
 const noSelectStyle: CSSProperties = {
     userSelect: "none",
     WebkitUserSelect: "none",
@@ -89,265 +200,337 @@ const noSelectStyle: CSSProperties = {
     msUserSelect: "none" as CSSProperties["msUserSelect"],
 };
 
-/* ---- 1. Marketing Focus Areas ----
-   These six areas are genuinely worked through in order (research comes
-   before you plan a campaign, brand before content, etc.), so each tile
-   carries its position in that sequence.
+/* ---------- SHARED REGISTRATION MARK ---------- */
+function RegMark({ size = 16, strokeWidth = 1.4 }: { size?: number; strokeWidth?: number }) {
+    return (
+        <svg width={size} height={size} viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <circle cx="12" cy="12" r="7.5" stroke="currentColor" strokeWidth={strokeWidth} />
+            <line x1="12" y1="0.5" x2="12" y2="7" stroke="currentColor" strokeWidth={strokeWidth} />
+            <line x1="12" y1="17" x2="12" y2="23.5" stroke="currentColor" strokeWidth={strokeWidth} />
+            <line x1="0.5" y1="12" x2="7" y2="12" stroke="currentColor" strokeWidth={strokeWidth} />
+            <line x1="17" y1="12" x2="23.5" y2="12" stroke="currentColor" strokeWidth={strokeWidth} />
+        </svg>
+    );
+}
 
-   Images: pointing at the tech photos already in /images/marketing —
-   research-insights.jpg, campaign-management.jpg, brand-positioning.jpg,
-   content-communication.jpg, digital-presence.jpg and
-   performance-optimization.jpg. */
+/* ---------- COLOR BAR (Interactive Calibration Strip) ---------- */
+function ColorBar() {
+    const [hoveredSwatch, setHoveredSwatch] = useState<string | null>(null);
+
+    return (
+        <motion.div
+            className="mk-colorbar"
+            aria-hidden="true"
+            variants={colorBarVariants}
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true }}
+        >
+            <div className="mk-colorbar-strip">
+                {SPOT_ORDER.map((key, i) => (
+                    <motion.span
+                        className={`mk-colorbar-chip${hoveredSwatch === key ? " mk-colorbar-chip--active" : ""}`}
+                        key={key}
+                        variants={chipVariants}
+                        whileHover={{ scale: 1.15, y: -2 }}
+                        whileTap={{ scale: 0.95 }}
+                        onMouseEnter={() => setHoveredSwatch(key)}
+                        onMouseLeave={() => setHoveredSwatch(null)}
+                    >
+                        <span
+                            className="mk-colorbar-swatch"
+                            style={{
+                                background: SWATCH[key].hex,
+                                boxShadow: hoveredSwatch === key ? `0 0 8px ${SWATCH[key].hex}` : undefined,
+                            }}
+                        />
+                        <span className="mk-colorbar-num">{String(i + 1).padStart(2, "0")}</span>
+                    </motion.span>
+                ))}
+            </div>
+            {hoveredSwatch && (
+                <motion.span
+                    className="mk-colorbar-tooltip"
+                    initial={{ opacity: 0, x: -6 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.2 }}
+                >
+                    <span
+                        className="mk-colorbar-tooltip-dot"
+                        style={{ background: SWATCH[hoveredSwatch].hex }}
+                    />
+                    {SWATCH[hoveredSwatch].label} ({SWATCH[hoveredSwatch].hex})
+                </motion.span>
+            )}
+        </motion.div>
+    );
+}
+
+/* ---- 1. Marketing Focus Areas ---- */
 const focusAreaImages = [
     {
-        color: "coral",
+        color: "magenta",
         index: "01",
         name: "Research & Insights",
         desc: "Understand your market, competitors, customers, and opportunities.",
-        image: "/images/marketing/research-insights.jpg",
+        image: "/images/marketing/research-insights.png",
     },
     {
-        color: "sky",
+        color: "cyan",
         index: "02",
         name: "Campaign Management",
         desc: "Plan and coordinate campaigns across relevant marketing channels.",
-        image: "/images/marketing/campaign-management.jpg",
+        image: "/images/marketing/campaign-management.png",
     },
     {
         color: "violet",
         index: "03",
         name: "Brand & Positioning",
         desc: "Develop a clear marketing direction that reflects your business.",
-        image: "/images/marketing/brand-positioning.jpg",
+        image: "/images/marketing/brand-positioning.png",
     },
     {
-        color: "gold",
+        color: "yellow",
         index: "04",
         name: "Content & Communication",
         desc: "Align messaging and content with your audience and marketing goals.",
-        image: "/images/marketing/content-communication.jpg",
+        image: "/images/marketing/content-communication.png",
     },
     {
-        color: "mint",
+        color: "green",
         index: "05",
         name: "Digital Presence",
         desc: "Support your presence across websites, social platforms, and digital channels.",
-        image: "/images/marketing/digital-presence.jpg",
+        image: "/images/marketing/digital-presence.png",
     },
     {
-        color: "flame",
+        color: "orange",
         index: "06",
         name: "Performance & Optimization",
         desc: "Review results and identify areas for improvement over time.",
-        image: "/images/marketing/performance-optimization.jpg",
+        image: "/images/marketing/performance-optimization.png",
     },
 ];
 
 /* ---- 2. What We Focus On ---- */
 const focusAreas = [
-    {
-        name: "Market Understanding",
-        desc: "Research audiences, competitors, and market trends to identify opportunities.",
-        color: "coral",
-        icon: Search,
-    },
-    {
-        name: "Strategic Direction",
-        desc: "Build marketing plans around the company's goals and target customers.",
-        color: "sky",
-        icon: Compass,
-    },
-    {
-        name: "Consistent Execution",
-        desc: "Coordinate marketing activities across relevant channels and touchpoints.",
-        color: "violet",
-        icon: Workflow,
-    },
-    {
-        name: "Continuous Improvement",
-        desc: "Use performance data to refine campaigns and marketing decisions.",
-        color: "mint",
-        icon: RefreshCw,
-    },
+    { name: "Market Understanding", desc: "Research audiences, competitors, and market trends to identify opportunities.", color: "cyan", icon: Search },
+    { name: "Strategic Direction", desc: "Build marketing plans around the company's goals and target customers.", color: "orange", icon: Compass },
+    { name: "Consistent Execution", desc: "Coordinate marketing activities across relevant channels and touchpoints.", color: "violet", icon: Workflow },
+    { name: "Continuous Improvement", desc: "Use performance data to refine campaigns and marketing decisions.", color: "green", icon: RefreshCw },
 ];
 
 /* ---- 3. Marketing Objectives ---- */
 const objectives = [
-    {
-        name: "Build Brand Awareness",
-        desc: "Increase visibility and establish a stronger market presence.",
-        color: "coral",
-        icon: Eye,
-    },
-    {
-        name: "Reach the Right Audience",
-        desc: "Connect marketing activities with relevant customer segments.",
-        color: "sky",
-        icon: Crosshair,
-    },
-    {
-        name: "Generate Opportunities",
-        desc: "Support lead generation, customer acquisition, and business growth.",
-        color: "gold",
-        icon: Sparkles,
-    },
-    {
-        name: "Improve Engagement",
-        desc: "Create meaningful interactions between brands and their audiences.",
-        color: "violet",
-        icon: Heart,
-    },
+    { name: "Build Brand Awareness", desc: "Increase visibility and establish a stronger market presence.", color: "magenta", icon: Eye },
+    { name: "Reach the Right Audience", desc: "Connect marketing activities with relevant customer segments.", color: "cyan", icon: Crosshair },
+    { name: "Generate Opportunities", desc: "Support lead generation, customer acquisition, and business growth.", color: "yellow", icon: Sparkles },
+    { name: "Improve Engagement", desc: "Create meaningful interactions between brands and their audiences.", color: "violet", icon: Heart },
 ];
 
 /* ---- 4. What You Get ---- */
 const deliverables = [
-    { name: "Marketing strategy", desc: "A clear, structured plan built around your business goals.", color: "coral", icon: FileText },
-    { name: "Market & competitor insights", desc: "A grounded read on where you stand and where the openings are.", color: "sky", icon: Search },
-    { name: "Campaign plans", desc: "Concrete plans for how each campaign runs, start to finish.", color: "gold", icon: ClipboardList },
+    { name: "Marketing strategy", desc: "A clear, structured plan built around your business goals.", color: "magenta", icon: FileText },
+    { name: "Market & competitor insights", desc: "A grounded read on where you stand and where the openings are.", color: "cyan", icon: Search },
+    { name: "Campaign plans", desc: "Concrete plans for how each campaign runs, start to finish.", color: "yellow", icon: ClipboardList },
     { name: "Channel recommendations", desc: "Which channels are worth your budget, and why.", color: "violet", icon: Layers },
-    { name: "Content direction", desc: "Messaging and content guidance aligned to your audience and goals.", color: "mint", icon: PenSquare },
-    { name: "Performance reports", desc: "Regular, readable reporting on what's actually working.", color: "flame", icon: LineChart },
-    { name: "Optimization recommendations", desc: "Specific adjustments to keep results improving over time.", color: "coral", icon: SlidersHorizontal },
+    { name: "Content direction", desc: "Messaging and content guidance aligned to your audience and goals.", color: "green", icon: PenSquare },
+    { name: "Performance reports", desc: "Regular, readable reporting on what's actually working.", color: "orange", icon: LineChart },
+    { name: "Optimization recommendations", desc: "Specific adjustments to keep results improving over time.", color: "magenta", icon: SlidersHorizontal },
 ];
 
 /* ---- 5. Performance Tracking ---- */
 const metrics = [
-    { name: "Reach", desc: "Audience visibility and brand exposure.", color: "coral", icon: Eye },
-    { name: "Engagement", desc: "How audiences interact with marketing content.", color: "gold", icon: Heart },
-    { name: "Traffic", desc: "Website and campaign traffic generated.", color: "sky", icon: Globe },
-    { name: "Leads", desc: "Potential customers generated through marketing activities.", color: "mint", icon: UserPlus },
-    { name: "Conversions", desc: "Actions that contribute directly to business objectives.", color: "violet", icon: CheckCircle2 },
+    { name: "Reach", desc: "Audience visibility and brand exposure across targeted segments.", color: "magenta", icon: Eye, pointer: 24, badge: "99.4% Reach" },
+    { name: "Engagement", desc: "How deeply audiences interact with marketing touchpoints and content.", color: "yellow", icon: Heart, pointer: 40, badge: "+138% Lift" },
+    { name: "Traffic", desc: "Qualified website and campaign traffic generated from all active channels.", color: "cyan", icon: Globe, pointer: 56, badge: "3.8x Volume" },
+    { name: "Leads", desc: "High-intent potential customers generated through coordinated activities.", color: "green", icon: UserPlus, pointer: 72, badge: "High Yield" },
+    { name: "Conversions", desc: "Tangible business actions and revenue contributing to direct growth.", color: "violet", icon: CheckCircle2, pointer: 88, badge: "Scalable" },
 ];
 
-/* ---------- SECTIONS ---------- */
+/* ==========================================================
+   SECTIONS WITH RICH FRAMER MOTION ANIMATIONS
+========================================================== */
 
-/* 1. Marketing Focus Areas — a photo bento. Each tile is a real image
-   with a duotone accent tint, a two-digit position in the sequence, and
-   a caption that reveals on hover on desktop, or on tap on touch
-   devices (via the mk-bento-card--active class toggled below). */
+/* 1. Marketing Focus Areas — proof sheet with animated bento reveal */
 export function MarketingFocusAreas() {
-    const [activeCard, setActiveCard] = React.useState<string | null>(null);
+    const [activeCard, setActiveCard] = useState<string | null>(null);
 
     const handleCardInteract = (name: string) => {
         setActiveCard((prev) => (prev === name ? null : name));
     };
 
     return (
-        <section className="mk-section" style={noSelectStyle}>
-            <h2 className="mk-heading">Marketing focus areas</h2>
-            <motion.div
-                className="mk-bento-grid"
-                variants={containerVariants}
-                initial="hidden"
-                whileInView="show"
-                viewport={{ once: true, amount: 0.15 }}
-            >
-                {focusAreaImages.map((m) => {
-                    const sw = SWATCH[m.color];
-                    const isActive = activeCard === m.name;
-                    return (
-                        <motion.div
-                            key={m.name}
-                            variants={cardVariants}
-                            className={`mk-bento-card${isActive ? " mk-bento-card--active" : ""}`}
-                            style={{ "--c-rgb": sw.rgb } as CSSProperties}
-                            onClick={() => handleCardInteract(m.name)}
-                            role="button"
-                            tabIndex={0}
-                            aria-pressed={isActive}
-                            onKeyDown={(e) => {
-                                if (e.key === "Enter" || e.key === " ") {
-                                    e.preventDefault();
-                                    handleCardInteract(m.name);
-                                }
-                            }}
-                        >
-                            <Image src={m.image} alt={m.name} fill sizes="(max-width: 768px) 100vw, 50vw" quality={75} loading="lazy" className="mk-bento-img" style={{ objectFit: "cover" }} />
-                            <span className="mk-bento-tint" style={{ background: `rgb(${sw.rgb})` }} />
-                            <span className="mk-bento-scrim" />
-                            <span className="mk-bento-sweep" />
-                            <span className="mk-bento-tag">{m.index}</span>
-                            <div className="mk-bento-copy">
-                                <h3 className="mk-bento-name">{m.name}</h3>
-                                <p className="mk-bento-desc">{m.desc}</p>
-                            </div>
-                        </motion.div>
-                    );
-                })}
-            </motion.div>
-        </section>
+        <motion.section
+            className="mk-section"
+            style={noSelectStyle}
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true, amount: 0.12 }}
+        >
+            <motion.h2 variants={sectionHeadingVariants} className="mk-heading">
+                Marketing focus areas
+            </motion.h2>
+            <ColorBar />
+            <div className="mk-sheet">
+                <motion.div
+                    className="mk-bento-grid"
+                    variants={bentoGridVariants}
+                >
+                    {focusAreaImages.map((m) => {
+                        const sw = SWATCH[m.color];
+                        const isActive = activeCard === m.name;
+                        return (
+                            <motion.div
+                                key={m.name}
+                                variants={bentoCardVariants}
+                                whileHover={{ y: -5, transition: { duration: 0.22, ease: "easeOut" } }}
+                                whileTap={{ scale: 0.98 }}
+                                className={`mk-bento-card${isActive ? " mk-bento-card--active" : ""}`}
+                                style={{ "--c-rgb": sw.rgb } as CSSProperties}
+                                onClick={() => handleCardInteract(m.name)}
+                                role="button"
+                                tabIndex={0}
+                                aria-pressed={isActive}
+                                onKeyDown={(e) => {
+                                    if (e.key === "Enter" || e.key === " ") {
+                                        e.preventDefault();
+                                        handleCardInteract(m.name);
+                                    }
+                                }}
+                            >
+                                <div className="mk-bento-photo">
+                                    <Image
+                                        src={m.image}
+                                        alt={m.name}
+                                        fill
+                                        sizes="(max-width: 768px) 100vw, 50vw"
+                                        quality={75}
+                                        loading="lazy"
+                                        className="mk-bento-img"
+                                        style={{ objectFit: "cover" }}
+                                    />
+                                    <span className="mk-bento-tint" style={{ background: sw.hex }} />
+                                    <span className="mk-bento-scrim" />
+                                    <span className="mk-bento-tag">
+                                        <span className="mk-bento-swatch" style={{ background: sw.hex }} />
+                                        {m.index}
+                                    </span>
+                                    <span className="mk-bento-crosshair" aria-hidden="true">
+                                        <RegMark size={14} strokeWidth={1.5} />
+                                    </span>
+                                    <div className="mk-bento-copy">
+                                        <h3 className="mk-bento-name">{m.name}</h3>
+                                        <p className="mk-bento-desc">{m.desc}</p>
+                                    </div>
+                                </div>
+                            </motion.div>
+                        );
+                    })}
+                </motion.div>
+            </div>
+        </motion.section>
     );
 }
 
-/* 2. What We Focus On — a divided strip: four columns separated by
-   hairline rules, each with a small decorative level meter. */
+/* 2. What We Focus On — divided strip with live density wedges */
 export function FocusAreas() {
     return (
-        <section className="mk-section" style={noSelectStyle}>
-            <h2 className="mk-heading">What we focus on</h2>
-            <motion.div
-                className="mk-focus-grid"
-                variants={containerVariants}
-                initial="hidden"
-                whileInView="show"
-                viewport={{ once: true, amount: 0.15 }}
-            >
+        <motion.section
+            className="mk-section"
+            style={noSelectStyle}
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true, amount: 0.15 }}
+        >
+            <motion.h2 variants={sectionHeadingVariants} className="mk-heading">
+                What we focus on
+            </motion.h2>
+            <motion.div className="mk-focus-grid" variants={focusGridVariants}>
                 {focusAreas.map((f, i) => {
                     const Icon = f.icon;
                     const sw = SWATCH[f.color];
-                    const bars = EQ_PATTERNS[i % EQ_PATTERNS.length];
                     return (
                         <motion.div
                             key={f.name}
-                            variants={cardVariants}
+                            variants={focusCardVariants}
+                            whileHover={{ y: -4, transition: { duration: 0.2 } }}
                             className="mk-focus-card"
                             style={{ "--c-rgb": sw.rgb } as CSSProperties}
                         >
-                            <div className="mk-focus-eq">
-                                {bars.map((h, bi) => (
-                                    <span key={bi} style={{ height: `${h}px` }} />
+                            <div className="mk-focus-wedge">
+                                {WEDGE_STEPS.map((t, wi) => (
+                                    <motion.span
+                                        key={wi}
+                                        style={{ background: `rgba(${sw.rgb}, ${t})` }}
+                                        initial={{ scaleY: 0.3, opacity: 0.3 }}
+                                        whileInView={{ scaleY: 1, opacity: 1 }}
+                                        viewport={{ once: true }}
+                                        transition={{
+                                            delay: 0.1 + i * 0.08 + wi * 0.04,
+                                            duration: 0.4,
+                                            ease: "easeOut",
+                                        }}
+                                    />
                                 ))}
                             </div>
-                            <span className="mk-focus-icon">
-                                <Icon size={16} strokeWidth={2} />
-                            </span>
+                            <motion.span
+                                className="mk-focus-icon"
+                                whileHover={{ scale: 1.15, rotate: [0, -8, 8, 0], transition: { duration: 0.35 } }}
+                            >
+                                <Icon size={16} strokeWidth={1.8} />
+                            </motion.span>
                             <h3 className="mk-focus-name">{f.name}</h3>
                             <p className="mk-focus-desc">{f.desc}</p>
                         </motion.div>
                     );
                 })}
             </motion.div>
-        </section>
+        </motion.section>
     );
 }
 
-/* 3. Marketing Objectives — each icon sits inside a dial ring (a tick
-   bezel built from a repeating conic gradient), like a tuned-in target. */
+/* 3. Marketing Objectives — animated registration crosshairs */
 export function MarketingObjectives() {
     return (
-        <section className="mk-section" style={noSelectStyle}>
-            <h2 className="mk-heading">Marketing objectives</h2>
-            <motion.div
-                className="mk-objective-grid"
-                variants={containerVariants}
-                initial="hidden"
-                whileInView="show"
-                viewport={{ once: true, amount: 0.15 }}
-            >
+        <motion.section
+            className="mk-section"
+            style={noSelectStyle}
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true, amount: 0.15 }}
+        >
+            <motion.h2 variants={sectionHeadingVariants} className="mk-heading">
+                Marketing objectives
+            </motion.h2>
+            <motion.div className="mk-objective-grid" variants={objectiveGridVariants}>
                 {objectives.map((o) => {
                     const Icon = o.icon;
                     const sw = SWATCH[o.color];
                     return (
                         <motion.div
                             key={o.name}
-                            variants={cardVariants}
+                            variants={objectiveCardVariants}
+                            whileHover={{ y: -6, transition: { duration: 0.22 } }}
                             className="mk-objective-card"
                             style={{ "--c-rgb": sw.rgb } as CSSProperties}
                         >
                             <span className="mk-objective-ring">
-                                <span className="mk-objective-icon">
-                                    <Icon size={19} strokeWidth={2} />
-                                </span>
+                                <motion.span
+                                    className="mk-objective-mark"
+                                    initial={{ rotate: -90, scale: 0.75, opacity: 0 }}
+                                    whileInView={{ rotate: 0, scale: 1, opacity: 1 }}
+                                    viewport={{ once: true }}
+                                    transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+                                >
+                                    <RegMark size={54} strokeWidth={1.3} />
+                                </motion.span>
+                                <motion.span
+                                    className="mk-objective-icon"
+                                    whileHover={{ scale: 1.25, transition: { duration: 0.25 } }}
+                                >
+                                    <Icon size={18} strokeWidth={1.8} />
+                                </motion.span>
                             </span>
                             <h3 className="mk-objective-name">{o.name}</h3>
                             <p className="mk-objective-desc">{o.desc}</p>
@@ -355,40 +538,43 @@ export function MarketingObjectives() {
                     );
                 })}
             </motion.div>
-        </section>
+        </motion.section>
     );
 }
 
-/* 4. What You Get — a numbered list connected by a dashed line: these
-   seven deliverables are handed over roughly in this order, so the
-   index is informational, not decorative. */
+/* 4. What You Get — production docket with staggered slide-in */
 export function WhatYouGet() {
     return (
-        <section className="mk-section" style={noSelectStyle}>
-            <h2 className="mk-heading">What you get</h2>
-            <motion.div
-                className="mk-deliver-list"
-                variants={containerVariants}
-                initial="hidden"
-                whileInView="show"
-                viewport={{ once: true, amount: 0.1 }}
-            >
-                <span className="mk-deliver-line" />
+        <motion.section
+            className="mk-section"
+            style={noSelectStyle}
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true, amount: 0.1 }}
+        >
+            <motion.h2 variants={sectionHeadingVariants} className="mk-heading">
+                What you get
+            </motion.h2>
+            <motion.div className="mk-deliver-list" variants={docketListVariants}>
                 {deliverables.map((d, i) => {
                     const Icon = d.icon;
                     const sw = SWATCH[d.color];
                     return (
                         <motion.div
                             key={d.name}
-                            variants={cardVariants}
+                            variants={docketRowVariants}
+                            whileHover={{ x: 8, transition: { duration: 0.2 } }}
                             className="mk-deliver-row"
                             style={{ "--c-rgb": sw.rgb } as CSSProperties}
                         >
-                            <span className="mk-deliver-node">
-                                <Icon size={16} strokeWidth={2} />
-                            </span>
+                            <span className="mk-deliver-folio">{String(i + 1).padStart(2, "0")}</span>
+                            <motion.span
+                                className="mk-deliver-chip"
+                                whileHover={{ scale: 1.15, rotate: -5, transition: { duration: 0.2 } }}
+                            >
+                                <Icon size={16} strokeWidth={1.8} />
+                            </motion.span>
                             <div className="mk-deliver-body">
-                                <span className="mk-deliver-idx">{String(i + 1).padStart(2, "0")}</span>
                                 <h3 className="mk-deliver-name">{d.name}</h3>
                                 <p className="mk-deliver-desc">{d.desc}</p>
                             </div>
@@ -396,63 +582,97 @@ export function WhatYouGet() {
                     );
                 })}
             </motion.div>
-        </section>
+        </motion.section>
     );
 }
 
-/* 5. Performance Tracking — each metric gets a small static level meter
-   instead of an icon-in-a-gradient-chip, tying the card to the idea of
-   something being measured. */
+/* 5. Performance Tracking — live density-wedge reading meters */
 export function PerformanceTracking() {
     return (
-        <section className="mk-section" style={noSelectStyle}>
-            <h2 className="mk-heading">Performance tracking</h2>
-            <p className="mk-subheading">Marketing isn&apos;t just about launching campaigns.</p>
-            <motion.div
-                className="mk-metric-grid"
-                variants={containerVariants}
-                initial="hidden"
-                whileInView="show"
-                viewport={{ once: true, amount: 0.15 }}
+        <motion.section
+            className="mk-section"
+            style={noSelectStyle}
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true, amount: 0.15 }}
+        >
+            <motion.h2 variants={sectionHeadingVariants} className="mk-heading">
+                Performance tracking
+            </motion.h2>
+            <motion.p
+                variants={sectionHeadingVariants}
+                className="mk-subheading"
             >
+                Marketing isn&apos;t just about launching campaigns.
+            </motion.p>
+            <motion.div className="mk-metric-grid" variants={metricGridVariants}>
                 {metrics.map((m, i) => {
                     const Icon = m.icon;
                     const sw = SWATCH[m.color];
-                    const bars = METER_PATTERNS[i % METER_PATTERNS.length];
                     return (
                         <motion.div
                             key={m.name}
-                            variants={cardVariants}
+                            variants={metricCardVariants}
+                            whileHover={{ y: -5, transition: { duration: 0.2 } }}
                             className="mk-metric-card"
                             style={{ "--c-rgb": sw.rgb } as CSSProperties}
                         >
-                            <span className="mk-metric-meter">
-                                {bars.map((h, bi) => (
-                                    <span key={bi} style={{ height: `${h}px` }} />
-                                ))}
-                            </span>
-                            <div>
+                            <div className="mk-metric-head">
+                                <motion.span
+                                    className="mk-metric-head-icon"
+                                    whileHover={{ scale: 1.25, rotate: 12, transition: { duration: 0.25 } }}
+                                >
+                                    <Icon size={15} strokeWidth={1.8} />
+                                </motion.span>
                                 <h3 className="mk-metric-name">{m.name}</h3>
-                                <p className="mk-metric-desc">{m.desc}</p>
+                                <span className="mk-metric-badge">{m.badge}</span>
                             </div>
-                            <Icon size={14} strokeWidth={2} style={{ marginLeft: "auto", flexShrink: 0, color: `rgb(${sw.rgb})`, opacity: 0.7 }} />
+                            <div className="mk-metric-wedge">
+                                {WEDGE_STEPS.map((t, wi) => (
+                                    <motion.span
+                                        key={wi}
+                                        style={{ background: `rgba(${sw.rgb}, ${t})` }}
+                                        initial={{ scaleY: 0.3, opacity: 0.3 }}
+                                        whileInView={{ scaleY: 1, opacity: 1 }}
+                                        viewport={{ once: true }}
+                                        transition={{
+                                            delay: 0.15 + i * 0.08 + wi * 0.03,
+                                            duration: 0.35,
+                                            ease: "easeOut",
+                                        }}
+                                    />
+                                ))}
+                                <motion.span
+                                    className="mk-metric-pointer"
+                                    initial={{ left: "0%", opacity: 0 }}
+                                    whileInView={{ left: `${m.pointer}%`, opacity: 1 }}
+                                    viewport={{ once: true }}
+                                    transition={{
+                                        delay: 0.25 + i * 0.09,
+                                        type: "spring",
+                                        stiffness: 130,
+                                        damping: 14,
+                                    }}
+                                />
+                            </div>
+                            <p className="mk-metric-desc">{m.desc}</p>
                         </motion.div>
                     );
                 })}
             </motion.div>
-        </section>
+        </motion.section>
     );
 }
 
 /* ---------- COMBINED WRAPPER ---------- */
 export default function MarketingSections() {
     return (
-        <>
+        <div className="mk-wrapper">
             <MarketingFocusAreas />
             <FocusAreas />
             <MarketingObjectives />
             <WhatYouGet />
             <PerformanceTracking />
-        </>
+        </div>
     );
 }

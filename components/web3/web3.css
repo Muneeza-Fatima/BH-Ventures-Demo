@@ -79,7 +79,7 @@
 }
 
 .web3-about-card:hover {
-    transform: translateY(-2px);
+    transform: translateY(-2px) !important;
     border-left-color: var(--accent);
     box-shadow: 0 26px 55px -22px rgba(0, 0, 0, 0.6), 0 0 34px rgba(var(--accent-rgb), 0.18);
 }
@@ -219,7 +219,7 @@
 }
 
 .web3-stage-card:hover {
-    transform: translateY(-4px);
+    transform: translateY(-4px) !important;
     border-color: rgba(var(--accent-rgb), 0.6);
     box-shadow: 0 18px 36px -16px rgba(0, 0, 0, 0.5), 0 0 26px rgba(var(--accent-rgb), 0.22);
 }
@@ -359,7 +359,7 @@
 }
 
 .web3-focus-card:hover {
-    transform: translateY(-3px);
+    transform: translateY(-3px) !important;
     border-color: rgba(var(--accent-rgb), 0.6);
     box-shadow: 0 16px 34px -16px rgba(0, 0, 0, 0.5), 0 0 26px rgba(var(--accent-rgb), 0.2);
 }
@@ -426,14 +426,6 @@
     text-shadow: 0 1px 6px rgba(0, 0, 0, 0.6);
 }
 
-.web3-focus-label {
-    font-family: var(--font-display);
-    font-size: 0.92rem;
-    font-weight: 700;
-    line-height: 1.3;
-    color: #eaf6fb;
-}
-
 .web3-focus-note {
     font-size: 0.8rem;
     line-height: 1.6;
@@ -470,7 +462,7 @@
 }
 
 .web3-why-card:hover {
-    transform: translateY(-3px);
+    transform: translateY(-3px) !important;
     border-color: rgba(var(--accent-rgb), 0.6);
     box-shadow: 0 16px 34px -16px rgba(0, 0, 0, 0.5), 0 0 26px rgba(var(--accent-rgb), 0.2);
 }
@@ -554,7 +546,7 @@
 }
 
 .web3-process-card:hover {
-    transform: translateY(-3px);
+    transform: translateY(-3px) !important;
     border-color: rgba(var(--step-rgb), 0.45);
 }
 
@@ -572,7 +564,10 @@
 }
 
 /* Comet-style moving border: a bright head with a soft fading tail,
-   travelling around each card in its own theme colour. */
+   travelling around each card in its own theme colour.
+   The per-card stagger is set inline in Web3Extras.tsx (animationDelay),
+   because the detail panel is now a sibling inside the grid and would
+   throw off any :nth-child() based delays. */
 .web3-process-card-border {
     position: absolute;
     inset: 0;
@@ -596,27 +591,6 @@
     opacity: 0.85;
     pointer-events: none;
     animation: web3-border-spin 4.5s linear infinite;
-}
-
-/* Stagger each card so the comets don't all travel in lockstep. */
-.web3-process-grid>.web3-process-card:nth-child(1) .web3-process-card-border {
-    animation-delay: -3.6s;
-}
-
-.web3-process-grid>.web3-process-card:nth-child(2) .web3-process-card-border {
-    animation-delay: -2.7s;
-}
-
-.web3-process-grid>.web3-process-card:nth-child(3) .web3-process-card-border {
-    animation-delay: -1.8s;
-}
-
-.web3-process-grid>.web3-process-card:nth-child(4) .web3-process-card-border {
-    animation-delay: -0.9s;
-}
-
-.web3-process-grid>.web3-process-card:nth-child(5) .web3-process-card-border {
-    animation-delay: 0s;
 }
 
 @keyframes web3-border-spin {
@@ -689,12 +663,16 @@
 }
 
 /* ---------- PROCESS DETAIL (shown on card click) ---------- */
+/* Now a child of .web3-process-grid, injected after the last card in the
+   clicked card's row, so it opens directly beneath that row instead of at
+   the bottom of the whole grid. grid-column: 1 / -1 makes it span the full
+   width; the grid's own gap handles the spacing (no margin-top needed). */
 
 .web3-process-detail {
+    grid-column: 1 / -1;
     display: flex;
     align-items: flex-start;
     gap: 1.25rem;
-    margin-top: 1.1rem;
     padding: 1.5rem 1.6rem;
     border-radius: 1rem;
     border: 1px solid rgba(var(--step-rgb), 0.3);
@@ -782,7 +760,7 @@
 }
 
 .web3-quote-btn:hover {
-    transform: translateY(-2px);
+    transform: translateY(-2px) !important;
     box-shadow: 0 0 40px rgba(var(--accent-rgb), 0.55);
 }
 
@@ -928,6 +906,6 @@
 }
 
 .web3-quote-submit:hover {
-    transform: translateY(-2px);
+    transform: translateY(-2px) !important;
     box-shadow: 0 0 34px rgba(var(--accent-rgb), 0.55);
 }

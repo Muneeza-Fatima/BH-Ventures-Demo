@@ -451,6 +451,9 @@
     transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.18s ease;
     /* contain:style+layout keeps reflow isolated without clipping positioned children */
     contain: style layout;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
 }
 
 .service-card:not(:hover) {
@@ -770,6 +773,9 @@
     /* Stagger shimmer offset so all cards don't pulse in sync */
     animation: service-title-shimmer 6s ease-in-out infinite;
     animation-delay: calc(var(--reveal-delay, 0ms) * -1);
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
 }
 
 @keyframes service-title-shimmer {
@@ -793,6 +799,9 @@
     font-weight: 600;
     letter-spacing: 0.01em;
     color: var(--accent);
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
 }
 
 .service-footer {

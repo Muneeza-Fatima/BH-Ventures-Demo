@@ -12,7 +12,7 @@ const nextConfig: NextConfig = {
     // Cache optimised images for 7 days (default is 60 s in dev)
     minimumCacheTTL: 60 * 60 * 24 * 7,
     // Allowed quality values used by <Image quality={...}> across the app
-    qualities: [65, 70, 75],
+    qualities: [65, 70, 75, 85],
     remotePatterns: [
       {
         protocol: "https",

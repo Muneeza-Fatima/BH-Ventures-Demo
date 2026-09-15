@@ -1,47 +1,35 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import "../Services/services.css";
 
+const VIDEO_PATH =
+  "/videos/Generating_animated_corporate_vi_202608210655_202608210856.mp4";
+
 export default function ServicesHero() {
-  const sectionRef = useRef<HTMLElement>(null);
-  const [videoSrc, setVideoSrc] = useState<string | null>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
-    const section = sectionRef.current;
-    if (!section) return;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting) {
-          setVideoSrc(
-            "/videos/Generating_animated_corporate_vi_202608210655_202608210856.mp4"
-          );
-          observer.disconnect();
-        }
-      },
-      { threshold: 0.01 }
-    );
-
-    observer.observe(section);
-    return () => observer.disconnect();
+    if (videoRef.current) {
+      videoRef.current.play().catch(() => {});
+    }
   }, []);
 
   return (
-    <section ref={sectionRef} className="services-hero-section">
+    <section className="services-hero-section">
       {/* Background video */}
       <div className="services-hero-video-wrap" aria-hidden="true">
         <video
+          ref={videoRef}
           autoPlay
           muted
           loop
           playsInline
-          preload="none"
+          preload="auto"
+          src={VIDEO_PATH}
           className="services-hero-video"
         >
-          {videoSrc && (
-            <source src={videoSrc} type="video/mp4" />
-          )}
+          <source src={VIDEO_PATH} type="video/mp4" />
         </video>
 
         <div className="services-hero-overlay-tint" />

@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { motion, type Variants } from "framer-motion";
 import "./advertising.css";
 
 interface AdvertisingSectionsProps {
@@ -50,25 +51,185 @@ const METRICS = [
     { name: "Conversions", desc: "Actions completed against the campaign objective." },
 ];
 
+/* ---------- MOTION VARIANTS ---------- */
+const containerVariants: Variants = {
+    hidden: {},
+    show: {
+        transition: {
+            staggerChildren: 0.08,
+            delayChildren: 0.05,
+        },
+    },
+};
+
+const headingVariants: Variants = {
+    hidden: { opacity: 0, y: 18 },
+    show: {
+        opacity: 1,
+        y: 0,
+        transition: {
+            duration: 0.5,
+            ease: [0.16, 1, 0.3, 1],
+        },
+    },
+};
+
+const posterVariants: Variants = {
+    hidden: { opacity: 0, y: 24 },
+    show: {
+        opacity: 1,
+        y: 0,
+        transition: {
+            duration: 0.6,
+            ease: [0.16, 1, 0.3, 1],
+        },
+    },
+};
+
+const sheetVariant: Variants = {
+    hidden: (angle: number) => ({
+        opacity: 0,
+        y: 30,
+        scale: 0.94,
+        rotate: angle * 1.8,
+    }),
+    show: (angle: number) => ({
+        opacity: 1,
+        y: 0,
+        scale: 1,
+        rotate: angle,
+        transition: {
+            duration: 0.55,
+            ease: [0.16, 1, 0.3, 1],
+        },
+    }),
+};
+
+const mockLayoutVariant: Variants = {
+    hidden: { opacity: 0, scale: 0.96 },
+    show: {
+        opacity: 1,
+        scale: 1,
+        transition: {
+            duration: 0.55,
+            ease: [0.16, 1, 0.3, 1],
+        },
+    },
+};
+
+const markVariant: Variants = {
+    hidden: { scale: 0, opacity: 0 },
+    show: (delay: number) => ({
+        scale: 1,
+        opacity: 1,
+        transition: {
+            delay,
+            type: "spring" as const,
+            stiffness: 420,
+            damping: 18,
+        },
+    }),
+};
+
+const noteVariant: Variants = {
+    hidden: { opacity: 0, x: -14 },
+    show: {
+        opacity: 1,
+        x: 0,
+        transition: {
+            duration: 0.45,
+            ease: [0.16, 1, 0.3, 1],
+        },
+    },
+};
+
+const indexCardVariant: Variants = {
+    hidden: (angle: number) => ({
+        opacity: 0,
+        y: 28,
+        scale: 0.94,
+        rotate: angle * 1.8,
+    }),
+    show: (angle: number) => ({
+        opacity: 1,
+        y: 0,
+        scale: 1,
+        rotate: angle,
+        transition: {
+            duration: 0.5,
+            ease: [0.16, 1, 0.3, 1],
+        },
+    }),
+};
+
+const ticketVariant: Variants = {
+    hidden: { opacity: 0, y: 24, scale: 0.95 },
+    show: {
+        opacity: 1,
+        y: 0,
+        scale: 1,
+        transition: {
+            duration: 0.5,
+            ease: [0.16, 1, 0.3, 1],
+        },
+    },
+};
+
+const flowLineVariant: Variants = {
+    hidden: { scaleX: 0, opacity: 0 },
+    show: {
+        scaleX: 1,
+        opacity: 1,
+        transition: {
+            duration: 0.8,
+            ease: [0.16, 1, 0.3, 1],
+        },
+    },
+};
+
+const flowCardVariant: Variants = {
+    hidden: { opacity: 0, y: 26, scale: 0.95 },
+    show: {
+        opacity: 1,
+        y: 0,
+        scale: 1,
+        transition: {
+            duration: 0.5,
+            ease: [0.16, 1, 0.3, 1],
+        },
+    },
+};
+
+const statCardVariant: Variants = {
+    hidden: { opacity: 0, y: 20, scale: 0.94 },
+    show: {
+        opacity: 1,
+        y: 0,
+        scale: 1,
+        transition: {
+            duration: 0.5,
+            ease: [0.16, 1, 0.3, 1],
+        },
+    },
+};
+
+const metricCardVariant: Variants = {
+    hidden: { opacity: 0, y: 22 },
+    show: {
+        opacity: 1,
+        y: 0,
+        transition: {
+            duration: 0.45,
+            ease: [0.16, 1, 0.3, 1],
+        },
+    },
+};
+
 /* ========================================
    ADVERTISING -- full replacement for the generic
    What's included / How it works / Highlights block, plus
    Campaign channels, What we focus on, Campaign objectives, and
    Performance metrics.
-
-   NOTE: the Overview is intentionally NOT duplicated here — the generic
-   service-detail-overview section from page.tsx already covers it.
-   `desc` is kept in props for now in case a future section needs it,
-   but it's not rendered here.
-
-   Every section uses the cream .adx-poster panel device. "What's
-   included" and "Campaign objectives" use flex-wrap grids (not CSS grid
-   auto-fill/auto-fit) so cards flow to fill the banner width instead of
-   leaving a large empty region when the item count doesn't evenly
-   divide the row.
-
-   --accent / --accent-rgb pinned to blue via .adx-theme-blue.
-   Rendered only for service.slug === "advertising".
    ======================================== */
 export default function AdvertisingSections({
     whatsIncluded,
@@ -78,84 +239,146 @@ export default function AdvertisingSections({
     return (
         <div className="adx-theme-blue">
             {/* ---------- CAMPAIGN CHANNELS -- cream tear-sheet wall ---------- */}
-            <section className="adx-poster-section">
-                <h2 className="service-detail-heading">Campaign channels</h2>
-                <div className="adx-poster adx-poster--wall">
-                    <div className="adx-wall">
+            <motion.section
+                className="adx-poster-section"
+                initial="hidden"
+                whileInView="show"
+                viewport={{ once: true, amount: 0.15 }}
+            >
+                <motion.h2 variants={headingVariants} className="service-detail-heading">
+                    Campaign channels
+                </motion.h2>
+                <motion.div variants={posterVariants} className="adx-poster adx-poster--wall">
+                    <motion.div variants={containerVariants} className="adx-wall">
                         {CHANNELS.map((c, i) => (
-                            <div key={c.name} className="adx-sheet" style={{ transform: `rotate(${c.angle}deg)` }}>
+                            <motion.div
+                                key={c.name}
+                                className="adx-sheet"
+                                custom={c.angle}
+                                variants={sheetVariant}
+                            >
                                 <span className="adx-sheet-tape" />
                                 <div className="adx-sheet-photo">
-                                    <Image src={c.photo} alt="" fill sizes="(max-width: 768px) 100vw, 220px" quality={70} loading={i === 0 ? "eager" : "lazy"} priority={i === 0} style={{ objectFit: "cover" }} />
+                                    <Image
+                                        src={c.photo}
+                                        alt=""
+                                        fill
+                                        sizes="(max-width: 768px) 100vw, 220px"
+                                        quality={70}
+                                        loading={i === 0 ? "eager" : "lazy"}
+                                        priority={i === 0}
+                                        style={{ objectFit: "cover" }}
+                                    />
                                 </div>
                                 <p className="adx-sheet-label">{c.name}</p>
-                            </div>
+                            </motion.div>
                         ))}
-                    </div>
-                </div>
-            </section>
+                    </motion.div>
+                </motion.div>
+            </motion.section>
 
             {/* ---------- WHAT WE FOCUS ON -- cream redline proof ---------- */}
-            <section className="adx-poster-section">
-                <h2 className="service-detail-heading">What we focus on</h2>
-                <div className="adx-poster adx-poster--proof">
+            <motion.section
+                className="adx-poster-section"
+                initial="hidden"
+                whileInView="show"
+                viewport={{ once: true, amount: 0.15 }}
+            >
+                <motion.h2 variants={headingVariants} className="service-detail-heading">
+                    What we focus on
+                </motion.h2>
+                <motion.div variants={posterVariants} className="adx-poster adx-poster--proof">
                     <div className="adx-proof">
-                        <div className="adx-layout-mock">
+                        <motion.div variants={mockLayoutVariant} className="adx-layout-mock">
                             <div className="adx-layout-mock-head" />
                             <div className="adx-layout-mock-image" />
                             <div className="adx-layout-mock-line" />
                             <div className="adx-layout-mock-line" />
                             <div className="adx-layout-mock-line" />
-                            <span className="adx-mark" style={{ top: "14px", left: "58%" }}>A</span>
-                            <span className="adx-mark" style={{ top: "96px", left: "14px" }}>B</span>
-                            <span className="adx-mark" style={{ top: "184px", left: "68%" }}>C</span>
-                            <span className="adx-mark" style={{ top: "232px", left: "26%" }}>D</span>
-                        </div>
-                        <div className="adx-notes">
+                            <motion.span variants={markVariant} custom={0.2} className="adx-mark" style={{ top: "14px", left: "58%" }}>
+                                A
+                            </motion.span>
+                            <motion.span variants={markVariant} custom={0.3} className="adx-mark" style={{ top: "96px", left: "14px" }}>
+                                B
+                            </motion.span>
+                            <motion.span variants={markVariant} custom={0.4} className="adx-mark" style={{ top: "184px", left: "68%" }}>
+                                C
+                            </motion.span>
+                            <motion.span variants={markVariant} custom={0.5} className="adx-mark" style={{ top: "232px", left: "26%" }}>
+                                D
+                            </motion.span>
+                        </motion.div>
+                        <motion.div variants={containerVariants} className="adx-notes">
                             {FOCUS_AREAS.map((f) => (
-                                <div key={f.mark} className="adx-note">
+                                <motion.div key={f.mark} variants={noteVariant} className="adx-note">
                                     <span className="adx-note-mark">{f.mark}</span>
                                     <div>
                                         <h3 className="adx-note-title">{f.name}</h3>
                                         <p className="adx-note-desc">{f.desc}</p>
                                     </div>
-                                </div>
+                                </motion.div>
                             ))}
-                        </div>
+                        </motion.div>
                     </div>
-                </div>
-            </section>
+                </motion.div>
+            </motion.section>
 
             {/* ---------- WHAT'S INCLUDED -- cream index cards (flex-wrap, no dead space) ---------- */}
-            <section className="adx-poster-section">
-                <h2 className="service-detail-heading">What&apos;s included</h2>
-                <div className="adx-poster adx-poster--index">
-                    <div className="adx-index-grid">
-                        {whatsIncluded.map((item, i) => (
-                            <div
-                                key={item}
-                                className="adx-index-card"
-                                style={{ transform: `rotate(${(i % 2 === 0 ? -1 : 1) * 1.4}deg)` }}
-                            >
-                                <div className="adx-index-photo">
-                                    <Image src={PHOTOS[i % PHOTOS.length]} alt="" fill sizes="(max-width: 768px) 100vw, 220px" quality={70} loading="lazy" style={{ objectFit: "cover" }} />
-                                </div>
-                                <span className="adx-index-check">✓</span>
-                                <p className="adx-index-label">{item}</p>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            </section>
+            <motion.section
+                className="adx-poster-section"
+                initial="hidden"
+                whileInView="show"
+                viewport={{ once: true, amount: 0.15 }}
+            >
+                <motion.h2 variants={headingVariants} className="service-detail-heading">
+                    What&apos;s included
+                </motion.h2>
+                <motion.div variants={posterVariants} className="adx-poster adx-poster--index">
+                    <motion.div variants={containerVariants} className="adx-index-grid">
+                        {whatsIncluded.map((item, i) => {
+                            const tilt = (i % 2 === 0 ? -1 : 1) * 1.4;
+                            return (
+                                <motion.div
+                                    key={item}
+                                    className="adx-index-card"
+                                    custom={tilt}
+                                    variants={indexCardVariant}
+                                >
+                                    <div className="adx-index-photo">
+                                        <Image
+                                            src={PHOTOS[i % PHOTOS.length]}
+                                            alt=""
+                                            fill
+                                            sizes="(max-width: 768px) 100vw, 220px"
+                                            quality={70}
+                                            loading="lazy"
+                                            style={{ objectFit: "cover" }}
+                                        />
+                                    </div>
+                                    <span className="adx-index-check">✓</span>
+                                    <p className="adx-index-label">{item}</p>
+                                </motion.div>
+                            );
+                        })}
+                    </motion.div>
+                </motion.div>
+            </motion.section>
 
             {/* ---------- HOW IT WORKS -- cream ticket stubs ---------- */}
-            <section className="adx-poster-section">
-                <h2 className="service-detail-heading">How it works</h2>
-                <div className="adx-poster adx-poster--tickets">
+            <motion.section
+                className="adx-poster-section"
+                initial="hidden"
+                whileInView="show"
+                viewport={{ once: true, amount: 0.15 }}
+            >
+                <motion.h2 variants={headingVariants} className="service-detail-heading">
+                    How it works
+                </motion.h2>
+                <motion.div variants={posterVariants} className="adx-poster adx-poster--tickets">
                     <div className="adx-ticket-scroll">
-                        <div className="adx-ticket-strip">
+                        <motion.div variants={containerVariants} className="adx-ticket-strip">
                             {process.map((step, i) => (
-                                <div key={step.title} className="adx-ticket">
+                                <motion.div key={step.title} variants={ticketVariant} className="adx-ticket">
                                     <div className="adx-ticket-photo">
                                         <Image
                                             src={PHOTOS[i % PHOTOS.length]}
@@ -173,60 +396,84 @@ export default function AdvertisingSections({
                                         <h3 className="adx-ticket-name">{step.title}</h3>
                                         <p className="adx-ticket-desc">{step.desc}</p>
                                     </div>
-                                </div>
+                                </motion.div>
                             ))}
-                        </div>
+                        </motion.div>
                     </div>
-                </div>
-            </section>
+                </motion.div>
+            </motion.section>
 
             {/* ---------- CAMPAIGN OBJECTIVES -- cream flow poster, 6 cards, flex-wrap ---------- */}
-            <section className="adx-poster-section">
-                <h2 className="service-detail-heading">Campaign objectives</h2>
-                <div className="adx-poster adx-poster--flow">
-                    <div className="adx-flow-line" aria-hidden="true" />
-                    <div className="adx-flow-grid">
-                        {OBJECTIVES.map((o, i) => (
-                            <div key={o.num} className="adx-flow-card" style={{ animationDelay: `${i * 0.06}s` }}>
+            <motion.section
+                className="adx-poster-section"
+                initial="hidden"
+                whileInView="show"
+                viewport={{ once: true, amount: 0.15 }}
+            >
+                <motion.h2 variants={headingVariants} className="service-detail-heading">
+                    Campaign objectives
+                </motion.h2>
+                <motion.div variants={posterVariants} className="adx-poster adx-poster--flow">
+                    <motion.div
+                        variants={flowLineVariant}
+                        className="adx-flow-line"
+                        aria-hidden="true"
+                        style={{ originX: 0 }}
+                    />
+                    <motion.div variants={containerVariants} className="adx-flow-grid">
+                        {OBJECTIVES.map((o) => (
+                            <motion.div key={o.num} variants={flowCardVariant} className="adx-flow-card">
                                 <span className="adx-flow-num">{o.num}</span>
                                 <h3 className="adx-flow-name">{o.name}</h3>
                                 <p className="adx-flow-desc">{o.desc}</p>
-                            </div>
+                            </motion.div>
                         ))}
-                    </div>
-                </div>
-            </section>
+                    </motion.div>
+                </motion.div>
+            </motion.section>
 
             {/* ---------- HIGHLIGHTS -- cream stamped stats ---------- */}
-            <section className="adx-poster-section">
-                <div className="adx-poster adx-poster--stats">
-                    <div className="adx-stat-grid">
+            <motion.section
+                className="adx-poster-section"
+                initial="hidden"
+                whileInView="show"
+                viewport={{ once: true, amount: 0.15 }}
+            >
+                <motion.div variants={posterVariants} className="adx-poster adx-poster--stats">
+                    <motion.div variants={containerVariants} className="adx-stat-grid">
                         {highlights.map((h) => (
-                            <div key={h.label} className="adx-stat-card">
+                            <motion.div key={h.label} variants={statCardVariant} className="adx-stat-card">
                                 <span className="adx-stat-pin" />
                                 <p className="adx-stat-value">{h.value}</p>
                                 <p className="adx-stat-label">{h.label}</p>
-                            </div>
+                            </motion.div>
                         ))}
-                    </div>
-                </div>
-            </section>
+                    </motion.div>
+                </motion.div>
+            </motion.section>
 
             {/* ---------- PERFORMANCE METRICS -- cream dotted strip ---------- */}
-            <section className="adx-poster-section">
-                <h2 className="service-detail-heading">Performance metrics we track</h2>
-                <div className="adx-poster adx-poster--metrics">
-                    <div className="adx-metrics-row">
+            <motion.section
+                className="adx-poster-section"
+                initial="hidden"
+                whileInView="show"
+                viewport={{ once: true, amount: 0.15 }}
+            >
+                <motion.h2 variants={headingVariants} className="service-detail-heading">
+                    Performance metrics we track
+                </motion.h2>
+                <motion.div variants={posterVariants} className="adx-poster adx-poster--metrics">
+                    <motion.div variants={containerVariants} className="adx-metrics-row">
                         {METRICS.map((m) => (
-                            <div key={m.name} className="adx-metric-card">
+                            <motion.div key={m.name} variants={metricCardVariant} className="adx-metric-card">
                                 <span className="adx-metric-dot" />
                                 <h3 className="adx-metric-name">{m.name}</h3>
                                 <p className="adx-metric-desc">{m.desc}</p>
-                            </div>
+                            </motion.div>
                         ))}
-                    </div>
-                </div>
-            </section>
+                    </motion.div>
+                </motion.div>
+            </motion.section>
         </div>
     );
 }

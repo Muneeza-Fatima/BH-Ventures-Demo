@@ -1,9 +1,139 @@
 "use client";
 
-import { useState, useEffect, FormEvent, ReactNode, CSSProperties } from "react";
+import {
+    useState,
+    useEffect,
+    Fragment,
+    FormEvent,
+    ReactNode,
+    CSSProperties,
+} from "react";
+import { motion, AnimatePresence, type Variants } from "framer-motion";
 // Note: ReactNode is still used below by ProcessStep.icon (SVG icons for the
 // "How we work" section), which are unchanged — only FocusArea now uses images.
 import "./web3.css";
+
+/* ---------- MOTION VARIANTS ---------- */
+const containerVariants: Variants = {
+    hidden: {},
+    show: {
+        transition: {
+            staggerChildren: 0.09,
+            delayChildren: 0.05,
+        },
+    },
+};
+
+const headingVariants: Variants = {
+    hidden: { opacity: 0, y: 18 },
+    show: {
+        opacity: 1,
+        y: 0,
+        transition: {
+            duration: 0.5,
+            ease: [0.16, 1, 0.3, 1],
+        },
+    },
+};
+
+const aboutCardVariant: Variants = {
+    hidden: { opacity: 0, y: 24, scale: 0.98 },
+    show: {
+        opacity: 1,
+        y: 0,
+        scale: 1,
+        transition: {
+            duration: 0.6,
+            ease: [0.16, 1, 0.3, 1],
+        },
+    },
+};
+
+const licenseVariant: Variants = {
+    hidden: { opacity: 0, y: 16 },
+    show: {
+        opacity: 1,
+        y: 0,
+        transition: {
+            duration: 0.5,
+            ease: [0.16, 1, 0.3, 1],
+        },
+    },
+};
+
+const cardVariant: Variants = {
+    hidden: { opacity: 0, y: 26, scale: 0.95 },
+    show: {
+        opacity: 1,
+        y: 0,
+        scale: 1,
+        transition: {
+            duration: 0.5,
+            ease: [0.16, 1, 0.3, 1],
+        },
+    },
+};
+
+const processDetailVariant: Variants = {
+    hidden: { opacity: 0, scale: 0.97, y: -6 },
+    show: {
+        opacity: 1,
+        scale: 1,
+        y: 0,
+        transition: {
+            duration: 0.32,
+            ease: [0.16, 1, 0.3, 1],
+        },
+    },
+    exit: {
+        opacity: 0,
+        scale: 0.97,
+        y: -6,
+        transition: {
+            duration: 0.22,
+            ease: [0.16, 1, 0.3, 1],
+        },
+    },
+};
+
+const ctaVariants: Variants = {
+    hidden: { opacity: 0, y: 22 },
+    show: {
+        opacity: 1,
+        y: 0,
+        transition: {
+            duration: 0.55,
+            ease: [0.16, 1, 0.3, 1],
+        },
+    },
+};
+
+const modalOverlayVariants: Variants = {
+    hidden: { opacity: 0 },
+    show: { opacity: 1, transition: { duration: 0.25 } },
+    exit: { opacity: 0, transition: { duration: 0.2 } },
+};
+
+const modalContentVariants: Variants = {
+    hidden: { opacity: 0, scale: 0.94, y: 16 },
+    show: {
+        opacity: 1,
+        scale: 1,
+        y: 0,
+        transition: {
+            duration: 0.3,
+            ease: [0.16, 1, 0.3, 1],
+        },
+    },
+    exit: {
+        opacity: 0,
+        scale: 0.96,
+        y: 12,
+        transition: {
+            duration: 0.2,
+        },
+    },
+};
 
 interface EngagementStage {
     slug: string;
@@ -253,8 +383,22 @@ function Web3QuoteModal({ stage: initialStage, onClose }: Web3QuoteModalProps) {
     }
 
     return (
-        <div className="web3-quote-overlay" onClick={onClose}>
-            <div className="web3-quote-modal" onClick={(e) => e.stopPropagation()}>
+        <motion.div
+            variants={modalOverlayVariants}
+            initial="hidden"
+            animate="show"
+            exit="exit"
+            className="web3-quote-overlay"
+            onClick={onClose}
+        >
+            <motion.div
+                variants={modalContentVariants}
+                initial="hidden"
+                animate="show"
+                exit="exit"
+                className="web3-quote-modal"
+                onClick={(e) => e.stopPropagation()}
+            >
                 <button
                     type="button"
                     className="web3-quote-close"
@@ -340,8 +484,8 @@ function Web3QuoteModal({ stage: initialStage, onClose }: Web3QuoteModalProps) {
                         Send via WhatsApp
                     </button>
                 </form>
-            </div>
-        </div>
+            </motion.div>
+        </motion.div>
     );
 }
 
@@ -350,7 +494,42 @@ export default function Web3Extras() {
     const [modalOpen, setModalOpen] = useState(false);
     const [activeProcessSlug, setActiveProcessSlug] = useState<string | null>(null);
 
-    const activeProcessStep = PROCESS_STEPS.find((s) => s.slug === activeProcessSlug) ?? null;
+    // Mirrors the grid-template-columns breakpoints in web3.css
+    // (base = 2 cols, >=640px = 3, >=900px = 5). We need the live column count
+    // so the detail panel can be injected at the end of the clicked card's row
+    // instead of after the whole grid.
+    const [processColumns, setProcessColumns] = useState(2);
+
+    useEffect(() => {
+        const wide = window.matchMedia("(min-width: 900px)");
+        const mid = window.matchMedia("(min-width: 640px)");
+
+        const update = () => setProcessColumns(wide.matches ? 5 : mid.matches ? 3 : 2);
+        update();
+
+        wide.addEventListener("change", update);
+        mid.addEventListener("change", update);
+        return () => {
+            wide.removeEventListener("change", update);
+            mid.removeEventListener("change", update);
+        };
+    }, []);
+
+    const activeProcessIndex = PROCESS_STEPS.findIndex((s) => s.slug === activeProcessSlug);
+    const activeProcessStep = activeProcessIndex >= 0 ? PROCESS_STEPS[activeProcessIndex] : null;
+
+    // Index of the last card sitting in the same row as the active card. The
+    // detail panel is rendered straight after that card, so it always opens
+    // directly underneath the row you clicked in.
+    const detailAfterIndex =
+        activeProcessIndex < 0
+            ? -1
+            : Math.min(
+                Math.floor(activeProcessIndex / processColumns) * processColumns +
+                processColumns -
+                1,
+                PROCESS_STEPS.length - 1
+            );
 
     function openModal(stage: EngagementStage | null) {
         setSelectedStage(stage);
@@ -365,8 +544,13 @@ export default function Web3Extras() {
     return (
         <>
             {/* ---------- ABOUT (service-focused overview, matches SERVICES copy) ---------- */}
-            <section className="web3-about">
-                <div className="web3-about-card web3-sheen">
+            <motion.section
+                className="web3-about"
+                initial="hidden"
+                whileInView="show"
+                viewport={{ once: true, amount: 0.2 }}
+            >
+                <motion.div variants={aboutCardVariant} className="web3-about-card web3-sheen">
                     <span className="web3-about-quote-mark" aria-hidden="true">&ldquo;</span>
                     <span className="web3-about-eyebrow">Overview</span>
                     <div className="web3-about-body">
@@ -384,29 +568,43 @@ export default function Web3Extras() {
                             at every stage, from first idea to market.
                         </p>
                     </div>
-                </div>
-            </section>
+                </motion.div>
+            </motion.section>
 
             {/* ---------- LICENSED ACTIVITY NOTE ---------- */}
-            <div className="web3-license web3-sheen">
+            <motion.div
+                variants={licenseVariant}
+                initial="hidden"
+                whileInView="show"
+                viewport={{ once: true, amount: 0.2 }}
+                className="web3-license web3-sheen"
+            >
                 <span className="web3-license-text">
                     <strong>Web3 Venture Studio</strong> is listed as one of the licensed
                     activities of BH Ventures FZE - LLC.
                 </span>
                 <span className="web3-license-source">Source: Trade-license activities extract (supplied)</span>
-            </div>
+            </motion.div>
 
             {/* ---------- ENGAGEMENT STAGES ---------- */}
-            <section className="web3-stages">
-                <h2 className="service-detail-heading">Tell us where you&apos;re at</h2>
-                <p className="web3-stages-intro">
+            <motion.section
+                className="web3-stages"
+                initial="hidden"
+                whileInView="show"
+                viewport={{ once: true, amount: 0.15 }}
+            >
+                <motion.h2 variants={headingVariants} className="service-detail-heading">
+                    Tell us where you&apos;re at
+                </motion.h2>
+                <motion.p variants={headingVariants} className="web3-stages-intro">
                     Every venture walks in at a different point — pick the stage
                     closest to yours and we&apos;ll meet you there.
-                </p>
-                <div className="web3-stages-grid">
+                </motion.p>
+                <motion.div variants={containerVariants} className="web3-stages-grid">
                     {ENGAGEMENT_STAGES.map((stage) => (
-                        <button
+                        <motion.button
                             key={stage.slug}
+                            variants={cardVariant}
                             type="button"
                             className="web3-stage-card web3-sheen"
                             style={{ "--accent": stage.color, "--accent-rgb": stage.rgb } as CSSProperties}
@@ -418,10 +616,10 @@ export default function Web3Extras() {
                             <span className="web3-stage-tagline">{stage.tagline}</span>
                             <p className="web3-stage-detail">{stage.detail}</p>
                             <span className="web3-stage-cta">Talk to us →</span>
-                        </button>
+                        </motion.button>
                     ))}
-                </div>
-                <p className="web3-stages-note">
+                </motion.div>
+                <motion.p variants={headingVariants} className="web3-stages-note">
                     Not sure which stage fits?{" "}
                     <button
                         type="button"
@@ -431,17 +629,24 @@ export default function Web3Extras() {
                         Tell us anyway
                     </button>{" "}
                     — we&apos;ll help you figure it out.
-                </p>
-            </section>
+                </motion.p>
+            </motion.section>
 
             {/* ---------- WHAT WE FOCUS ON ---------- */}
             {/* Replaces the old unapproved sector chip list. Uses only the
                 terminology already approved in the definition copy above. */}
-            <section className="web3-focus">
-                <h2 className="service-detail-heading">What we focus on</h2>
-                <div className="web3-focus-grid">
+            <motion.section
+                className="web3-focus"
+                initial="hidden"
+                whileInView="show"
+                viewport={{ once: true, amount: 0.15 }}
+            >
+                <motion.h2 variants={headingVariants} className="service-detail-heading">
+                    What we focus on
+                </motion.h2>
+                <motion.div variants={containerVariants} className="web3-focus-grid">
                     {FOCUS_AREAS.map((area) => (
-                        <div key={area.slug} className="web3-focus-card web3-sheen">
+                        <motion.div key={area.slug} variants={cardVariant} className="web3-focus-card web3-sheen">
                             <img
                                 src={area.image}
                                 alt={area.label}
@@ -450,87 +655,138 @@ export default function Web3Extras() {
                             />
                             <span className="web3-focus-scrim" aria-hidden="true" />
                             <span className="web3-focus-label">{area.label}</span>
-                        </div>
+                        </motion.div>
                     ))}
-                </div>
-                <p className="web3-focus-note">
+                </motion.div>
+                <motion.p variants={headingVariants} className="web3-focus-note">
                     Not sure where your project fits? Tell us what you&apos;re building and
                     we&apos;ll figure it out together.
-                </p>
-            </section>
+                </motion.p>
+            </motion.section>
 
             {/* ---------- BUILDING PROCESS ---------- */}
-            <section className="web3-process">
-                <h2 className="service-detail-heading">How we work</h2>
-                <p className="web3-process-intro">
+            <motion.section
+                className="web3-process"
+                initial="hidden"
+                whileInView="show"
+                viewport={{ once: true, amount: 0.15 }}
+            >
+                <motion.h2 variants={headingVariants} className="service-detail-heading">
+                    How we work
+                </motion.h2>
+                <motion.p variants={headingVariants} className="web3-process-intro">
                     Every venture moves through the same disciplined loop: discovery,
                     validation, build, launch, and scale.
-                </p>
+                </motion.p>
 
-                <div className="web3-process-grid">
-                    {PROCESS_STEPS.map((step) => {
+                <motion.div variants={containerVariants} className="web3-process-grid">
+                    {PROCESS_STEPS.map((step, index) => {
                         const isActive = step.slug === activeProcessSlug;
                         return (
-                            <button
-                                key={step.slug}
-                                type="button"
-                                className={`web3-process-card${isActive ? " is-active" : ""}`}
-                                style={{ "--step-color": step.color, "--step-rgb": step.rgb } as CSSProperties}
-                                onClick={() => setActiveProcessSlug(isActive ? null : step.slug)}
-                                aria-pressed={isActive}
-                            >
-                                <span className="web3-process-card-border" aria-hidden="true" />
-                                <span className="web3-process-card-num">{step.num}</span>
-                                <span className="web3-process-card-icon">{step.icon}</span>
-                                <span className="web3-process-card-name">{step.name}</span>
-                                <span className="web3-process-card-line">{step.line}</span>
-                            </button>
+                            <Fragment key={step.slug}>
+                                <motion.button
+                                    variants={cardVariant}
+                                    type="button"
+                                    className={`web3-process-card${isActive ? " is-active" : ""}`}
+                                    style={{ "--step-color": step.color, "--step-rgb": step.rgb } as CSSProperties}
+                                    onClick={() => setActiveProcessSlug(isActive ? null : step.slug)}
+                                    aria-pressed={isActive}
+                                >
+                                    {/* Stagger moved inline: the detail panel now sits
+                                        between cards, so the old :nth-child() delays in
+                                        the CSS would land on the wrong elements. */}
+                                    <span
+                                        className="web3-process-card-border"
+                                        aria-hidden="true"
+                                        style={{ animationDelay: `${-3.6 + index * 0.9}s` }}
+                                    />
+                                    <span className="web3-process-card-num">{step.num}</span>
+                                    <span className="web3-process-card-icon">{step.icon}</span>
+                                    <span className="web3-process-card-name">{step.name}</span>
+                                    <span className="web3-process-card-line">{step.line}</span>
+                                </motion.button>
+
+                                <AnimatePresence>
+                                    {activeProcessStep && index === detailAfterIndex && (
+                                        <motion.div
+                                            key={activeProcessStep.slug}
+                                            variants={processDetailVariant}
+                                            initial="hidden"
+                                            animate="show"
+                                            exit="exit"
+                                            className="web3-process-detail"
+                                            style={{
+                                                "--step-color": activeProcessStep.color,
+                                                "--step-rgb": activeProcessStep.rgb,
+                                            } as CSSProperties}
+                                        >
+                                            <span className="web3-process-detail-num">
+                                                {activeProcessStep.num}
+                                            </span>
+                                            <div className="web3-process-detail-body">
+                                                <h3 className="web3-process-detail-title">
+                                                    {activeProcessStep.name}
+                                                </h3>
+                                                <p className="web3-process-detail-desc">
+                                                    {activeProcessStep.description}
+                                                </p>
+                                            </div>
+                                        </motion.div>
+                                    )}
+                                </AnimatePresence>
+                            </Fragment>
                         );
                     })}
-                </div>
-
-                {activeProcessStep && (
-                    <div
-                        className="web3-process-detail"
-                        style={{ "--step-color": activeProcessStep.color, "--step-rgb": activeProcessStep.rgb } as CSSProperties}
-                    >
-                        <span className="web3-process-detail-num">{activeProcessStep.num}</span>
-                        <div className="web3-process-detail-body">
-                            <h3 className="web3-process-detail-title">{activeProcessStep.name}</h3>
-                            <p className="web3-process-detail-desc">{activeProcessStep.description}</p>
-                        </div>
-                    </div>
-                )}
-            </section>
+                </motion.div>
+            </motion.section>
 
             {/* ---------- WHY WORK WITH US NOW (honest, pre-launch) ---------- */}
-            <section className="web3-why">
-                <h2 className="service-detail-heading">Why work with us now</h2>
-                <div className="web3-why-grid">
-                    <div className="web3-why-card web3-sheen">
+            <motion.section
+                className="web3-why"
+                initial="hidden"
+                whileInView="show"
+                viewport={{ once: true, amount: 0.15 }}
+            >
+                <motion.h2 variants={headingVariants} className="service-detail-heading">
+                    Why work with us now
+                </motion.h2>
+                <motion.div variants={containerVariants} className="web3-why-grid">
+                    <motion.div variants={cardVariant} className="web3-why-card web3-sheen">
                         <h3>Founder-led, hands-on</h3>
                         <p>You work directly with the founding team on every engagement — no account managers, no hand-offs.</p>
-                    </div>
-                    <div className="web3-why-card web3-sheen">
+                    </motion.div>
+                    <motion.div variants={cardVariant} className="web3-why-card web3-sheen">
                         <h3>Process over promises</h3>
                         <p>A structured, research-driven approach at every stage, not vague guarantees.</p>
-                    </div>
-                    <div className="web3-why-card web3-sheen">
+                    </motion.div>
+                    <motion.div variants={cardVariant} className="web3-why-card web3-sheen">
                         <h3>Founding-partner terms</h3>
                         <p>Early clients help shape how we work, and get priority attention while we build.</p>
-                    </div>
-                </div>
-            </section>
+                    </motion.div>
+                </motion.div>
+            </motion.section>
 
             {/* ---------- CTA ---------- */}
-            <section className="service-detail-cta web3-cta">
-                <h2>Ready to talk through your venture?</h2>
-                <button type="button" className="web3-quote-btn web3-sheen" onClick={() => openModal(null)}>
+            <motion.section
+                className="service-detail-cta web3-cta"
+                initial="hidden"
+                whileInView="show"
+                viewport={{ once: true, amount: 0.2 }}
+            >
+                <motion.h2 variants={ctaVariants}>Ready to talk through your venture?</motion.h2>
+                <motion.button
+                    variants={ctaVariants}
+                    type="button"
+                    className="web3-quote-btn web3-sheen"
+                    onClick={() => openModal(null)}
+                >
                     Start the Conversation →
-                </button>
-            </section>
+                </motion.button>
+            </motion.section>
 
-            {modalOpen && <Web3QuoteModal stage={selectedStage} onClose={closeModal} />}
+            <AnimatePresence>
+                {modalOpen && <Web3QuoteModal stage={selectedStage} onClose={closeModal} />}
+            </AnimatePresence>
         </>
     );
 }

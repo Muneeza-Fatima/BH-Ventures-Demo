@@ -127,50 +127,11 @@
     isolation: isolate;
 }
 
-/* ---------- scroll-triggered reveal ----------
-   Each .adx-poster-section starts hidden and picks up the .in-view
-   class (added by IntersectionObserver in advertising.tsx) the first
-   time it scrolls into the viewport. Cards inside stagger in via the
-   per-item --reveal-delay custom property set inline in the JSX.
-   `translate` is used (not `transform`) so it composes cleanly with
-   the rotate() tilt already applied inline on several card types. */
-
-.adx-poster-section:not(.in-view) .adx-poster {
-    opacity: 0;
-    translate: 0 20px;
-}
-
-.adx-poster-section:not(.in-view) .adx-sheet,
-.adx-poster-section:not(.in-view) .adx-note,
-.adx-poster-section:not(.in-view) .adx-index-card,
-.adx-poster-section:not(.in-view) .adx-ticket,
-.adx-poster-section:not(.in-view) .adx-flow-card,
-.adx-poster-section:not(.in-view) .adx-stat-card,
-.adx-poster-section:not(.in-view) .adx-metric-card {
-    opacity: 0;
-    translate: 0 18px;
-}
+/* ---------- poster panels ---------- */
 
 @media (max-width: 640px) {
     .adx-poster {
         padding: 1.5rem 1.25rem;
-    }
-}
-
-@media (prefers-reduced-motion: reduce) {
-
-    .adx-poster,
-    .adx-poster-section:not(.in-view) .adx-poster,
-    .adx-poster-section:not(.in-view) .adx-sheet,
-    .adx-poster-section:not(.in-view) .adx-note,
-    .adx-poster-section:not(.in-view) .adx-index-card,
-    .adx-poster-section:not(.in-view) .adx-ticket,
-    .adx-poster-section:not(.in-view) .adx-flow-card,
-    .adx-poster-section:not(.in-view) .adx-stat-card,
-    .adx-poster-section:not(.in-view) .adx-metric-card {
-        opacity: 1;
-        translate: none;
-        transition: none;
     }
 }
 
@@ -558,12 +519,12 @@
 }
 
 .adx-ticket:hover {
-    transform: translateY(-6px);
+    transform: translateY(-6px) !important;
     box-shadow: 0 18px 30px rgba(6, 17, 31, 0.28);
 }
 
 .adx-ticket:active {
-    transform: translateY(-2px) scale(0.985);
+    transform: translateY(-2px) scale(0.985) !important;
     box-shadow: 0 8px 14px rgba(6, 17, 31, 0.24);
     transition-duration: 0.1s;
 }
@@ -690,21 +651,19 @@
     box-shadow: 0 12px 24px rgba(6, 17, 31, 0.16);
     transition:
         transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1),
-        box-shadow 0.25s ease,
-        opacity 0.5s ease var(--reveal-delay, 0s),
-        translate 0.5s ease var(--reveal-delay, 0s);
+        box-shadow 0.25s ease;
     cursor: pointer;
     flex: 1 1 220px;
     max-width: 260px;
 }
 
 .adx-flow-card:hover {
-    transform: translateY(-8px) rotate(-1.5deg);
+    transform: translateY(-8px) rotate(-1.5deg) !important;
     box-shadow: 0 20px 34px rgba(6, 17, 31, 0.3), 0 0 0 2px rgba(var(--accent-rgb), 0.3);
 }
 
 .adx-flow-card:active {
-    transform: translateY(-3px) rotate(-1.5deg) scale(0.97);
+    transform: translateY(-3px) rotate(-1.5deg) scale(0.97) !important;
     box-shadow: 0 10px 18px rgba(6, 17, 31, 0.26);
     transition-duration: 0.1s;
 }
@@ -757,11 +716,11 @@
     }
 
     .adx-flow-card:hover {
-        transform: translateY(-4px) rotate(0deg);
+        transform: translateY(-4px) rotate(0deg) !important;
     }
 
     .adx-flow-card:active {
-        transform: translateY(-1px) rotate(0deg) scale(0.98);
+        transform: translateY(-1px) rotate(0deg) scale(0.98) !important;
     }
 }
 
@@ -788,19 +747,18 @@
     text-align: center;
     transition:
         transform 0.22s ease,
-        box-shadow 0.22s ease,
-        opacity 0.5s ease var(--reveal-delay, 0s),
-        translate 0.5s ease var(--reveal-delay, 0s);
+        box-shadow 0.22s ease;
     cursor: pointer;
 }
 
 .adx-stat-card:hover {
-    transform: translateY(-6px) scale(1.02);
+    transform: translateY(-6px) scale(1.02) !important;
     box-shadow: 0 18px 30px rgba(6, 17, 31, 0.26);
 }
 
 .adx-stat-card:active {
-    transform: translateY(-2px) scale(0.98);
+    transform: translateY(-2px) scale(0.98) !important;
+    box-shadow: 0 8px 14px rgba(6, 17, 31, 0.22);
     transition-duration: 0.1s;
 }
 
@@ -862,20 +820,18 @@
     transition:
         transform 0.22s ease,
         box-shadow 0.22s ease,
-        background 0.22s ease,
-        opacity 0.5s ease var(--reveal-delay, 0s),
-        translate 0.5s ease var(--reveal-delay, 0s);
+        background 0.22s ease;
     cursor: pointer;
 }
 
 .adx-metric-card:hover {
-    transform: translateY(-5px);
+    transform: translateY(-5px) !important;
     background: rgba(255, 255, 255, 0.95);
     box-shadow: 0 14px 24px rgba(6, 17, 31, 0.2);
 }
 
 .adx-metric-card:active {
-    transform: translateY(-1px) scale(0.98);
+    transform: translateY(-1px) scale(0.98) !important;
     transition-duration: 0.1s;
 }
 

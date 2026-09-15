@@ -113,6 +113,7 @@ export default async function ServiceDetailPage({ params }: { params: ParamsProm
                 sub={service.sub}
                 badge={service.badge}
                 category={category}
+                slug={service.slug}
             />
 
             <div className="service-detail-inner">
@@ -133,38 +134,42 @@ export default async function ServiceDetailPage({ params }: { params: ParamsProm
                             <p className="service-detail-desc">{service.desc}</p>
                         </section>
 
-                        <section className="service-detail-included">
-                            <h2 className="service-detail-heading">What&apos;s included</h2>
-                            <ul className="service-detail-included-list">
-                                {service.whatsIncluded.map((item) => (
-                                    <li key={item}>{item}</li>
-                                ))}
-                            </ul>
-                        </section>
+                        {!isAdvertising && (
+                            <>
+                                <section className="service-detail-included">
+                                    <h2 className="service-detail-heading">What&apos;s included</h2>
+                                    <ul className="service-detail-included-list">
+                                        {service.whatsIncluded.map((item) => (
+                                            <li key={item}>{item}</li>
+                                        ))}
+                                    </ul>
+                                </section>
 
-                        <section className="service-detail-process">
-                            <h2 className="service-detail-heading">How it works</h2>
-                            <ol className="service-detail-process-list">
-                                {service.process.map((step, i) => (
-                                    <li key={step.title}>
-                                        <span className="service-detail-process-num">{String(i + 1).padStart(2, "0")}</span>
-                                        <div>
-                                            <h3>{step.title}</h3>
-                                            <p>{step.desc}</p>
+                                <section className="service-detail-process">
+                                    <h2 className="service-detail-heading">How it works</h2>
+                                    <ol className="service-detail-process-list">
+                                        {service.process.map((step, i) => (
+                                            <li key={step.title}>
+                                                <span className="service-detail-process-num">{String(i + 1).padStart(2, "0")}</span>
+                                                <div>
+                                                    <h3>{step.title}</h3>
+                                                    <p>{step.desc}</p>
+                                                </div>
+                                            </li>
+                                        ))}
+                                    </ol>
+                                </section>
+
+                                <section className="service-detail-highlights">
+                                    {service.highlights.map((h, i) => (
+                                        <div key={`${h.label}-${i}`} className="service-detail-highlight-card">
+                                            <span className="service-detail-highlight-value">{h.value}</span>
+                                            <span className="service-detail-highlight-label">{h.label}</span>
                                         </div>
-                                    </li>
-                                ))}
-                            </ol>
-                        </section>
-
-                        <section className="service-detail-highlights">
-                            {service.highlights.map((h, i) => (
-                                <div key={`${h.label}-${i}`} className="service-detail-highlight-card">
-                                    <span className="service-detail-highlight-value">{h.value}</span>
-                                    <span className="service-detail-highlight-label">{h.label}</span>
-                                </div>
-                            ))}
-                        </section>
+                                    ))}
+                                </section>
+                            </>
+                        )}
                     </>
                 )}
 
