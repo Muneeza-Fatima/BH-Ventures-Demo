@@ -1126,6 +1126,67 @@
     box-shadow: 0 0 40px rgba(var(--accent-rgb), 0.55);
 }
 
+.service-detail-cta-group {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-top: 1rem;
+}
+
+.service-detail-whatsapp-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    border-radius: 9999px;
+    background: rgba(37, 211, 102, 0.12);
+    border: 1px solid rgba(37, 211, 102, 0.4);
+    color: #25D366;
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-decoration: none;
+    letter-spacing: 0.03em;
+    box-shadow: 0 0 24px rgba(37, 211, 102, 0.2);
+    transition: transform 0.2s ease, background-color 0.25s ease, border-color 0.25s ease, box-shadow 0.3s ease;
+}
+
+.service-detail-whatsapp-btn:hover {
+    transform: translateY(-2px);
+    background: rgba(37, 211, 102, 0.22);
+    border-color: #25D366;
+    box-shadow: 0 0 35px rgba(37, 211, 102, 0.4);
+}
+
+.service-detail-whatsapp-icon {
+    width: 1.1rem;
+    height: 1.1rem;
+    fill: currentColor;
+    flex-shrink: 0;
+}
+
+.service-contact-modal-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.3rem 0.75rem;
+    border-radius: 9999px;
+    background: rgba(37, 211, 102, 0.1);
+    border: 1px solid rgba(37, 211, 102, 0.3);
+    color: #25D366;
+    font-size: 0.75rem;
+    font-weight: 600;
+    margin-bottom: 0.85rem;
+}
+
+.service-contact-submit {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
 /* ---------- RELATED SERVICES ---------- */
 
 .service-detail-related-grid {

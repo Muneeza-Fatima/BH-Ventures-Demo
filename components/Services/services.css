@@ -845,12 +845,52 @@
     transition: transform 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
+.service-card-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.service-card-whatsapp-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.35rem 0.65rem;
+    border-radius: 9999px;
+    background: rgba(37, 211, 102, 0.1);
+    border: 1px solid rgba(37, 211, 102, 0.3);
+    color: #25D366;
+    font-size: 11px;
+    font-weight: 600;
+    text-decoration: none;
+    letter-spacing: 0.02em;
+    transition: background-color 0.25s ease, border-color 0.25s ease, transform 0.2s ease, box-shadow 0.25s ease;
+}
+
+.service-card-whatsapp-btn:hover {
+    background: rgba(37, 211, 102, 0.2);
+    border-color: #25D366;
+    transform: translateY(-1px);
+    box-shadow: 0 0 16px rgba(37, 211, 102, 0.35);
+}
+
+.service-card-whatsapp-icon {
+    width: 0.875rem;
+    height: 0.875rem;
+    fill: currentColor;
+    flex-shrink: 0;
+}
+
 /* bump touch targets up to the ~44px minimum on devices without a mouse,
    without changing the visual size on desktop */
 @media (hover: none) {
     .service-arrow {
         height: 2.75rem;
         width: 2.75rem;
+    }
+
+    .service-card-whatsapp-btn {
+        padding: 0.5rem 0.75rem;
     }
 
     .service-detail-btn {
