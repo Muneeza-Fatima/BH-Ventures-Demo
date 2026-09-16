@@ -8,13 +8,39 @@
    ======================================== */
 
 /* ---------- GLOBAL: disable text selection across all web3 sections ---------- */
+.web3-wrapper,
+.web3-wrapper *:not(input):not(textarea):not(select):not([contenteditable="true"]),
 .web3-about,
+.web3-about *,
 .web3-license,
+.web3-license *,
 .web3-stages,
+.web3-stages *,
 .web3-focus,
+.web3-focus *,
 .web3-why,
-.web3-process {
+.web3-why *,
+.web3-process,
+.web3-process *,
+.web3-cta,
+.web3-cta * {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
     user-select: none;
+}
+
+.web3-quote-modal input,
+.web3-quote-modal textarea,
+.web3-quote-modal select,
+.web3-quote-modal [contenteditable="true"] {
+    -webkit-touch-callout: default;
+    -webkit-user-select: text;
+    -moz-user-select: text;
+    -ms-user-select: text;
+    user-select: text;
 }
 
 /* ---------- SHARED HOVER SHEEN (site-wide hover accent animation) ---------- */

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { CSSProperties, useState } from "react";
+import React, { CSSProperties, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { motion, type Variants } from "framer-motion";
 import {
@@ -189,7 +189,6 @@ const SWATCH: Record<string, Swatch> = {
     violet: { rgb: "110, 86, 207", hex: "#6E56CF", label: "Spot Violet" },
     orange: { rgb: "225, 87, 31", hex: "#E1571F", label: "Warm Scarlet" },
 };
-const SPOT_ORDER = ["cyan", "magenta", "yellow", "green", "violet", "orange"];
 
 const WEDGE_STEPS = [0.18, 0.38, 0.58, 0.8, 1];
 
@@ -213,42 +212,57 @@ function RegMark({ size = 16, strokeWidth = 1.4 }: { size?: number; strokeWidth?
     );
 }
 
-/* ---------- COLOR BAR (Interactive Calibration Strip) ---------- */
-function ColorBar() {
-    const [hoveredSwatch, setHoveredSwatch] = useState<string | null>(null);
+/* ---------- COLOR BAR (Interactive Calibration Strip) ----------
+   Driven by the same card list/state as the bento grid below, so
+   clicking a chip highlights the matching card and shows its name. */
+function ColorBar({
+    cards,
+    activeCard,
+    onSelect,
+}: {
+    cards: typeof focusAreaImages;
+    activeCard: string | null;
+    onSelect: (name: string) => void;
+}) {
+    const active = cards.find((c) => c.name === activeCard) ?? null;
 
     return (
         <motion.div
             className="mk-colorbar"
-            aria-hidden="true"
             variants={colorBarVariants}
             initial="hidden"
             whileInView="show"
             viewport={{ once: true }}
         >
             <div className="mk-colorbar-strip">
-                {SPOT_ORDER.map((key, i) => (
-                    <motion.span
-                        className={`mk-colorbar-chip${hoveredSwatch === key ? " mk-colorbar-chip--active" : ""}`}
-                        key={key}
-                        variants={chipVariants}
-                        whileHover={{ scale: 1.15, y: -2 }}
-                        whileTap={{ scale: 0.95 }}
-                        onMouseEnter={() => setHoveredSwatch(key)}
-                        onMouseLeave={() => setHoveredSwatch(null)}
-                    >
-                        <span
-                            className="mk-colorbar-swatch"
-                            style={{
-                                background: SWATCH[key].hex,
-                                boxShadow: hoveredSwatch === key ? `0 0 8px ${SWATCH[key].hex}` : undefined,
-                            }}
-                        />
-                        <span className="mk-colorbar-num">{String(i + 1).padStart(2, "0")}</span>
-                    </motion.span>
-                ))}
+                {cards.map((m) => {
+                    const sw = SWATCH[m.color];
+                    const isActive = activeCard === m.name;
+                    return (
+                        <motion.button
+                            type="button"
+                            className={`mk-colorbar-chip${isActive ? " mk-colorbar-chip--active" : ""}`}
+                            key={m.name}
+                            variants={chipVariants}
+                            whileHover={{ scale: 1.15, y: -2 }}
+                            whileTap={{ scale: 0.95 }}
+                            onClick={() => onSelect(m.name)}
+                            aria-pressed={isActive}
+                            aria-label={m.name}
+                        >
+                            <span
+                                className="mk-colorbar-swatch"
+                                style={{
+                                    background: sw.hex,
+                                    boxShadow: isActive ? `0 0 8px ${sw.hex}` : undefined,
+                                }}
+                            />
+                            <span className="mk-colorbar-num">{m.index}</span>
+                        </motion.button>
+                    );
+                })}
             </div>
-            {hoveredSwatch && (
+            {active && (
                 <motion.span
                     className="mk-colorbar-tooltip"
                     initial={{ opacity: 0, x: -6 }}
@@ -257,9 +271,9 @@ function ColorBar() {
                 >
                     <span
                         className="mk-colorbar-tooltip-dot"
-                        style={{ background: SWATCH[hoveredSwatch].hex }}
+                        style={{ background: SWATCH[active.color].hex }}
                     />
-                    {SWATCH[hoveredSwatch].label} ({SWATCH[hoveredSwatch].hex})
+                    {active.name}
                 </motion.span>
             )}
         </motion.div>
@@ -355,10 +369,19 @@ const metrics = [
 /* 1. Marketing Focus Areas — proof sheet with animated bento reveal */
 export function MarketingFocusAreas() {
     const [activeCard, setActiveCard] = useState<string | null>(null);
+    const cardRefs = useRef<Record<string, HTMLDivElement | null>>({});
 
     const handleCardInteract = (name: string) => {
         setActiveCard((prev) => (prev === name ? null : name));
     };
+
+    // When a card becomes active (e.g. via a colorbar chip click), scroll
+    // it into view so the glow highlight is actually visible on screen.
+    useEffect(() => {
+        if (!activeCard) return;
+        const el = cardRefs.current[activeCard];
+        el?.scrollIntoView({ behavior: "smooth", block: "center", inline: "nearest" });
+    }, [activeCard]);
 
     return (
         <motion.section
@@ -371,7 +394,11 @@ export function MarketingFocusAreas() {
             <motion.h2 variants={sectionHeadingVariants} className="mk-heading">
                 Marketing focus areas
             </motion.h2>
-            <ColorBar />
+            <ColorBar
+                cards={focusAreaImages}
+                activeCard={activeCard}
+                onSelect={handleCardInteract}
+            />
             <div className="mk-sheet">
                 <motion.div
                     className="mk-bento-grid"
@@ -383,6 +410,9 @@ export function MarketingFocusAreas() {
                         return (
                             <motion.div
                                 key={m.name}
+                                ref={(el) => {
+                                    cardRefs.current[m.name] = el;
+                                }}
                                 variants={bentoCardVariants}
                                 whileHover={{ y: -5, transition: { duration: 0.22, ease: "easeOut" } }}
                                 whileTap={{ scale: 0.98 }}

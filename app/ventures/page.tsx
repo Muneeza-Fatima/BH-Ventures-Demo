@@ -16,7 +16,9 @@ export default function VenturesPage() {
     // contained today, but this stops any future regression in either
     // component from producing a page-level horizontal scrollbar on mobile
     // — the same class of bug found in the automobile detail page.
-    <main className="min-h-screen bg-[#0B1220] overflow-x-hidden">
+    //
+    // select-none: prevents text across this page from being highlighted/selected on click.
+    <main className="min-h-screen bg-[#0B1220] overflow-x-hidden select-none">
       <VentureHero />
       <Ventures />
     </main>

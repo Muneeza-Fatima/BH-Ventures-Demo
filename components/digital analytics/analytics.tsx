@@ -612,11 +612,11 @@ export function WhatYouReceive() {
 
 export default function MissingSections() {
     return (
-        <>
+        <div className="da-wrapper">
             <WhatWeMeasure />
             <SampleDashboard />
             <QuestionsWeAnswer />
             <WhatYouReceive />
-        </>
+        </div>
     );
 }

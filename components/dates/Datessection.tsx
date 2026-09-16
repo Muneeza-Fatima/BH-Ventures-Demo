@@ -211,7 +211,7 @@ export default function DatesSection() {
     }
 
     return (
-        <>
+        <div className="dates-wrapper">
             {/* ---------- VARIETY GRID ---------- */}
             <section className="dates-varieties">
                 <h2 className="service-detail-heading">Our date varieties</h2>
@@ -281,6 +281,6 @@ export default function DatesSection() {
             </p>
 
             {modalOpen && <DatesQuoteModal variety={selectedVariety} onClose={closeModal} />}
-        </>
+        </div>
     );
 }

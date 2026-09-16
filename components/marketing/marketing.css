@@ -74,7 +74,8 @@
 
 /* ---------- COLOR BAR ----------
    The calibration strip printed along the trim edge of a proof sheet:
-   the job's six spot inks, each with its plate number. */
+   the job's six spot inks, each with its plate number. Chips are
+   real <button>s wired to the bento cards below. */
 .mk-colorbar {
     display: flex;
     flex-wrap: wrap;
@@ -100,12 +101,21 @@
     cursor: pointer;
     padding: 3px 6px;
     border-radius: 4px;
+    border: none;
+    background: none;
+    font: inherit;
+    color: inherit;
     transition: background 0.2s ease;
 }
 
 .mk-colorbar-chip:hover,
 .mk-colorbar-chip--active {
     background: var(--surface);
+}
+
+.mk-colorbar-chip:focus-visible {
+    outline: 2px solid var(--ink);
+    outline-offset: 2px;
 }
 
 .mk-colorbar-swatch {
@@ -356,10 +366,37 @@
     transition: max-height 0.35s ease, opacity 0.3s ease;
 }
 
-.mk-bento-card:hover .mk-bento-desc,
-.mk-bento-card--active .mk-bento-desc {
-    max-height: 70px;
-    opacity: 1;
+.mk-bento-card:hover {
+    border-color: rgb(var(--c-rgb));
+    box-shadow: 0 14px 28px -6px rgba(var(--c-rgb), 0.22), 0 4px 10px -2px rgba(0, 0, 0, 0.05);
+}
+
+/* "lightning" highlight for a card selected from the colorbar:
+   a pulsing glow ring instead of a static border/shadow */
+.mk-bento-card--active {
+    border-color: rgb(var(--c-rgb));
+    animation: mk-glow-pulse 1.4s cubic-bezier(0.4, 0, 0.6, 1) 2;
+}
+
+@keyframes mk-glow-pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(var(--c-rgb), 0.55), 0 14px 28px -6px rgba(var(--c-rgb), 0.22);
+    }
+
+    50% {
+        box-shadow: 0 0 0 10px rgba(var(--c-rgb), 0), 0 14px 28px -6px rgba(var(--c-rgb), 0.32);
+    }
+
+    100% {
+        box-shadow: 0 0 0 0 rgba(var(--c-rgb), 0), 0 14px 28px -6px rgba(var(--c-rgb), 0.22);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .mk-bento-card--active {
+        animation: none;
+        box-shadow: 0 0 0 3px rgba(var(--c-rgb), 0.45), 0 14px 28px -6px rgba(var(--c-rgb), 0.22);
+    }
 }
 
 .mk-bento-card:nth-child(1) .mk-bento-desc {

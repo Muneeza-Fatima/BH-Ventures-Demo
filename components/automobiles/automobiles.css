@@ -273,6 +273,32 @@
        contains the glow at this wrapper without clipping anything
        inside .auto-content (which isn't relying on overflow to render). */
     overflow-x: hidden;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.auto-wrapper *:not(input):not(textarea):not(select):not([contenteditable="true"]) {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.auto-wrapper input,
+.auto-wrapper textarea,
+.auto-wrapper select,
+.auto-wrapper [contenteditable="true"] {
+    -webkit-touch-callout: default;
+    -webkit-user-select: text;
+    -moz-user-select: text;
+    -ms-user-select: text;
+    user-select: text;
 }
 
 .auto-glow-bg {
@@ -801,6 +827,10 @@
 
 /* ---------- LEGAL STRIP ---------- */
 
+.auto-cta {
+    margin-bottom: 1.25rem !important;
+}
+
 .auto-cta-sub {
     max-width: 32rem;
     font-size: 0.9rem;
@@ -810,7 +840,8 @@
 }
 
 .auto-legal-strip {
-    margin-top: 2rem;
+    margin-top: 0;
+    margin-bottom: 2rem;
     padding: 1rem 1.25rem;
     border-radius: 0.75rem;
     border: 1px solid rgba(255, 255, 255, 0.08);

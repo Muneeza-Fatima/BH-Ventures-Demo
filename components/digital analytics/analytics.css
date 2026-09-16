@@ -21,10 +21,38 @@
     font-family: inherit;
 
     /* Disable text selection across the whole section */
+    -webkit-touch-callout: none;
     -webkit-user-select: none;
+    -khtml-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
+}
+
+.da-section *:not(input):not(textarea):not(select):not([contenteditable="true"]),
+.da-wrapper,
+.da-wrapper *:not(input):not(textarea):not(select):not([contenteditable="true"]) {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.da-section input,
+.da-section textarea,
+.da-section select,
+.da-section [contenteditable="true"],
+.da-wrapper input,
+.da-wrapper textarea,
+.da-wrapper select,
+.da-wrapper [contenteditable="true"] {
+    -webkit-touch-callout: default;
+    -webkit-user-select: text;
+    -moz-user-select: text;
+    -ms-user-select: text;
+    user-select: text;
 }
 
 .da-heading {

@@ -541,7 +541,7 @@ export default function Web3Extras() {
     }
 
     return (
-        <>
+        <div className="web3-wrapper">
             {/* ---------- ABOUT (service-focused overview, matches SERVICES copy) ---------- */}
             <motion.section
                 className="web3-about"
@@ -801,6 +801,6 @@ export default function Web3Extras() {
             <AnimatePresence>
                 {modalOpen && <Web3QuoteModal stage={selectedStage} onClose={closeModal} />}
             </AnimatePresence>
-        </>
+        </div>
     );
 }

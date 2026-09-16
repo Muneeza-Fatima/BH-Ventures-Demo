@@ -8,9 +8,33 @@
    ======================================== */
 
 /* ---------- GLOBAL: disable text selection across all dates sections ---------- */
+.dates-wrapper,
+.dates-wrapper *:not(input):not(textarea):not(select):not([contenteditable="true"]),
 .dates-varieties,
-.dates-grades {
+.dates-varieties *:not(input):not(textarea):not(select),
+.dates-grades,
+.dates-grades *:not(input):not(textarea):not(select),
+.dates-cta,
+.dates-cta *:not(input):not(textarea):not(select),
+.dates-legal-strip,
+.dates-legal-strip * {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
     user-select: none;
+}
+
+.dates-quote-modal input,
+.dates-quote-modal textarea,
+.dates-quote-modal select,
+.dates-quote-modal [contenteditable="true"] {
+    -webkit-touch-callout: default;
+    -webkit-user-select: text;
+    -moz-user-select: text;
+    -ms-user-select: text;
+    user-select: text;
 }
 
 /* ---------- VARIETY GRID ---------- */

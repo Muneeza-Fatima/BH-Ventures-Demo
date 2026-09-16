@@ -31,6 +31,19 @@
 *::before,
 *::after {
   box-sizing: border-box;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+input,
+textarea,
+[contenteditable="true"] {
+  -webkit-user-select: text;
+  -moz-user-select: text;
+  -ms-user-select: text;
+  user-select: text;
 }
 
 html {
@@ -49,6 +62,11 @@ html {
   -webkit-text-size-adjust: 100%;
   scroll-behavior: auto;
 
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+
   /* Buttery native momentum scrolling on iPad / iPhone Safari */
   -webkit-overflow-scrolling: touch;
 }
@@ -63,6 +81,11 @@ body {
   min-height: 100vh;
   min-height: 100dvh;
   height: auto;
+
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 
   background: var(--white);
   color: var(--text-dark);
