@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect, useId } from "react";
+import Image from "next/image";
 import { X, Send, RotateCcw, User, Sun, Moon, Copy, Check, Mail } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import "./chatbot.css";
@@ -31,7 +32,15 @@ function formatTime() {
 // identify itself: header crest, message avatars, the proactive-greeting
 // bubble, and the launcher.
 function ChatBubbleIcon() {
-    return <img src="/images/icons/bot-icon.png" alt="" />;
+    return (
+        <Image
+            src="/images/icons/bot-icon.png"
+            alt=""
+            width={46}
+            height={46}
+            className="h-full w-full object-contain"
+        />
+    );
 }
 
 function FormattedContent({ text }: { text: string }) {

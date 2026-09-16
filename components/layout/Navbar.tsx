@@ -48,8 +48,8 @@ type NavItem = {
 const navItems: NavItem[] = [
   { label: "Home", href: "/" },
   { label: "About", href: "/about", dropdown: aboutDropdownItems },
-  { label: "Services", href: "/ventures" },
-  { label: "Ventures", href: "/services" },
+  { label: "Services", href: "/services" },
+  { label: "Ventures", href: "/ventures" },
   { label: "Portfolio", href: "/portfolio" },
   { label: "Insights", href: "/insights" },
 ];

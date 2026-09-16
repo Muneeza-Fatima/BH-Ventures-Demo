@@ -6,7 +6,7 @@ import Image from "next/image";
 import type { Service } from "@/lib/types";
 import { BH_WHATSAPP_NUMBER, BH_WHATSAPP_DISPLAY } from "@/lib/constants";
 
-import "./service-detail.css";
+import "./venture-detail.css";
 
 interface ServiceCardProps {
   service: Service;
@@ -118,7 +118,7 @@ export default function ServiceCard({ service, index }: ServiceCardProps) {
           <span className="service-sub">{service.sub}</span>
         </h3>
         <div className="service-footer">
-          <Link href={`/services/${service.slug}`} className="service-detail-btn">
+          <Link href={`/ventures/${service.slug}`} className="service-detail-btn">
             View Detail
           </Link>
           <div className="service-card-actions">
@@ -136,7 +136,7 @@ export default function ServiceCard({ service, index }: ServiceCardProps) {
               </svg>
               <span className="service-card-whatsapp-label">WhatsApp</span>
             </a>
-            <Link href={`/services/${service.slug}`} className="service-arrow" aria-label={`View ${service.title} details`}>
+            <Link href={`/ventures/${service.slug}`} className="service-arrow" aria-label={`View ${service.title} details`}>
               →
             </Link>
           </div>

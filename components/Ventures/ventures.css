@@ -1,0 +1,1272 @@
+/* ========================================
+   SERVICES SECTION — ALL STYLES
+   Used by: Services.tsx, ServiceCard.tsx
+   ======================================== */
+
+/* ---------- SECTION WRAPPER ---------- */
+
+.services-section {
+    position: relative;
+    overflow: hidden;
+    background: var(--color-navy);
+    padding: 4rem 2rem 4rem;
+    /* Skip rendering of off-screen content until the user scrolls near it.
+       Zero JS cost — pure browser paint optimization. */
+    content-visibility: auto;
+    contain-intrinsic-size: 0 1200px;
+}
+
+.services-grid-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background-image: linear-gradient(rgba(46, 230, 197, 0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(46, 230, 197, 0.04) 1px, transparent 1px);
+    background-size: 48px 48px;
+}
+
+/* multi-color glow instead of a single faint blue wash */
+.services-glow-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background-image:
+        radial-gradient(ellipse 900px 500px at 10% 0%, rgba(46, 230, 197, 0.16), transparent 60%),
+        radial-gradient(ellipse 700px 500px at 85% 20%, rgba(167, 139, 250, 0.12), transparent 60%),
+        radial-gradient(ellipse 900px 600px at 90% 100%, rgba(255, 182, 72, 0.09), transparent 60%);
+}
+
+.services-inner {
+    position: relative;
+    z-index: 10;
+    margin: 0 auto;
+    max-width: 1320px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+@media (max-width: 640px) {
+    .services-section {
+        padding: 5rem 1.25rem;
+    }
+}
+
+@media (max-width: 380px) {
+    .services-section {
+        padding: 3.5rem 1rem;
+    }
+}
+
+/* tablet band — sits between the 640px stacked layout and the 1024px
+   three-column layout so mid-size screens don't inherit desktop spacing */
+@media (min-width: 641px) and (max-width: 1023px) {
+    .services-section {
+        padding: 4.5rem 1.75rem;
+    }
+}
+
+/* ultra-wide — let the grid breathe instead of stretching the same
+   1320px column layout across a much wider viewport */
+@media (min-width: 1600px) {
+    .services-inner {
+        max-width: 1600px;
+    }
+}
+
+/* ---------- SECTION HEADER ---------- */
+
+.services-header {
+    margin: 0 auto 5rem;
+    max-width: 36rem;
+    text-align: center;
+}
+
+.services-eyebrow {
+    margin-bottom: 1.25rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.625rem;
+    font-family: var(--font-display);
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.28em;
+    color: #2ee6c5;
+    text-shadow: 0 0 12px rgba(46, 230, 197, 0.5);
+}
+
+.services-eyebrow-line {
+    height: 1px;
+    width: 1.25rem;
+    background: linear-gradient(to right, #2ee6c5, #ffffff);
+}
+
+.services-eyebrow-line--reverse {
+    background: linear-gradient(to right, #ffffff, #2ee6c5);
+}
+
+.services-title {
+    margin-bottom: 1.25rem;
+    font-family: var(--font-display);
+    /* fluid scale so tablet widths don't inherit the 640px-and-below size
+       or jump straight to the 768px+ size */
+    font-size: clamp(1.75rem, 1.35rem + 2.2vw, 3rem);
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    color: #eaf6fb;
+}
+
+.services-title-gradient {
+    font-style: normal;
+    background: linear-gradient(100deg, #2ee6c5 0%, #ffffff 30%, #a78bfa 65%, #2ee6c5 100%);
+    background-size: 250% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: services-title-shimmer 6s ease-in-out infinite;
+    /* text-shadow removed: incompatible with -webkit-text-fill-color:transparent */
+}
+
+@keyframes services-title-shimmer {
+    0% {
+        background-position: 0% center;
+    }
+
+    50% {
+        background-position: 100% center;
+    }
+
+    100% {
+        background-position: 0% center;
+    }
+}
+
+.services-subtitle {
+    font-size: clamp(0.9rem, 0.8rem + 0.4vw, 1rem);
+    line-height: 1.75;
+    color: var(--color-silver, #8fa3b8);
+    opacity: 1;
+}
+
+.subtitle-word {
+    display: inline-block;
+    font-weight: 700;
+    opacity: 0;
+    transform: translateY(6px);
+}
+
+.subtitle-word[data-category="trade"] {
+    color: #ffb648;
+    text-shadow: 0 0 14px rgba(255, 182, 72, 0.4);
+}
+
+.subtitle-word[data-category="web3"] {
+    color: #a78bfa;
+    text-shadow: 0 0 14px rgba(167, 139, 250, 0.4);
+}
+
+.subtitle-word[data-category="ai"] {
+    color: #00e5ff;
+    text-shadow: 0 0 14px rgba(0, 229, 255, 0.4);
+}
+
+.subtitle-word[data-category="marketing"] {
+    color: #ff6ec7;
+    text-shadow: 0 0 14px rgba(255, 110, 199, 0.4);
+}
+
+/* categories matching the actual badge copy in use (Data & Insight, Growth,
+   Innovation, Assessment) — kept in sync with .service-card below */
+.subtitle-word[data-category="data-insight"] {
+    color: #38bdf8;
+    text-shadow: 0 0 14px rgba(56, 189, 248, 0.4);
+}
+
+.subtitle-word[data-category="growth"] {
+    color: #34d399;
+    text-shadow: 0 0 14px rgba(52, 211, 153, 0.4);
+}
+
+.subtitle-word[data-category="innovation"] {
+    color: #818cf8;
+    text-shadow: 0 0 14px rgba(129, 140, 248, 0.4);
+}
+
+.subtitle-word[data-category="assessment"] {
+    color: #fb923c;
+    text-shadow: 0 0 14px rgba(251, 146, 60, 0.4);
+}
+
+.subtitle-rest {
+    color: var(--color-silver, #8fa3b8);
+    opacity: 0;
+}
+
+.service-reveal.in .subtitle-word {
+    animation: subtitle-word-pop 0.55s ease forwards;
+}
+
+.service-reveal.in .subtitle-word:nth-of-type(1) {
+    animation-delay: 0.1s;
+}
+
+.service-reveal.in .subtitle-word:nth-of-type(2) {
+    animation-delay: 0.28s;
+}
+
+.service-reveal.in .subtitle-word:nth-of-type(3) {
+    animation-delay: 0.46s;
+}
+
+.service-reveal.in .subtitle-word:nth-of-type(4) {
+    animation-delay: 0.64s;
+}
+
+.service-reveal.in .subtitle-rest {
+    animation: subtitle-rest-fade 0.6s ease forwards;
+    animation-delay: 0.85s;
+}
+
+@keyframes subtitle-word-pop {
+    0% {
+        opacity: 0;
+        transform: translateY(6px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes subtitle-rest-fade {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    .subtitle-word,
+    .subtitle-rest {
+        animation: none !important;
+        opacity: 1 !important;
+        transform: none !important;
+    }
+}
+
+@media (max-width: 640px) {
+    .services-header {
+        margin-bottom: 3rem;
+    }
+}
+
+/* tablet band for the header block */
+@media (min-width: 641px) and (max-width: 1023px) {
+    .services-header {
+        margin-bottom: 4rem;
+    }
+}
+
+/* ---------- SERVICE GRID ---------- */
+
+.services-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    width: 100%;
+}
+
+@media (min-width: 640px) {
+    .services-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (min-width: 1024px) {
+    .services-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+/* ultra-wide — a 4th column keeps cards from stretching too wide on very
+   large monitors while the container max-width above also grows */
+@media (min-width: 1600px) {
+    .services-grid {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 1.75rem;
+    }
+}
+
+@media (max-width: 640px) {
+    .services-grid {
+        gap: 1.25rem;
+    }
+}
+
+@media (max-width: 380px) {
+    .services-grid {
+        gap: 1rem;
+    }
+}
+
+/* ---------- REVEAL ON SCROLL ---------- */
+
+.service-reveal {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity 0.65s ease, transform 0.65s ease;
+    transition-delay: var(--reveal-delay, 0ms);
+}
+
+.service-reveal.in {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Faster, lighter reveal on mobile so cards pop in sooner */
+@media (max-width: 639px) {
+    .service-reveal {
+        transform: translateY(16px);
+        transition: opacity 0.45s ease, transform 0.45s ease;
+    }
+}
+
+/* ---------- CATEGORY COLORS ----------
+   Single source of truth for every card's accent color. ServiceCard.tsx only
+   sets data-category="trade" | "web3" | "ai" | "marketing" | "data-insight" |
+   "growth" | "innovation" | "assessment" (derived from the badge text) —
+   every actual color value lives here.
+   Default (no match) is brand mint, not flat blue. */
+
+.service-card {
+    --accent: #2ee6c5;
+    --accent-rgb: 46, 230, 197;
+}
+
+.service-card[data-category="trade"] {
+    --accent: #ffb648;
+    --accent-rgb: 255, 182, 72;
+}
+
+.service-card[data-category="web3"] {
+    --accent: #a78bfa;
+    --accent-rgb: 167, 139, 250;
+}
+
+.service-card[data-category="ai"] {
+    --accent: #00e5ff;
+    --accent-rgb: 0, 229, 255;
+}
+
+.service-card[data-category="marketing"] {
+    --accent: #ff6ec7;
+    --accent-rgb: 255, 110, 199;
+}
+
+/* NEW — the categories your badges actually use, each with its own
+   distinct accent so the grid doesn't read as one flat mint color */
+.service-card[data-category="data-insight"] {
+    --accent: #38bdf8;
+    --accent-rgb: 56, 189, 248;
+}
+
+.service-card[data-category="growth"] {
+    --accent: #34d399;
+    --accent-rgb: 52, 211, 153;
+}
+
+.service-card[data-category="innovation"] {
+    --accent: #818cf8;
+    --accent-rgb: 129, 140, 248;
+}
+
+.service-card[data-category="assessment"] {
+    --accent: #fb923c;
+    --accent-rgb: 251, 146, 60;
+}
+
+/* ---------- PER-CARD COLOR ROTATION ----------
+   Overrides the category color above. Each card gets its own accent by
+   grid position (8-color cycle) so visually adjacent cards never repeat
+   the same color, even when several share the same badge text (e.g.
+   multiple "Growth" cards). Badge, title shimmer, corner brackets, glow
+   and arrow all key off --accent, so the whole card re-themes at once. */
+.service-card:nth-child(8n+1) {
+    --accent: #2ee6c5;
+    --accent-rgb: 46, 230, 197;
+}
+
+.service-card:nth-child(8n+2) {
+    --accent: #ffb648;
+    --accent-rgb: 255, 182, 72;
+}
+
+.service-card:nth-child(8n+3) {
+    --accent: #a78bfa;
+    --accent-rgb: 167, 139, 250;
+}
+
+.service-card:nth-child(8n+4) {
+    --accent: #ff6ec7;
+    --accent-rgb: 255, 110, 199;
+}
+
+.service-card:nth-child(8n+5) {
+    --accent: #38bdf8;
+    --accent-rgb: 56, 189, 248;
+}
+
+.service-card:nth-child(8n+6) {
+    --accent: #34d399;
+    --accent-rgb: 52, 211, 153;
+}
+
+.service-card:nth-child(8n+7) {
+    --accent: #818cf8;
+    --accent-rgb: 129, 140, 248;
+}
+
+.service-card:nth-child(8n+8) {
+    --accent: #fb923c;
+    --accent-rgb: 251, 146, 60;
+}
+
+/* card body now carries a soft wash of its own category color, not flat navy */
+.service-card {
+    position: relative;
+    overflow: hidden;
+    border-radius: 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    background:
+        radial-gradient(ellipse 260px 180px at 15% 0%, rgba(var(--accent-rgb), 0.16), transparent 70%),
+        linear-gradient(to bottom, rgba(18, 36, 58, 0.9), rgba(10, 22, 38, 0.95));
+    transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.18s ease;
+    /* contain:style+layout keeps reflow isolated without clipping positioned children */
+    contain: style layout;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+}
+
+.service-card:not(:hover) {
+    transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.3s ease,
+        border-color 0.3s ease;
+}
+
+.service-card:hover {
+    will-change: transform;
+    border-color: var(--accent);
+    box-shadow: 0 30px 60px -20px rgba(0, 0, 0, 0.55), 0 0 40px rgba(var(--accent-rgb), 0.22);
+}
+
+/* touch devices never trigger :hover — give a tap-equivalent so the card
+   still confirms the interaction on phones/tablets */
+@media (hover: none) {
+    .service-card:active {
+        border-color: var(--accent);
+        box-shadow: 0 20px 40px -18px rgba(0, 0, 0, 0.5), 0 0 30px rgba(var(--accent-rgb), 0.2);
+    }
+
+    .service-card:active .service-corner {
+        border-color: var(--accent);
+    }
+
+    .service-card:active .service-arrow {
+        transform: translateX(4px);
+        background: rgba(var(--accent-rgb), 0.12);
+        box-shadow: 0 0 16px rgba(var(--accent-rgb), 0.35);
+    }
+}
+
+.service-card::before {
+    content: "";
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent), rgba(var(--accent-rgb), 0));
+    box-shadow: 0 0 12px rgba(var(--accent-rgb), 0.6);
+    z-index: 15;
+}
+
+/* ---------- CORNER BRACKETS ---------- */
+
+.service-corner {
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    border-color: rgba(var(--accent-rgb), 0.45);
+    border-style: solid;
+    z-index: 20;
+    pointer-events: none;
+    transition: border-color 0.3s ease;
+}
+
+.service-card:hover .service-corner {
+    border-color: var(--accent);
+}
+
+.service-corner-tl {
+    top: 10px;
+    left: 10px;
+    border-width: 1.5px 0 0 1.5px;
+}
+
+.service-corner-tr {
+    top: 10px;
+    right: 10px;
+    border-width: 1.5px 1.5px 0 0;
+}
+
+.service-corner-bl {
+    bottom: 10px;
+    left: 10px;
+    border-width: 0 0 1.5px 1.5px;
+}
+
+.service-corner-br {
+    bottom: 10px;
+    right: 10px;
+    border-width: 0 1.5px 1.5px 0;
+}
+
+/* ---------- CARD BANNER (image area) ---------- */
+
+.service-banner {
+    position: relative;
+    /* fluid instead of jumping straight from 10rem to 13rem to 14rem at the
+       three old breakpoints — scales smoothly across every width */
+    height: clamp(9rem, 7.5rem + 5vw, 14rem);
+    overflow: hidden;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    background: var(--color-navy-deep);
+    perspective: 900px;
+}
+
+@media (max-width: 380px) {
+    .service-banner {
+        height: 8.5rem;
+    }
+}
+
+.service-image-wrap {
+    position: absolute;
+    inset: -12%;
+    height: 124%;
+    width: 124%;
+    transform-style: preserve-3d;
+    /* Stagger per card position so all 10 cards don't animate in perfect sync
+       — that simultaneous GPU load is the primary cause of perceived sluggishness */
+    animation: service-card-3d 9s ease-in-out infinite;
+    animation-delay: calc(var(--reveal-delay, 0ms) * -1);
+}
+
+.service-card:hover .service-image-wrap {
+    animation-play-state: paused;
+}
+
+@keyframes service-card-3d {
+    0% {
+        transform: perspective(900px) rotateY(0deg) rotateX(0deg) scale(1);
+    }
+
+    25% {
+        transform: perspective(900px) rotateY(14deg) rotateX(4deg) scale(1.05);
+    }
+
+    50% {
+        transform: perspective(900px) rotateY(0deg) rotateX(-5deg) scale(1.02);
+    }
+
+    75% {
+        transform: perspective(900px) rotateY(-14deg) rotateX(4deg) scale(1.05);
+    }
+
+    100% {
+        transform: perspective(900px) rotateY(0deg) rotateX(0deg) scale(1);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .service-image-wrap {
+        animation: none;
+    }
+}
+
+/* On touch/mobile devices: kill the heavy 3D pan — it fires on every card
+   simultaneously and is the single biggest GPU cost on mobile. Keep a
+   subtle scale pulse instead (translate3d stays on the compositor). */
+@media (hover: none) {
+    .service-image-wrap {
+        animation: service-card-mobile-breathe 6s ease-in-out infinite;
+        inset: -4%;
+        height: 108%;
+        width: 108%;
+    }
+}
+
+@keyframes service-card-mobile-breathe {
+    0%,
+    100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.04);
+    }
+}
+
+/* photos now keep their real color instead of being crushed dark */
+.service-image {
+    display: block;
+    max-width: none;
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    backface-visibility: hidden;
+    /* Avoid filter on non-hover — GPU layer cost on every card simultaneously */
+    filter: saturate(1.2) brightness(1.02);
+    transition: filter 0.4s ease;
+}
+
+.service-card:hover .service-image {
+    filter: saturate(1.5) contrast(1.1) brightness(1.08);
+}
+
+.service-banner-glow {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    mix-blend-mode: screen;
+    background-image: radial-gradient(ellipse at 28% 18%, rgba(var(--accent-rgb), 0.22), transparent 62%);
+}
+
+/* lighter fade — was crushing photo colors to navy at the bottom of every card */
+.service-banner-fade {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(to bottom,
+            rgba(10, 22, 40, 0.02),
+            rgba(6, 13, 24, 0.12),
+            rgba(6, 13, 24, 0.68));
+}
+
+.service-scanline {
+    position: absolute;
+    inset: 0;
+    z-index: 5;
+    pointer-events: none;
+    background: repeating-linear-gradient(180deg,
+            transparent,
+            transparent 2px,
+            rgba(0, 0, 0, 0.04) 2px,
+            rgba(0, 0, 0, 0.04) 4px);
+    /* Only animate on hover — prevents all 10 scanlines running simultaneously */
+    opacity: 0;
+    animation: none;
+}
+
+.service-card:hover .service-scanline {
+    opacity: 1;
+    animation: service-sweep 4s linear infinite;
+}
+
+/* scanline is a paint-heavy GPU layer — disable on touch devices */
+@media (hover: none) {
+    .service-scanline {
+        display: none;
+    }
+}
+
+@keyframes service-sweep {
+    0% {
+        opacity: 0;
+        transform: translateY(-100%);
+    }
+
+    10% {
+        opacity: 1;
+    }
+
+    90% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+        transform: translateY(100%);
+    }
+}
+
+/* badges are filled pills in the category color with a dark scrim behind
+   them so they stay legible over bright photos regardless of accent color */
+.service-badge {
+    position: absolute;
+    left: 1rem;
+    top: 1rem;
+    z-index: 10;
+    border-radius: 9999px;
+    border: 1px solid rgba(var(--accent-rgb), 0.8);
+    background: rgba(6, 13, 24, 0.6);
+    padding: 0.25rem 0.625rem;
+    font-family: var(--font-display);
+    font-size: 10.5px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--accent);
+    text-shadow: 0 0 12px rgba(var(--accent-rgb), 0.6);
+    backdrop-filter: blur(6px);
+}
+
+.service-index {
+    position: absolute;
+    bottom: 0.875rem;
+    right: 1rem;
+    z-index: 10;
+    font-family: var(--font-display);
+    font-size: 1.875rem;
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.06);
+}
+
+/* ---------- CARD BODY ---------- */
+
+.service-body {
+    position: relative;
+    z-index: 10;
+    padding: 1.5rem;
+    padding-bottom: 1.75rem;
+}
+
+@media (max-width: 380px) {
+    .service-body {
+        padding: 1.25rem;
+        padding-bottom: 1.5rem;
+    }
+}
+
+/* title shimmer travels white → each card's own category color */
+.service-title {
+    margin-bottom: 1rem;
+    font-family: var(--font-display);
+    font-size: clamp(1rem, 0.9rem + 0.4vw, 1.15rem);
+    font-weight: 700;
+    line-height: 1.375;
+    background: linear-gradient(100deg,
+            #ffffff 0%,
+            var(--accent) 40%,
+            #ffffff 70%,
+            var(--accent) 100%);
+    background-size: 250% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    /* Stagger shimmer offset so all cards don't pulse in sync */
+    animation: service-title-shimmer 6s ease-in-out infinite;
+    animation-delay: calc(var(--reveal-delay, 0ms) * -1);
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+}
+
+@keyframes service-title-shimmer {
+    0% {
+        background-position: 0% center;
+    }
+
+    50% {
+        background-position: 100% center;
+    }
+
+    100% {
+        background-position: 0% center;
+    }
+}
+
+.service-sub {
+    display: block;
+    margin-top: 0.375rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    color: var(--accent);
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+}
+
+.service-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    padding-top: 1rem;
+}
+
+.service-detail-btn {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    font-size: 11.5px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-silver, #8fa3b8);
+    text-decoration: none;
+    transition: color 0.3s ease, text-shadow 0.3s ease;
+}
+
+.service-detail-btn:hover {
+    color: var(--accent);
+    text-shadow: 0 0 10px rgba(var(--accent-rgb), 0.5);
+}
+
+.service-arrow {
+    display: flex;
+    height: 2rem;
+    width: 2rem;
+    align-items: center;
+    justify-content: center;
+    border-radius: 9999px;
+    border: 1px solid rgba(var(--accent-rgb), 0.4);
+    font-size: 0.875rem;
+    color: var(--accent);
+    text-decoration: none;
+    transition: transform 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.service-card-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.service-card-whatsapp-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.35rem 0.65rem;
+    border-radius: 9999px;
+    background: rgba(37, 211, 102, 0.1);
+    border: 1px solid rgba(37, 211, 102, 0.3);
+    color: #25D366;
+    font-size: 11px;
+    font-weight: 600;
+    text-decoration: none;
+    letter-spacing: 0.02em;
+    transition: background-color 0.25s ease, border-color 0.25s ease, transform 0.2s ease, box-shadow 0.25s ease;
+}
+
+.service-card-whatsapp-btn:hover {
+    background: rgba(37, 211, 102, 0.2);
+    border-color: #25D366;
+    transform: translateY(-1px);
+    box-shadow: 0 0 16px rgba(37, 211, 102, 0.35);
+}
+
+.service-card-whatsapp-icon {
+    width: 0.875rem;
+    height: 0.875rem;
+    fill: currentColor;
+    flex-shrink: 0;
+}
+
+/* bump touch targets up to the ~44px minimum on devices without a mouse,
+   without changing the visual size on desktop */
+@media (hover: none) {
+    .service-arrow {
+        height: 2.75rem;
+        width: 2.75rem;
+    }
+
+    .service-card-whatsapp-btn {
+        padding: 0.5rem 0.75rem;
+    }
+
+    .service-detail-btn {
+        padding: 0.5rem 0;
+    }
+}
+
+.service-card:hover .service-arrow {
+    transform: translateX(4px);
+    background: rgba(var(--accent-rgb), 0.12);
+    box-shadow: 0 0 16px rgba(var(--accent-rgb), 0.35);
+}
+
+/* ========================================
+   SERVICES HERO — merged in from services-hero.css
+   Used by: ServicesHero.tsx
+   ======================================== */
+
+.services-hero-section {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    background: #0b1220;
+    min-height: 420px;
+    height: 85vh;
+}
+
+@media (min-width: 1024px) {
+    .services-hero-section {
+        height: 90vh;
+    }
+}
+
+@media (max-width: 640px) {
+    .services-hero-section {
+        height: 70vh;
+        min-height: 380px;
+    }
+}
+
+@media (max-width: 640px) and (orientation: landscape) {
+    .services-hero-section {
+        height: 100vh;
+        min-height: 320px;
+    }
+}
+
+/* any short viewport (landscape tablets, small laptops with browser chrome,
+   split-screen windows) — not just narrow phones — should never force the
+   85–90vh hero to overflow the visible area */
+@media (max-height: 500px) {
+    .services-hero-section {
+        height: 100vh;
+        min-height: 300px;
+    }
+}
+
+/* cap absolute height on very large/tall desktop monitors so the hero
+   doesn't become a huge empty wall of video */
+@media (min-width: 1024px) {
+    .services-hero-section {
+        max-height: 900px;
+    }
+}
+
+/* ---------- BACKGROUND VIDEO ---------- */
+
+.services-hero-video-wrap {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+    background: #0b1220;
+    pointer-events: none;
+}
+
+.services-hero-video {
+    position: absolute;
+    inset: 0;
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    object-position: center;
+    opacity: 0.85;
+}
+
+/* was flat navy — now a soft mint glow behind the hero copy so this section
+   isn't the flattest, most monotone part of the page */
+.services-hero-overlay-tint {
+    position: absolute;
+    inset: 0;
+    background:
+        radial-gradient(ellipse 900px 500px at 50% 30%, rgba(46, 230, 197, 0.1), transparent 65%),
+        rgba(11, 18, 32, 0.4);
+}
+
+.services-hero-overlay-gradient {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom,
+            rgba(11, 18, 32, 0.25) 0%,
+            transparent 45%,
+            rgba(11, 18, 32, 0.55) 75%,
+            #0a1628 100%);
+}
+
+/* ---------- CONTENT ---------- */
+
+.services-hero-content {
+    position: relative;
+    z-index: 10;
+    margin: 0 auto;
+    display: flex;
+    height: 100%;
+    width: 100%;
+    max-width: 1440px;
+    box-sizing: border-box;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0 1.25rem;
+    text-align: center;
+}
+
+@media (min-width: 768px) {
+    .services-hero-content {
+        padding: 0 2.5rem;
+    }
+}
+
+@media (min-width: 1600px) {
+    .services-hero-content {
+        max-width: 1680px;
+    }
+}
+
+.services-hero-scrim {
+    position: relative;
+    box-sizing: border-box;
+    max-width: 100%;
+    padding: 2.5rem 2rem;
+    border-radius: 1.5rem;
+    background: radial-gradient(ellipse at center, rgba(6, 13, 24, 0.55) 0%, rgba(6, 13, 24, 0.15) 70%, transparent 100%);
+    backdrop-filter: blur(2px);
+}
+
+@media (max-width: 640px) {
+    .services-hero-scrim {
+        padding: 1.5rem 1rem;
+        border-radius: 1rem;
+    }
+}
+
+@media (max-width: 380px) {
+    .services-hero-scrim {
+        padding: 1.25rem 0.85rem;
+    }
+}
+
+.services-hero-eyebrow {
+    margin-bottom: 1.1rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.625rem;
+    font-family: var(--font-display);
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.28em;
+    color: #2ee6c5;
+    text-shadow: 0 0 12px rgba(46, 230, 197, 0.5);
+    opacity: 0;
+    animation: hero-fade-up 0.7s ease forwards;
+    animation-delay: 0.1s;
+}
+
+@media (max-width: 480px) {
+    .services-hero-eyebrow {
+        font-size: 0.65rem;
+        letter-spacing: 0.2em;
+        margin-bottom: 0.85rem;
+    }
+}
+
+.services-hero-eyebrow-line {
+    height: 1px;
+    width: 1.25rem;
+    background: linear-gradient(to right, #2ee6c5, #ffffff);
+}
+
+@media (max-width: 480px) {
+    .services-hero-eyebrow-line {
+        width: 0.85rem;
+    }
+}
+
+.services-hero-eyebrow-line--reverse {
+    background: linear-gradient(to right, #ffffff, #2ee6c5);
+}
+
+.services-hero-title {
+    position: relative;
+    overflow: hidden;
+    max-width: 42rem;
+    width: 100%;
+    box-sizing: border-box;
+    font-family: var(--font-display);
+    /* fluid across the full range instead of jumping between four fixed
+       sizes — scales smoothly from small phones up to large desktops */
+    font-size: clamp(1.85rem, 1.2rem + 3.2vw, 3.75rem);
+    font-weight: 600;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    color: #ffffff;
+    animation: hero-title-float 7s ease-in-out infinite;
+    animation-delay: 1.1s;
+}
+
+.services-hero-title::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -60%;
+    width: 45%;
+    height: 100%;
+    background: linear-gradient(115deg, transparent 0%, rgba(255, 255, 255, 0.35) 50%, transparent 100%);
+    mix-blend-mode: overlay;
+    pointer-events: none;
+    animation: hero-title-shine 5s ease-in-out infinite;
+    animation-delay: 1.4s;
+}
+
+@keyframes hero-title-shine {
+    0% {
+        left: -60%;
+    }
+
+    28% {
+        left: 130%;
+    }
+
+    100% {
+        left: 130%;
+    }
+}
+
+@keyframes hero-title-float {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-7px);
+    }
+}
+
+.hero-word {
+    display: inline-block;
+    opacity: 0;
+    filter: blur(6px);
+    transform: translateY(18px) scale(0.94);
+    animation: hero-word-in 0.65s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.services-hero-title>.hero-word:nth-of-type(1) {
+    animation-delay: 0.15s;
+}
+
+.services-hero-title>.hero-word:nth-of-type(2) {
+    animation-delay: 0.28s;
+}
+
+.services-hero-title-accent .hero-word:nth-of-type(1) {
+    animation-delay: 0.42s;
+}
+
+.services-hero-title-accent .hero-word:nth-of-type(2) {
+    animation-delay: 0.55s;
+}
+
+@keyframes hero-word-in {
+    0% {
+        opacity: 0;
+        filter: blur(6px);
+        transform: translateY(18px) scale(0.94);
+    }
+
+    100% {
+        opacity: 1;
+        filter: blur(0);
+        transform: translateY(0) scale(1);
+    }
+}
+
+@media (max-width: 480px) {
+    .services-hero-title {
+        line-height: 1.2;
+    }
+}
+
+.services-hero-title-accent {
+    display: block;
+    font-style: normal;
+    background: linear-gradient(100deg, #2ee6c5 0%, #ffffff 30%, #a78bfa 65%, #2ee6c5 100%);
+    background-size: 250% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: services-title-shimmer 6s ease-in-out infinite;
+    /* text-shadow removed: has no effect when color is transparent for gradient clip */
+}
+
+.services-hero-subtitle {
+    margin-top: 1.1rem;
+    max-width: 32rem;
+    width: 100%;
+    box-sizing: border-box;
+    /* fluid across the full range instead of three fixed sizes */
+    font-size: clamp(0.875rem, 0.65rem + 1.13vw, 1.1rem);
+    line-height: 1.7;
+    color: var(--color-silver, #b7c4d1);
+    opacity: 0;
+    animation: hero-fade-up 0.7s ease forwards;
+    animation-delay: 0.75s;
+}
+
+@media (max-width: 480px) {
+    .services-hero-subtitle {
+        margin-top: 0.85rem;
+    }
+}
+
+@keyframes hero-fade-up {
+    0% {
+        opacity: 0;
+        transform: translateY(14px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    .services-hero-eyebrow,
+    .services-hero-subtitle,
+    .hero-word,
+    .services-hero-title {
+        animation: none !important;
+        opacity: 1 !important;
+        filter: none !important;
+        transform: none !important;
+    }
+
+    .services-hero-title::after {
+        display: none !important;
+    }
+}
+
+/* ---------- BOTTOM FADE INTO PAGE ---------- */
+
+.services-hero-bottom-fade {
+    position: absolute;
+    inset-inline: 0;
+    bottom: 0;
+    z-index: 10;
+    height: 6rem;
+    background: linear-gradient(to bottom, transparent, #0a1628);
+}
+
+@media (max-width: 640px) {
+    .services-hero-bottom-fade {
+        height: 4rem;
+    }
+}

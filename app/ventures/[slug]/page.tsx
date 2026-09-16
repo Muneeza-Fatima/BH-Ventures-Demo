@@ -2,8 +2,8 @@ import Link from "next/link";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { SERVICES } from "@/data/services";
-import ServiceDetailHero from "@/components/Services/ServiceDetailHero";
-import ServiceContactModal from "@/components/Services/ServiceContactModal";
+import ServiceDetailHero from "@/components/Ventures/VentureDetailHero";
+import ServiceContactModal from "@/components/Ventures/VentureContactModal";
 import AutomobileExtras from "@/components/automobiles/AutomobileExtras";
 import DatesSection from "@/components/dates/Datessection";
 import Web3Extras from "@/components/web3/Web3Extras";
@@ -14,8 +14,8 @@ import AdvertisingSections from "@/components/advertising/advertising";
 import MarketingSections from "@/components/marketing/marketing";
 import SurveyingSections from "@/components/surveying/surveying";
 import ExhibitionSections from "@/components/exhibition/exhibition";
-import "@/components/Services/services.css";
-import "@/components/Services/service-detail.css";
+import "@/components/Ventures/ventures.css";
+import "@/components/Ventures/venture-detail.css";
 import "@/components/automobiles/automobiles.css";
 import "@/components/dates/dates.css";
 import "@/components/web3/web3.css";
@@ -86,7 +86,7 @@ export async function generateMetadata({ params }: { params: ParamsPromise }) {
     };
 }
 
-export default async function ServiceDetailPage({ params }: { params: ParamsPromise }) {
+export default async function VentureDetailPage({ params }: { params: ParamsPromise }) {
     const { slug } = await params;
     const service = SERVICES.find((s) => s.slug === slug);
     if (!service) notFound();
@@ -117,8 +117,8 @@ export default async function ServiceDetailPage({ params }: { params: ParamsProm
             />
 
             <div className="service-detail-inner">
-                <Link href="/services" className="service-detail-back">
-                    ← Back to services
+                <Link href="/ventures" className="service-detail-back">
+                    ← Back to ventures
                 </Link>
 
                 {/* Overview / What's included / How it works / Highlights are
@@ -218,7 +218,7 @@ export default async function ServiceDetailPage({ params }: { params: ParamsProm
                     <h2 className="service-detail-heading">Related services</h2>
                     <div className="service-detail-related-grid">
                         {related.map((r) => (
-                            <Link key={r.slug} href={`/services/${r.slug}`} className="service-detail-related-card">
+                            <Link key={r.slug} href={`/ventures/${r.slug}`} className="service-detail-related-card">
                                 <span style={{ position: "relative", display: "block", width: "100%", height: "100%" }}>
                                     <Image
                                         src={r.image}

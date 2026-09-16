@@ -1,12 +1,12 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import "../Services/services.css";
+import "../Ventures/ventures.css";
 
 const VIDEO_PATH =
   "/videos/Generating_animated_corporate_vi_202608210655_202608210856.mp4";
 
-export default function ServicesHero() {
+export default function VentureHero() {
   const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {

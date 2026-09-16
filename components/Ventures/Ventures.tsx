@@ -1,9 +1,9 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import ServiceCard from "@/components/Services/ServiceCard";
+import ServiceCard from "@/components/Ventures/VentureCard";
 import { SERVICES } from "@/data/services";
-import "./services.css";
+import "./venture.css";
 
 export default function Services() {
   const sectionRef = useRef<HTMLElement>(null);
