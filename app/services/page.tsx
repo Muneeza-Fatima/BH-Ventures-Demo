@@ -7,8 +7,8 @@ export const metadata: Metadata = {
 
 export default function ServicesPage() {
   return (
-    <div className="min-h-screen bg-[#0B1220]">
-      {/* Services content later */}
-    </div>
+    <main className="min-h-screen bg-[#0B1220] flex items-center justify-center text-white">
+      {/* Ready for your new services page content */}
+    </main>
   );
 }
