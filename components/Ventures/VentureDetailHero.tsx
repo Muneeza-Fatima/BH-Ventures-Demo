@@ -137,7 +137,7 @@ export default function ServiceDetailHero({
             <div className="detail-hero-fade" />
 
             <div className="detail-hero-content">
-                <span className="service-badge detail-hero-badge">{badge}</span>
+                <span className="detail-hero-badge">{badge}</span>
                 <h1 className="detail-hero-title">{title}</h1>
                 <p className="detail-hero-sub">{sub}</p>
             </div>
