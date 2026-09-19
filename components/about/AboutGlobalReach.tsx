@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { motion, useReducedMotion } from "framer-motion";
 import { Globe2, Handshake, TrendingUp, Blocks } from "lucide-react";
 
@@ -43,24 +44,25 @@ const containerVariants = {
 };
 
 const cardVariants = {
-  hidden: { opacity: 0, y: 30 },
+  hidden: { opacity: 0, y: 24, scale: 0.98 },
   show: {
     opacity: 1,
     y: 0,
+    scale: 1,
     transition: { duration: 0.6, ease: EASE },
   },
 };
 
+/* Reduced motion: no entrance offset or scale — the card is simply
+   there. The hover lift is plain CSS, which app/globals.css already
+   clamps to 0.01ms site-wide under the same media query. */
+const cardVariantsReduced = {
+  hidden: { opacity: 1, y: 0, scale: 1 },
+  show: { opacity: 1, y: 0, scale: 1, transition: { duration: 0 } },
+};
+
 export default function AboutGlobalReach() {
   const prefersReducedMotion = useReducedMotion();
-
-  const hoverPop = prefersReducedMotion
-    ? {}
-    : {
-        y: -6,
-        scale: 1.015,
-        transition: { duration: 0.35, ease: EASE },
-      };
 
   return (
     <section
@@ -81,6 +83,48 @@ export default function AboutGlobalReach() {
         [@media(min-width:1024px)_and_(max-width:1366px)]:py-16!
       "
     >
+      {/* Decorative backdrop. Sits at -z-10 inside this `isolate`
+          section, so it paints above the section's own navy fill but
+          below every in-flow child. The radial mask fades the photo
+          out well before the edges so the copy never sits on detail. */}
+      <div
+        aria-hidden="true"
+        className="
+          pointer-events-none
+          absolute
+          inset-0
+          -z-10
+          opacity-[0.12]
+          lg:opacity-[0.16]
+
+          [mask-image:radial-gradient(ellipse_at_center,black_15%,transparent_72%)]
+          [-webkit-mask-image:radial-gradient(ellipse_at_center,black_15%,transparent_72%)]
+        "
+      >
+        <Image
+          src="/images/about/story/story-global-v2.jpg"
+          alt=""
+          fill
+          sizes="100vw"
+          className="about-global-bg object-cover object-center"
+        />
+      </div>
+
+      {/* Scrim over the photo, still below the content layer */}
+      <div
+        aria-hidden="true"
+        className="
+          pointer-events-none
+          absolute
+          inset-0
+          -z-10
+          bg-gradient-to-b
+          from-[#0F1B2D]/70
+          via-transparent
+          to-[#0F1B2D]/80
+        "
+      />
+
       <div
         aria-hidden="true"
         className="
@@ -206,15 +250,15 @@ export default function AboutGlobalReach() {
             lg:gap-5
           "
         >
-          {pillars.map((pillar) => {
+          {pillars.map((pillar, index) => {
             const Icon = pillar.icon;
 
             return (
               <motion.div
                 key={pillar.title}
-                variants={cardVariants}
-                whileHover={hoverPop}
-                whileFocus={hoverPop}
+                variants={
+                  prefersReducedMotion ? cardVariantsReduced : cardVariants
+                }
                 tabIndex={0}
                 className="
                   group
@@ -224,21 +268,24 @@ export default function AboutGlobalReach() {
                   rounded-[22px]
                   border
                   border-white/[0.09]
-                  bg-white/[0.025]
+                  bg-[#0B1220]/55
                   p-6
+                  backdrop-blur-sm
 
-                  transition-[border-color,box-shadow,background-color]
-                  duration-[350ms]
+                  transition-[transform,border-color,box-shadow,background-color]
+                  duration-500
                   ease-[cubic-bezier(0.22,1,0.36,1)]
 
+                  hover:-translate-y-1.5
                   hover:border-[#2DD4BF]/50
-                  hover:bg-white/[0.045]
-                  hover:shadow-[0_22px_50px_rgba(0,0,0,0.25),0_0_36px_rgba(0,205,181,0.16)]
+                  hover:bg-[#0B1220]/70
+                  hover:shadow-[0_24px_50px_rgba(0,0,0,0.28),0_0_36px_rgba(0,205,181,0.16)]
 
                   focus:border-[#2DD4BF]/50
-                  focus:bg-white/[0.045]
-                  focus:shadow-[0_22px_50px_rgba(0,0,0,0.25),0_0_36px_rgba(0,205,181,0.16)]
+                  focus:bg-[#0B1220]/70
+                  focus:shadow-[0_24px_50px_rgba(0,0,0,0.28),0_0_36px_rgba(0,205,181,0.16)]
                   focus:outline-none
+                  focus-visible:-translate-y-1.5
                   focus-visible:ring-2
                   focus-visible:ring-[#5EEAD4]/60
                   focus-visible:ring-offset-2
@@ -247,6 +294,44 @@ export default function AboutGlobalReach() {
                   sm:p-7
                 "
               >
+                <span
+                  aria-hidden="true"
+                  className="
+                    absolute
+                    inset-x-0
+                    top-0
+                    h-px
+                    origin-left
+                    scale-x-0
+                    bg-gradient-to-r
+                    from-transparent
+                    via-[#00FFD5]
+                    to-transparent
+
+                    transition-transform
+                    duration-500
+
+                    group-hover:scale-x-100
+                    group-focus:scale-x-100
+                  "
+                />
+
+                <span
+                  aria-hidden="true"
+                  className="
+                    pointer-events-none
+                    absolute
+                    right-5
+                    top-5
+                    text-[10px]
+                    font-bold
+                    tracking-[0.2em]
+                    text-white/25
+                  "
+                >
+                  {String(index + 1).padStart(2, "0")}
+                </span>
+
                 <div
                   className="
                     relative
@@ -261,14 +346,14 @@ export default function AboutGlobalReach() {
                     bg-[#0E4A44]/50
                     text-[#5EEAD4]
 
-                    transition-transform
-                    duration-[350ms]
+                    transition-[transform,box-shadow]
+                    duration-500
                     ease-[cubic-bezier(0.22,1,0.36,1)]
 
                     group-hover:-translate-y-0.5
-                    group-hover:scale-105
+                    group-hover:shadow-[0_0_18px_rgba(0,205,181,0.35)]
                     group-focus:-translate-y-0.5
-                    group-focus:scale-105
+                    group-focus:shadow-[0_0_18px_rgba(0,205,181,0.35)]
                   "
                 >
                   <Icon size={22} strokeWidth={1.6} aria-hidden="true" />
@@ -276,7 +361,7 @@ export default function AboutGlobalReach() {
 
                 <h3
                   className="
-                    mt-6
+                    pt-7
                     text-[17px]
                     font-semibold
                     leading-[1.25]
@@ -290,7 +375,7 @@ export default function AboutGlobalReach() {
 
                 <p
                   className="
-                    mt-3
+                    pt-3
                     text-[13px]
                     font-medium
                     leading-[1.7]

@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import {
   ShieldCheck,
   Sparkles,
@@ -43,11 +43,13 @@ const values = [
   },
 ];
 
+const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
+
 const containerVariants = {
   hidden: {},
   show: {
     transition: {
-      staggerChildren: 0.08,
+      staggerChildren: 0.1,
       delayChildren: 0.05,
     },
   },
@@ -56,19 +58,31 @@ const containerVariants = {
 const cardVariants = {
   hidden: {
     opacity: 0,
-    y: 26,
+    y: 24,
+    scale: 0.98,
   },
   show: {
     opacity: 1,
     y: 0,
+    scale: 1,
     transition: {
-      duration: 0.55,
-      ease: [0.22, 1, 0.36, 1] as [number, number, number, number],
+      duration: 0.6,
+      ease: EASE,
     },
   },
 };
 
+/* Reduced motion: no entrance offset or scale — the card is simply
+   there. The hover lift is plain CSS, which app/globals.css already
+   clamps to 0.01ms site-wide under the same media query. */
+const cardVariantsReduced = {
+  hidden: { opacity: 1, y: 0, scale: 1 },
+  show: { opacity: 1, y: 0, scale: 1, transition: { duration: 0 } },
+};
+
 export default function AboutValues() {
+  const prefersReducedMotion = useReducedMotion();
+
   return (
     <section
       id="about-values"
@@ -201,17 +215,9 @@ export default function AboutValues() {
             return (
               <motion.div
                 key={value.title}
-                variants={cardVariants}
-                whileHover={{
-                  y: -5,
-                  scale: 1.01,
-                  transition: { duration: 0.35, ease: [0.22, 1, 0.36, 1] },
-                }}
-                whileFocus={{
-                  y: -5,
-                  scale: 1.01,
-                  transition: { duration: 0.35, ease: [0.22, 1, 0.36, 1] },
-                }}
+                variants={
+                  prefersReducedMotion ? cardVariantsReduced : cardVariants
+                }
                 tabIndex={0}
                 className="
                   group
@@ -225,10 +231,11 @@ export default function AboutValues() {
 
                   shadow-[0_8px_24px_rgba(16,42,67,0.05)]
 
-                  transition-[border-color,box-shadow,background-color]
-                  duration-[350ms]
+                  transition-[transform,border-color,box-shadow,background-color]
+                  duration-500
                   ease-[cubic-bezier(0.22,1,0.36,1)]
 
+                  hover:-translate-y-1.5
                   hover:border-[#00BFA6]/50
                   hover:bg-[#F4FBFA]
                   hover:shadow-[0_20px_44px_rgba(16,42,67,0.08),0_0_32px_rgba(0,191,166,0.16)]
@@ -237,6 +244,7 @@ export default function AboutValues() {
                   focus:bg-[#F4FBFA]
                   focus:shadow-[0_20px_44px_rgba(16,42,67,0.08),0_0_32px_rgba(0,191,166,0.16)]
                   focus:outline-none
+                  focus-visible:-translate-y-1.5
                   focus-visible:ring-2
                   focus-visible:ring-[#00BFA6]/40
                   focus-visible:ring-offset-2
@@ -245,6 +253,30 @@ export default function AboutValues() {
                   sm:p-6
                 "
               >
+                {/* Light-theme accent: the same hairline as the dark
+                    cards, in this section's teal so it reads on white */}
+                <span
+                  aria-hidden="true"
+                  className="
+                    absolute
+                    inset-x-0
+                    top-0
+                    h-px
+                    origin-left
+                    scale-x-0
+                    bg-gradient-to-r
+                    from-transparent
+                    via-[#00BFA6]
+                    to-transparent
+
+                    transition-transform
+                    duration-500
+
+                    group-hover:scale-x-100
+                    group-focus:scale-x-100
+                  "
+                />
+
                 <span
                   className="
                     absolute
@@ -273,11 +305,12 @@ export default function AboutValues() {
                     bg-[#EAF7F4]
                     text-[#0E8C77]
 
-                    transition-all
+                    transition-[transform,box-shadow,border-color]
                     duration-500
 
-                    group-hover:-translate-y-1
+                    group-hover:-translate-y-0.5
                     group-hover:border-[#00BFA6]/45
+                    group-hover:shadow-[0_0_18px_rgba(0,191,166,0.35)]
                   "
                 >
                   <span

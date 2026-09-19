@@ -188,6 +188,27 @@
 }
 
 /* ---------------------------------------------------------
+   GLOBAL REACH BACKDROP
+   A single very slow push-in on the decorative photo behind
+   the Global Reach cards. It runs once (forwards) rather than
+   looping, so the section settles instead of breathing.
+   --------------------------------------------------------- */
+
+@keyframes about-global-bg-zoom {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.06);
+  }
+}
+
+.about-page .about-global-bg {
+  animation: about-global-bg-zoom 40s ease-out forwards;
+  will-change: transform;
+}
+
+/* ---------------------------------------------------------
    JOURNEY PANEL
    --------------------------------------------------------- */
 
@@ -240,7 +261,8 @@
   .about-page .thread-chip,
   .about-page .thread-chip::before,
   .about-page .journey-kenburns,
-  .about-page .journey-sheen {
+  .about-page .journey-sheen,
+  .about-page .about-global-bg {
     animation: none !important;
   }
 
@@ -254,7 +276,8 @@
     --about-chip-angle: 320deg;
   }
 
-  .about-page .journey-kenburns {
+  .about-page .journey-kenburns,
+  .about-page .about-global-bg {
     transform: none;
   }
 
