@@ -171,6 +171,28 @@ export default function AboutContact() {
             const content = (
               <>
                 <span
+                  aria-hidden="true"
+                  className="
+                    absolute
+                    inset-x-0
+                    top-0
+                    h-px
+                    origin-left
+                    scale-x-0
+                    bg-gradient-to-r
+                    from-transparent
+                    via-[#00FFD5]
+                    to-transparent
+
+                    transition-transform
+                    duration-500
+
+                    group-hover:scale-x-100
+                    group-focus:scale-x-100
+                  "
+                />
+
+                <span
                   className="
                     flex
                     h-11
@@ -184,11 +206,11 @@ export default function AboutContact() {
                     bg-[#0E4A44]/50
                     text-[#5EEAD4]
 
-                    transition-transform
-                    duration-300
+                    transition-[transform,box-shadow]
+                    duration-500
 
                     group-hover:-translate-y-0.5
-                    group-hover:scale-105
+                    group-hover:shadow-[0_0_18px_rgba(0,205,181,0.35)]
                   "
                 >
                   <Icon size={18} strokeWidth={1.7} aria-hidden="true" />
@@ -206,9 +228,11 @@ export default function AboutContact() {
 
             const cardClass = `
               group
+              relative
               flex
               flex-col
               items-center
+              overflow-hidden
               rounded-2xl
               border
               border-white/[0.10]
@@ -216,14 +240,14 @@ export default function AboutContact() {
               p-5
               text-center
 
-              transition-all
-              duration-300
-              ease-out
+              transition-[transform,border-color,box-shadow,background-color]
+              duration-500
+              ease-[cubic-bezier(0.22,1,0.36,1)]
 
-              hover:-translate-y-1
-              hover:border-[#2DD4BF]/40
+              hover:-translate-y-1.5
+              hover:border-[#2DD4BF]/50
               hover:bg-white/[0.05]
-              hover:shadow-[0_16px_40px_rgba(0,0,0,0.25),0_0_28px_rgba(45,212,191,0.16)]
+              hover:shadow-[0_24px_50px_rgba(0,0,0,0.28),0_0_36px_rgba(0,205,181,0.16)]
             `;
 
             if (!channel.href) {
