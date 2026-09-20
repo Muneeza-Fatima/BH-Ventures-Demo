@@ -1,7 +1,7 @@
 "use client";
 
 import type { CSSProperties } from "react";
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { ArrowLeftRight, Cpu, Megaphone, Sparkles, ChevronRight } from "lucide-react";
 
 const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
@@ -70,19 +70,31 @@ const containerVariants = {
 const cardVariants = {
   hidden: {
     opacity: 0,
-    y: 32,
+    y: 24,
+    scale: 0.98,
   },
   show: {
     opacity: 1,
     y: 0,
+    scale: 1,
     transition: {
-      duration: 0.65,
+      duration: 0.6,
       ease: EASE,
     },
   },
 };
 
+/* Reduced motion: no entrance offset or scale — the card is simply
+   there. The hover lift is plain CSS, which app/globals.css already
+   clamps to 0.01ms site-wide under the same media query. */
+const cardVariantsReduced = {
+  hidden: { opacity: 1, y: 0, scale: 1 },
+  show: { opacity: 1, y: 0, scale: 1, transition: { duration: 0 } },
+};
+
 export default function AboutCapabilities() {
+  const prefersReducedMotion = useReducedMotion();
+
   return (
     <section
       id="about-capabilities"
@@ -233,17 +245,9 @@ export default function AboutCapabilities() {
             return (
               <motion.div
                 key={item.title}
-                variants={cardVariants}
-                whileHover={{
-                  y: -6,
-                  scale: 1.012,
-                  transition: { duration: 0.35, ease: EASE },
-                }}
-                whileFocus={{
-                  y: -6,
-                  scale: 1.012,
-                  transition: { duration: 0.35, ease: EASE },
-                }}
+                variants={
+                  prefersReducedMotion ? cardVariantsReduced : cardVariants
+                }
                 tabIndex={0}
                 style={
                   {
@@ -262,10 +266,11 @@ export default function AboutCapabilities() {
                   bg-white/[0.025]
                   p-7
 
-                  transition-[border-color,background-color,box-shadow]
+                  transition-[transform,border-color,box-shadow,background-color]
                   duration-500
-                  ease-out
+                  ease-[cubic-bezier(0.22,1,0.36,1)]
 
+                  hover:-translate-y-1.5
                   hover:border-[var(--accent)]/50
                   hover:bg-white/[0.045]
                   hover:shadow-[0_24px_55px_rgba(0,0,0,0.28),0_0_40px_var(--accent-soft)]
@@ -274,6 +279,7 @@ export default function AboutCapabilities() {
                   focus:bg-white/[0.045]
                   focus:shadow-[0_24px_55px_rgba(0,0,0,0.28),0_0_40px_var(--accent-soft)]
                   focus:outline-none
+                  focus-visible:-translate-y-1.5
                   focus-visible:ring-2
                   focus-visible:ring-[var(--accent)]/60
                   focus-visible:ring-offset-2
@@ -334,11 +340,11 @@ export default function AboutCapabilities() {
                       rounded-2xl
                       border
 
-                      transition-all
+                      transition-[transform,box-shadow]
                       duration-500
 
-                      group-hover:-translate-y-1
-                      group-hover:scale-105
+                      group-hover:-translate-y-0.5
+                      group-hover:shadow-[0_0_18px_rgba(0,205,181,0.35)]
                     "
                     style={{
                       borderColor: "var(--accent-soft)",
