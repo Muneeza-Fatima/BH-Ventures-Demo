@@ -33,31 +33,21 @@ function getCategory(badge: string | undefined) {
   return match ? CATEGORY_MAP[match] : "default";
 }
 
-// Distinct accent per card, assigned by position so no two cards in the
-// grid ever land on the same color — independent of badge text, which
-// is why CATEGORY_MAP alone wasn't enough (several badges share a category,
-// or don't match any key and all fall back to "default").
-const ACCENT_PALETTE: { accent: string; rgb: string }[] = [
-  { accent: "#2ee6c5", rgb: "46, 230, 197" },  // mint
-  { accent: "#ffb648", rgb: "255, 182, 72" },  // amber
-  { accent: "#a78bfa", rgb: "167, 139, 250" }, // violet
-  { accent: "#ff6ec7", rgb: "255, 110, 199" }, // pink
-  { accent: "#38bdf8", rgb: "56, 189, 248" },  // sky blue
-  { accent: "#34d399", rgb: "52, 211, 153" },  // emerald
-  { accent: "#818cf8", rgb: "129, 140, 248" }, // indigo
-  { accent: "#fb923c", rgb: "251, 146, 60" },  // orange
-];
+// Constant brand accent matching the BH Ventures logo (#2ee6c5 / teal-mint)
+const BRAND_ACCENT = {
+  accent: "#2ee6c5",
+  rgb: "46, 230, 197",
+};
 
 export default function ServiceCard({ service, index }: ServiceCardProps) {
   const cardRef = useRef<HTMLElement>(null);
   const category = getCategory(service.badge);
-  const { accent, rgb } = ACCENT_PALETTE[index % ACCENT_PALETTE.length];
   // First card gets priority (eager load + preload link); rest lazy-load.
   const isFirst = index === 0;
 
   const accentVars = {
-    "--accent": accent,
-    "--accent-rgb": rgb,
+    "--accent": BRAND_ACCENT.accent,
+    "--accent-rgb": BRAND_ACCENT.rgb,
   } as CSSProperties;
 
   function handleMouseMove(e: MouseEvent<HTMLElement>) {

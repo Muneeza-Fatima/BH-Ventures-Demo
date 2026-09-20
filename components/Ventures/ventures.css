@@ -131,7 +131,7 @@
 
 .services-title-gradient {
     font-style: normal;
-    background: linear-gradient(100deg, #2ee6c5 0%, #ffffff 30%, #a78bfa 65%, #2ee6c5 100%);
+    background: linear-gradient(100deg, #2ee6c5 0%, #ffffff 40%, #5eead4 70%, #2ee6c5 100%);
     background-size: 250% auto;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -166,48 +166,13 @@
     font-weight: 700;
     opacity: 0;
     transform: translateY(6px);
+    color: #2ee6c5;
+    text-shadow: 0 0 14px rgba(46, 230, 197, 0.35);
 }
 
-.subtitle-word[data-category="trade"] {
-    color: #ffb648;
-    text-shadow: 0 0 14px rgba(255, 182, 72, 0.4);
-}
-
-.subtitle-word[data-category="web3"] {
-    color: #a78bfa;
-    text-shadow: 0 0 14px rgba(167, 139, 250, 0.4);
-}
-
-.subtitle-word[data-category="ai"] {
-    color: #00e5ff;
-    text-shadow: 0 0 14px rgba(0, 229, 255, 0.4);
-}
-
-.subtitle-word[data-category="marketing"] {
-    color: #ff6ec7;
-    text-shadow: 0 0 14px rgba(255, 110, 199, 0.4);
-}
-
-/* categories matching the actual badge copy in use (Data & Insight, Growth,
-   Innovation, Assessment) — kept in sync with .service-card below */
-.subtitle-word[data-category="data-insight"] {
-    color: #38bdf8;
-    text-shadow: 0 0 14px rgba(56, 189, 248, 0.4);
-}
-
-.subtitle-word[data-category="growth"] {
-    color: #34d399;
-    text-shadow: 0 0 14px rgba(52, 211, 153, 0.4);
-}
-
-.subtitle-word[data-category="innovation"] {
-    color: #818cf8;
-    text-shadow: 0 0 14px rgba(129, 140, 248, 0.4);
-}
-
-.subtitle-word[data-category="assessment"] {
-    color: #fb923c;
-    text-shadow: 0 0 14px rgba(251, 146, 60, 0.4);
+.subtitle-word[data-category] {
+    color: #2ee6c5;
+    text-shadow: 0 0 14px rgba(46, 230, 197, 0.35);
 }
 
 .subtitle-rest {
@@ -349,104 +314,14 @@
     }
 }
 
-/* ---------- CATEGORY COLORS ----------
-   Single source of truth for every card's accent color. ServiceCard.tsx only
-   sets data-category="trade" | "web3" | "ai" | "marketing" | "data-insight" |
-   "growth" | "innovation" | "assessment" (derived from the badge text) —
-   every actual color value lives here.
-   Default (no match) is brand mint, not flat blue. */
+/* ---------- CARD ACCENT COLOR (CONSTANT LOGO COLOR) ----------
+   Unified brand accent matching the BH Ventures logo (#2ee6c5).
+   Eliminates disparate multi-colors across cards. */
 
-.service-card {
+.service-card,
+.service-card[data-category] {
     --accent: #2ee6c5;
     --accent-rgb: 46, 230, 197;
-}
-
-.service-card[data-category="trade"] {
-    --accent: #ffb648;
-    --accent-rgb: 255, 182, 72;
-}
-
-.service-card[data-category="web3"] {
-    --accent: #a78bfa;
-    --accent-rgb: 167, 139, 250;
-}
-
-.service-card[data-category="ai"] {
-    --accent: #00e5ff;
-    --accent-rgb: 0, 229, 255;
-}
-
-.service-card[data-category="marketing"] {
-    --accent: #ff6ec7;
-    --accent-rgb: 255, 110, 199;
-}
-
-/* NEW — the categories your badges actually use, each with its own
-   distinct accent so the grid doesn't read as one flat mint color */
-.service-card[data-category="data-insight"] {
-    --accent: #38bdf8;
-    --accent-rgb: 56, 189, 248;
-}
-
-.service-card[data-category="growth"] {
-    --accent: #34d399;
-    --accent-rgb: 52, 211, 153;
-}
-
-.service-card[data-category="innovation"] {
-    --accent: #818cf8;
-    --accent-rgb: 129, 140, 248;
-}
-
-.service-card[data-category="assessment"] {
-    --accent: #fb923c;
-    --accent-rgb: 251, 146, 60;
-}
-
-/* ---------- PER-CARD COLOR ROTATION ----------
-   Overrides the category color above. Each card gets its own accent by
-   grid position (8-color cycle) so visually adjacent cards never repeat
-   the same color, even when several share the same badge text (e.g.
-   multiple "Growth" cards). Badge, title shimmer, corner brackets, glow
-   and arrow all key off --accent, so the whole card re-themes at once. */
-.service-card:nth-child(8n+1) {
-    --accent: #2ee6c5;
-    --accent-rgb: 46, 230, 197;
-}
-
-.service-card:nth-child(8n+2) {
-    --accent: #ffb648;
-    --accent-rgb: 255, 182, 72;
-}
-
-.service-card:nth-child(8n+3) {
-    --accent: #a78bfa;
-    --accent-rgb: 167, 139, 250;
-}
-
-.service-card:nth-child(8n+4) {
-    --accent: #ff6ec7;
-    --accent-rgb: 255, 110, 199;
-}
-
-.service-card:nth-child(8n+5) {
-    --accent: #38bdf8;
-    --accent-rgb: 56, 189, 248;
-}
-
-.service-card:nth-child(8n+6) {
-    --accent: #34d399;
-    --accent-rgb: 52, 211, 153;
-}
-
-.service-card:nth-child(8n+7) {
-    --accent: #818cf8;
-    --accent-rgb: 129, 140, 248;
-}
-
-.service-card:nth-child(8n+8) {
-    --accent: #fb923c;
-    --accent-rgb: 251, 146, 60;
 }
 
 /* card body now carries a soft wash of its own category color, not flat navy */
@@ -491,7 +366,9 @@
 
     .service-card:active .service-arrow {
         transform: translateX(4px);
-        background: rgba(var(--accent-rgb), 0.12);
+        background: rgba(46, 230, 197, 0.2);
+        border-color: var(--accent);
+        color: var(--accent);
         box-shadow: 0 0 16px rgba(var(--accent-rgb), 0.35);
     }
 }
@@ -623,6 +500,7 @@
 }
 
 @keyframes service-card-mobile-breathe {
+
     0%,
     100% {
         transform: scale(1);
@@ -764,51 +642,27 @@
     }
 }
 
-/* title shimmer travels white → each card's own category color */
+/* title inside cards stays crisp white */
 .service-title {
     margin-bottom: 1rem;
     font-family: var(--font-display);
     font-size: clamp(1rem, 0.9rem + 0.4vw, 1.15rem);
     font-weight: 700;
     line-height: 1.375;
-    background: linear-gradient(100deg,
-            #ffffff 0%,
-            var(--accent) 40%,
-            #ffffff 70%,
-            var(--accent) 100%);
-    background-size: 250% auto;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    /* Stagger shimmer offset so all cards don't pulse in sync */
-    animation: service-title-shimmer 6s ease-in-out infinite;
-    animation-delay: calc(var(--reveal-delay, 0ms) * -1);
+    color: #ffffff;
+    -webkit-text-fill-color: #ffffff;
     -webkit-user-select: none;
     -moz-user-select: none;
     user-select: none;
-}
-
-@keyframes service-title-shimmer {
-    0% {
-        background-position: 0% center;
-    }
-
-    50% {
-        background-position: 100% center;
-    }
-
-    100% {
-        background-position: 0% center;
-    }
 }
 
 .service-sub {
     display: block;
     margin-top: 0.375rem;
     font-size: 0.875rem;
-    font-weight: 600;
+    font-weight: 500;
     letter-spacing: 0.01em;
-    color: var(--accent);
+    color: #94a3b8;
     -webkit-user-select: none;
     -moz-user-select: none;
     user-select: none;
@@ -831,7 +685,7 @@
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.05em;
-    color: var(--color-silver, #8fa3b8);
+    color: #ffffff;
     text-decoration: none;
     transition: color 0.3s ease, text-shadow 0.3s ease;
 }
@@ -848,11 +702,12 @@
     align-items: center;
     justify-content: center;
     border-radius: 9999px;
+    background: rgba(10, 22, 40, 0.85);
     border: 1px solid rgba(var(--accent-rgb), 0.4);
     font-size: 0.875rem;
-    color: var(--accent);
+    color: #ffffff;
     text-decoration: none;
-    transition: transform 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
+    transition: transform 0.3s ease, background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease, color 0.3s ease;
 }
 
 .service-card-actions {
@@ -910,7 +765,9 @@
 
 .service-card:hover .service-arrow {
     transform: translateX(4px);
-    background: rgba(var(--accent-rgb), 0.12);
+    background: rgba(46, 230, 197, 0.2);
+    border-color: var(--accent);
+    color: var(--accent);
     box-shadow: 0 0 16px rgba(var(--accent-rgb), 0.35);
 }
 
