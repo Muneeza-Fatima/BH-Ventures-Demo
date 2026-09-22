@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useReducedMotion, type Variants } from "framer-motion";
+import { motion, type Variants } from "framer-motion";
 
 const containerVariants: Variants = {
   hidden: {},
@@ -28,8 +28,6 @@ const itemVariants: Variants = {
 };
 
 export default function ContactHero() {
-  const prefersReducedMotion = useReducedMotion();
-
   return (
     <section
       id="contact-hero"
@@ -134,12 +132,10 @@ export default function ContactHero() {
             "
           >
             <span className="relative flex h-[7px] w-[7px] shrink-0 items-center justify-center">
-              {!prefersReducedMotion && (
-                <span
-                  aria-hidden="true"
-                  className="absolute inset-0 rounded-full bg-[#00FFD5] story-dot-breathe"
-                />
-              )}
+              <span
+                aria-hidden="true"
+                className="absolute inset-0 rounded-full bg-[#00FFD5] story-dot-breathe"
+              />
 
               <span className="relative h-[7px] w-[7px] rounded-full bg-[#00FFD5]" />
             </span>
