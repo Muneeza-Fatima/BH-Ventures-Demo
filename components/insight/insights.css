@@ -27,7 +27,6 @@
     --nav-h: 5rem;
 
     position: relative;
-    z-index: 0;
     overflow-x: clip;
     max-width: 100vw;
     /* Subtle dot-grid texture */
@@ -669,8 +668,8 @@
     background: rgba(255, 255, 255, 0.04);
     font-family: var(--sans);
     font-size: 0.8125rem;
-    font-weight: 500;
-    color: rgba(255, 255, 255, 0.45);
+    font-weight: 700;
+    color: #ffffff;
     cursor: pointer;
     transition:
         background 0.2s ease,
@@ -708,7 +707,7 @@
     background: rgba(var(--fc-rgb, 63, 227, 176), 0.12);
     border-color: var(--fc);
     color: #ffffff;
-    font-weight: 600;
+    font-weight: 800;
 }
 
 .bhi-filter[aria-pressed="true"]::before {
@@ -723,9 +722,9 @@
     background: rgba(255, 255, 255, 0.08);
     border-radius: 999px;
     font-size: 0.7rem;
-    font-weight: 700;
+    font-weight: 800;
     font-variant-numeric: tabular-nums;
-    color: rgba(255, 255, 255, 0.55);
+    color: #ffffff;
     line-height: 1.6;
 }
 
@@ -840,7 +839,7 @@
     position: relative;
     border-radius: 1.5rem;
     overflow: hidden;
-        background: #f4f0e7;
+        background: #ffffff;
     /* Multi-layer shadow for depth */
     box-shadow:
         0 1px 3px rgba(0, 0, 0, 0.08),
@@ -938,7 +937,7 @@
     flex-direction: column;
     gap: 0.8rem;
     padding: 1.5rem 1.5rem 1.6rem;
-        background: #f4f0e7;
+        background: #ffffff;
     flex: 1;
     border-top: 1px solid #edf2f7;
     min-width: 0;
@@ -989,7 +988,7 @@
 }
 
 .bhi-tile__link:hover .bhi-tile__title {
-    color: var(--accent, var(--signal-deep));
+    color: #0a1929;
 }
 
 .bhi-tile__dek {
@@ -1034,30 +1033,30 @@
 
 .bhi-tile:nth-child(2),
 .bhi-tile:nth-child(5) {
-    background: #10253a;
+    background: #ffffff;
 }
 
 .bhi-tile:nth-child(2) .bhi-tile__body,
 .bhi-tile:nth-child(5) .bhi-tile__body {
-    background: #10253a;
+    background: #ffffff;
 }
 
 .bhi-tile:nth-child(2) .bhi-tile__title,
 .bhi-tile:nth-child(5) .bhi-tile__title {
-    color: #ffffff;
+    color: #0a1929;
 }
 
 .bhi-tile:nth-child(2) .bhi-tile__thesis,
 .bhi-tile:nth-child(5) .bhi-tile__thesis,
 .bhi-tile:nth-child(2) .bhi-tile__time,
 .bhi-tile:nth-child(5) .bhi-tile__time {
-    color: #a7bdcb;
+    color: #4a6278;
 }
 
 .bhi-tile:nth-child(2) .bhi-tile__read,
 .bhi-tile:nth-child(5) .bhi-tile__read {
-    color: #ffffff;
-    border-color: rgba(255, 255, 255, 0.18);
+    color: #0a1929;
+    border-color: rgba(10, 25, 41, 0.15);
 }
 
 @media (max-width: 760px) {
@@ -1936,51 +1935,56 @@
    Luxury Full-Width Article Reader Mode
    ================================================================== */
 
-.bhi__inner--reader {
+.bhi__inner.bhi__inner--reader {
     max-width: 76rem;
     margin: 0 auto;
     padding-top: calc(var(--nav-h) + 1.5rem);
 }
 
 .bhi-reader-nav {
+    position: sticky;
+    top: 0.75rem;
+    z-index: 999999;
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
     gap: 0.75rem 1rem;
     margin-bottom: 2rem;
+    padding: 0.5rem;
+    background: rgba(6, 12, 24, 0.92);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border-radius: 0.75rem;
 }
 
-.bhi-back {
+.bhi-back,
+.bhi-share-btn {
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
+    padding: 0.65rem 1rem;
     font-family: var(--sans);
-    font-size: 0.9375rem;
-    font-weight: 500;
-    color: var(--ink-soft);
-    text-decoration: none;
-    border-bottom: 1px solid transparent;
-    padding-bottom: 0.2rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 0.5rem;
+    background: rgba(255, 255, 255, 0.06);
     transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+.bhi-back {
+    text-decoration: none;
 }
 
 .bhi-back:hover {
     color: #3fe3b0;
-    border-bottom-color: #3fe3b0;
+    border-color: #3fe3b0;
 }
 
 .bhi-share-btn {
-    padding: 0.5rem 1.1rem;
-    background: rgba(255, 255, 255, 0.07);
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    border-radius: 999px;
-    font-family: var(--sans);
-    font-size: 0.8125rem;
-    font-weight: 600;
-    color: #ffffff;
     cursor: pointer;
-    transition: all 0.2s ease;
 }
 
 .bhi-share-btn:hover {
@@ -2713,6 +2717,50 @@
 }
 
 @media (max-width: 40rem) {
+    .bhi__inner.bhi__inner--reader {
+        padding-top: calc(64px + env(safe-area-inset-top, 0px) + 2.5rem);
+    }
+
+    .bhi-reader-nav {
+        position: static !important;
+        top: auto !important;
+        z-index: auto;
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+        visibility: visible;
+        opacity: 1;
+        gap: 0.5rem;
+        margin-bottom: 1.25rem;
+    }
+
+    .bhi-back,
+    .bhi-share-btn {
+        align-self: flex-start;
+    }
+
+    .bhi-back {
+        display: inline-flex;
+        flex: 1 1 auto;
+        min-width: 0;
+        padding: 0.55rem 0.65rem;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 0.5rem;
+        color: #ffffff;
+        background: rgba(255, 255, 255, 0.06);
+        white-space: nowrap;
+        font-size: 0.75rem;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .bhi-share-btn {
+        flex: none;
+        padding: 0.55rem 0.75rem;
+        font-size: 0.75rem;
+        white-space: nowrap;
+    }
+
     .bhi-grid {
         grid-template-columns: 1fr;
     }

@@ -100,8 +100,8 @@ export const ARTICLES: Article[] = [
         excerpt: "Skip the grand strategy. Find the chore that eats the hours and start there.",
         minutes: 5,
         photo: {
-            src: "https://images.unsplash.com/photo-1677442135703-1787eea5ce01?w=1200&q=80",
-            alt: "An AI assistant interface open on a laptop screen",
+            src: "https://images.pexels.com/photos/3861969/pexels-photo-3861969.jpeg?auto=compress&cs=tinysrgb&w=1200",
+            alt: "Developer working with automated code on a laptop",
         },
         takeaways: [
             "Listen for the sigh: the repeated chore is your best pilot.",
@@ -162,8 +162,8 @@ export const ARTICLES: Article[] = [
         excerpt: "Give a fast tool a confusing job and you get confusing results, faster.",
         minutes: 5,
         photo: {
-            src: "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=1200&q=80",
-            alt: "A robotic arm working on a circuit board",
+            src: "https://images.pexels.com/photos/8386440/pexels-photo-8386440.jpeg?auto=compress&cs=tinysrgb&w=1200",
+            alt: "Technology professional working with an advanced digital system",
         },
         takeaways: [
             "AI multiplies whatever it is given, good or bad.",
@@ -217,8 +217,8 @@ export const ARTICLES: Article[] = [
         excerpt: "Blockchain is exciting and often the wrong tool. A few honest questions can save months.",
         minutes: 5,
         photo: {
-            src: "https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=1200&q=80",
-            alt: "A network of connected nodes rendered in light",
+            src: "https://images.pexels.com/photos/6771985/pexels-photo-6771985.jpeg?auto=compress&cs=tinysrgb&w=1200",
+            alt: "Close-up of a digital blockchain network concept",
         },
         takeaways: [
             "Blockchain fits when several parties must share one trusted record.",
@@ -275,8 +275,8 @@ export const ARTICLES: Article[] = [
         excerpt: "Strip away the noise and one idea remains: a record several parties can trust without trusting each other.",
         minutes: 7,
         photo: {
-            src: "https://images.unsplash.com/photo-1644088379091-d574269d422f?w=1200&q=80",
-            alt: "Digital tokens arranged across a dark surface",
+            src: "https://images.pexels.com/photos/7567565/pexels-photo-7567565.jpeg?auto=compress&cs=tinysrgb&w=1200",
+            alt: "Digital finance concept representing decentralised technology",
         },
         takeaways: [
             "Traceability, settlement, credentials and ownership are the credible areas.",
@@ -338,8 +338,8 @@ export const ARTICLES: Article[] = [
         excerpt: "Physical trade depends on relationships, PDFs and patience. Our view: fix the friction, keep the trader.",
         minutes: 5,
         photo: {
-            src: "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=1200&q=80",
-            alt: "Market data displayed across several screens",
+            src: "https://images.pexels.com/photos/6801648/pexels-photo-6801648.jpeg?auto=compress&cs=tinysrgb&w=1200",
+            alt: "Financial professional reviewing market information",
         },
         takeaways: [
             "Much of a trade deal's effort goes on chasing information, not negotiating.",
@@ -400,8 +400,8 @@ export const ARTICLES: Article[] = [
         excerpt: "We are early-stage and say so. Here is the path an idea has to walk before it becomes a project.",
         minutes: 4,
         photo: {
-            src: "https://images.unsplash.com/photo-1552664730-d307ca884978?w=1200&q=80",
-            alt: "A team working through ideas at a whiteboard",
+            src: "https://images.pexels.com/photos/3184465/pexels-photo-3184465.jpeg?auto=compress&cs=tinysrgb&w=1200",
+            alt: "Business team collaborating around a table",
         },
         takeaways: [
             "We start from a real problem held by a real person.",
@@ -453,8 +453,8 @@ export const ARTICLES: Article[] = [
         excerpt: "Open your dashboard, pick any number, and ask what you decided because of it.",
         minutes: 5,
         photo: {
-            src: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1200&q=80",
-            alt: "An analytics dashboard showing several charts",
+            src: "https://images.pexels.com/photos/590022/pexels-photo-590022.jpeg?auto=compress&cs=tinysrgb&w=1200",
+            alt: "Analytics charts displayed on a laptop screen",
         },
         takeaways: [
             "Every metric needs a decision, an owner and a planned response.",
@@ -507,8 +507,8 @@ export const ARTICLES: Article[] = [
         excerpt: "Views are up. Enquiries are flat. Which one pays the invoices?",
         minutes: 6,
         photo: {
-            src: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=1200&q=80",
-            alt: "A performance graph open on a laptop screen",
+            src: "https://images.pexels.com/photos/669610/pexels-photo-669610.jpeg?auto=compress&cs=tinysrgb&w=1200",
+            alt: "Marketing performance charts and planning materials",
         },
         takeaways: [
             "Vanity metrics rise easily and say little about the business.",
@@ -560,8 +560,8 @@ export const ARTICLES: Article[] = [
         excerpt: "AI made competent writing cheap. A clear point of view is what is left to stand out.",
         minutes: 5,
         photo: {
-            src: "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=1200&q=80",
-            alt: "An open notebook and coffee on a desk",
+            src: "https://images.pexels.com/photos/6476589/pexels-photo-6476589.jpeg?auto=compress&cs=tinysrgb&w=1200",
+            alt: "Creative team developing a content strategy together",
         },
         takeaways: [
             "Competent content is now easy, so it no longer differentiates.",
@@ -612,8 +612,8 @@ export const ARTICLES: Article[] = [
         excerpt: "Building only on rented platforms means your reach can change overnight, and it is not your decision.",
         minutes: 5,
         photo: {
-            src: "https://images.unsplash.com/photo-1533750349088-cd871a92f312?w=1200&q=80",
-            alt: "A marketing team planning a campaign together",
+            src: "https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg?auto=compress&cs=tinysrgb&w=1200",
+            alt: "Marketing team planning a campaign in a workshop",
         },
         takeaways: [
             "Social platforms are rented land. Email and direct contact are owned.",
@@ -668,8 +668,8 @@ export const ARTICLES: Article[] = [
         excerpt: "Every year brings a new list of technologies. Here is how to decide which ones deserve your attention.",
         minutes: 6,
         photo: {
-            src: "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=1200&q=80",
-            alt: "A circuit board lit from below",
+            src: "https://images.pexels.com/photos/373543/pexels-photo-373543.jpeg?auto=compress&cs=tinysrgb&w=1200",
+            alt: "Close-up of technology hardware representing future innovation",
         },
         takeaways: [
             "Judge each technology on maturity and on fit for your business.",
@@ -727,8 +727,8 @@ export const ARTICLES: Article[] = [
         excerpt: "Forecasts age badly. Shifts are easier to spot than dates.",
         minutes: 6,
         photo: {
-            src: "https://images.unsplash.com/photo-1518186285589-2f7649de83e0?w=1200&q=80",
-            alt: "Streams of financial data on dark screens",
+            src: "https://images.pexels.com/photos/325229/pexels-photo-325229.jpeg?auto=compress&cs=tinysrgb&w=1200",
+            alt: "Server infrastructure representing shared digital data systems",
         },
         takeaways: [
             "Watch for AI that completes several steps, not just one.",

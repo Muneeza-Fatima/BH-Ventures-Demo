@@ -111,12 +111,12 @@ const RULE = "#C9CCC4";
 /* ------------------------------------------------------------------ */
 
 const BANNER_SLIDES: { src: string; alt: string }[] = [
-    { src: "https://images.unsplash.com/photo-1770233621425-5d9ee7a0a700?w=1600&q=80", alt: "3D render of an AI concept within a human head" },
-    { src: "https://images.unsplash.com/photo-1643888193686-81c45c445b95?w=1600&q=80", alt: "3D render of interlocking blockchain shapes" },
-    { src: "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=1600&q=80", alt: "Stock market candlestick chart glowing on a dark screen" },
-    { src: "https://images.unsplash.com/photo-1748609160056-7b95f30041f0?w=1600&q=80", alt: "Someone reviewing a financial analytics dashboard on a tablet" },
-    { src: "https://images.unsplash.com/photo-1758873268998-2f77c2d38862?w=1600&q=80", alt: "A team presenting a marketing plan around a whiteboard" },
-    { src: "https://images.unsplash.com/photo-1767041743706-fa96a08187a3?w=1600&q=80", alt: "Dubai Marina skyline at twilight" },
+    { src: "https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?auto=format&fit=crop&w=1600&q=85", alt: "Colorful software code on a screen" },
+    { src: "https://images.unsplash.com/photo-1639322537228-f710d846310a?auto=format&fit=crop&w=1600&q=85", alt: "Abstract blockchain network with connected nodes" },
+    { src: "https://images.unsplash.com/photo-1560221328-12fe60f83ab8?auto=format&fit=crop&w=1600&q=85", alt: "Financial market information on a trading display" },
+    { src: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1600&q=85", alt: "Digital analytics workspace with multiple screens" },
+    { src: "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&w=1600&q=85", alt: "Business team collaborating in a meeting" },
+    { src: "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=1600&q=85", alt: "Dubai skyline illuminated at dusk" },
 ];
 
 const BANNER_INTERVAL_MS = 2000;
@@ -124,20 +124,20 @@ const BANNER_INTERVAL_MS = 2000;
 const DISPATCH_SIGNALS = {
     ai: {
         label: "AI OPERATIONS",
-        title: "Automation is becoming operating infrastructure.",
-        detail: "The teams moving fastest are fixing one repeated task at a time.",
+        title: "Automation is infrastructure.",
+        detail: "Fix one repeated task at a time.",
         confidence: "High",
     },
     web3: {
         label: "DIGITAL VENTURES",
-        title: "Trust is becoming the product advantage.",
-        detail: "The next useful Web3 products will make complexity feel invisible.",
+        title: "Trust is the advantage.",
+        detail: "Useful Web3 hides the complexity.",
         confidence: "Medium",
     },
     trade: {
         label: "TRADE CORRIDORS",
-        title: "New routes are opening before they reach the headlines.",
-        detail: "Supplier access, settlement and documentation now move together.",
+        title: "Routes are opening early.",
+        detail: "Settlement and documentation move together.",
         confidence: "High",
     },
 } as const;
@@ -1000,10 +1000,10 @@ export default function Insights() {
                         viewport={{ once: true, margin: "-60px" }}
                     >
                         <motion.div variants={itemVariants} className="bhi-dispatch__content">
-                            <motion.span variants={itemVariants} className="bhi-dispatch__badge">BH Ventures / What we are watching</motion.span>
-                            <motion.h3 variants={itemVariants} className="bhi-dispatch__title">See what is moving before it moves you.</motion.h3>
+                            <motion.span variants={itemVariants} className="bhi-dispatch__badge">BH Ventures / Signals</motion.span>
+                            <motion.h3 variants={itemVariants} className="bhi-dispatch__title">Stay ahead of the signal.</motion.h3>
                             <motion.p variants={itemVariants} className="bhi-dispatch__desc">
-                                Short ideas on technology, trade and growth, sent before they become obvious.
+                                One useful idea on technology, trade and growth.
                             </motion.p>
                             <div className="bhi-dispatch__signals" role="tablist" aria-label="Choose a research signal">
                                 {(Object.keys(DISPATCH_SIGNALS) as Array<keyof typeof DISPATCH_SIGNALS>).map((key, index) => (
@@ -1021,10 +1021,9 @@ export default function Insights() {
                                 ))}
                             </div>
                             <div className="bhi-dispatch__readout" aria-live="polite">
-                                <span className="bhi-dispatch__readout-label"><i aria-hidden="true" /> Current signal / {signal.label}</span>
+                                <span className="bhi-dispatch__readout-label"><i aria-hidden="true" /> Now / {signal.label}</span>
                                 <strong>{signal.title}</strong>
                                 <span>{signal.detail}</span>
-                                <small>Confidence: {signal.confidence} <span aria-hidden="true">·</span> Next dispatch: Thursday</small>
                             </div>
                             {subscribed ? (
                                 <div className="bhi-dispatch__success">
@@ -1036,23 +1035,23 @@ export default function Insights() {
                                     <input
                                         type="email"
                                         className="bhi-dispatch__input"
-                                        placeholder="Enter your corporate email address"
+                                        placeholder="Your email address"
                                         value={email}
                                         onChange={(e) => setEmail(e.target.value)}
                                         required
                                     />
                                     <button type="submit" className="bhi-dispatch__btn">
-                                        Send me the next signal
+                                        Subscribe
                                     </button>
                                 </motion.form>
                             )}
-                            <motion.p variants={itemVariants} className="bhi-dispatch__note">One useful update a week. No noise. Leave whenever you like.</motion.p>
+                            <motion.p variants={itemVariants} className="bhi-dispatch__note">Weekly. Useful. Unsubscribe anytime.</motion.p>
                             <motion.a
                                 variants={itemVariants}
                                 className="bhi-dispatch__email-link"
                                 href="/contact"
                             >
-                                Talk to BH Ventures <span aria-hidden="true">↗</span>
+                                Talk to us <span aria-hidden="true">↗</span>
                             </motion.a>
                         </motion.div>
 
