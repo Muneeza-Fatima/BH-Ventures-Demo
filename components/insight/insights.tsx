@@ -4,6 +4,13 @@ import { useEffect, useId, useMemo, useRef, useState } from "react";
 import type { CSSProperties, ReactNode, RefObject } from "react";
 import { motion, type Variants } from "framer-motion";
 import {
+    Globe2,
+    Handshake,
+    TrendingUp,
+    Grid3X3,
+    type LucideIcon,
+} from "lucide-react";
+import {
     ARTICLES,
     CATEGORIES,
     DEFAULT_NOTE,
@@ -246,11 +253,22 @@ function HeroBanner() {
 /*  Marks: the shape says what kind of writing this is                 */
 /* ------------------------------------------------------------------ */
 
+const TYPE_ICONS: Record<ContentType, LucideIcon> = {
+    insight: Globe2,
+    trend: Handshake,
+    opinion: TrendingUp,
+    internal: Grid3X3,
+};
+
 function TypeMark({ type }: { type: ContentType }) {
+    const Icon = TYPE_ICONS[type];
+
     return (
         <span className="bhi-kind">
-            <span className={`bhi-kind__mark bhi-kind__mark--${type}`} aria-hidden="true" />
-            {TYPE_LABELS[type].name}
+            <span className={`bhi-kind__mark bhi-kind__mark--${type}`} aria-hidden="true">
+                <Icon size={14} strokeWidth={2.2} />
+            </span>
+            <span className="bhi-kind__text">{TYPE_LABELS[type].name}</span>
         </span>
     );
 }
@@ -792,6 +810,12 @@ export default function Insights() {
     }, []);
 
     const usedTypes = (Object.keys(TYPE_LABELS) as ContentType[]).filter((t) => ARTICLES.some((a) => a.type === t));
+    const keyCards: Array<{ type: ContentType; icon: LucideIcon; title: string; text: string }> = [
+        { type: "insight", icon: Globe2, title: TYPE_LABELS.insight.name, text: TYPE_LABELS.insight.meaning },
+        { type: "trend", icon: Handshake, title: TYPE_LABELS.trend.name, text: TYPE_LABELS.trend.meaning },
+        { type: "opinion", icon: TrendingUp, title: TYPE_LABELS.opinion.name, text: TYPE_LABELS.opinion.meaning },
+        { type: "internal", icon: Grid3X3, title: TYPE_LABELS.internal.name, text: TYPE_LABELS.internal.meaning },
+    ];
 
     const statsReveal = useReveal<HTMLDivElement>();
     const dispatchReveal = useReveal<HTMLDivElement>();
@@ -919,7 +943,8 @@ export default function Insights() {
                                 visible: { transition: { staggerChildren: 0.07, delayChildren: 0.05 } },
                             }}
                             initial="hidden"
-                            animate="visible"
+                            whileInView="visible"
+                            viewport={{ once: true, amount: 0.15 }}
                         >
                             {visible.map((a, i) => {
                                 const color = categoryColor(a.category);
@@ -937,6 +962,9 @@ export default function Insights() {
                                                 transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] },
                                             },
                                         }}
+                                        initial="hidden"
+                                        whileInView="visible"
+                                        viewport={{ once: true, amount: 0.18 }}
                                         whileHover={{ y: -10, scale: 1.01, transition: { duration: 0.3 } }}
                                     >
                                         <a className="bhi-tile__link" href={`#insights/${a.slug}`}>
@@ -976,7 +1004,8 @@ export default function Insights() {
 
                     {/* 1. Research Highlights & Impact Counters */}
                     <motion.div
-                        className="bhi-stats"
+                        ref={statsReveal.ref}
+                        className={`bhi-stats ${statsReveal.visible ? "bhi-reveal--in" : "bhi-reveal"}`}
                         variants={{
                             hidden: {},
                             visible: { transition: { staggerChildren: 0.11, delayChildren: 0.05 } },
@@ -993,7 +1022,8 @@ export default function Insights() {
 
                     {/* 2. Interactive Weekly Dispatch Newsletter */}
                     <motion.div
-                        className="bhi-dispatch"
+                        ref={dispatchReveal.ref}
+                        className={`bhi-dispatch ${dispatchReveal.visible ? "bhi-reveal--in" : "bhi-reveal"}`}
                         variants={containerVariants}
                         initial="hidden"
                         whileInView="visible"
@@ -1076,7 +1106,8 @@ export default function Insights() {
 
                     {/* 3. Advisory & Venture Partnership CTA */}
                     <motion.div
-                        className="bhi-advisory"
+                        ref={advisoryReveal.ref}
+                        className={`bhi-advisory ${advisoryReveal.visible ? "bhi-reveal--in" : "bhi-reveal"}`}
                         variants={containerVariants}
                         initial="hidden"
                         whileInView="visible"
@@ -1113,7 +1144,8 @@ export default function Insights() {
 
                     {/* 4. Reading the Marks Key */}
                     <motion.div
-                        className="bhi-key-card"
+                        ref={keyReveal.ref}
+                        className={`bhi-key-card ${keyReveal.visible ? "bhi-reveal--in" : "bhi-reveal"}`}
                         aria-label="How we label our writing"
                         variants={containerVariants}
                         initial="hidden"
@@ -1131,10 +1163,10 @@ export default function Insights() {
                                 visible: { transition: { staggerChildren: 0.09, delayChildren: 0.1 } },
                             }}
                         >
-                            {usedTypes.map((t, i) => (
+                            {keyCards.map(({ type, icon: Icon, title, text }, i) => (
                                 <motion.div
                                     className="bhi-key-card__item"
-                                    key={t}
+                                    key={type}
                                     style={{ "--key-i": i } as CSSProperties}
                                     variants={{
                                         hidden: { opacity: 0, y: 14, scale: 0.96 },
@@ -1142,8 +1174,12 @@ export default function Insights() {
                                     }}
                                     whileHover={{ y: -4, transition: { duration: 0.2 } }}
                                 >
-                                    <TypeMark type={t} />
-                                    <p className="bhi-key-card__meaning">{TYPE_LABELS[t].meaning}</p>
+                                    <span className="bhi-key-card__index">{String(i + 1).padStart(2, "0")}</span>
+                                    <span className="bhi-key-card__icon-wrap" aria-hidden="true">
+                                        <Icon className="bhi-key-card__icon" />
+                                    </span>
+                                    <span className="bhi-key-card__label">{title}</span>
+                                    <p className="bhi-key-card__meaning">{text}</p>
                                 </motion.div>
                             ))}
                         </motion.div>
