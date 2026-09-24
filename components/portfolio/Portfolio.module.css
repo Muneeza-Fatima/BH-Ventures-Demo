@@ -1,0 +1,1323 @@
+/* =========================================================
+   PORTFOLIO
+========================================================= */
+
+.portfolio {
+  --cream: #f7f6f1;
+  --navy: #102632;
+  --navy-dark: #071722;
+
+  --teal: #48a59b;
+  --teal-light: #8ed0c7;
+  --teal-sharp: #3fe0cf;
+
+  --muted: #69777c;
+
+  position: relative;
+
+  background: var(--cream);
+  color: var(--navy);
+
+  overflow: hidden;
+}
+
+
+/* =========================================================
+   SUBTLE GEOMETRIC BACKGROUND GRID
+========================================================= */
+
+.backgroundGrid {
+  position: fixed;
+
+  inset: 0;
+
+  z-index: 0;
+
+  pointer-events: none;
+
+  background-image:
+    linear-gradient(
+      rgba(79, 150, 165, 0.075) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      rgba(79, 150, 165, 0.075) 1px,
+      transparent 1px
+    );
+
+  background-size: 60px 60px;
+
+  opacity: 0.7;
+}
+
+
+/*
+   Keeps all actual content above
+   the background grid.
+*/
+
+.portfolio > *:not(.backgroundGrid) {
+  position: relative;
+  z-index: 1;
+}
+
+
+/* =========================================================
+   HERO
+========================================================= */
+
+.hero {
+  position: relative;
+
+  min-height: 88vh;
+
+  display: flex;
+  align-items: center;
+
+  overflow: hidden;
+
+  background: var(--navy-dark);
+
+  color: white;
+}
+
+.heroImage {
+  position: absolute;
+  inset: 0;
+}
+
+.heroImage img {
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+  object-position: center;
+
+  opacity: 0.6;
+
+  animation:
+    heroZoom
+    12s
+    ease-out
+    forwards;
+}
+
+.heroOverlay {
+  position: absolute;
+  inset: 0;
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(8, 25, 34, 0.94) 0%,
+      rgba(8, 25, 34, 0.75) 42%,
+      rgba(8, 25, 34, 0.3) 100%
+    ),
+    linear-gradient(
+      0deg,
+      rgba(8, 25, 34, 0.75),
+      transparent 55%
+    );
+}
+
+.heroContent {
+  position: relative;
+
+  z-index: 2;
+
+  width: min(900px, 90%);
+
+  margin-left: 8vw;
+
+  padding: 8rem 0;
+}
+
+.eyebrow,
+.sectionEyebrow {
+  margin: 0 0 1.5rem;
+
+  color: var(--teal-light);
+
+  font-size: 0.7rem;
+
+  font-weight: 700;
+
+  letter-spacing: 0.2em;
+
+  text-transform: uppercase;
+}
+
+.heroTitle {
+  max-width: 900px;
+
+  margin: 0;
+
+  font-size: clamp(4rem, 7.8vw, 8rem);
+
+  line-height: 0.91;
+
+  letter-spacing: -0.065em;
+
+  font-weight: 500;
+
+  animation:
+    titleIn
+    1s
+    0.1s
+    cubic-bezier(0.16, 1, 0.3, 1)
+    both;
+}
+
+.heroTitle span {
+  display: block;
+
+  color: var(--teal-light);
+
+  animation:
+    accentIn
+    1s
+    0.35s
+    cubic-bezier(0.16, 1, 0.3, 1)
+    both;
+}
+
+.heroDescription {
+  max-width: 550px;
+
+  margin: 2.2rem 0 0;
+
+  color: rgba(255, 255, 255, 0.75);
+
+  font-size: 1.05rem;
+
+  line-height: 1.8;
+
+  animation:
+    fadeUp
+    0.8s
+    0.5s
+    ease
+    both;
+}
+
+.heroBottom {
+  display: flex;
+
+  align-items: center;
+
+  gap: 1rem;
+
+  margin-top: 3.5rem;
+
+  animation:
+    fadeUp
+    0.8s
+    0.7s
+    ease
+    both;
+}
+
+.heroLine {
+  width: 70px;
+  height: 1px;
+
+  background: var(--teal-light);
+}
+
+.heroScroll {
+  display: flex;
+
+  align-items: center;
+
+  gap: 1rem;
+
+  font-size: 0.68rem;
+
+  font-weight: 700;
+
+  letter-spacing: 0.13em;
+
+  text-transform: uppercase;
+}
+
+.heroScroll span {
+  color: var(--teal-light);
+
+  font-size: 1.1rem;
+
+  animation:
+    arrowDown
+    1.5s
+    ease-in-out
+    infinite;
+}
+
+.heroLocation {
+  position: absolute;
+
+  right: 5vw;
+  bottom: 3rem;
+
+  z-index: 3;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 0.6rem;
+
+  color: rgba(255, 255, 255, 0.65);
+
+  font-size: 0.62rem;
+
+  font-weight: 700;
+
+  letter-spacing: 0.15em;
+}
+
+.locationDot {
+  width: 7px;
+  height: 7px;
+
+  border-radius: 50%;
+
+  background: var(--teal-light);
+
+  box-shadow:
+    0 0 15px var(--teal-light);
+}
+
+
+/* =========================================================
+   INTRO
+========================================================= */
+
+.intro {
+  display: grid;
+
+  grid-template-columns: 100px 1fr;
+
+  gap: 3rem;
+
+  padding: 9rem 11vw;
+
+  background: var(--navy);
+
+  color: white;
+}
+
+.sectionIndex {
+  color: var(--teal-light);
+
+  font-size: 0.7rem;
+
+  font-weight: 700;
+
+  letter-spacing: 0.15em;
+}
+
+.introContent {
+  max-width: 950px;
+}
+
+.intro h2 {
+  margin: 0;
+
+  font-size: clamp(3rem, 5.5vw, 6rem);
+
+  line-height: 0.98;
+
+  letter-spacing: -0.055em;
+
+  font-weight: 500;
+}
+
+.intro h2 span {
+  color: var(--teal-light);
+}
+
+.introText {
+  max-width: 650px;
+
+  margin: 2.5rem 0 0;
+
+  color: rgba(255, 255, 255, 0.65);
+
+  font-size: 1.05rem;
+
+  line-height: 1.9;
+}
+
+
+/* =========================================================
+   GENERAL SECTIONS
+========================================================= */
+
+.sectors,
+.projects {
+  padding: 8rem 7vw;
+}
+
+.sectionHeading {
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: flex-end;
+
+  gap: 3rem;
+
+  margin-bottom: 4rem;
+}
+
+.sectionHeading h2 {
+  margin: 0;
+
+  font-size: clamp(2.8rem, 5vw, 5.2rem);
+
+  line-height: 1;
+
+  letter-spacing: -0.05em;
+
+  font-weight: 500;
+}
+
+.headingDescription {
+  max-width: 430px;
+
+  margin: 0;
+
+  color: var(--muted);
+
+  font-size: 0.95rem;
+
+  line-height: 1.8;
+}
+
+
+/* =========================================================
+   WHERE WE OPERATE
+========================================================= */
+
+.sectors {
+  position: relative;
+
+  background: #061522;
+
+  color: white;
+
+  overflow: hidden;
+}
+
+
+/*
+   Grid specifically inside Where We Operate.
+
+   This gives you the same subtle technical/
+   geometric feeling as your screenshot.
+*/
+
+.sectors::before {
+  content: "";
+
+  position: absolute;
+
+  inset: 0;
+
+  pointer-events: none;
+
+  background-image:
+    linear-gradient(
+      rgba(77, 151, 166, 0.075) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      rgba(77, 151, 166, 0.075) 1px,
+      transparent 1px
+    );
+
+  background-size: 60px 60px;
+
+  opacity: 0.75;
+}
+
+
+/*
+   Keep section content above the grid.
+*/
+
+.sectors > * {
+  position: relative;
+
+  z-index: 1;
+}
+
+.sectors .sectionEyebrow {
+  color: #70cfc4;
+}
+
+.sectors .sectionHeading h2 {
+  color: white;
+}
+
+.sectors .headingDescription {
+  color: rgba(255, 255, 255, 0.58);
+}
+
+
+/* =========================================================
+   SECTOR GRID
+========================================================= */
+
+.sectorGrid {
+  display: grid;
+
+  grid-template-columns: repeat(3, 1fr);
+
+  gap: 1.25rem;
+}
+
+
+/* =========================================================
+   SECTOR CARD
+========================================================= */
+
+.sector {
+  position: relative;
+
+  min-height: 185px;
+
+  padding: 1.6rem 1.7rem;
+
+  display: flex;
+
+  flex-direction: column;
+
+  justify-content: space-between;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(15, 38, 52, 0.98),
+      rgba(7, 24, 36, 0.98)
+    );
+
+  border: 1px solid rgba(125, 170, 184, 0.2);
+
+  border-radius: 20px;
+
+  overflow: hidden;
+
+  transition:
+    transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+    background 0.35s ease,
+    border-color 0.35s ease,
+    box-shadow 0.35s ease;
+}
+
+
+/* Small subtle decorative light */
+
+.sector::before {
+  content: "";
+
+  position: absolute;
+
+  width: 150px;
+  height: 150px;
+
+  top: -80px;
+  left: -70px;
+
+  border-radius: 50%;
+
+  background: rgba(63, 224, 207, 0.045);
+
+  filter: blur(10px);
+
+  opacity: 0;
+
+  transition: opacity 0.35s ease;
+
+  pointer-events: none;
+}
+
+
+/* Bottom accent line */
+
+.sector::after {
+  content: "";
+
+  position: absolute;
+
+  left: 1.7rem;
+  bottom: 1.7rem;
+
+  width: 26px;
+  height: 1px;
+
+  background: rgba(63, 224, 207, 0.35);
+
+  transition:
+    width 0.35s ease,
+    background 0.35s ease;
+}
+
+
+/* =========================================================
+   CARD HOVER
+========================================================= */
+
+.sector:hover {
+  transform: translateY(-4px);
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(17, 48, 59, 0.98),
+      rgba(7, 28, 39, 0.98)
+    );
+
+  border-color: var(--teal-sharp);
+
+  box-shadow:
+    0 0 0 1px rgba(63, 224, 207, 0.18),
+    0 0 22px rgba(63, 224, 207, 0.09),
+    0 15px 35px rgba(0, 0, 0, 0.2);
+}
+
+.sector:hover::before {
+  opacity: 1;
+}
+
+.sector:hover::after {
+  width: 45px;
+
+  background: var(--teal-sharp);
+}
+
+
+/* =========================================================
+   NUMBER
+========================================================= */
+
+.sectorNumber {
+  position: relative;
+
+  z-index: 2;
+
+  align-self: flex-end;
+
+  color: rgba(210, 226, 231, 0.65);
+
+  font-size: 0.7rem;
+
+  font-weight: 700;
+
+  letter-spacing: 0.13em;
+
+  transition: color 0.3s ease;
+}
+
+.sector:hover .sectorNumber {
+  color: #70e0d2;
+}
+
+
+/* =========================================================
+   TITLE
+========================================================= */
+
+.sector h3 {
+  position: relative;
+
+  z-index: 2;
+
+  max-width: calc(100% - 10px);
+
+  margin: 0;
+
+  color: rgba(255, 255, 255, 0.92);
+
+  font-size: clamp(1.15rem, 1.45vw, 1.35rem);
+
+  line-height: 1.25;
+
+  font-weight: 500;
+
+  letter-spacing: -0.025em;
+
+  transition:
+    color 0.3s ease,
+    transform 0.3s ease;
+}
+
+.sector:hover h3 {
+  color: white;
+
+  transform: translateX(2px);
+}
+
+
+/* =========================================================
+   PROJECTS
+========================================================= */
+
+.projects {
+  background: #eceee9;
+}
+
+.projectGrid {
+  display: grid;
+
+  grid-template-columns: repeat(2, 1fr);
+
+  gap: 2.5rem;
+}
+
+.projectCard {
+  overflow: hidden;
+
+  background: var(--cream);
+
+  border: 1px solid rgba(16, 38, 50, 0.08);
+
+  transition:
+    transform 0.4s ease,
+    box-shadow 0.4s ease,
+    border-color 0.4s ease;
+}
+
+.projectCard:hover,
+.projectCard:focus-within {
+  transform: translateY(-10px);
+
+  border-color: rgba(72, 165, 155, 0.75);
+
+  box-shadow:
+    0 0 0 1px rgba(72, 165, 155, 0.25),
+    0 0 35px rgba(72, 165, 155, 0.16),
+    0 30px 70px rgba(16, 38, 50, 0.15);
+}
+
+
+/* =========================================================
+   PROJECT IMAGES
+========================================================= */
+
+.projectImage {
+  position: relative;
+
+  height: 430px;
+
+  overflow: hidden;
+
+  background: var(--navy);
+}
+
+.projectImage img {
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+
+  transition:
+    transform 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+    filter 0.5s ease;
+}
+
+.projectCard:hover .projectImage img {
+  transform: scale(1.06);
+
+  filter: saturate(1.05);
+}
+
+.imageOverlay {
+  position: absolute;
+
+  inset: 0;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(8, 25, 34, 0.35),
+      transparent 45%,
+      rgba(8, 25, 34, 0.75)
+    );
+}
+
+.projectNumber,
+.projectCategory {
+  position: absolute;
+
+  z-index: 2;
+
+  top: 1.5rem;
+
+  color: white;
+
+  font-size: 0.63rem;
+
+  font-weight: 700;
+
+  letter-spacing: 0.13em;
+
+  text-transform: uppercase;
+}
+
+.projectNumber {
+  left: 1.5rem;
+}
+
+.projectCategory {
+  right: 1.5rem;
+}
+
+
+/* =========================================================
+   VIEW PROJECT
+========================================================= */
+
+.viewProject {
+  position: absolute;
+
+  z-index: 2;
+
+  right: 1.5rem;
+  bottom: 1.5rem;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 0.7rem;
+
+  color: white;
+
+  font-size: 0.65rem;
+
+  font-weight: 700;
+
+  letter-spacing: 0.12em;
+
+  text-transform: uppercase;
+
+  opacity: 0;
+
+  transform: translateY(10px);
+
+  transition:
+    opacity 0.35s ease,
+    transform 0.35s ease;
+}
+
+.projectCard:hover .viewProject {
+  opacity: 1;
+
+  transform: translateY(0);
+}
+
+.viewProject span {
+  display: grid;
+
+  width: 32px;
+  height: 32px;
+
+  place-items: center;
+
+  border: 1px solid rgba(255, 255, 255, 0.45);
+
+  border-radius: 50%;
+
+  font-size: 1rem;
+}
+
+
+/* =========================================================
+   PROJECT CONTENT
+========================================================= */
+
+.projectContent {
+  min-height: 260px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  justify-content: space-between;
+
+  padding: 2.2rem;
+}
+
+.projectContent h3 {
+  margin: 0;
+
+  font-size: 1.8rem;
+
+  font-weight: 500;
+
+  letter-spacing: -0.035em;
+}
+
+.projectContent > p {
+  max-width: 550px;
+
+  margin: 1rem 0 0;
+
+  color: var(--muted);
+
+  line-height: 1.75;
+}
+
+.projectFooter {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  margin-top: 2.5rem;
+}
+
+
+/* =========================================================
+   STATUS
+========================================================= */
+
+.status {
+  display: flex;
+
+  align-items: center;
+
+  gap: 0.55rem;
+
+  font-size: 0.62rem;
+
+  font-weight: 700;
+
+  letter-spacing: 0.12em;
+}
+
+.statusDot {
+  width: 7px;
+  height: 7px;
+
+  border-radius: 50%;
+
+  background: var(--teal);
+
+  box-shadow:
+    0 0 10px rgba(72, 165, 155, 0.45);
+}
+
+.development .statusDot {
+  background: #c89a55;
+}
+
+.exploring .statusDot {
+  background: #7a878b;
+}
+
+
+/* =========================================================
+   PROJECT CARD ARROW
+========================================================= */
+
+.cardArrow {
+  display: grid;
+
+  width: 43px;
+  height: 43px;
+
+  place-items: center;
+
+  border: 1px solid rgba(16, 38, 50, 0.15);
+
+  border-radius: 50%;
+
+  transition:
+    background 0.3s ease,
+    color 0.3s ease,
+    transform 0.3s ease;
+}
+
+.projectCard:hover .cardArrow {
+  background: var(--navy);
+
+  color: white;
+
+  transform: rotate(45deg);
+}
+
+
+/* =========================================================
+   FUTURE
+========================================================= */
+
+.future {
+  position: relative;
+
+  min-height: 650px;
+
+  display: flex;
+
+  align-items: center;
+
+  overflow: hidden;
+
+  background: var(--navy);
+
+  color: white;
+}
+
+.futureImage {
+  position: absolute;
+
+  inset: 0;
+}
+
+.futureImage img {
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+
+  opacity: 0.28;
+}
+
+.futureOverlay {
+  position: absolute;
+
+  inset: 0;
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(8, 25, 34, 0.97),
+      rgba(8, 25, 34, 0.72),
+      rgba(8, 25, 34, 0.35)
+    );
+}
+
+.futureContent {
+  position: relative;
+
+  z-index: 2;
+
+  max-width: 900px;
+
+  padding: 8rem 11vw;
+}
+
+.futureContent h2 {
+  margin: 0;
+
+  font-size: clamp(3rem, 5.5vw, 6rem);
+
+  line-height: 0.97;
+
+  letter-spacing: -0.055em;
+
+  font-weight: 500;
+}
+
+.futureContent h2 span {
+  color: var(--teal-light);
+}
+
+.futureContent > p:not(.sectionEyebrow) {
+  max-width: 550px;
+
+  margin: 2rem 0;
+
+  color: rgba(255, 255, 255, 0.65);
+
+  line-height: 1.8;
+}
+
+
+/* =========================================================
+   CTA
+========================================================= */
+
+.cta {
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 2rem;
+
+  margin-top: 1rem;
+
+  padding: 1rem 1.4rem;
+
+  background: var(--teal-light);
+
+  color: var(--navy);
+
+  text-decoration: none;
+
+  font-size: 0.7rem;
+
+  font-weight: 700;
+
+  letter-spacing: 0.1em;
+
+  text-transform: uppercase;
+
+  transition:
+    transform 0.3s ease,
+    background 0.3s ease;
+}
+
+.cta:hover {
+  background: white;
+
+  transform: translateY(-4px);
+}
+
+.cta span {
+  font-size: 1.1rem;
+}
+
+
+/* =========================================================
+   ANIMATIONS
+========================================================= */
+
+@keyframes titleIn {
+
+  from {
+    opacity: 0;
+
+    transform: translateY(70px);
+
+    clip-path: inset(100% 0 0 0);
+  }
+
+  to {
+    opacity: 1;
+
+    transform: translateY(0);
+
+    clip-path: inset(0 0 0 0);
+  }
+
+}
+
+
+@keyframes accentIn {
+
+  from {
+    opacity: 0;
+
+    transform: translateY(35px);
+  }
+
+  to {
+    opacity: 1;
+
+    transform: translateY(0);
+  }
+
+}
+
+
+@keyframes fadeUp {
+
+  from {
+    opacity: 0;
+
+    transform: translateY(25px);
+  }
+
+  to {
+    opacity: 1;
+
+    transform: translateY(0);
+  }
+
+}
+
+
+@keyframes heroZoom {
+
+  from {
+    transform: scale(1.08);
+  }
+
+  to {
+    transform: scale(1);
+  }
+
+}
+
+
+@keyframes arrowDown {
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(5px);
+  }
+
+}
+
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 900px) {
+
+  .heroContent {
+    margin-left: 6vw;
+  }
+
+  .intro {
+    grid-template-columns: 1fr;
+
+    gap: 1.5rem;
+
+    padding: 7rem 8vw;
+  }
+
+  .sectionHeading {
+    align-items: flex-start;
+
+    flex-direction: column;
+  }
+
+  .sectorGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .sector {
+    min-height: 175px;
+  }
+
+  .projectGrid {
+    grid-template-columns: 1fr;
+  }
+
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 600px) {
+
+  .backgroundGrid {
+    background-size: 45px 45px;
+  }
+
+  .hero {
+    min-height: 800px;
+  }
+
+  .heroContent {
+    width: auto;
+
+    margin: 0;
+
+    padding: 6rem 1.4rem;
+  }
+
+  .heroTitle {
+    font-size: clamp(3.4rem, 16vw, 5.2rem);
+  }
+
+  .heroDescription {
+    font-size: 0.95rem;
+  }
+
+  .heroLocation {
+    right: 1.4rem;
+
+    bottom: 2rem;
+  }
+
+  .intro,
+  .sectors,
+  .projects {
+    padding: 5rem 1.4rem;
+  }
+
+  .intro h2,
+  .sectionHeading h2,
+  .futureContent h2 {
+    font-size: 2.9rem;
+  }
+
+  .sectorGrid {
+    grid-template-columns: 1fr;
+
+    gap: 1rem;
+  }
+
+  .sector {
+    min-height: 165px;
+
+    padding: 1.4rem;
+
+    border-radius: 17px;
+  }
+
+  .sector::after {
+    left: 1.4rem;
+
+    bottom: 1.4rem;
+  }
+
+  .projectImage {
+    height: 330px;
+  }
+
+  .projectContent {
+    min-height: auto;
+
+    padding: 1.6rem;
+  }
+
+  .projectContent h3 {
+    font-size: 1.5rem;
+  }
+
+  .viewProject {
+    opacity: 1;
+
+    transform: none;
+  }
+
+  .futureContent {
+    padding: 6rem 1.4rem;
+  }
+
+}
+
+
+/* =========================================================
+   ACCESSIBILITY
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .portfolio *,
+  .portfolio *::before,
+  .portfolio *::after {
+
+    animation-duration: 0.01ms !important;
+
+    animation-iteration-count: 1 !important;
+
+    transition-duration: 0.01ms !important;
+  }
+
+}

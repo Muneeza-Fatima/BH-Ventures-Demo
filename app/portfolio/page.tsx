@@ -1,4 +1,5 @@
-// app/insights/page.tsx
+import Portfolio from "@/components/portfolio/Portfolio";
+
 export default function PortfolioPage() {
-  return <div className="min-h-screen bg-[#0B1220]" />;
+  return <Portfolio />;
 }
