@@ -48,13 +48,15 @@ align-items: center;
 
 justify-content: center;
 
+gap: 9px;
+
 min-height: 40px;
 
-padding: 0 16px;
+padding: 0 18px;
 
-border: 1px solid rgba(16, 38, 50, 0.2);
+border: 1px solid rgba(16, 38, 50, 0.16);
 
-border-radius: 6px;
+border-radius: 999px;
 
 color: #102632;
 
@@ -69,14 +71,29 @@ letter-spacing: 0.08em;
 text-transform: uppercase;
 
 transition:
+  background 0.25s ease,
+  color 0.25s ease,
+  border-color 0.25s ease,
+  transform 0.25s ease,
+  box-shadow 0.25s ease;
 
-background 0.25s ease,
+}
 
-color 0.25s ease,
 
-border-color 0.25s ease,
 
-transform 0.25s ease;
+.backButton {
+
+background: rgba(16, 38, 50, 0.03);
+
+}
+
+
+
+.backButton span,
+
+.contactButton span {
+
+transition: transform 0.3s ease;
 
 }
 
@@ -93,6 +110,24 @@ background: #102632;
 color: #ffffff;
 
 transform: translateY(-2px);
+
+box-shadow: 0 10px 24px rgba(16, 38, 50, 0.16);
+
+}
+
+
+
+.backButton:hover span {
+
+transform: translateX(-3px);
+
+}
+
+
+
+.contactButton:hover span {
+
+transform: translate(2px, -2px);
 
 }
 
@@ -664,6 +699,136 @@ letter-spacing: 0.12em;
 
 /* =========================
 
+BOTTOM NAVIGATION
+
+========================= */
+
+
+
+.bottomNavigation {
+
+width: min(980px, calc(100% - 48px));
+
+margin: 90px auto 0;
+
+padding-top: 45px;
+
+border-top: 1px solid rgba(16, 38, 50, 0.12);
+
+display: flex;
+
+justify-content: center;
+
+}
+
+
+
+.bottomBack {
+
+display: inline-flex;
+
+align-items: center;
+
+gap: 10px;
+
+padding: 14px 26px;
+
+border: 1px solid rgba(16, 38, 50, 0.16);
+
+border-radius: 999px;
+
+background: #ffffff;
+
+color: #102632;
+
+text-decoration: none;
+
+font-size: 0.68rem;
+
+font-weight: 700;
+
+letter-spacing: 0.08em;
+
+text-transform: uppercase;
+
+box-shadow: 0 8px 20px rgba(16, 38, 50, 0.06);
+
+transition:
+
+background 0.25s ease,
+
+color 0.25s ease,
+
+border-color 0.25s ease,
+
+transform 0.25s ease,
+
+box-shadow 0.25s ease;
+
+}
+
+
+
+.bottomBack span {
+
+display: grid;
+
+place-items: center;
+
+width: 22px;
+
+height: 22px;
+
+border-radius: 50%;
+
+background: rgba(72, 165, 155, 0.12);
+
+color: #3d8e85;
+
+font-size: 0.85rem;
+
+transition:
+
+transform 0.3s ease,
+
+background 0.25s ease,
+
+color 0.25s ease;
+
+}
+
+
+
+.bottomBack:hover {
+
+border-color: #48a59b;
+
+background: #102632;
+
+color: #ffffff;
+
+transform: translateY(-3px);
+
+box-shadow: 0 16px 32px rgba(16, 38, 50, 0.16);
+
+}
+
+
+
+.bottomBack:hover span {
+
+background: #48a59b;
+
+color: #ffffff;
+
+transform: translateX(-3px);
+
+}
+
+
+
+/* =========================
+
 RESPONSIVE
 
 ========================= */
@@ -856,4 +1021,24 @@ gap: 10px;
 
 }
 
-} 
+
+
+.bottomNavigation {
+
+margin-top: 55px;
+
+padding-top: 30px;
+
+}
+
+
+
+.bottomBack {
+
+width: 100%;
+
+justify-content: center;
+
+}
+
+}

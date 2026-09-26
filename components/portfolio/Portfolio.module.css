@@ -572,12 +572,6 @@
    CARD NUMBER
    ========================================================= */
 
-
-
-/* =========================================================
-   CARD NUMBER
-   ========================================================= */
-
 .sectorNumber {
   position: relative;
 
@@ -1155,6 +1149,12 @@
 }
 
 @media (max-width: 650px) {
+  .hero {
+    width: 100vw;
+    margin-left: calc(50% - 50vw);
+    border-radius: 0;
+  }
+
   .heroContent,
   .intro,
   .sectors,
@@ -1164,7 +1164,7 @@
   }
 
   .heroContent {
-    padding: 120px 0 80px;
+    padding: 80px 0 60px;
   }
 
   .heroTitle {
@@ -1211,6 +1211,174 @@
   .futureContent h2 {
     font-size:
       clamp(3.2rem, 14vw, 5rem);
+  }
+}
+
+/* -----------------------------------------------------
+   EXTRA MOBILE FIXES (phones, ~480px and down)
+   Same design/colors/spacing rhythm as above — these
+   just rescale text, spacing and hit-targets so nothing
+   overflows or crowds on narrow screens.
+   ----------------------------------------------------- */
+
+@media (max-width: 480px) {
+  .heroContent {
+    padding: 60px 0 50px;
+  }
+
+  .heroTitle {
+    font-size: clamp(2.5rem, 12vw, 3.6rem);
+    letter-spacing: -0.04em;
+  }
+
+  .heroDescription {
+    max-width: 100%;
+    font-size: 0.85rem;
+  }
+
+  .heroBottom {
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 38px;
+  }
+
+  .heroLine {
+    width: 50px;
+  }
+
+  .heroScroll {
+    font-size: 0.58rem;
+  }
+
+  .heroLocation {
+    right: 14px;
+    bottom: 16px;
+    font-size: 0.53rem;
+    gap: 6px;
+  }
+
+  .intro {
+    grid-template-columns: 1fr;
+    gap: 14px;
+    padding: 70px 0;
+  }
+
+  .introContent h2 {
+    font-size: clamp(2.1rem, 10vw, 3rem);
+  }
+
+  .introText {
+    max-width: 100%;
+    margin-top: 24px;
+    font-size: 0.85rem;
+  }
+
+  .sectors,
+  .projects {
+    padding: 65px 0;
+  }
+
+  .sectionHeading {
+    margin-bottom: 34px;
+    gap: 12px;
+  }
+
+  .sectionHeading h2 {
+    font-size: clamp(2.1rem, 11vw, 3.2rem);
+  }
+
+  .headingDescription {
+    max-width: 100%;
+    font-size: 0.8rem;
+  }
+
+  .sector {
+    min-height: 200px;
+    padding: 18px 20px;
+  }
+
+  .sectorContent h3 {
+    max-width: 100%;
+    font-size: clamp(1.2rem, 6vw, 1.5rem);
+  }
+
+  .sectorContent p {
+    max-width: 100%;
+    font-size: 0.7rem;
+  }
+
+  .sectorTags {
+    font-size: 0.5rem;
+    margin-top: 14px;
+  }
+
+  .projectImage {
+    height: 220px;
+  }
+
+  .projectContent {
+    padding: 20px 20px 22px;
+  }
+
+  .projectContent h3 {
+    font-size: 1.3rem;
+  }
+
+  .projectContent p {
+    font-size: 0.72rem;
+    margin: 10px 0 18px;
+  }
+
+  .future {
+    min-height: 480px;
+  }
+
+  .futureContent h2 {
+    font-size: clamp(2.3rem, 11vw, 3.4rem);
+  }
+
+  .futureContent > p:not(.sectionEyebrow) {
+    max-width: 100%;
+    font-size: 0.82rem;
+    margin: 22px 0;
+  }
+
+  .cta {
+    flex-wrap: wrap;
+    gap: 14px;
+    padding: 12px 16px;
+    font-size: 0.58rem;
+  }
+}
+
+@media (max-width: 380px) {
+  .heroContent,
+  .intro,
+  .sectors,
+  .projects,
+  .futureContent {
+    width: calc(100% - 24px);
+  }
+
+  .heroTitle {
+    font-size: clamp(2.1rem, 12vw, 3rem);
+  }
+
+  .introContent h2 {
+    font-size: clamp(1.9rem, 11vw, 2.6rem);
+  }
+
+  .sectionHeading h2 {
+    font-size: clamp(1.9rem, 11vw, 2.7rem);
+  }
+
+  .sector {
+    min-height: 185px;
+    padding: 16px 18px;
+  }
+
+  .futureContent h2 {
+    font-size: clamp(2rem, 12vw, 2.9rem);
   }
 }
 
