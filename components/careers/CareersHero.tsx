@@ -2,6 +2,8 @@
 
 import { motion, useReducedMotion, type Variants } from "framer-motion";
 
+import CareersHeroVisual from "./CareersHeroVisual";
+
 /* ============================================================
    ANIMATION VARIANTS
 ============================================================ */
@@ -345,6 +347,10 @@ export default function CareersHero() {
             UAE • Dubai
           </span>
         </motion.div>
+
+        {/* Interactive Visual (lg and up) */}
+
+        <CareersHeroVisual />
       </motion.div>
     </section>
   );
