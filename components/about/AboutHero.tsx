@@ -1,6 +1,7 @@
 "use client";
 
 import { motion, useReducedMotion, type Variants } from "framer-motion";
+import HeroOrbit from "./HeroOrbit";
 
 /* ============================================================
    ANIMATION VARIANTS
@@ -55,94 +56,6 @@ const headingWord: Variants = {
     },
   },
 };
-
-const orbitVariants: Variants = {
-  hidden: { opacity: 0, scale: 0.92 },
-  visible: {
-    opacity: 1,
-    scale: 1,
-    transition: { duration: 1.4, ease: [0.22, 1, 0.36, 1], delay: 0.35 },
-  },
-};
-
-/* ============================================================
-   ORBITAL VISUAL
-   Three concentric rings, each carrying a single point of light
-   that circles at its own pace around a softly breathing core —
-   trade, technology and the disciplines between them, orbiting
-   one platform. Pure CSS motion, no canvas, no images. Sits to
-   the right of the copy on tablet and desktop; on phones it is
-   hidden so the heading keeps the full width.
-============================================================ */
-
-const rings = [
-  { inset: "32%", duration: "26s", direction: "normal", dashed: false, alpha: 0.28 },
-  { inset: "19%", duration: "46s", direction: "reverse", dashed: true, alpha: 0.18 },
-  { inset: "6%", duration: "74s", direction: "normal", dashed: false, alpha: 0.12 },
-] as const;
-
-function OrbitalVisual() {
-  return (
-    <motion.div
-      aria-hidden="true"
-      variants={orbitVariants}
-      className="
-        pointer-events-none
-        absolute
-        right-[-14%]
-        top-1/2
-        hidden
-        aspect-square
-        w-[440px]
-        -translate-y-1/2
-        select-none
-
-        md:block
-        lg:right-[-6%]
-        lg:w-[560px]
-        xl:right-[1%]
-        xl:w-[640px]
-        2xl:right-[4%]
-        2xl:w-[700px]
-
-        [@media(min-width:1024px)_and_(max-width:1366px)]:right-[-10%]
-        [@media(min-width:1024px)_and_(max-width:1366px)]:w-[500px]
-      "
-    >
-      {/* Core */}
-      <div className="about-core-breathe absolute left-1/2 top-1/2 h-44 w-44 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#00FFD5]/[0.13] blur-[46px]" />
-      <div className="absolute left-1/2 top-1/2 h-16 w-16 -translate-x-1/2 -translate-y-1/2 rounded-full border border-[#2DD4BF]/30 bg-[#0B1220]/60 backdrop-blur-[2px]" />
-      <div className="absolute left-1/2 top-1/2 h-2.5 w-2.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#00FFD5] shadow-[0_0_24px_6px_rgba(0,255,213,0.45)]" />
-
-      {/* Rings */}
-      {rings.map((ring, index) => (
-        <div
-          key={index}
-          className={`about-orbit absolute rounded-full border ${
-            ring.dashed ? "border-dashed" : "border-solid"
-          }`}
-          style={
-            {
-              inset: ring.inset,
-              borderColor: `rgba(45, 212, 191, ${ring.alpha})`,
-              "--orbit-duration": ring.duration,
-              "--orbit-direction": ring.direction,
-            } as React.CSSProperties
-          }
-        >
-          <span className="absolute left-1/2 top-0 h-2 w-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#00FFD5] shadow-[0_0_16px_3px_rgba(0,255,213,0.55)]" />
-          {index === 0 && (
-            <span className="absolute bottom-0 left-1/2 h-1.5 w-1.5 -translate-x-1/2 translate-y-1/2 rounded-full bg-white/70 shadow-[0_0_10px_2px_rgba(255,255,255,0.35)]" />
-          )}
-        </div>
-      ))}
-
-      {/* Faint cross-hair guides */}
-      <div className="absolute left-1/2 top-[6%] bottom-[6%] w-px -translate-x-1/2 bg-gradient-to-b from-transparent via-[#2DD4BF]/[0.14] to-transparent" />
-      <div className="absolute top-1/2 left-[6%] right-[6%] h-px -translate-y-1/2 bg-gradient-to-r from-transparent via-[#2DD4BF]/[0.14] to-transparent" />
-    </motion.div>
-  );
-}
 
 export default function AboutHero() {
   const prefersReducedMotion = useReducedMotion();
@@ -290,7 +203,7 @@ export default function AboutHero() {
           2xl:max-w-[1600px]
         "
       >
-        <OrbitalVisual />
+        <HeroOrbit />
 
         {/* Eyebrow Pill */}
 

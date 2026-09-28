@@ -72,18 +72,90 @@
   will-change: transform;
 }
 
-/* Orbital rings in the hero — each ring spins at its own pace.
-   --orbit-duration / --orbit-direction are set inline per ring. */
-@keyframes about-orbit-spin {
+/* ---------------------------------------------------------
+   HERO ORBIT (components/about/HeroOrbit.tsx)
+   Node positions are written per frame from JS; these rules
+   only cover the node's look, its active state, the glass
+   label and the core badge.
+   --------------------------------------------------------- */
+
+.about-page .orbit-node {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: 0;
+  border-radius: 9999px;
+  background: transparent;
+  cursor: pointer;
+  pointer-events: auto;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 300ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.about-page .orbit-node > span {
+  width: 8px;
+  height: 8px;
+  border-radius: 9999px;
+  background: #00ffd5;
+  box-shadow: 0 0 14px 3px rgba(0, 255, 213, 0.5);
+  transition: box-shadow 300ms ease;
+}
+
+.about-page .orbit-node[data-active="true"] {
+  transform: scale(1.35);
+}
+
+.about-page .orbit-node[data-active="true"] > span {
+  box-shadow:
+    0 0 0 3px rgba(0, 255, 213, 0.18),
+    0 0 22px 7px rgba(0, 255, 213, 0.7);
+}
+
+.about-page .orbit-node:focus-visible {
+  outline: 1.5px solid rgba(94, 234, 212, 0.8);
+  outline-offset: 2px;
+}
+
+@keyframes about-orbit-label {
+  from {
+    opacity: 0;
+    translate: 0 4px;
+  }
   to {
-    transform: rotate(360deg);
+    opacity: 1;
+    translate: 0 0;
   }
 }
 
-.about-page .about-orbit {
-  animation: about-orbit-spin var(--orbit-duration, 40s) linear infinite;
-  animation-direction: var(--orbit-direction, normal);
-  will-change: transform;
+.about-page .orbit-label {
+  display: none;
+}
+
+.about-page .orbit-label[data-visible="true"] {
+  display: flex;
+  animation: about-orbit-label 220ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.about-page .orbit-core {
+  transition:
+    border-color 300ms ease,
+    color 300ms ease,
+    box-shadow 300ms ease;
+}
+
+.about-page .orbit-core[data-active="true"] {
+  border-color: rgba(45, 212, 191, 0.45);
+  color: #00ffd5;
+  box-shadow: 0 0 22px -4px rgba(0, 255, 213, 0.45);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .about-page .orbit-label[data-visible="true"] {
+    animation: none;
+  }
 }
 
 /* Soft breathing glow for the orbital core */
@@ -256,7 +328,6 @@
 @media (prefers-reduced-motion: reduce) {
   .about-page .about-aurora,
   .about-page .about-aurora-alt,
-  .about-page .about-orbit,
   .about-page .about-core-breathe,
   .about-page .thread-chip,
   .about-page .thread-chip::before,
