@@ -105,12 +105,18 @@ export default function AboutHero() {
           bottom so the section hands off gently to the next.
       ===================================================== */}
 
-      {/* Background video — subtle, sits under everything else */}
+      {/* Background video — subtle, sits under everything else.
+          From md up it fades out toward the right, so the globe
+          sits on the plain section background, not on the video. */}
       <AboutVideoBackdrop
         src="/videos/hero.mp4"
         poster="/images/about/story/story-foundation.jpg"
-        opacity={0.28}
+        opacity={0.45}
         objectPosition="center 40%"
+        className="
+          md:[mask-image:linear-gradient(90deg,black_50%,rgba(0,0,0,0.35)_72%,transparent_92%)]
+          md:[-webkit-mask-image:linear-gradient(90deg,black_50%,rgba(0,0,0,0.35)_72%,transparent_92%)]
+        "
       />
 
       {/* Darkens the right half so the globe keeps its contrast */}
@@ -163,6 +169,10 @@ export default function AboutHero() {
           ${prefersReducedMotion ? "" : "about-aurora-alt"}
         `}
       />
+
+      {/* Text scrim — above the video and ambient layers, below
+          the globe and copy, so the heading stays crisp */}
+      <div aria-hidden="true" className="about-hero-text-scrim" />
 
       {/* Top hairline */}
       <div

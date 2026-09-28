@@ -169,6 +169,22 @@
   outline: none;
 }
 
+/* Solid navy disc behind the canvas and atmosphere, a little
+   larger than the globe, feathering into the section so the
+   globe never sits directly on the video */
+.about-page .hero-globe::before {
+  content: "";
+  position: absolute;
+  inset: -18%;
+  pointer-events: none;
+  background: radial-gradient(
+    circle at center,
+    #0b1220 40%,
+    rgba(11, 18, 32, 0.75) 58%,
+    transparent 74%
+  );
+}
+
 .about-page .hero-globe:focus-visible {
   box-shadow: 0 0 0 2px rgba(45, 212, 191, 0.45);
 }
@@ -523,6 +539,22 @@
   inset: 0;
   pointer-events: none;
   background: linear-gradient(90deg, transparent 45%, rgba(11, 18, 32, 0.75) 100%);
+}
+
+/* Hero only: darkens the copy column. z-index 1 puts it above
+   the video (z-index 0) and the ambient layers, and below the
+   content (z-index 10), which holds the globe and its disc. */
+.about-page .about-hero-text-scrim {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(
+    90deg,
+    rgba(11, 18, 32, 0.72) 0%,
+    rgba(11, 18, 32, 0.45) 38%,
+    transparent 62%
+  );
 }
 
 /* CTA only: soft readability pool behind the centred copy

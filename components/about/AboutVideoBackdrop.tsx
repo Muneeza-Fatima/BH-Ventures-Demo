@@ -24,6 +24,8 @@ type AboutVideoBackdropProps = {
   objectPosition?: string;
   /** Optional CSS background that replaces the default tint layer. */
   tint?: string;
+  /** Extra classes for the wrapper, e.g. a mask. */
+  className?: string;
 };
 
 export default function AboutVideoBackdrop({
@@ -32,6 +34,7 @@ export default function AboutVideoBackdrop({
   opacity,
   objectPosition = "center",
   tint,
+  className,
 }: AboutVideoBackdropProps) {
   const wrapRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -80,7 +83,11 @@ export default function AboutVideoBackdrop({
   const videoSrc = prefersReducedMotion ? `${src}#t=0.001` : src;
 
   return (
-    <div ref={wrapRef} aria-hidden="true" className="about-video-wrap">
+    <div
+      ref={wrapRef}
+      aria-hidden="true"
+      className={className ? `about-video-wrap ${className}` : "about-video-wrap"}
+    >
       {mounted && (
         <video
           ref={videoRef}
