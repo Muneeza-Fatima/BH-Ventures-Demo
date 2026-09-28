@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { motion, useReducedMotion } from "framer-motion";
 import { Globe2, Handshake, TrendingUp, Blocks } from "lucide-react";
+import { useCardSpotlight } from "./useCardSpotlight";
 
 const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
@@ -63,6 +64,7 @@ const cardVariantsReduced = {
 
 export default function AboutGlobalReach() {
   const prefersReducedMotion = useReducedMotion();
+  const { onPointerMove, onPointerLeave } = useCardSpotlight();
 
   return (
     <section
@@ -260,7 +262,10 @@ export default function AboutGlobalReach() {
                   prefersReducedMotion ? cardVariantsReduced : cardVariants
                 }
                 tabIndex={0}
+                onPointerMove={onPointerMove}
+                onPointerLeave={onPointerLeave}
                 className="
+                  spot-card
                   group
                   relative
                   isolate

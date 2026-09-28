@@ -1,7 +1,66 @@
 "use client";
 
-import { motion, useReducedMotion, type Variants } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
+import {
+  motion,
+  useInView,
+  useReducedMotion,
+  type Variants,
+} from "framer-motion";
 import HeroOrbit from "./HeroOrbit";
+
+/* ============================================================
+   FACTS STRIP
+   Three figures taken from the page's own content: the ten
+   licensed activities (AboutFacts), the seven disciplines in
+   the hero orbit, and the one platform they sit on.
+============================================================ */
+
+const heroFacts = [
+  { value: 10, label: "Licensed activities" },
+  { value: 7, label: "Disciplines" },
+  { value: 1, label: "Platform" },
+];
+
+/* Same count-up as AboutFacts: runs once when scrolled into view.
+   Under reduced motion the final figure is shown straight away. */
+function CountUp({ value }: { value: number }) {
+  const ref = useRef<HTMLSpanElement>(null);
+  const isInView = useInView(ref, { once: true });
+  const prefersReducedMotion = useReducedMotion();
+  const [count, setCount] = useState(0);
+  const started = useRef(false);
+
+  useEffect(() => {
+    if (!isInView || prefersReducedMotion || started.current) return;
+
+    started.current = true;
+
+    let animationFrame = 0;
+    let startTime: number | null = null;
+    const duration = 900;
+
+    const animate = (timestamp: number) => {
+      if (startTime === null) startTime = timestamp;
+
+      const elapsed = timestamp - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 4);
+
+      setCount(Math.round(eased * value));
+
+      if (progress < 1) {
+        animationFrame = requestAnimationFrame(animate);
+      }
+    };
+
+    animationFrame = requestAnimationFrame(animate);
+
+    return () => cancelAnimationFrame(animationFrame);
+  }, [isInView, prefersReducedMotion, value]);
+
+  return <span ref={ref}>{prefersReducedMotion ? value : count}</span>;
+}
 
 /* ============================================================
    ANIMATION VARIANTS
@@ -387,6 +446,73 @@ export default function AboutHero() {
             UAE • Dubai
           </span>
         </motion.div>
+
+        {/* Facts strip — kept narrow so it clears the orbit on md+ */}
+
+        <motion.dl
+          variants={itemVariants}
+          className="
+            mt-6
+            grid
+            w-full
+            max-w-[380px]
+            grid-cols-3
+            gap-2.5
+            sm:mt-7
+            sm:gap-3
+            lg:max-w-[440px]
+          "
+        >
+          {heroFacts.map((fact) => (
+            <div
+              key={fact.label}
+              className="
+                flex
+                min-w-0
+                flex-col
+                rounded-2xl
+                border
+                border-white/10
+                bg-white/[0.03]
+                px-3
+                py-3.5
+                backdrop-blur-sm
+                sm:px-4
+                sm:py-4
+              "
+            >
+              <dt
+                className="
+                  pt-2
+                  text-[9px]
+                  font-extrabold
+                  uppercase
+                  leading-[1.4]
+                  tracking-[0.16em]
+                  text-[#00FFD5]/80
+                  sm:tracking-[0.2em]
+                "
+              >
+                {fact.label}
+              </dt>
+
+              <dd
+                className="
+                  order-first
+                  font-heading
+                  text-[1.625rem]
+                  font-bold
+                  leading-none
+                  tracking-[-0.03em]
+                  text-[#E7EDF3]
+                  sm:text-[1.875rem]
+                "
+              >
+                <CountUp value={fact.value} />
+              </dd>
+            </div>
+          ))}
+        </motion.dl>
       </motion.div>
     </section>
   );

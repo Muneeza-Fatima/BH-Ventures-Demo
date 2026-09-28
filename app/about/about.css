@@ -281,6 +281,57 @@
 }
 
 /* ---------------------------------------------------------
+   CARD SPOTLIGHT (Capabilities + Global Reach)
+   A soft teal glow that follows the pointer, positioned from
+   --mx / --my (written by components/about/useCardSpotlight.ts).
+   Both cards are `isolate`, so z-index -1 paints the glow above
+   the card's own fill but beneath every piece of content. The
+   hover lift, accent line and corner glow stay on the cards'
+   Tailwind classes — this layer only adds the spotlight.
+   --------------------------------------------------------- */
+
+.about-page .spot-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background: radial-gradient(
+    320px circle at var(--mx, 50%) var(--my, 50%),
+    rgba(0, 255, 213, 0.1),
+    transparent 60%
+  );
+  opacity: 0;
+  transition: opacity 400ms ease;
+  pointer-events: none;
+}
+
+/* Hover-capable pointers only, so a tap doesn't leave it stuck on */
+@media (hover: hover) {
+  .about-page .spot-card:hover::after {
+    opacity: 1;
+  }
+}
+
+/* ---------------------------------------------------------
+   FOUNDER MONOGRAM RING
+   The dashed ring around the founder monogram turns once
+   every minute. about-orbit-spin is the keyframe the original
+   hero orbit used, kept here under its old name.
+   --------------------------------------------------------- */
+
+@keyframes about-orbit-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.about-page .about-founder-ring {
+  animation: about-orbit-spin 60s linear infinite;
+  will-change: transform;
+}
+
+/* ---------------------------------------------------------
    JOURNEY PANEL
    --------------------------------------------------------- */
 
@@ -333,7 +384,8 @@
   .about-page .thread-chip::before,
   .about-page .journey-kenburns,
   .about-page .journey-sheen,
-  .about-page .about-global-bg {
+  .about-page .about-global-bg,
+  .about-page .about-founder-ring {
     animation: none !important;
   }
 

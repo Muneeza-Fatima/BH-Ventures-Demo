@@ -3,6 +3,7 @@
 import type { CSSProperties } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import { ArrowLeftRight, Cpu, Megaphone, Sparkles, ChevronRight } from "lucide-react";
+import { useCardSpotlight } from "./useCardSpotlight";
 
 const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
@@ -94,6 +95,7 @@ const cardVariantsReduced = {
 
 export default function AboutCapabilities() {
   const prefersReducedMotion = useReducedMotion();
+  const { onPointerMove, onPointerLeave } = useCardSpotlight();
 
   return (
     <section
@@ -239,7 +241,7 @@ export default function AboutCapabilities() {
             lg:gap-6
           "
         >
-          {capabilities.map((item) => {
+          {capabilities.map((item, index) => {
             const Icon = item.icon;
 
             return (
@@ -249,6 +251,8 @@ export default function AboutCapabilities() {
                   prefersReducedMotion ? cardVariantsReduced : cardVariants
                 }
                 tabIndex={0}
+                onPointerMove={onPointerMove}
+                onPointerLeave={onPointerLeave}
                 style={
                   {
                     "--accent": item.accent,
@@ -256,6 +260,7 @@ export default function AboutCapabilities() {
                   } as CSSProperties
                 }
                 className="
+                  spot-card
                   group
                   relative
                   isolate
@@ -351,6 +356,24 @@ export default function AboutCapabilities() {
                   "
                   style={{ background: "var(--accent-soft)" }}
                 />
+
+                <span
+                  aria-hidden="true"
+                  className="
+                    pointer-events-none
+                    absolute
+                    right-6
+                    top-6
+                    text-[10px]
+                    font-bold
+                    tracking-[0.2em]
+                    text-white/25
+                    sm:right-7
+                    sm:top-7
+                  "
+                >
+                  {String(index + 1).padStart(2, "0")}
+                </span>
 
                 <div className="relative z-10">
                   <span

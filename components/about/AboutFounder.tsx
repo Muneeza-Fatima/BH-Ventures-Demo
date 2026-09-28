@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { UserRound, Quote } from "lucide-react";
+import { Quote } from "lucide-react";
 
 export default function AboutFounder() {
   return (
@@ -108,41 +108,74 @@ export default function AboutFounder() {
             "
           />
 
-          <div className="relative z-10 flex h-full w-full flex-col items-center justify-center gap-4">
-            <span
+          {/* Faint dot grid, fading out toward the edges */}
+          <div
+            aria-hidden="true"
+            className="
+              pointer-events-none
+              absolute
+              inset-0
+              opacity-60
+              [background-image:radial-gradient(rgba(255,255,255,0.10)_1px,transparent_1.2px)]
+              [background-size:22px_22px]
+              [mask-image:radial-gradient(ellipse_at_center,black_20%,transparent_75%)]
+              [-webkit-mask-image:radial-gradient(ellipse_at_center,black_20%,transparent_75%)]
+            "
+          />
+
+          <Quote
+            size={28}
+            strokeWidth={1.5}
+            aria-hidden="true"
+            className="absolute left-6 top-6 z-10 text-[#2DD4BF]/40 sm:left-7 sm:top-7"
+          />
+
+          {/* Monogram badge */}
+          <div
+            aria-hidden="true"
+            className="absolute inset-0 z-10 flex items-center justify-center"
+          >
+            <div
               className="
+                relative
                 flex
-                h-24
-                w-24
+                h-[220px]
+                w-[220px]
                 items-center
                 justify-center
                 rounded-full
                 border
-                border-[#2DD4BF]/30
-                bg-[#0E4A44]/40
-                text-[#5EEAD4]
-                sm:h-28
-                sm:w-28
+                border-[#2DD4BF]/20
+                bg-[radial-gradient(circle_at_50%_35%,rgba(14,74,68,0.55),rgba(11,18,32,0.35)_70%)]
+                shadow-[0_0_60px_-10px_rgba(0,255,213,0.25)]
+                sm:h-[250px]
+                sm:w-[250px]
               "
             >
-              <UserRound
-                size={44}
-                strokeWidth={1.4}
-                aria-hidden="true"
-              />
-            </span>
+              <span className="about-founder-ring absolute inset-[-14px] rounded-full border border-dashed border-[#2DD4BF]/35" />
 
-            <span
-              className="
-                text-[10px]
-                font-bold
-                uppercase
-                tracking-[0.24em]
-                text-white/35
-              "
-            >
-              Portrait Coming Soon
-            </span>
+              <span
+                className="
+                  font-heading
+                  select-none
+                  bg-gradient-to-b
+                  from-white
+                  to-[#00FFD5]
+                  bg-clip-text
+                  pb-[0.04em]
+                  text-[150px]
+                  font-bold
+                  leading-none
+                  tracking-[-0.04em]
+                  text-transparent
+                  opacity-90
+                  [-webkit-background-clip:text]
+                  sm:text-[180px]
+                "
+              >
+                B
+              </span>
+            </div>
           </div>
 
           <div
@@ -158,6 +191,26 @@ export default function AboutFounder() {
               to-transparent
             "
           />
+
+          {/* Caption */}
+          <div className="absolute inset-x-0 bottom-7 z-20 flex items-center justify-center gap-3 px-6">
+            <span className="h-px w-6 bg-gradient-to-r from-transparent to-[#00FFD5] sm:w-8" />
+
+            <span
+              className="
+                text-[9px]
+                font-extrabold
+                uppercase
+                tracking-[0.28em]
+                text-[#00FFD5]
+                sm:text-[10px]
+              "
+            >
+              Founder &amp; CEO · Dubai, UAE
+            </span>
+
+            <span className="h-px w-6 bg-gradient-to-l from-transparent to-[#00FFD5] sm:w-8" />
+          </div>
         </motion.div>
 
         {/* =====================================================
