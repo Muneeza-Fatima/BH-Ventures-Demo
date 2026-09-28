@@ -281,6 +281,17 @@
     transform: none;
   }
 
+  /* Cards and their icon tiles keep the hover glow/border but
+     don't lift. Tailwind v4's translate utilities write the
+     `translate` property, so this unlayered rule overrides them. */
+  .about-page [class*="hover:-translate-y"]:is(:hover, :focus, :focus-visible),
+  .about-page [class*="focus-visible:-translate-y"]:focus-visible,
+  .about-page
+    .group:is(:hover, :focus, :focus-visible)
+    [class*="group-hover:-translate-y"] {
+    translate: none !important;
+  }
+
   /* The sheen is a pure motion flourish — nothing to preserve */
   .about-page .journey-sheen {
     display: none;

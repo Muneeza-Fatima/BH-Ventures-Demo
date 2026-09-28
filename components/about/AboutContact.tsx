@@ -1,11 +1,37 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { directChannels } from "@/components/about/aboutContactData";
 
 const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
+
+const channelsVariants = {
+  hidden: {},
+  show: {
+    transition: {
+      staggerChildren: 0.1,
+      delayChildren: 0.05,
+    },
+  },
+};
+
+const channelVariants = {
+  hidden: { opacity: 0, y: 24, scale: 0.98 },
+  show: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: { duration: 0.6, ease: EASE },
+  },
+};
+
+/* Reduced motion: no entrance offset or scale — the card is simply there. */
+const channelVariantsReduced = {
+  hidden: { opacity: 1, y: 0, scale: 1 },
+  show: { opacity: 1, y: 0, scale: 1, transition: { duration: 0 } },
+};
 
 /* =========================================================
    The full contact form lives on /contact, not here — this
@@ -14,6 +40,11 @@ const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
    ========================================================= */
 
 export default function AboutContact() {
+  const prefersReducedMotion = useReducedMotion();
+  const cardVariants = prefersReducedMotion
+    ? channelVariantsReduced
+    : channelVariants;
+
   return (
     <section
       id="about-contact"
@@ -148,10 +179,10 @@ export default function AboutContact() {
         {/* Direct channels */}
 
         <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          variants={channelsVariants}
+          initial="hidden"
+          whileInView="show"
           viewport={{ once: true, amount: 0.2 }}
-          transition={{ duration: 0.6, ease: EASE, delay: 0.06 }}
           className="
             mx-auto
             mt-12
@@ -208,9 +239,12 @@ export default function AboutContact() {
 
                     transition-[transform,box-shadow]
                     duration-500
+                    ease-[cubic-bezier(0.22,1,0.36,1)]
 
                     group-hover:-translate-y-0.5
                     group-hover:shadow-[0_0_18px_rgba(0,205,181,0.35)]
+                    group-focus-visible:-translate-y-0.5
+                    group-focus-visible:shadow-[0_0_18px_rgba(0,205,181,0.35)]
                   "
                 >
                   <Icon size={18} strokeWidth={1.7} aria-hidden="true" />
@@ -252,22 +286,27 @@ export default function AboutContact() {
 
             if (!channel.href) {
               return (
-                <div key={channel.label} className={cardClass}>
+                <motion.div
+                  key={channel.label}
+                  variants={cardVariants}
+                  className={cardClass}
+                >
                   {content}
-                </div>
+                </motion.div>
               );
             }
 
             return (
-              <a
+              <motion.a
                 key={channel.label}
+                variants={cardVariants}
                 href={channel.href}
                 target={channel.external ? "_blank" : undefined}
                 rel={channel.external ? "noopener noreferrer" : undefined}
                 className={`${cardClass} focus:outline-none focus-visible:ring-2 focus-visible:ring-[#5EEAD4]/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#0B1220]`}
               >
                 {content}
-              </a>
+              </motion.a>
             );
           })}
         </motion.div>

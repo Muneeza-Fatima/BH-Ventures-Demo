@@ -308,6 +308,30 @@ export default function AboutCapabilities() {
                   }}
                 />
 
+                {/* Hairline that draws in from the left on hover */}
+                <span
+                  aria-hidden="true"
+                  className="
+                    absolute
+                    inset-x-0
+                    top-0
+                    z-20
+                    h-px
+                    origin-left
+                    scale-x-0
+                    bg-gradient-to-r
+                    from-transparent
+                    via-[#00FFD5]
+                    to-transparent
+
+                    transition-transform
+                    duration-500
+
+                    group-hover:scale-x-100
+                    group-focus:scale-x-100
+                  "
+                />
+
                 <div
                   aria-hidden="true"
                   className="
