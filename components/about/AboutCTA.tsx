@@ -3,6 +3,10 @@
 import { motion, useReducedMotion } from "framer-motion";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
+import AboutVideoBackdrop from "./AboutVideoBackdrop";
+
+const CTA_TINT =
+  "radial-gradient(ellipse 900px 500px at 50% 30%, rgba(46,230,197,0.1), transparent 65%), rgba(11,18,32,0.4)";
 
 export default function AboutCTA() {
   const prefersReducedMotion = useReducedMotion();
@@ -13,6 +17,9 @@ export default function AboutCTA() {
       className="
         relative
         isolate
+        flex
+        items-center
+        justify-center
         overflow-hidden
         bg-[#0B1220]
         px-5
@@ -24,12 +31,24 @@ export default function AboutCTA() {
         md:px-10
         md:py-28
 
+        lg:min-h-[520px]
         lg:px-12
         lg:py-32
 
         xl:px-16
       "
     >
+      {/* Full-bleed background video */}
+      <AboutVideoBackdrop
+        src="/videos/global-impact.mp4"
+        opacity={0.8}
+        objectPosition="center"
+        tint={CTA_TINT}
+      />
+
+      {/* Readability pool behind the centred copy */}
+      <div aria-hidden="true" className="about-video-scrim" />
+
       <div
         aria-hidden="true"
         className="

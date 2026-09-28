@@ -2,6 +2,7 @@
 
 import { motion, useReducedMotion, type Variants } from "framer-motion";
 import HeroGlobe from "./HeroGlobe";
+import AboutVideoBackdrop from "./AboutVideoBackdrop";
 
 /* ============================================================
    ANIMATION VARIANTS
@@ -103,6 +104,17 @@ export default function AboutHero() {
           a hairline at the top and a soft floor glow at the
           bottom so the section hands off gently to the next.
       ===================================================== */}
+
+      {/* Background video — subtle, sits under everything else */}
+      <AboutVideoBackdrop
+        src="/videos/hero.mp4"
+        poster="/images/about/story/story-foundation.jpg"
+        opacity={0.28}
+        objectPosition="center 40%"
+      />
+
+      {/* Darkens the right half so the globe keeps its contrast */}
+      <div aria-hidden="true" className="about-video-side-shade" />
 
       {/* Dot grid */}
       <div

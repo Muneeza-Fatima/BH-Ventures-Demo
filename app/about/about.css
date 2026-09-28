@@ -453,3 +453,96 @@
     display: none;
   }
 }
+
+/* ---------------------------------------------------------
+   VIDEO BACKDROPS (hero + closing CTA)
+
+   Ventures-style background video, rendered by
+   components/about/AboutVideoBackdrop.tsx. The wrapper is
+   absolutely positioned and clipped, so the video can never
+   widen the page or shift layout; the section's own
+   background shows through until the first frame is ready,
+   then the video fades up to --about-video-opacity.
+   --------------------------------------------------------- */
+
+@keyframes about-video-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: var(--about-video-opacity, 1);
+  }
+}
+
+.about-page .about-video-wrap {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.about-page .about-video {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  object-fit: cover;
+  opacity: 0;
+}
+
+.about-page .about-video[data-ready="true"] {
+  animation: about-video-in 800ms ease-out forwards;
+}
+
+.about-page .about-video-tint {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 900px 500px at 50% 30%, rgba(46, 230, 197, 0.1), transparent 65%),
+    rgba(11, 18, 32, 0.45);
+}
+
+.about-page .about-video-gradient {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(11, 18, 32, 0.35) 0%,
+    transparent 40%,
+    transparent 60%,
+    #0b1220 100%
+  );
+}
+
+/* Hero only: keeps the right half, where the globe sits, darker */
+.about-page .about-video-side-shade {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(90deg, transparent 45%, rgba(11, 18, 32, 0.75) 100%);
+}
+
+/* CTA only: soft readability pool behind the centred copy
+   (same idea as .services-hero-scrim, but as a full layer so
+   the copy's own layout is untouched) */
+.about-page .about-video-scrim {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse 720px 360px at 50% 50%,
+    rgba(6, 13, 24, 0.6) 0%,
+    rgba(6, 13, 24, 0.2) 65%,
+    transparent 100%
+  );
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .about-page .about-video[data-ready="true"] {
+    animation: none;
+    opacity: var(--about-video-opacity, 1);
+  }
+}
