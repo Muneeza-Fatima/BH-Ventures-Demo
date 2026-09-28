@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, useReducedMotion, type Variants } from "framer-motion";
-import HeroOrbit from "./HeroOrbit";
+import HeroGlobe from "./HeroGlobe";
 
 /* ============================================================
    ANIMATION VARIANTS
@@ -203,7 +203,7 @@ export default function AboutHero() {
           2xl:max-w-[1600px]
         "
       >
-        <HeroOrbit />
+        <HeroGlobe />
 
         {/* Eyebrow Pill */}
 
