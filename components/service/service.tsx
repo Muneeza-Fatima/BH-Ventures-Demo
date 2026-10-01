@@ -157,10 +157,9 @@ const IMG_FACILITY = "https://images.unsplash.com/photo-1544197150-b99a580bb7a8?
 const IMG_POWER = "https://images.unsplash.com/photo-1466611653911-95081537e5b7?auto=format&fit=crop&q=80&w=800";
 const IMG_COOLING = "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&q=80&w=800";
 const IMG_SECURITY = "https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&q=80&w=800";
-const IMG_AI_ROUTING = "https://images.unsplash.com/photo-1642543492481-44e81e3914a7?auto=format&fit=crop&q=80&w=800";
+const IMG_AI_ROUTING = "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&q=80&w=800";
 const IMG_HARDWARE = "https://images.unsplash.com/photo-1629654297299-c8506221ca97?auto=format&fit=crop&q=80&w=800";
 const IMG_CTA = "https://images.unsplash.com/photo-1639762681485-074b7f938ba0?auto=format&fit=crop&q=80&w=1600";
-
 /* ------------------------------------------------------------------ */
 /* Animated hero images (Unsplash helper + fallback)                  */
 /* ------------------------------------------------------------------ */
@@ -190,7 +189,7 @@ const HERO_SLIDES = [
 const FLOAT_PHOTOS = [
   { src: U("1629654297299-c8506221ca97", 600), cls: "fp-a", tag: "S21 Pro Hydro" },
   { src: U("1518770660439-4636190af475", 600), cls: "fp-b", tag: "38% Cooler" },
-  { src: U("1642543492481-44e81e3914a7", 600), cls: "fp-c", tag: "AI Router" },
+  { src: "/hero/ai-router.jpg", cls: "fp-c", tag: "AI Router" },
   { src: U("1509391366360-2e959784a276", 600), cls: "fp-d", tag: "Zero-Carbon" },
 ];
 
@@ -993,7 +992,7 @@ export default function CloudMining() {
               <motion.div
                 key={hw.name}
                 variants={cardUp}
-                className="bg-[rgba(13,25,48,0.75)] border border-sky-500/20 rounded-2xl p-6 hover:border-cyan-400/50 transition-all hover:-translate-y-1 shadow-xl"
+                className="cm-hw-card rounded-2xl p-6"
               >
                 <div className="flex items-center justify-between mb-4">
                   <div className="w-10 h-10 rounded-xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-300">

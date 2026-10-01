@@ -2238,34 +2238,38 @@
   display: none;
 }
 
-@media (min-width: 1024px) {
+/* only when the panel is wide enough for photos to sit beside the HUD
+   without being clipped by the diagonal edge or hidden behind it */
+@media (min-width: 1360px) {
   .cm-float-photo {
     display: block;
   }
 }
 
+/* left side: kept clear of the diagonal cut (needs ~10% at top) */
 .cm-float-photo.fp-a {
   top: 6.5rem;
-  left: 2.2rem;
-  width: 150px;
-}
-
-.cm-float-photo.fp-b {
-  bottom: 24%;
-  left: 0.6rem;
+  left: 14%;
   width: 112px;
 }
 
+.cm-float-photo.fp-b {
+  top: 58%;
+  left: 8%;
+  width: 104px;
+}
+
+/* right side: kept away from the bottom-right chat widget */
 .cm-float-photo.fp-c {
-  bottom: 3.6rem;
-  right: 1.6rem;
-  width: 160px;
+  top: 6.5rem;
+  right: 4%;
+  width: 112px;
 }
 
 .cm-float-photo.fp-d {
-  top: 38%;
-  right: 0.8rem;
-  width: 118px;
+  top: 40%;
+  right: 3%;
+  width: 104px;
 }
 
 .cm-float-photo-inner {
@@ -2378,4 +2382,58 @@
 
 .cm-hero-img {
   will-change: transform, opacity;
+}
+
+
+/* ================================================================
+   ✦ V8 — Hardware fleet cards: solid dark (same as the banner below),
+   no light glow
+   ================================================================ */
+.cm-section-alt .cm-hw-card,
+.cm-hw-card {
+  background: linear-gradient(160deg, #0f2347 0%, #070e1c 100%) !important;
+  border: 1px solid rgba(56, 189, 248, 0.3) !important;
+  box-shadow: 0 16px 36px rgba(7, 14, 28, 0.35) !important;
+  transition: transform .3s cubic-bezier(0.16, 1, 0.3, 1), border-color .3s;
+}
+
+.cm-section-alt .cm-hw-card:hover,
+.cm-hw-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(56, 189, 248, 0.65) !important;
+  box-shadow: 0 20px 44px rgba(7, 14, 28, 0.5) !important;
+  /* no blue/white glow */
+}
+
+.cm-hw-card h3 {
+  color: #fff;
+}
+
+.cm-hw-card p {
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.cm-hw-card .text-white\/60 {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.cm-hw-card .border-t {
+  border-top-color: rgba(255, 255, 255, 0.16);
+}
+
+.cm-hw-card .text-emerald-400 {
+  color: #6ee7b7;
+  background: rgba(16, 185, 129, 0.18);
+  border-color: rgba(52, 211, 153, 0.5);
+}
+
+.cm-hw-card .text-cyan-300 {
+  color: #7dd3fc;
+}
+
+/* slightly narrower HUD so side photos have room */
+@media (min-width: 1024px) {
+  .cm-hero-art {
+    max-width: 380px;
+  }
 }
