@@ -1,14 +1,17 @@
+// app/services/cloud-mining/page.tsx
 import type { Metadata } from "next";
+import CloudMining from "@/components/service/service";
 
 export const metadata: Metadata = {
-  title: "Services | BH Ventures FZE LLC",
-  description: "Explore services at BH Ventures FZE LLC.",
+  title: "Cloud Mining | BH Ventures",
+  description:
+    "Rent mining hashrate without buying or managing hardware. Compare BH Ventures cloud mining plans, fees and contract terms.",
 };
 
-export default function ServicesPage() {
+export default function CloudMiningPage() {
   return (
-    <main className="min-h-screen bg-[#0B1220] flex items-center justify-center text-white">
-      {/* Ready for your new services page content */}
+    <main className="w-full min-w-0 min-h-screen bg-[#0a1a2c] overflow-x-clip">
+      <CloudMining />
     </main>
   );
 }
