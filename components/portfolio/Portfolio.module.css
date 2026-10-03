@@ -1,39 +1,34 @@
 /* =========================================================
    BH VENTURES — PORTFOLIO
-   ========================================================= */
+========================================================= */
 
 .portfolio {
   --cream: #f7f6f1;
   --navy: #102632;
   --navy-dark: #071722;
   --navy-soft: #0b202c;
-
   --teal: #48a59b;
   --teal-light: #8ed0c7;
   --teal-sharp: #55d4c6;
-
   --card: #123b46;
   --card-hover: #174953;
   --card-border: rgba(104, 208, 197, 0.32);
-
   --muted: #69777c;
 
   position: relative;
   min-height: 100vh;
   overflow: hidden;
-
   background: var(--navy-dark);
   color: var(--cream);
 }
 
 /* =========================================================
    BACKGROUND GRID
-   ========================================================= */
+========================================================= */
 
 .backgroundGrid {
   position: absolute;
   inset: 0;
-
   z-index: 0;
   pointer-events: none;
 
@@ -49,19 +44,16 @@
     );
 
   background-size: 52px 52px;
-
   opacity: 0.75;
 }
 
 /* =========================================================
    HERO
-   ========================================================= */
+========================================================= */
 
 .hero {
   position: relative;
-
   min-height: 100vh;
-
   overflow: hidden;
 
   display: flex;
@@ -73,14 +65,12 @@
 .heroImage {
   position: absolute;
   inset: 0;
-
   overflow: hidden;
 }
 
 .heroImage img {
   width: 100%;
   height: 100%;
-
   object-fit: cover;
 
   transform: scale(1.08);
@@ -109,11 +99,9 @@
 
 .heroContent {
   position: relative;
-
   z-index: 2;
 
   width: min(1180px, calc(100% - 48px));
-
   margin: 0 auto;
 
   padding: 140px 0 100px;
@@ -127,45 +115,42 @@
 
   font-size: 0.66rem;
   font-weight: 800;
-
   letter-spacing: 0.16em;
   text-transform: uppercase;
 }
 
 .heroTitle {
   max-width: 1000px;
-
   margin: 0;
 
   font-size: clamp(4rem, 8vw, 8rem);
-
   line-height: 0.9;
-
   letter-spacing: -0.065em;
-
   font-weight: 700;
 
   animation:
-    titleIn 1s 0.15s cubic-bezier(0.16, 1, 0.3, 1) both;
+    titleIn 1s 0.15s
+    cubic-bezier(0.16, 1, 0.3, 1)
+    both;
 }
 
 .heroTitle span {
   display: block;
 
   color: var(--teal-light);
-
   font-weight: 700;
 
   text-shadow:
     0 0 30px rgba(72, 165, 155, 0.16);
 
   animation:
-    accentIn 1s 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+    accentIn 1s 0.4s
+    cubic-bezier(0.16, 1, 0.3, 1)
+    both;
 }
 
 .heroDescription {
   max-width: 520px;
-
   margin: 32px 0 0;
 
   color: rgba(247, 246, 241, 0.7);
@@ -180,7 +165,6 @@
 .heroBottom {
   display: flex;
   align-items: center;
-
   gap: 18px;
 
   margin-top: 55px;
@@ -199,42 +183,35 @@
 .heroScroll {
   display: flex;
   align-items: center;
-
   gap: 10px;
 
   color: rgba(247, 246, 241, 0.7);
 
   font-size: 0.63rem;
   font-weight: 700;
-
   letter-spacing: 0.1em;
   text-transform: uppercase;
 }
 
 .heroScroll > span {
   color: var(--teal-light);
-
   font-size: 1rem;
 }
 
 .heroLocation {
   position: absolute;
-
   right: 40px;
   bottom: 38px;
-
   z-index: 3;
 
   display: flex;
   align-items: center;
-
   gap: 8px;
 
   color: rgba(247, 246, 241, 0.65);
 
   font-size: 0.6rem;
   font-weight: 700;
-
   letter-spacing: 0.14em;
 }
 
@@ -252,21 +229,17 @@
 
 /* =========================================================
    INTRO
-   ========================================================= */
+========================================================= */
 
 .intro {
   position: relative;
-
   z-index: 1;
 
   width: min(1180px, calc(100% - 48px));
-
   margin: 0 auto;
 
   display: grid;
-
   grid-template-columns: 90px minmax(0, 1fr);
-
   gap: 60px;
 
   padding: 150px 0;
@@ -276,10 +249,8 @@
   content: "";
 
   position: absolute;
-
   top: 0;
   bottom: 0;
-
   left: -100vw;
   right: -100vw;
 
@@ -293,7 +264,6 @@
 
   font-size: 0.65rem;
   font-weight: 800;
-
   letter-spacing: 0.12em;
 }
 
@@ -307,11 +277,8 @@
   color: var(--cream);
 
   font-size: clamp(3rem, 6vw, 6rem);
-
   line-height: 0.95;
-
   letter-spacing: -0.055em;
-
   font-weight: 600;
 }
 
@@ -321,27 +288,23 @@
 
 .introText {
   max-width: 580px;
-
   margin: 38px 0 0;
 
   color: rgba(247, 246, 241, 0.58);
 
   font-size: 0.95rem;
-
   line-height: 1.9;
 }
 
 /* =========================================================
    SECTORS
-   ========================================================= */
+========================================================= */
 
 .sectors {
   position: relative;
-
   z-index: 1;
 
   width: min(1180px, calc(100% - 48px));
-
   margin: 0 auto;
 
   padding: 120px 0;
@@ -351,10 +314,8 @@
   content: "";
 
   position: absolute;
-
   top: 0;
   bottom: 0;
-
   left: -100vw;
   right: -100vw;
 
@@ -380,7 +341,6 @@
   content: "";
 
   position: absolute;
-
   z-index: -1;
 
   width: 600px;
@@ -403,15 +363,13 @@
 
 /* =========================================================
    SECTION HEADINGS
-   ========================================================= */
+========================================================= */
 
 .sectionHeading {
   position: relative;
-
   z-index: 2;
 
   display: flex;
-
   justify-content: space-between;
   align-items: flex-end;
 
@@ -426,23 +384,18 @@
   color: var(--cream);
 
   font-size: clamp(2.8rem, 5vw, 5rem);
-
   line-height: 0.95;
-
   letter-spacing: -0.055em;
-
   font-weight: 600;
 }
 
 .headingDescription {
   max-width: 410px;
-
   margin: 0;
 
   color: rgba(247, 246, 241, 0.5);
 
   font-size: 0.85rem;
-
   line-height: 1.8;
 }
 
@@ -452,15 +405,13 @@
 
 /* =========================================================
    SECTOR GRID
-   ========================================================= */
+========================================================= */
 
 .sectorGrid {
   position: relative;
-
   z-index: 2;
 
   display: grid;
-
   grid-template-columns:
     repeat(3, minmax(0, 1fr));
 
@@ -469,13 +420,12 @@
 
 /* =========================================================
    SECTOR CARD
-   ========================================================= */
+========================================================= */
 
 .sector {
   position: relative;
 
   min-height: 245px;
-
   padding: 24px 27px;
 
   overflow: hidden;
@@ -483,7 +433,8 @@
   display: flex;
   flex-direction: column;
 
-  border: 1px solid rgba(247, 246, 241, 0.08);
+  border:
+    1px solid rgba(247, 246, 241, 0.08);
 
   border-radius: 14px;
 
@@ -513,12 +464,11 @@
 
 /* =========================================================
    SECTOR CARD IMAGE
-   ========================================================= */
+========================================================= */
 
 .sectorImageWrap {
   position: absolute;
   inset: 0;
-
   z-index: 0;
 }
 
@@ -528,7 +478,9 @@
 
   object-fit: cover;
 
-  filter: grayscale(35%) brightness(0.75);
+  filter:
+    grayscale(35%)
+    brightness(0.75);
 
   transform: scale(1.04);
 
@@ -540,7 +492,9 @@
 .sector:hover .sectorImage {
   transform: scale(1.1);
 
-  filter: grayscale(0%) brightness(0.85);
+  filter:
+    grayscale(0%)
+    brightness(0.85);
 }
 
 .sectorImageOverlay {
@@ -555,7 +509,8 @@
       rgba(6, 12, 24, 0.94) 100%
     );
 
-  transition: background 0.4s ease;
+  transition:
+    background 0.4s ease;
 }
 
 .sector:hover .sectorImageOverlay {
@@ -570,25 +525,22 @@
 
 /* =========================================================
    CARD NUMBER
-   ========================================================= */
+========================================================= */
 
 .sectorNumber {
   position: relative;
-
   z-index: 3;
 
   color: rgba(247, 246, 241, 0.75);
 
   font-size: 0.62rem;
-
   font-weight: 800;
-
   letter-spacing: 0.1em;
 }
 
 /* =========================================================
    CARD CONTENT
-   ========================================================= */
+========================================================= */
 
 .sectorContent {
   position: relative;
@@ -600,29 +552,23 @@
 
 .sectorContent h3 {
   max-width: 230px;
-
   margin: 0 0 12px;
 
   color: #f7f6f1;
 
   font-size: clamp(1.45rem, 2vw, 2rem);
-
   line-height: 1.02;
-
   letter-spacing: -0.035em;
-
   font-weight: 650;
 }
 
 .sectorContent p {
   max-width: 260px;
-
   margin: 0;
 
   color: rgba(247, 246, 241, 0.64);
 
   font-size: 0.72rem;
-
   line-height: 1.65;
 }
 
@@ -634,12 +580,11 @@
   color: rgba(247, 246, 241, 0.4);
 
   font-size: 0.52rem;
-
   font-weight: 800;
-
   letter-spacing: 0.12em;
 
-  transition: color 0.35s ease;
+  transition:
+    color 0.35s ease;
 }
 
 .sector:hover .sectorTags {
@@ -647,30 +592,19 @@
 }
 
 /* =========================================================
-   NO SECTOR ARROW
-   ========================================================= */
-
-.sectorArrow {
-  display: none !important;
-}
-
-/* =========================================================
    PROJECTS
-   ========================================================= */
+========================================================= */
 
 .projects {
   position: relative;
-
   z-index: 1;
 
   width: min(1180px, calc(100% - 48px));
-
   margin: 0 auto;
 
   padding: 120px 0;
 
   background: var(--cream);
-
   color: var(--navy);
 }
 
@@ -678,10 +612,8 @@
   content: "";
 
   position: absolute;
-
   top: 0;
   bottom: 0;
-
   left: -100vw;
   right: -100vw;
 
@@ -709,7 +641,7 @@
 
 /* =========================================================
    PROJECT CARD
-   ========================================================= */
+========================================================= */
 
 .projectCard {
   position: relative;
@@ -724,7 +656,6 @@
   border-radius: 12px;
 
   background: #0d2632;
-
   color: inherit;
 
   text-decoration: none;
@@ -772,7 +703,6 @@
 
 .imageOverlay {
   position: absolute;
-
   inset: 0;
 
   background:
@@ -787,7 +717,6 @@
 .projectCategory,
 .viewProject {
   position: absolute;
-
   z-index: 2;
 }
 
@@ -796,7 +725,6 @@
   left: 20px;
 
   font-size: 0.62rem;
-
   font-weight: 800;
 }
 
@@ -808,11 +736,8 @@
     rgba(255, 255, 255, 0.7);
 
   font-size: 0.58rem;
-
   font-weight: 700;
-
   letter-spacing: 0.1em;
-
   text-transform: uppercase;
 }
 
@@ -820,23 +745,11 @@
   right: 20px;
   bottom: 18px;
 
-  display: flex;
-
-  align-items: center;
-
-  gap: 7px;
-
   color: white;
 
   font-size: 0.65rem;
-
   font-weight: 800;
-
   text-transform: uppercase;
-}
-
-.viewProject span {
-  color: var(--teal-light);
 }
 
 .projectContent {
@@ -849,7 +762,6 @@
   color: var(--cream);
 
   font-size: 1.55rem;
-
   letter-spacing: -0.035em;
 }
 
@@ -862,29 +774,22 @@
     rgba(247, 246, 241, 0.58);
 
   font-size: 0.78rem;
-
   line-height: 1.7;
 }
 
 .projectFooter {
   display: flex;
-
   align-items: center;
-
-  justify-content: space-between;
+  justify-content: flex-start;
 }
 
 .status {
   display: inline-flex;
-
   align-items: center;
-
   gap: 7px;
 
   font-size: 0.55rem;
-
   font-weight: 800;
-
   letter-spacing: 0.1em;
 }
 
@@ -918,16 +823,13 @@
 }
 
 .exploring .statusDot {
-  background: rgba(247, 246, 241, 0.55);
-}
-
-.cardArrow {
-  color: var(--teal-light);
+  background:
+    rgba(247, 246, 241, 0.55);
 }
 
 /* =========================================================
    FUTURE
-   ========================================================= */
+========================================================= */
 
 .future {
   position: relative;
@@ -935,7 +837,6 @@
   min-height: 720px;
 
   display: flex;
-
   align-items: center;
 
   overflow: hidden;
@@ -943,7 +844,6 @@
 
 .futureImage {
   position: absolute;
-
   inset: 0;
 }
 
@@ -961,7 +861,6 @@
 
 .futureOverlay {
   position: absolute;
-
   inset: 0;
 
   background:
@@ -975,11 +874,9 @@
 
 .futureContent {
   position: relative;
-
   z-index: 2;
 
   width: min(1180px, calc(100% - 48px));
-
   margin: 0 auto;
 }
 
@@ -989,11 +886,8 @@
   margin: 0;
 
   font-size: clamp(3.4rem, 7vw, 7rem);
-
   line-height: 0.9;
-
   letter-spacing: -0.06em;
-
   font-weight: 600;
 
   animation:
@@ -1013,31 +907,24 @@
     rgba(247, 246, 241, 0.64);
 
   font-size: 0.9rem;
-
   line-height: 1.8;
 }
 
 .cta {
   display: inline-flex;
-
   align-items: center;
-
   gap: 22px;
 
   padding: 15px 21px;
 
   background: var(--cream);
-
   color: var(--navy);
 
   text-decoration: none;
 
   font-size: 0.62rem;
-
   font-weight: 800;
-
   letter-spacing: 0.08em;
-
   text-transform: uppercase;
 
   transition:
@@ -1047,19 +934,67 @@
 
 .cta span {
   color: var(--teal);
-
   font-size: 1rem;
 }
 
 .cta:hover {
   transform: translateY(-3px);
-
   background: var(--teal-light);
 }
 
 /* =========================================================
+   SCROLL REVEAL
+========================================================= */
+
+:global([data-reveal]) {
+  opacity: 0;
+
+  transform:
+    translateY(45px);
+
+  transition:
+    opacity 0.8s ease,
+    transform 0.8s
+      cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+[data-reveal].revealed {
+  opacity: 1;
+
+  transform:
+    translateY(0);
+}
+
+/* =========================================================
+   STAGGERED CARD REVEAL
+========================================================= */
+
+.sector:nth-child(2),
+.projectCard:nth-child(2) {
+  transition-delay: 0.08s;
+}
+
+.sector:nth-child(3),
+.projectCard:nth-child(3) {
+  transition-delay: 0.16s;
+}
+
+.sector:nth-child(4),
+.projectCard:nth-child(4) {
+  transition-delay: 0.24s;
+}
+
+.sector:nth-child(5) {
+  transition-delay: 0.32s;
+}
+
+.sector:nth-child(6) {
+  transition-delay: 0.4s;
+}
+
+/* =========================================================
    ANIMATIONS
-   ========================================================= */
+========================================================= */
 
 @keyframes heroZoom {
   from {
@@ -1119,9 +1054,10 @@
 
 /* =========================================================
    RESPONSIVE
-   ========================================================= */
+========================================================= */
 
 @media (max-width: 1000px) {
+
   .sectorGrid {
     grid-template-columns:
       repeat(2, minmax(0, 1fr));
@@ -1138,6 +1074,7 @@
 }
 
 @media (max-width: 900px) {
+
   .intro {
     grid-template-columns: 1fr;
     gap: 20px;
@@ -1149,10 +1086,17 @@
 }
 
 @media (max-width: 650px) {
+
   .hero {
     width: 100vw;
     margin-left: calc(50% - 50vw);
     border-radius: 0;
+  }
+
+  .heroImage img {
+    object-position: center 40%;
+    transform: scale(1.01);
+    animation: none;
   }
 
   .heroContent,
@@ -1170,6 +1114,10 @@
   .heroTitle {
     font-size:
       clamp(3.3rem, 15vw, 5rem);
+  }
+
+  .heroDescription {
+    max-width: 100%;
   }
 
   .heroLocation {
@@ -1214,20 +1162,20 @@
   }
 }
 
-/* -----------------------------------------------------
-   EXTRA MOBILE FIXES (phones, ~480px and down)
-   Same design/colors/spacing rhythm as above — these
-   just rescale text, spacing and hit-targets so nothing
-   overflows or crowds on narrow screens.
-   ----------------------------------------------------- */
+/* =========================================================
+   EXTRA MOBILE
+========================================================= */
 
 @media (max-width: 480px) {
+
   .heroContent {
     padding: 60px 0 50px;
   }
 
   .heroTitle {
-    font-size: clamp(2.5rem, 12vw, 3.6rem);
+    font-size:
+      clamp(2.5rem, 12vw, 3.6rem);
+
     letter-spacing: -0.04em;
   }
 
@@ -1253,6 +1201,7 @@
   .heroLocation {
     right: 14px;
     bottom: 16px;
+
     font-size: 0.53rem;
     gap: 6px;
   }
@@ -1264,7 +1213,8 @@
   }
 
   .introContent h2 {
-    font-size: clamp(2.1rem, 10vw, 3rem);
+    font-size:
+      clamp(2.1rem, 10vw, 3rem);
   }
 
   .introText {
@@ -1284,7 +1234,8 @@
   }
 
   .sectionHeading h2 {
-    font-size: clamp(2.1rem, 11vw, 3.2rem);
+    font-size:
+      clamp(2.1rem, 11vw, 3.2rem);
   }
 
   .headingDescription {
@@ -1299,7 +1250,8 @@
 
   .sectorContent h3 {
     max-width: 100%;
-    font-size: clamp(1.2rem, 6vw, 1.5rem);
+    font-size:
+      clamp(1.2rem, 6vw, 1.5rem);
   }
 
   .sectorContent p {
@@ -1334,7 +1286,8 @@
   }
 
   .futureContent h2 {
-    font-size: clamp(2.3rem, 11vw, 3.4rem);
+    font-size:
+      clamp(2.3rem, 11vw, 3.4rem);
   }
 
   .futureContent > p:not(.sectionEyebrow) {
@@ -1351,7 +1304,12 @@
   }
 }
 
+/* =========================================================
+   SMALL PHONES
+========================================================= */
+
 @media (max-width: 380px) {
+
   .heroContent,
   .intro,
   .sectors,
@@ -1361,15 +1319,18 @@
   }
 
   .heroTitle {
-    font-size: clamp(2.1rem, 12vw, 3rem);
+    font-size:
+      clamp(2.1rem, 12vw, 3rem);
   }
 
   .introContent h2 {
-    font-size: clamp(1.9rem, 11vw, 2.6rem);
+    font-size:
+      clamp(1.9rem, 11vw, 2.6rem);
   }
 
   .sectionHeading h2 {
-    font-size: clamp(1.9rem, 11vw, 2.7rem);
+    font-size:
+      clamp(1.9rem, 11vw, 2.7rem);
   }
 
   .sector {
@@ -1378,11 +1339,23 @@
   }
 
   .futureContent h2 {
-    font-size: clamp(2rem, 12vw, 2.9rem);
+    font-size:
+      clamp(2rem, 12vw, 2.9rem);
   }
 }
 
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
+
 @media (prefers-reduced-motion: reduce) {
+
+  :global([data-reveal]) {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
   .heroImage img,
   .futureImage img,
   .heroTitle,
@@ -1396,7 +1369,6 @@
   .sector,
   .projectCard,
   .projectImage img,
-  .sectorIcon,
   .cta {
     transition: none;
   }
