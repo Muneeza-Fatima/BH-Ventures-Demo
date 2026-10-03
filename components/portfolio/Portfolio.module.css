@@ -1155,7 +1155,7 @@
   }
 
   .heroContent {
-    padding: 80px 0 60px;
+    padding: 120px 0 60px;
   }
 
   .heroTitle {
@@ -1216,7 +1216,13 @@
 @media (max-width: 480px) {
 
   .heroContent {
-    padding: 60px 0 50px;
+    padding: 110px 0 50px;
+  }
+
+  .eyebrow {
+    font-size: 0.58rem;
+    letter-spacing: 0.12em;
+    line-height: 1.5;
   }
 
   .heroTitle {

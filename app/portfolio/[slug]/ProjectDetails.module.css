@@ -53,7 +53,14 @@
 }
 
 .backButton span {
+  display: inline-flex;
+  align-items: center;
   transition: transform 0.3s ease;
+}
+
+.backButton svg {
+  width: 13px;
+  height: 13px;
 }
 
 .backButton:hover,
@@ -296,6 +303,11 @@
     background 0.25s ease;
 }
 
+.liveArrow svg {
+  width: 12px;
+  height: 12px;
+}
+
 .liveProjectButton:hover .liveArrow {
   transform: translate(2px, -2px);
   background: rgba(16, 38, 50, 0.12);
@@ -418,12 +430,25 @@
 }
 
 .sidebarNote a {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
   color: #102632;
   font-size: 0.68rem;
   font-weight: 800;
   text-decoration: none;
   transition:
     color 0.2s ease;
+}
+
+.sidebarNote a svg {
+  width: 12px;
+  height: 12px;
+  transition: transform 0.25s ease;
+}
+
+.sidebarNote a:hover svg {
+  transform: translateX(3px);
 }
 
 .sidebarNote a:hover {
@@ -554,6 +579,11 @@
     transform 0.3s ease,
     background 0.25s ease,
     color 0.25s ease;
+}
+
+.bottomBack svg {
+  width: 12px;
+  height: 12px;
 }
 
 .bottomBack:hover {

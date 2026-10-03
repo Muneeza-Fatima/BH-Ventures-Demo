@@ -15,6 +15,36 @@ type PageProps = {
 };
 
 // =====================================================
+// ARROW ICON (SVG, renders the same on every device)
+// =====================================================
+
+function ArrowIcon({
+  direction = "right",
+}: {
+  direction?: "left" | "right" | "upRight";
+}) {
+  const paths = {
+    left: "M19 12H5M11 6l-6 6 6 6",
+    right: "M5 12h14M13 6l6 6-6 6",
+    upRight: "M7 17L17 7M8 7h9v9",
+  };
+
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <path d={paths[direction]} />
+    </svg>
+  );
+}
+
+// =====================================================
 // STATIC PROJECT PAGES
 // =====================================================
 
@@ -42,9 +72,7 @@ export default async function ProjectDetailsPage({
   return (
     <main className={styles.page}>
 
-      {/* =================================================
-          NAVIGATION
-      ================================================= */}
+      {/* NAVIGATION */}
 
       <nav className={styles.topNav}>
 
@@ -52,7 +80,9 @@ export default async function ProjectDetailsPage({
           href="/portfolio"
           className={styles.backButton}
         >
-          <span>←</span>
+          <span>
+            <ArrowIcon direction="left" />
+          </span>
           Back to Portfolio
         </Link>
 
@@ -65,9 +95,7 @@ export default async function ProjectDetailsPage({
 
       </nav>
 
-      {/* =================================================
-          HEADER
-      ================================================= */}
+      {/* HEADER */}
 
       <section className={styles.header}>
 
@@ -98,9 +126,7 @@ export default async function ProjectDetailsPage({
 
       </section>
 
-      {/* =================================================
-          AUTHOR
-      ================================================= */}
+      {/* AUTHOR */}
 
       <section className={styles.author}>
 
@@ -120,9 +146,7 @@ export default async function ProjectDetailsPage({
 
       </section>
 
-      {/* =================================================
-          HERO IMAGE
-      ================================================= */}
+      {/* HERO IMAGE */}
 
       <section className={styles.heroImage}>
 
@@ -139,9 +163,7 @@ export default async function ProjectDetailsPage({
 
       </section>
 
-      {/* =================================================
-          LIVE PROJECT BUTTON
-      ================================================= */}
+      {/* LIVE PROJECT BUTTON */}
 
       {project.liveUrl && (
         <div className={styles.liveProjectWrapper}>
@@ -157,22 +179,18 @@ export default async function ProjectDetailsPage({
             </span>
 
             <span className={styles.liveArrow}>
-              ↗
+              <ArrowIcon direction="upRight" />
             </span>
           </a>
 
         </div>
       )}
 
-      {/* =================================================
-          CONTENT
-      ================================================= */}
+      {/* CONTENT */}
 
       <section className={styles.contentLayout}>
 
-        {/* =================================================
-            SIDEBAR
-        ================================================= */}
+        {/* SIDEBAR */}
 
         <aside className={styles.sidebar}>
 
@@ -233,16 +251,15 @@ export default async function ProjectDetailsPage({
             </p>
 
             <Link href="/contact">
-              Speak with our team →
+              Speak with our team
+              <ArrowIcon direction="right" />
             </Link>
 
           </div>
 
         </aside>
 
-        {/* =================================================
-            ARTICLE
-        ================================================= */}
+        {/* ARTICLE */}
 
         <article className={styles.article}>
 
@@ -295,9 +312,7 @@ export default async function ProjectDetailsPage({
 
       </section>
 
-      {/* =================================================
-          BOTTOM NAVIGATION
-      ================================================= */}
+      {/* BOTTOM NAVIGATION */}
 
       <div className={styles.bottomNavigation}>
 
@@ -307,7 +322,7 @@ export default async function ProjectDetailsPage({
         >
 
           <span>
-            ←
+            <ArrowIcon direction="left" />
           </span>
 
           Back to Portfolio
