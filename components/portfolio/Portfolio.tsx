@@ -346,12 +346,6 @@ export default function Portfolio() {
                   {project.category}
                 </span>
 
-                <span
-                  className={styles.viewProject}
-                >
-                  View
-                </span>
-
               </div>
 
               <div
@@ -387,6 +381,15 @@ export default function Portfolio() {
 
                     {project.status}
 
+                  </span>
+
+                  <span className={styles.viewProject}>
+                    <span className={styles.viewText}>View project</span>
+                    <span className={styles.viewArrow} aria-hidden="true">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M5 12h14M13 6l6 6-6 6" />
+                      </svg>
+                    </span>
                   </span>
 
                 </div>
@@ -446,7 +449,11 @@ export default function Portfolio() {
             className={styles.cta}
           >
             Start a conversation
-            <span>↗</span>
+            <span aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M5 12h14M13 6l6 6-6 6" />
+              </svg>
+            </span>
           </Link>
 
         </div>

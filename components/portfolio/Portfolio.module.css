@@ -714,8 +714,7 @@
 }
 
 .projectNumber,
-.projectCategory,
-.viewProject {
+.projectCategory {
   position: absolute;
   z-index: 2;
 }
@@ -742,14 +741,54 @@
 }
 
 .viewProject {
-  right: 20px;
-  bottom: 18px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+
+  margin-left: auto;
+  padding: 8px 8px 8px 14px;
+
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 999px;
 
   color: white;
 
-  font-size: 0.65rem;
+  font-size: 0.6rem;
   font-weight: 800;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
+
+  transition:
+    background 0.3s ease,
+    border-color 0.3s ease;
+}
+
+.viewArrow {
+  display: grid;
+  place-items: center;
+
+  width: 22px;
+  height: 22px;
+
+  border-radius: 50%;
+  background: var(--teal);
+  color: var(--navy-dark);
+
+  transition: transform 0.3s ease;
+}
+
+.viewArrow svg {
+  width: 11px;
+  height: 11px;
+}
+
+.projectCard:hover .viewProject {
+  background: rgba(72, 165, 155, 0.35);
+  border-color: var(--teal-light);
+}
+
+.projectCard:hover .viewArrow {
+  transform: translateX(3px);
 }
 
 .projectContent {
@@ -780,7 +819,8 @@
 .projectFooter {
   display: flex;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: space-between;
+  gap: 12px;
 }
 
 .status {
@@ -933,8 +973,14 @@
 }
 
 .cta span {
+  display: inline-flex;
+  align-items: center;
   color: var(--teal);
-  font-size: 1rem;
+}
+
+.cta svg {
+  width: 14px;
+  height: 14px;
 }
 
 .cta:hover {
@@ -1091,6 +1137,7 @@
     width: 100vw;
     margin-left: calc(50% - 50vw);
     border-radius: 0;
+    min-height: auto;
   }
 
   .heroImage img {
@@ -1372,4 +1419,15 @@
   .cta {
     transition: none;
   }
+}
+/* Project card "View" button on small phones: arrow only */
+@media (max-width: 480px) {
+  .viewProject {
+    padding: 6px;
+  }
+
+  .viewText {
+    display: none;
+  }
+
 }
