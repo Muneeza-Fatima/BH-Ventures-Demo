@@ -30,7 +30,7 @@ export async function POST(req: NextRequest) {
         const query = lastUserMessage?.content ?? "";
 
         const knowledgeBase = buildKnowledgeBase();
-        const relevant = retrieveRelevantChunks(query, knowledgeBase, 4);
+        const relevant = retrieveRelevantChunks(query, knowledgeBase, 6);
         const context = relevant.map((c) => `### ${c.title}\n${c.text}`).join("\n\n");
         const systemPrompt = `${BASE_SYSTEM_PROMPT}\n\nRelevant context:\n${context}`;
 

@@ -97,8 +97,7 @@ export default function BHChatBot() {
     const [loading, setLoading] = useState(false);
     const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
     const [transcriptCopied, setTranscriptCopied] = useState(false);
-    const [showProactive, setShowProactive] = useState(false);
-    const [proactiveDismissed, setProactiveDismissed] = useState(false);
+
     const scrollRef = useRef<HTMLDivElement>(null);
     const inputRef = useRef<HTMLInputElement>(null);
     const titleId = useId();
@@ -110,28 +109,7 @@ export default function BHChatBot() {
         }
     }, [messages, open, loading]);
 
-    // A one-time proactive nudge, not a repeating pattern — appears once
-    // if the visitor hasn't opened or dismissed it.
-    useEffect(() => {
-        if (open || proactiveDismissed) {
-            setShowProactive(false);
-            return;
-        }
-        const t = setTimeout(() => setShowProactive(true), 3500);
-        return () => clearTimeout(t);
-    }, [open, proactiveDismissed]);
 
-    function dismissProactive(e: React.MouseEvent) {
-        e.stopPropagation();
-        setShowProactive(false);
-        setProactiveDismissed(true);
-    }
-
-    function openFromProactive() {
-        setShowProactive(false);
-        setProactiveDismissed(true);
-        setOpen(true);
-    }
 
     async function sendUserMessage(textToSend?: string) {
         const text = (textToSend ?? input).trim();
@@ -362,44 +340,18 @@ export default function BHChatBot() {
                 )}
             </AnimatePresence>
 
-            <AnimatePresence>
-                {!open && showProactive && (
-                    <motion.div
-                        initial={{ opacity: 0, y: 10, scale: 0.96 }}
-                        animate={{ opacity: 1, y: 0, scale: 1 }}
-                        exit={{ opacity: 0, y: 10, scale: 0.96 }}
-                        transition={{ duration: 0.2 }}
-                        className="chatbot-proactive"
-                        onClick={openFromProactive}
-                    >
-                        <div className="chatbot-proactive-avatar">
-                            <ChatBubbleIcon />
-                        </div>
-                        <p className="chatbot-proactive-text">
-                            Looking into a venture, trading program, or the Web3 Studio? Ask away — I'm here to help.
-                        </p>
-                        <button onClick={dismissProactive} className="chatbot-proactive-close" aria-label="Dismiss">
-                            <X size={12} />
-                        </button>
-                    </motion.div>
-                )}
-            </AnimatePresence>
+
 
             <div className="chatbot-trigger-wrap">
                 {!open && <span className="chatbot-tooltip">Chat with BH Ventures</span>}
                 {!open && <span className="chatbot-pulse-ring" />}
                 <button
-                    onClick={() => {
-                        setShowProactive(false);
-                        setProactiveDismissed(true);
-                        setOpen((v) => !v);
-                    }}
+                    onClick={() => setOpen((v) => !v)}
                     className={`chatbot-trigger-btn${open ? " is-open" : ""}`}
                     aria-label={open ? "Close chat" : "Open chat"}
                 >
                     {open ? <X size={24} strokeWidth={2.4} /> : <ChatBubbleIcon />}
                 </button>
-                {!open && showProactive && <span className="chatbot-trigger-badge">1</span>}
             </div>
         </div>
     );

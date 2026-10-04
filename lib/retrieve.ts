@@ -47,6 +47,19 @@ const SYNONYM_GROUPS: string[][] = [
     ["location", "based", "office", "address", "where are you"],
     // Founder / leadership
     ["founder", "ceo", "owner", "leadership"],
+    // Portfolio / projects
+    ["portfolio", "project", "projects", "built", "case study", "case studies", "work", "works", "what have you built", "what did you build"],
+    // Individual project names
+    ["medirag", "medi rag", "medical ai"],
+    ["cyberisai", "cyberis", "computer vision", "cctv ai"],
+    ["vectorcraft", "vector craft", "digital studio"],
+    ["english tea house", "tea house"],
+    // Cloud mining / Bitcoin mining
+    ["cloud mining", "mining", "bitcoin mining", "hashrate", "hash rate", "btc mining", "virtual mining", "miner", "miners", "th/s", "usdt mining"],
+    // Insights / articles / blog
+    ["insight", "insights", "article", "articles", "blog", "blog post", "read", "publication", "trend", "trends", "opinion", "report", "reports"],
+    // Ventures page
+    ["venture", "ventures", "lineup"],
 ];
 
 // Longest phrases first so multi-word matches win before single-word ones.
@@ -100,7 +113,7 @@ function tokenize(text: string): string[] {
 export function retrieveRelevantChunks(
     query: string,
     chunks: KnowledgeChunk[],
-    topK = 4
+    topK = 6
 ): KnowledgeChunk[] {
     const queryWords = new Set(tokenize(query));
     if (queryWords.size === 0) return chunks.slice(0, topK);

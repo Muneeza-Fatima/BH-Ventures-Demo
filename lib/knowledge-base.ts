@@ -1,4 +1,6 @@
 import { SERVICES } from "@/data/services";
+import { projects } from "@/data/projects";
+import { ARTICLES, CATEGORIES } from "@/components/insight/insights.data";
 import { careerJobs } from "@/components/careers/careersJobsData";
 import { directChannels, quickLinks } from "@/components/contact/contactData";
 
@@ -365,22 +367,178 @@ Final pricing and availability are confirmed at the time of quote.`,
 }
 
 // ---------- VENTURES ----------
-// NOT FOUND in components.zip — no Ventures data/components were included.
-// Add real content here once you share the Ventures page source.
 function buildVenturesChunks(): KnowledgeChunk[] {
-    return [];
+    return [
+        {
+            id: "ventures:overview",
+            title: "Ventures Page — Overview",
+            text: `The Ventures page showcases BH Ventures' full lineup of licensed business activities.
+Tagline: "Pick your discipline. We'll take it from there." — Trade. Web3. AI. Marketing.
+Nine services, one address for all of them — each engineered to the same exacting standard.
+Services span: New Automobile Trading, Foodstuff Trading, Web3 Venture Studio, Digital Analytics,
+Marketing via Social Media, Innovation & AI Research, Advertising, Marketing Management,
+Surveying & Evaluating, and Exhibition Organizing.`,
+        },
+        ...SERVICES.map((s) => ({
+            id: `ventures:service:${s.slug}`,
+            title: `Venture — ${s.title}`,
+            text: [
+                `Venture/Service: ${s.title} (${s.sub})`,
+                s.desc,
+                `Included: ${s.whatsIncluded.join("; ")}`,
+            ].join("\n"),
+        })),
+    ];
 }
 
 // ---------- PORTFOLIO ----------
-// NOT FOUND in components.zip — no Portfolio data/components were included.
 function buildPortfolioChunks(): KnowledgeChunk[] {
-    return [];
+    const sectorsList = [
+        { title: "Artificial Intelligence", description: "Intelligent systems built to solve complex business challenges.", tags: "AI / ML / AUTOMATION" },
+        { title: "Digital Transformation", description: "Modern technology helping businesses evolve and scale.", tags: "CLOUD / DIGITAL / STRATEGY" },
+        { title: "Automotive", description: "Technology shaping the future of mobility and connected experiences.", tags: "MOBILITY / CONNECTED / SMART" },
+        { title: "Business Technology", description: "Digital infrastructure designed around modern business needs.", tags: "PLATFORMS / SYSTEMS / INNOVATION" },
+        { title: "Digital Analytics", description: "Turning complex data into meaningful business intelligence.", tags: "DATA / INSIGHTS / INTELLIGENCE" },
+        { title: "Emerging Markets", description: "Exploring opportunities across high-growth markets and industries.", tags: "GROWTH / MARKETS / VENTURES" },
+    ];
+
+    const sectorsText = sectorsList
+        .map((s) => `- ${s.title}: ${s.description} (${s.tags})`)
+        .join("\n");
+
+    const portfolioOverview: KnowledgeChunk = {
+        id: "portfolio:overview",
+        title: "Portfolio Page — Overview",
+        text: `BH Ventures Portfolio: "Ideas that move business forward." — Exploring ventures,
+technologies and opportunities shaping the future of business from Dubai and beyond.
+BH Ventures works across technology, business and innovation to identify opportunities,
+develop ideas and build ventures designed for a rapidly changing world.
+
+Areas of Focus (Sectors):\n${sectorsText}`,
+    };
+
+    const projectChunks: KnowledgeChunk[] = projects.map((p) => ({
+        id: `portfolio:project:${p.slug}`,
+        title: `Portfolio Project — ${p.title}`,
+        text: [
+            `Project: ${p.title} (${p.category})`,
+            `Status: ${p.status} | Location: ${p.location}`,
+            p.description,
+            p.liveUrl ? `Live URL: ${p.liveUrl}` : "",
+            `Technologies: ${p.tech.join(", ")}`,
+            p.sections.map((s) => `${s.heading}: ${s.text}`).join("\n"),
+            `Key takeaways: ${p.takeaways.join("; ")}`,
+        ]
+            .filter(Boolean)
+            .join("\n"),
+    }));
+
+    return [portfolioOverview, ...projectChunks];
 }
 
 // ---------- INSIGHTS ----------
-// NOT FOUND in components.zip — no Insights/blog data/components were included.
 function buildInsightsChunks(): KnowledgeChunk[] {
-    return [];
+    const overviewChunk: KnowledgeChunk = {
+        id: "insights:overview",
+        title: "Insights Page — Overview",
+        text: `The Insights section of BH Ventures contains practical articles, trend reports,
+and opinions on AI, Web3, business & markets, digital analytics, marketing, and future technology trends.
+Categories: ${
+            CATEGORIES.map((c) => `${c.label}`).join(", ")
+        }.
+Total articles: ${ARTICLES.length}.`,
+    };
+
+    const articleChunks: KnowledgeChunk[] = ARTICLES.map((a) => {
+        // Extract readable text from body blocks (headings, paragraphs, lists, quotes, callouts)
+        const bodyText = a.body
+            .filter((b) => b.t !== "chart")
+            .map((b) => {
+                if (b.t === "p" || b.t === "h" || b.t === "quote") return b.text;
+                if (b.t === "callout") return `${b.label}: ${b.text}`;
+                if (b.t === "list") return (b.items as string[]).map((i: string) => `- ${i}`).join("\n");
+                return "";
+            })
+            .filter(Boolean)
+            .join("\n");
+
+        const catLabel = CATEGORIES.find((c) => c.id === a.category)?.label ?? a.category;
+
+        return {
+            id: `insight:${a.slug}`,
+            title: `Insight — ${a.title}`,
+            text: [
+                `Article: "${a.title}"`,
+                `Category: ${catLabel} | Type: ${a.type} | Read time: ${a.minutes} min`,
+                `Summary: ${a.excerpt}`,
+                `Key takeaways: ${a.takeaways.join("; ")}`,
+                bodyText,
+            ]
+                .filter(Boolean)
+                .join("\n"),
+        };
+    });
+
+    return [overviewChunk, ...articleChunks];
+}
+
+// ---------- CLOUD MINING ----------
+function buildCloudMiningChunks(): KnowledgeChunk[] {
+    return [
+        {
+            id: "cloud-mining:overview",
+            title: "Cloud Mining Service — Overview",
+            text: `BH Ventures offers a Cloud Mining service (available at /services) that lets clients
+rent Bitcoin mining hashrate without buying or managing hardware.
+All mining is managed inside institutional data centers — no hardware, no technical knowledge required.
+Clients monitor live performance and receive BTC directly to their wallet.
+Two main models:
+1. Virtual Mining — on-demand, paid in USDT, flexible 1–30 day durations, no maintenance fees.
+2. Long-Term Contracts — fixed 5-year institutional agreements with dedicated hashrate tiers.
+Live price: 0.0422 USDT per TH/s per day (Virtual Mining).
+Supported pools: SegPool (automated payouts), Antpool, F2Pool, Foundry USA, Binance Pool (SHA-256 stratum).`,
+        },
+        {
+            id: "cloud-mining:virtual",
+            title: "Cloud Mining — Virtual Mining Plans",
+            text: `Virtual Mining fixed packages (paid in USDT):
+- Spark: 7 days, 1 miner, 200 TH/s, $59.05, est. 0.00064988 BTC
+- Core: 7 days, 4 miners, 800 TH/s, $236.19, est. 0.00259953 BTC (most popular)
+- Rig: 30 days, 10 miners, 2,000 TH/s, $2,530.62, est. 0.02785210 BTC
+- Fleet: 30 days, 50 miners, 10,000 TH/s, $12,653.11, est. 0.13926050 BTC
+
+Flexible Mining: choose your own budget (50–50,000 USDT) and speed (200–20,000 TH/s).
+Hashrate runs at 0.0422 USDT per TH/s per day until balance is used, with top-up alerts.
+Daily BTC rewards credited every 24h (00:00 UTC) directly to your wallet — no withdrawal lockups.`,
+        },
+        {
+            id: "cloud-mining:longterm",
+            title: "Cloud Mining — Long-Term Contract Plans",
+            text: `Long-Term Contract plans (5-year institutional agreements):
+- Standard Efficiency: 15 J/TH efficiency, $12 per TH/s, 98% uptime, 0.08/kWh hosting rate
+- High Efficiency: 12 J/TH efficiency, $21 per TH/s, 98% uptime, 0.08/kWh hosting rate
+
+Contract Terms: Fixed 5-year period.
+Payment Schedule: Hosting fees paid within 15 days of the billing period.
+Uptime Guarantee: 98% uptime target confirmed in the final offer.
+Designed for large-scale, cost-efficient Bitcoin accumulation.`,
+        },
+        {
+            id: "cloud-mining:faq",
+            title: "Cloud Mining — FAQ",
+            text: `Q: What is the difference between Virtual Mining and Long-term Contracts?
+A: Virtual Mining is on-demand (USDT), 1–30 days, no hardware commitment or maintenance fees — ideal for flexible testing. Long-Term Contracts are fixed 5-year institutional agreements with dedicated hashrate tiers (15 J/TH or 12 J/TH), for large-scale Bitcoin accumulation.
+
+Q: Can I connect my hashrate to my own mining pool?
+A: Yes — mine to SegPool for automated payouts, or point to any SHA-256 stratum-compatible pool (Antpool, F2Pool, Foundry USA, Binance Pool).
+
+Q: Do I need technical knowledge or equipment?
+A: None. BH Ventures manages all hardware, installation, cooling and firmware maintenance inside institutional data centers.
+
+Q: When are Bitcoin rewards distributed?
+A: Daily BTC rewards accumulate and are credited to your wallet every 24 hours (00:00 UTC) with no withdrawal lockups or hidden fees.`,
+        },
+    ];
 }
 
 // ---------- CAREERS ----------
@@ -448,6 +606,7 @@ export function buildKnowledgeBase(): KnowledgeChunk[] {
         ...buildAboutChunks(),
         ...buildServiceChunks(),
         ...buildServiceDetailChunks(),
+        ...buildCloudMiningChunks(),
         ...buildVenturesChunks(),
         ...buildPortfolioChunks(),
         ...buildInsightsChunks(),
