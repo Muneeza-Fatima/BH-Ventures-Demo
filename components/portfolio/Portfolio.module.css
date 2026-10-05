@@ -3165,10 +3165,6 @@
     grid-template-columns: minmax(0, 1fr);
   }
 
-  .orbit {
-    width: min(var(--size), 100%);
-    max-width: 100%;
-  }
 }
 
 @media (max-width: 900px) {
@@ -3263,4 +3259,62 @@
   .heroTitle {
     font-size: 6.2rem;
   }
+}
+
+
+/* =========================================================
+   ORBIT — sized from one variable so every ring, node and the
+   core stay perfectly concentric on any screen width
+========================================================= */
+
+.orbit {
+  --size: min(440px, 86vw);
+
+  width: var(--size);
+  height: var(--size);
+  max-width: none;
+  margin: 0;
+  transform: none;
+}
+
+.ring1 {
+  width: calc(var(--size) * 0.409);
+  height: calc(var(--size) * 0.409);
+  --r: calc(var(--size) * 0.2045);
+}
+
+.ring2 {
+  width: calc(var(--size) * 0.682);
+  height: calc(var(--size) * 0.682);
+  --r: calc(var(--size) * 0.341);
+}
+
+.ring3 {
+  width: calc(var(--size) * 0.955);
+  height: calc(var(--size) * 0.955);
+  --r: calc(var(--size) * 0.4773);
+}
+
+.node {
+  width: calc(var(--size) * 0.105);
+  height: calc(var(--size) * 0.105);
+  margin: calc(var(--size) * -0.0525) 0 0 calc(var(--size) * -0.0525);
+}
+
+.nodeInner {
+  border-radius: 30%;
+}
+
+.nodeInner svg {
+  width: 44%;
+  height: 44%;
+}
+
+.orbitCore {
+  width: calc(var(--size) * 0.218);
+  height: calc(var(--size) * 0.218);
+}
+
+.orbitCore span {
+  font-size: calc(var(--size) * 0.034);
 }
