@@ -119,8 +119,7 @@ export const projects: Project[] = [
     description:
       "An AI-powered computer vision platform designed to enhance CCTV monitoring through automated detection of security-related events.",
 
-    image:
-      "https://images.unsplash.com/photo-1557597774-9d273605dfa9?auto=format&fit=crop&w=1600&q=85",
+    image: "/cyberisai-detection.png",
 
     video: "/videos/cyberisai.mp4",
 
