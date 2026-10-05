@@ -9,6 +9,7 @@ import {
   type ReactNode,
 } from "react";
 import Link from "next/link";
+import { Plus_Jakarta_Sans } from "next/font/google";
 import {
   AnimatePresence,
   motion,
@@ -31,6 +32,11 @@ import {
 } from "lucide-react";
 import styles from "./Portfolio.module.css";
 import { projects } from "@/data/projects";
+
+const jakarta = Plus_Jakarta_Sans({
+  subsets: ["latin"],
+  weight: ["500", "600", "700", "800"],
+});
 
 /* ─────────────────────────────────────────────
    DATA
@@ -566,7 +572,7 @@ export default function Portfolio() {
   }
 
   return (
-    <main className={styles.portfolio}>
+    <main className={`${styles.portfolio} ${jakarta.className}`}>
       <Loader />
       <Cursor />
       <Grain />
@@ -639,8 +645,7 @@ export default function Portfolio() {
 
                 <span className={styles.heroLineMask}>
                   <motion.span variants={maskLine} className={styles.heroLine}>
-                    <span className={styles.heroMove}>move</span>
-                    business
+                    move business
                   </motion.span>
                 </span>
 
@@ -661,23 +666,6 @@ export default function Portfolio() {
                           {rotatingWords[wordIndex]}
                         </motion.span>
                       </AnimatePresence>
-
-                      <svg
-                        className={styles.heroSwoosh}
-                        viewBox="0 0 300 18"
-                        preserveAspectRatio="none"
-                      >
-                        <motion.path
-                          d="M2 12 C 60 2, 140 18, 298 6"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="3"
-                          strokeLinecap="round"
-                          initial={{ pathLength: 0 }}
-                          animate={{ pathLength: 1 }}
-                          transition={{ duration: 1.1, delay: 3.2, ease }}
-                        />
-                      </svg>
                     </span>
                   </motion.span>
                 </span>
@@ -687,11 +675,9 @@ export default function Portfolio() {
                 variants={heroRise}
                 className={styles.heroDescription}
               >
-                Exploring ventures, technologies and opportunities shaping the
-                future of business{" "}
-                <span className={styles.heroShimmer}>
-                  from Dubai and beyond.
-                </span>
+                <span className={styles.heroBrand}>BH Ventures</span> explores
+                ventures, technologies and opportunities shaping the future of
+                business from Dubai and beyond.
               </motion.p>
 
               <motion.div variants={heroRise} className={styles.heroActions}>
@@ -1186,6 +1172,7 @@ export default function Portfolio() {
           <img
             src="https://images.unsplash.com/photo-1518684079-3c830dcef090?auto=format&fit=crop&w=2000&q=85"
             alt="Dubai architecture"
+            loading="lazy"
           />
         </div>
 

@@ -2814,12 +2814,6 @@
 ========================================================= */
 
 @media (prefers-reduced-motion: reduce) {
-  :global([data-reveal]) {
-    opacity: 1;
-    transform: none;
-    transition: none;
-  }
-
   .marqueeTrack,
   .marqueeRowSmall .marqueeTrack,
   .heroRotatorWord,
@@ -2955,11 +2949,9 @@
 }
 
 @media (hover: hover) {
-  :global(body) {
-    cursor: none;
-  }
-  :global(a),
-  :global(button) {
+  .portfolio,
+  .portfolio a,
+  .portfolio button {
     cursor: none;
   }
 }
@@ -3078,4 +3070,197 @@
 .portfolio input,
 .portfolio textarea {
   cursor: text;
+}
+
+
+/* =========================================================
+   HERO HEADLINE — big bold sans, gradient last line
+========================================================= */
+
+.heroTitle {
+  font-size: clamp(2.6rem, 5.4vw, 5.4rem);
+  font-weight: 700;
+  line-height: 1.08;
+  letter-spacing: -0.035em;
+  color: #ffffff;
+}
+
+.heroLineMask {
+  padding: 0.06em 0.1em 0.12em;
+}
+
+.heroRotatorSizer {
+  font-style: normal;
+  font-weight: 700;
+}
+
+.heroRotatorWord {
+  font-style: normal;
+  font-weight: 700;
+  padding-right: 0.06em;
+  background: linear-gradient(90deg, #6cc8ff 0%, #4fd1d9 50%, #2dd4bf 100%);
+  background-size: 100% 100%;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: none;
+}
+
+.heroDescription {
+  max-width: 560px;
+  margin-top: 32px;
+  color: rgba(247, 246, 241, 0.82);
+  font-size: clamp(1.05rem, 1.5vw, 1.3rem);
+  font-weight: 500;
+  line-height: 1.6;
+}
+
+.heroBrand {
+  color: #5eead4;
+  font-weight: 700;
+}
+
+/* =========================================================
+   FULL-PAGE RESPONSIVE FIXES (keep at the very end)
+========================================================= */
+
+.hero {
+  min-height: 100vh;
+  min-height: 100svh;
+}
+
+.portfolio img {
+  max-width: 100%;
+}
+
+/* grid columns must be allowed to shrink or the page overflows sideways */
+.intro,
+.introContent,
+.projectsLayout,
+.futureLayout,
+.heroInner {
+  min-width: 0;
+}
+
+.introContent > *,
+.heroInner > *,
+.projectsLayout > * {
+  min-width: 0;
+}
+
+@media (max-width: 1000px) {
+  .heroTitle {
+    font-size: clamp(2.8rem, 8.5vw, 4.8rem);
+  }
+
+  .introContent {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .projectsLayout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .futureLayout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .orbit {
+    width: min(var(--size), 100%);
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 900px) {
+  .intro {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 650px) {
+  .hero {
+    width: 100%;
+    margin-left: 0;
+  }
+
+  .heroTitle {
+    font-size: clamp(2.5rem, 12vw, 3.8rem);
+    line-height: 1.1;
+  }
+
+  .heroDescription {
+    font-size: 1rem;
+    margin-top: 24px;
+  }
+
+  .heroActions .heroButton {
+    padding: 12px 12px 12px 20px;
+  }
+
+  .heroStage {
+    height: min(440px, 115vw);
+  }
+
+  .heroChipTop {
+    right: -4px;
+  }
+
+  .marqueeItem {
+    gap: 18px;
+    padding-right: 18px;
+  }
+
+  .tileWide .tileBody {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .futureStack {
+    max-width: 420px;
+  }
+
+  .projectsCount {
+    margin-bottom: 8px;
+  }
+}
+
+@media (max-width: 420px) {
+  .heroTitle {
+    font-size: clamp(2.2rem, 12.5vw, 3rem);
+  }
+
+  .heroStage {
+    height: min(380px, 110vw);
+  }
+
+  .heroBadge {
+    width: 88px;
+    height: 88px;
+    right: 0;
+  }
+
+  .heroBadgeCore {
+    width: 34px;
+    height: 34px;
+  }
+
+  .pillar {
+    padding: 24px 20px;
+  }
+}
+
+/* big screens: don't let it feel lost */
+@media (min-width: 1700px) {
+  .heroInner,
+  .intro,
+  .sectors,
+  .projects,
+  .futureLayout {
+    width: min(1480px, calc(100% - 96px));
+  }
+
+  .heroTitle {
+    font-size: 6.2rem;
+  }
 }
