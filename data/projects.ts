@@ -21,10 +21,14 @@ export type Project = {
   // Live project URL
   liveUrl?: string;
 
+  // Optional project demonstration stored in public/videos
+  video?: string;
+
   // Technologies / tools
   tech: string[];
 
   sections: ProjectSection[];
+  scenario: string;
   takeaways: string[];
 };
 
@@ -47,6 +51,8 @@ export const projects: Project[] = [
 
     image:
       "https://images.pexels.com/photos/39192372/pexels-photo-39192372.jpeg",
+
+    video: "/videos/medirag.mp4",
 
     status: "ACTIVE",
 
@@ -84,6 +90,9 @@ export const projects: Project[] = [
       },
     ],
 
+    scenario:
+      "A clinician preparing for a consultation needs to confirm a detail buried in several reference documents. They ask MediRAG a question, review an answer linked to relevant passages, and open those citations to verify the context. The system supports document retrieval; the clinician remains responsible for interpreting and applying the information.",
+
     takeaways: [
       "AI-powered medical knowledge retrieval",
       "Retrieval-augmented generation",
@@ -112,6 +121,8 @@ export const projects: Project[] = [
 
     image:
       "https://images.unsplash.com/photo-1557597774-9d273605dfa9?auto=format&fit=crop&w=1600&q=85",
+
+    video: "/videos/cyberisai.mp4",
 
     status: "IN DEVELOPMENT",
 
@@ -149,6 +160,9 @@ export const projects: Project[] = [
           "The project is designed around a centralized web dashboard where detected events and alerts can be presented in a structured way, creating a foundation for faster review and more organized video monitoring workflows.",
       },
     ],
+
+    scenario:
+      "A site supervisor is responsible for several CCTV feeds. CyberisAI analyzes footage and surfaces activity that matches configured detection categories, with the relevant event presented for review in a dashboard. Staff assess the alert and decide how to respond; the system is intended to support monitoring, not replace human judgment.",
 
     takeaways: [
       "AI-powered CCTV analysis",
@@ -216,6 +230,9 @@ export const projects: Project[] = [
       },
     ],
 
+    scenario:
+      "A prospective client arrives unsure whether the studio can deliver a particular digital project. They can review the relevant services, explore examples of work, learn how the team operates, then move to a clear contact step to describe their requirements.",
+
     takeaways: [
       "Modern digital agency experience",
       "Technology and software engineering showcase",
@@ -281,6 +298,9 @@ export const projects: Project[] = [
           "The website provides a flexible foundation for presenting menus, reservations, ordering experiences and other hospitality services through a cohesive digital interface.",
       },
     ],
+
+    scenario:
+      "A guest visiting on a phone wants to understand the tea-house experience and make a plan. They can explore the venue and menu, then move into the reservation or ordering path without having to search through unrelated information.",
 
     takeaways: [
       "Restaurant and hospitality website",

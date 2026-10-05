@@ -1,10 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
-import {
-  getProjectBySlug,
-  projects,
-} from "@/data/projects";
+import { getProjectBySlug, projects } from "@/data/projects";
 
 import styles from "./ProjectDetails.module.css";
 
@@ -14,9 +11,7 @@ type PageProps = {
   }>;
 };
 
-// =====================================================
-// ARROW ICON (SVG, renders the same on every device)
-// =====================================================
+/* ───────── ARROW ICON ───────── */
 
 function ArrowIcon({
   direction = "right",
@@ -44,9 +39,7 @@ function ArrowIcon({
   );
 }
 
-// =====================================================
-// STATIC PROJECT PAGES
-// =====================================================
+/* ───────── STATIC PARAMS ───────── */
 
 export function generateStaticParams() {
   return projects.map((project) => ({
@@ -54,13 +47,9 @@ export function generateStaticParams() {
   }));
 }
 
-// =====================================================
-// PROJECT DETAILS PAGE
-// =====================================================
+/* ───────── PAGE ───────── */
 
-export default async function ProjectDetailsPage({
-  params,
-}: PageProps) {
+export default async function ProjectDetailsPage({ params }: PageProps) {
   const { slug } = await params;
 
   const project = getProjectBySlug(slug);
@@ -69,268 +58,214 @@ export default async function ProjectDetailsPage({
     notFound();
   }
 
+  const words = project.sections
+    .map((section) => section.text)
+    .join(" ")
+    .concat(` ${project.scenario}`)
+    .split(/\s+/)
+    .filter(Boolean).length;
+
+  const readMinutes = Math.max(1, Math.round(words / 200));
+
+  const currentIndex = projects.findIndex((item) => item.slug === project.slug);
+
+  const nextProject =
+    projects.length > 1
+      ? projects[(currentIndex + 1) % projects.length]
+      : null;
+
   return (
     <main className={styles.page}>
+      <div className={styles.progress} aria-hidden="true" />
 
-      {/* NAVIGATION */}
+      {/* ═══════════════ HERO ═══════════════ */}
 
-      <nav className={styles.topNav}>
+      <header className={styles.hero}>
+        <div className={styles.heroGrid} aria-hidden="true" />
+        <div className={`${styles.orb} ${styles.orbA}`} aria-hidden="true" />
+        <div className={`${styles.orb} ${styles.orbB}`} aria-hidden="true" />
 
-        <Link
-          href="/portfolio"
-          className={styles.backButton}
-        >
-          <span>
-            <ArrowIcon direction="left" />
-          </span>
-          Back to Portfolio
-        </Link>
-
-        <Link
-          href="/contact"
-          className={styles.contactButton}
-        >
-          Start a Conversation
-        </Link>
-
-      </nav>
-
-      {/* HEADER */}
-
-      <section className={styles.header}>
-
-        <div className={styles.meta}>
-
-          <span className={styles.category}>
-            {project.category}
-          </span>
-
-          <span className={styles.status}>
-            <span className={styles.statusDot} />
-            {project.status}
-          </span>
-
-          <span>
-            {project.location}
-          </span>
-
-        </div>
-
-        <h1>
-          {project.title}
-        </h1>
-
-        <p className={styles.description}>
-          {project.description}
-        </p>
-
-      </section>
-
-      {/* AUTHOR */}
-
-      <section className={styles.author}>
-
-        <div className={styles.authorAvatar}>
-          BH
-        </div>
-
-        <div>
-          <strong>
-            BH Ventures Team
-          </strong>
-
-          <span>
-            Dubai, UAE · Portfolio &amp; Analysis
-          </span>
-        </div>
-
-      </section>
-
-      {/* HERO IMAGE */}
-
-      <section className={styles.heroImage}>
-
-        <img
-          src={project.image}
-          alt={project.title}
-        />
-
-        <div className={styles.heroImageOverlay} />
-
-        <div className={styles.heroImageLabel}>
-          BH VENTURES / {project.number}
-        </div>
-
-      </section>
-
-      {/* LIVE PROJECT BUTTON */}
-
-      {project.liveUrl && (
-        <div className={styles.liveProjectWrapper}>
-
-          <a
-            href={project.liveUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.liveProjectButton}
-          >
-            <span>
-              View Live Project
-            </span>
-
-            <span className={styles.liveArrow}>
-              <ArrowIcon direction="upRight" />
-            </span>
-          </a>
-
-        </div>
-      )}
-
-      {/* CONTENT */}
-
-      <section className={styles.contentLayout}>
-
-        {/* SIDEBAR */}
-
-        <aside className={styles.sidebar}>
-
-          <div className={styles.sidebarCard}>
-
-            <p className={styles.sidebarTitle}>
-              KEY TAKEAWAYS
-            </p>
-
-            <ul>
-              {project.takeaways.map(
-                (takeaway) => (
-                  <li key={takeaway}>
-                    {takeaway}
-                  </li>
-                )
-              )}
-            </ul>
-
-          </div>
-
-          {/* TECHNOLOGIES */}
-
-          <div className={styles.sidebarCard}>
-
-            <p className={styles.sidebarTitle}>
-              TECHNOLOGY
-            </p>
-
-            <div className={styles.techList}>
-
-              {project.tech.map(
-                (technology) => (
-                  <span
-                    key={technology}
-                    className={styles.techTag}
-                  >
-                    {technology}
-                  </span>
-                )
-              )}
-
-            </div>
-
-          </div>
-
-          {/* CONTACT */}
-
-          <div className={styles.sidebarNote}>
-
-            <strong>
-              Need a deeper conversation?
-            </strong>
-
-            <p>
-              Talk with our team about this
-              initiative and related opportunities.
-            </p>
-
-            <Link href="/contact">
-              Speak with our team
-              <ArrowIcon direction="right" />
+        <div className={styles.heroInner}>
+          {/* LEFT — text */}
+          <div className={styles.heroText}>
+            <Link href="/portfolio" className={styles.backLink}>
+              <span>
+                <ArrowIcon direction="left" />
+              </span>
+              All projects
             </Link>
 
-          </div>
+            <span className={styles.category}>{project.category}</span>
 
-        </aside>
+            <h1>{project.title}</h1>
 
-        {/* ARTICLE */}
+            <p className={styles.description}>{project.description}</p>
 
-        <article className={styles.article}>
-
-          {project.sections.map(
-            (section, index) => (
-
-              <section
-                className={styles.articleSection}
-                key={section.heading}
-              >
-
-                {index === 0 && (
-                  <span
-                    className={styles.dropCap}
-                  >
-                    {section.text.charAt(0)}
+            <div className={styles.heroActions}>
+              {project.liveUrl && (
+                <a
+                  href={project.liveUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={styles.primaryButton}
+                >
+                  View live project
+                  <span>
+                    <ArrowIcon direction="upRight" />
                   </span>
-                )}
+                </a>
+              )}
 
-                <h2>
-                  {section.heading}
-                </h2>
-
-                <p>
-                  {index === 0
-                    ? section.text.slice(1)
-                    : section.text}
-                </p>
-
-              </section>
-
-            )
-          )}
-
-          {/* ARTICLE FOOTER */}
-
-          <div className={styles.articleFooter}>
-
-            <span>
-              BH VENTURES
-            </span>
-
-            <span>
-              PORTFOLIO / {project.number}
-            </span>
-
+              <Link href="/contact" className={styles.ghostButton}>
+                Start a conversation
+              </Link>
+            </div>
           </div>
 
-        </article>
+          {/* RIGHT — framed image */}
+          <div className={styles.heroMediaWrap}>
+            <div className={styles.heroMedia}>
+              <img src={project.image} alt={project.title} />
+              <div className={styles.heroMediaShade} />
+            </div>
 
+            <span className={styles.mediaBadge}>
+              BH VENTURES / {project.number}
+            </span>
+          </div>
+        </div>
+      </header>
+
+      {/* ═══════════════ ARTICLE ═══════════════ */}
+
+      <article className={styles.article}>
+        <div className={styles.articleMeta}>
+          <span>{project.status}</span>
+          <span>{project.location}</span>
+          <span>{readMinutes} min read</span>
+        </div>
+
+        {project.sections[0] && (
+          <section className={styles.articleRow}>
+            <div className={styles.rowHead}>
+              <span className={styles.rowNumber} aria-hidden="true">01</span>
+              <h2>The problem</h2>
+            </div>
+            <p>{project.sections[0].text}</p>
+          </section>
+        )}
+
+        {project.video && (
+          <figure className={styles.articleVideo}>
+            <video
+              controls
+              playsInline
+              preload="none"
+              poster={project.image}
+              aria-label={`${project.title} project demonstration`}
+            >
+              <source src={project.video} type="video/mp4" />
+              Your browser does not support the video element.
+            </video>
+            <figcaption>{project.title} project demonstration</figcaption>
+          </figure>
+        )}
+
+        {project.sections.length > 1 && (
+          <section className={styles.articleRow}>
+            <div className={styles.rowHead}>
+              <span className={styles.rowNumber} aria-hidden="true">
+                {String(project.sections.length).padStart(2, "0")}
+              </span>
+              <h2>The solution</h2>
+            </div>
+            <div className={styles.articleCopy}>
+              {project.sections.slice(1).map((section) => (
+                <p key={section.heading}>{section.text}</p>
+              ))}
+            </div>
+          </section>
+        )}
+
+        <section className={styles.articleRow}>
+          <div className={styles.rowHead}>
+            <span className={styles.rowNumber} aria-hidden="true">
+              {String(project.sections.length + 1).padStart(2, "0")}
+            </span>
+            <h2>An illustrative scenario</h2>
+          </div>
+          <p>{project.scenario}</p>
+        </section>
+
+        <footer className={styles.articleTech}>
+          <span>Built with</span>
+          <div className={styles.techList}>
+            {project.tech.map((technology) => (
+              <span key={technology} className={styles.techTag}>
+                {technology}
+              </span>
+            ))}
+          </div>
+        </footer>
+      </article>
+
+      {/* ═══════════════ CTA ═══════════════ */}
+
+      <section className={styles.cta}>
+        <div className={styles.ctaInner}>
+          <div>
+            <h2>Want to talk about this project?</h2>
+            <p>
+              Talk with our team about this initiative and related
+              opportunities.
+            </p>
+          </div>
+
+          <Link href="/contact" className={styles.ctaButton}>
+            Speak with our team
+            <span>
+              <ArrowIcon direction="right" />
+            </span>
+          </Link>
+        </div>
       </section>
 
-      {/* BOTTOM NAVIGATION */}
+      {/* ═══════════════ NEXT PROJECT ═══════════════ */}
+
+      {nextProject && (
+        <section className={styles.nextSection}>
+          <Link
+            href={`/portfolio/${nextProject.slug}`}
+            className={styles.nextCard}
+          >
+            <img src={nextProject.image} alt="" className={styles.nextImage} />
+            <div className={styles.nextOverlay} />
+
+            <div className={styles.nextContent}>
+              <span className={styles.nextLabel}>
+                Next project · {nextProject.number}
+              </span>
+              <strong>{nextProject.title}</strong>
+              <span className={styles.nextCategory}>
+                {nextProject.category}
+              </span>
+            </div>
+
+            <span className={styles.nextArrow}>
+              <ArrowIcon direction="right" />
+            </span>
+          </Link>
+        </section>
+      )}
 
       <div className={styles.bottomNavigation}>
-
-        <Link
-          href="/portfolio"
-          className={styles.bottomBack}
-        >
-
+        <Link href="/portfolio" className={styles.bottomBack}>
           <span>
             <ArrowIcon direction="left" />
           </span>
-
           Back to Portfolio
-
         </Link>
-
       </div>
-
     </main>
   );
 }
