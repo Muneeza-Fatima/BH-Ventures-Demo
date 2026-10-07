@@ -52,7 +52,7 @@ export const projects: Project[] = [
     image:
       "https://images.pexels.com/photos/39192372/pexels-photo-39192372.jpeg",
 
-    video: "/videos/medirag.mp4",
+    video: "/videos/MediRAG.mp4",
 
     status: "ACTIVE",
 
@@ -121,7 +121,7 @@ export const projects: Project[] = [
 
     image: "/cyberisai-detection.png",
 
-    video: "/videos/cyberisai.mp4",
+    video: "/videos/CyberisAI.mp4",
 
     status: "IN DEVELOPMENT",
 

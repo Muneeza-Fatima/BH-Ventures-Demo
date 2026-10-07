@@ -1110,11 +1110,24 @@ export default function Portfolio() {
                     data-cursor="View"
                   >
                     <div className={styles.projectThumb}>
-                      <img
-                        src={project.image}
-                        alt={project.title}
-                        loading="lazy"
-                      />
+                      {project.video ? (
+                        <video
+                          src={project.video}
+                          poster={project.image}
+                          autoPlay
+                          muted
+                          loop
+                          playsInline
+                          preload="metadata"
+                          aria-label={`${project.title} preview`}
+                        />
+                      ) : (
+                        <img
+                          src={project.image}
+                          alt={project.title}
+                          loading="lazy"
+                        />
+                      )}
                       <span className={styles.projectNumber}>
                         {project.number}
                       </span>
