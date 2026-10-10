@@ -336,14 +336,20 @@ function hideGoogleTranslationBar() {
       el.style.minHeight = "0";
     });
 
-  document.body.style.top = "0px";
-  document.body.style.position = "static";
-  document.body.style.width = "100%";
-  document.body.style.marginTop = "0px";
+  // Only write when Google Translate has actually changed something:
+  // each write is itself a DOM mutation and costs a style recalc.
+  const fix = (el: HTMLElement, prop: "top" | "position" | "width" | "marginTop", value: string) => {
+    if (el.style[prop] && el.style[prop] !== value) el.style[prop] = value;
+  };
 
-  document.documentElement.style.top = "0px";
-  document.documentElement.style.position = "static";
-  document.documentElement.style.marginTop = "0px";
+  fix(document.body, "top", "0px");
+  fix(document.body, "position", "static");
+  fix(document.body, "width", "100%");
+  fix(document.body, "marginTop", "0px");
+
+  fix(document.documentElement, "top", "0px");
+  fix(document.documentElement, "position", "static");
+  fix(document.documentElement, "marginTop", "0px");
 }
 
 function setGoogleLanguage(languageCode: string): boolean {
@@ -694,8 +700,16 @@ export default function Navbar() {
       setIsLightMode(light);
     };
 
+    // At most ~10 checks a second while scrolling, plus one when it stops.
+    let last = 0;
+    let idle = 0;
     const schedule = () => {
-      if (!frame) frame = requestAnimationFrame(update);
+      window.clearTimeout(idle);
+      idle = window.setTimeout(update, 120);
+      const now = performance.now();
+      if (frame || now - last < 100) return;
+      last = now;
+      frame = requestAnimationFrame(update);
     };
 
     // Initial check once the new page has painted
@@ -705,6 +719,7 @@ export default function Navbar() {
 
     return () => {
       window.clearTimeout(timer);
+      window.clearTimeout(idle);
       if (frame) cancelAnimationFrame(frame);
       window.removeEventListener("scroll", schedule);
       window.removeEventListener("resize", schedule);
@@ -718,19 +733,20 @@ export default function Navbar() {
   useEffect(() => {
     hideGoogleTranslationBar();
 
+    // Google Translate adds its banner as a direct child of <body> and
+    // pins <html>/<body> with inline styles. Watch only those — watching
+    // every attribute in the whole page also fired on every animation
+    // frame of every section, which made scrolling heavy.
     const observer = new MutationObserver(() => {
       hideGoogleTranslationBar();
     });
 
-    observer.observe(document.body, {
-      childList: true,
-      subtree: true,
-      attributes: true,
-    });
+    observer.observe(document.body, { childList: true, attributes: true, attributeFilter: ["style", "class"] });
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ["style", "class"] });
 
     const interval = window.setInterval(() => {
       hideGoogleTranslationBar();
-    }, 250);
+    }, 1500);
 
     return () => {
       observer.disconnect();

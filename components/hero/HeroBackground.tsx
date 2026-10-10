@@ -126,7 +126,7 @@ export default function HeroBackground() {
       />
 
       {/* ================================================== */}
-      {/* MOBILE READABILITY */}
+      {/* MOBILE READABILITY — text sits straight on the video here */}
       {/* ================================================== */}
 
       <div
@@ -134,9 +134,9 @@ export default function HeroBackground() {
           absolute
           inset-0
           bg-gradient-to-b
-          from-[#0B1220]/30
-          via-[#0B1220]/5
-          to-[#0B1220]/40
+          from-[#0B1220]/65
+          via-[#0B1220]/45
+          to-[#0B1220]/60
           md:hidden
         "
       />

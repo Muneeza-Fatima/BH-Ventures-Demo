@@ -56,8 +56,9 @@ html {
   min-height: 100%;
   height: auto;
 
-  overflow-x: hidden;
-  overflow-y: auto;
+  /* clip (not hidden) so <html>/<body> never become extra scroll
+     containers: nested scrollers make touch scrolling stick. */
+  overflow-x: clip;
 
   -webkit-text-size-adjust: 100%;
   scroll-behavior: auto;
@@ -96,10 +97,8 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
-  overflow-x: hidden;
+  overflow-x: clip;
   overflow-y: visible;
-
-  -webkit-overflow-scrolling: touch;
 
   display: flex;
   flex-direction: column;
@@ -646,14 +645,13 @@ html[style*="margin-top"] {
   html {
     height: auto !important;
     min-height: 100%;
-    overflow-x: hidden !important;
-    overflow-y: auto !important;
+    overflow-x: clip !important;
   }
 
   body {
     height: auto !important;
     min-height: 100%;
-    overflow-x: hidden !important;
+    overflow-x: clip !important;
     overflow-y: visible !important;
   }
 
@@ -706,8 +704,7 @@ html[style*="margin-top"] {
 
     height: auto !important;
 
-    overflow-x: hidden !important;
-    overflow-y: auto !important;
+    overflow-x: clip !important;
   }
 
   body {
@@ -716,7 +713,7 @@ html[style*="margin-top"] {
 
     height: auto !important;
 
-    overflow-x: hidden !important;
+    overflow-x: clip !important;
     overflow-y: visible !important;
   }
 
