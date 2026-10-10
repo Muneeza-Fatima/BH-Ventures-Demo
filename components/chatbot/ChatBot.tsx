@@ -18,8 +18,12 @@ const SUGGESTED_PROMPTS = [
 
 const CONTACT_EMAIL = "info@bhventures.ae";
 
+// One shared formatter: creating a new one per call (toLocaleTimeString)
+// is slow on phones.
+let timeFormat: Intl.DateTimeFormat | null = null;
 function formatTime() {
-    return new Date().toLocaleTimeString([], { hour: "numeric", minute: "2-digit" });
+    timeFormat ??= new Intl.DateTimeFormat([], { hour: "numeric", minute: "2-digit" });
+    return timeFormat.format(new Date());
 }
 
 // The chatbot's face: a rounded speech-bubble shape (with a little tail,
@@ -85,7 +89,8 @@ function FormattedContent({ text }: { text: string }) {
 export default function BHChatBot() {
     const [open, setOpen] = useState(false);
     const [theme, setTheme] = useState<Theme>("light");
-    const [messages, setMessages] = useState<Message[]>([
+    // Lazy initial state so formatTime() runs once, not on every render.
+    const [messages, setMessages] = useState<Message[]>(() => [
         {
             role: "assistant",
             content:

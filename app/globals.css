@@ -808,3 +808,93 @@ html[style*="margin-top"] {
     zoom: 1.3;
   }
 }
+
+/* =========================================================
+   TOUCH DEVICES — SMOOTH SCROLL MODE
+   Phones and tablets have far less GPU headroom than desktops.
+   The effects that make scrolling stick there are:
+     • large blurred glows that move (each frame re-renders the blur),
+     • backdrop-filter "glass" (re-blurs what is behind it on every
+       scroll frame),
+     • paint-heavy loops (box-shadow pulses, conic border spin).
+   On touch screens those are switched off. The glows, colours and
+   card backgrounds stay exactly where they are; they just stop
+   moving / stop live-blurring. Desktop is unchanged.
+   ========================================================= */
+
+/* Google Translate injects a hidden loading spinner that keeps
+   animating forever on every page. */
+.goog-te-spinner-pos,
+.goog-te-spinner,
+.goog-te-spinner-animation,
+body > div[class*="VIpgJd-ZVi9od-aZ2wEe"] {
+  display: none !important;
+}
+
+svg[class*="VIpgJd-ZVi9od-aZ2wEe"],
+svg[class*="VIpgJd-ZVi9od-aZ2wEe"] * {
+  animation: none !important;
+}
+
+@media (hover: none) and (pointer: coarse) {
+  /* Moving blurred glows -> static glows */
+  [class*="blur-["]:not([class*="backdrop-blur"]),
+  .about-page .about-glow-a,
+  .about-page .about-glow-b,
+  .about-page .about-glow-c,
+  .about-page .about-beam,
+  .bhi::before,
+  .bhi::after,
+  .cms-aurora-section::before {
+    animation: none !important;
+  }
+
+  /* Large blurred round glows: a radial mask gives the same soft
+     glow without a 100px+ blur filter, which is very expensive to
+     render while scrolling on a phone. Scaled up a little because a
+     blur spreads past the element box and a mask does not. */
+  [class*="rounded-full"][class*="blur-["]:not([class*="backdrop-blur"]) {
+    filter: none !important;
+    -webkit-mask-image: radial-gradient(closest-side, #000 0%, rgba(0, 0, 0, 0.55) 45%, transparent 100%);
+    mask-image: radial-gradient(closest-side, #000 0%, rgba(0, 0, 0, 0.55) 45%, transparent 100%);
+    transform: scale(1.35);
+  }
+
+  /* About hero light beams: soft side fade instead of a 30px blur */
+  .about-page .about-beam {
+    filter: none !important;
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 35%, #000 65%, transparent);
+    mask-image: linear-gradient(90deg, transparent, #000 35%, #000 65%, transparent);
+  }
+
+  /* Services orbs are already radial gradients: drop the extra blur
+     and the floating loop. */
+  .cms-orb {
+    filter: none !important;
+    animation: none !important;
+  }
+
+  /* Paint-heavy loops (each frame repaints a large area):
+     About border spin + pill pulse; Services conic rings, flowing
+     gradient text and the full-hero light sweep. */
+  .about-page .about-border-spin,
+  .about-page .about-pill-glow,
+  .cm-page .cms-hero-sweep,
+  .cm-page .cms-hero-ring,
+  .cm-page .cms-line-fx,
+  .cm-page .cm-gradient-text,
+  .cm-page .cms-badge-pill,
+  .cm-page .cms-pool-card::before,
+  .cm-page .cms-usdt-tagline,
+  .cm-page .cms-pkg-card--popular,
+  .cm-page .cms-efficiency-card--dark::after {
+    animation: none !important;
+  }
+
+  /* Live glass blur -> plain translucent card (the navbar and the
+     chat window keep theirs, they sit over changing content). */
+  body *:not(header):not(header *):not([class*="chatbot"]):not([class*="chatbot"] *) {
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+  }
+}

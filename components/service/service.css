@@ -2659,3 +2659,14 @@
     min-height: calc(100svh / 0.82);
   }
 }
+
+/* ---------------------------------------------------------
+   TOUCH DEVICES — smooth scrolling
+   Stop the slow Ken Burns zoom on the large filtered section
+   photos; the zoom re-renders the colour filter every frame.
+   --------------------------------------------------------- */
+@media (hover: none) and (pointer: coarse) {
+  .cms-bg-photo img {
+    animation: none;
+  }
+}

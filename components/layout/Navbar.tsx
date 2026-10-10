@@ -700,14 +700,14 @@ export default function Navbar() {
       setIsLightMode(light);
     };
 
-    // At most ~10 checks a second while scrolling, plus one when it stops.
+    // At most ~4 checks a second while scrolling, plus one when it stops.
     let last = 0;
     let idle = 0;
     const schedule = () => {
       window.clearTimeout(idle);
       idle = window.setTimeout(update, 120);
       const now = performance.now();
-      if (frame || now - last < 100) return;
+      if (frame || now - last < 250) return;
       last = now;
       frame = requestAnimationFrame(update);
     };

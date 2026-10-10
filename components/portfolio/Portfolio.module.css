@@ -3399,3 +3399,31 @@
     min-height: calc(100svh / 0.82);
   }
 }
+
+/* =========================================================
+   TOUCH DEVICES — smooth scrolling
+   The film-grain overlay is a fixed, 4-screen SVG-noise layer
+   above all content that jumps ~7 times a second; on phones it
+   forces a heavy repaint on every frame. The hero photo zoom
+   loop is stopped too. Desktop is unchanged.
+========================================================= */
+@media (hover: none) and (pointer: coarse) {
+  .grain {
+    display: none;
+  }
+
+  .heroArch img {
+    animation: none;
+  }
+
+  /* Tilt glare only reacts to a mouse; on touch it is invisible but
+     its overlay blend still costs a repaint every frame. */
+  .glare {
+    display: none;
+  }
+
+  /* Hero orbs are already radial gradients: drop the 80px blur. */
+  .orb {
+    filter: none;
+  }
+}
