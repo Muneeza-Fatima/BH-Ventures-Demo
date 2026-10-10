@@ -1,12 +1,14 @@
 import type { Metadata } from "next";
+import { pageMeta } from "@/lib/seo";
 import VentureHero from "@/components/hero/VentureHero";
 import Ventures from "@/components/Ventures/Ventures";
 
-export const metadata: Metadata = {
-  title: "Ventures | BH Ventures FZE LLC",
+export const metadata: Metadata = pageMeta({
+  title: "Ventures",
   description:
     "Explore our lineup of ventures across Global Trade, Web3 Studio, AI Innovation, and Marketing services.",
-};
+  path: "/ventures/",
+});
 
 export default function VenturesPage() {
   return (

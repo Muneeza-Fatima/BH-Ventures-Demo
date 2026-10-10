@@ -1,7 +1,9 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { getProjectBySlug, projects } from "@/data/projects";
+import { pageMeta } from "@/lib/seo";
 
 import styles from "./ProjectDetails.module.css";
 
@@ -45,6 +47,19 @@ export function generateStaticParams() {
   return projects.map((project) => ({
     slug: project.slug,
   }));
+}
+
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { slug } = await params;
+  const project = getProjectBySlug(slug);
+  if (!project) return {};
+  return pageMeta({
+    title: `${project.title} | Portfolio`,
+    description: project.description,
+    path: `/portfolio/${project.slug}/`,
+    image: project.image,
+    type: "article",
+  });
 }
 
 /* ───────── PAGE ───────── */

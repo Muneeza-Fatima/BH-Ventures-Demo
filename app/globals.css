@@ -398,6 +398,74 @@ select {
   animation: hero-story-ring 2.6s ease-out infinite;
 }
 
+/* =========================================================
+   HOME HERO — MOBILE (slow video zoom + teal light sweep)
+   ========================================================= */
+
+@keyframes home-hero-zoom {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.12);
+  }
+}
+
+@keyframes home-hero-sweep {
+  0% {
+    transform: translateX(-120%);
+  }
+  60%,
+  100% {
+    transform: translateX(420%);
+  }
+}
+
+@media (max-width: 767px) {
+  .home-hero-video {
+    animation: home-hero-zoom 18s ease-in-out infinite alternate;
+  }
+}
+
+.home-hero-sweep {
+  animation: home-hero-sweep 5s ease-in-out infinite;
+}
+
+/* =========================================================
+   WHERE WE OPERATE — background grid blocks
+   ========================================================= */
+
+@keyframes wwo-block-pulse {
+  0%,
+  100% {
+    opacity: 0.25;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.wwo-block {
+  animation: wwo-block-pulse 4.5s ease-in-out infinite;
+}
+
+/* =========================================================
+   WHAT WE DO — data pulse travelling along the capability bus
+   ========================================================= */
+
+@keyframes capability-bus-pulse {
+  from {
+    left: 16.666%;
+  }
+  to {
+    left: 83.333%;
+  }
+}
+
+.capability-bus-pulse {
+  animation: capability-bus-pulse 3.2s ease-in-out infinite alternate;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .story-pill::before {
     animation: none;
@@ -413,6 +481,13 @@ select {
   }
 
   .hero-story-ring {
+    animation: none;
+  }
+
+  .home-hero-video,
+  .home-hero-sweep,
+  .wwo-block,
+  .capability-bus-pulse {
     animation: none;
   }
 }
@@ -687,5 +762,52 @@ html[style*="margin-top"] {
     min-height: 0 !important;
 
     overflow: visible !important;
+  }
+}
+/* =========================================================
+   HOME — 125% DISPLAY SCALING (Windows "Scale 125%")
+   Same approach as About / Careers / Contact: on desktop widths
+   with a 1.2–1.3 device pixel ratio the Home page is scaled down
+   as one unit so it matches the 100% layout. 100% screens,
+   phones, tablets and 2× retina displays are not affected.
+   ========================================================= */
+
+@media (min-width: 1024px) and (min-resolution: 1.2dppx) and (max-resolution: 1.3dppx) {
+  .home-page {
+    zoom: 0.82;
+  }
+
+  /* Full-screen hero: 100svh inside a 0.82 zoom would leave a gap,
+     so give it 122svh (= one screen after zoom). */
+  .home-page [class*="min-h-[100svh]"] {
+    min-height: 122svh !important;
+  }
+}
+
+/* =========================================================
+   HOME HERO — LARGER CONTENT ON BIG SCREENS
+   On wide desktops the hero copy looked small against the
+   full-screen video. Enlarge just the hero content block.
+   On 125% screens the page is already scaled to 0.82, so the
+   hero content gets a bigger boost there to stay prominent.
+   ========================================================= */
+
+@media (min-width: 1280px) and (min-height: 820px) {
+  .home-page .home-hero-content {
+    zoom: 1.2;
+  }
+}
+
+/* 125% screens: boost depends on the visible height (browser toolbars
+   eat ~130px), so the hero copy never runs under the navbar. */
+@media (min-width: 1024px) and (min-resolution: 1.2dppx) and (max-resolution: 1.3dppx) {
+  .home-page .home-hero-content {
+    zoom: 1.15;
+  }
+}
+
+@media (min-width: 1024px) and (min-height: 820px) and (min-resolution: 1.2dppx) and (max-resolution: 1.3dppx) {
+  .home-page .home-hero-content {
+    zoom: 1.3;
   }
 }

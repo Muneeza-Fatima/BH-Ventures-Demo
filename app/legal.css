@@ -1,0 +1,36 @@
+/* =========================================================
+   LEGAL PAGES — /privacy, /terms, /disclaimer
+   Scoped under .legal-page (set in components/legal/LegalPage.tsx).
+   ========================================================= */
+
+.legal-page {
+  --font-heading: var(--font-jakarta), var(--font-manrope), sans-serif;
+}
+
+/* app/globals.css forces h1–h3 / p weight and margin as unlayered
+   rules; hand them back to the Tailwind utilities on these pages. */
+.legal-page :is(h1, h2, h3, p) {
+  font-weight: revert-layer;
+  margin: revert-layer;
+}
+
+.legal-page .font-heading,
+.legal-page :is(h1, h2, h3) {
+  font-family: var(--font-heading);
+}
+
+/* Anchor jumps land below the fixed navbar */
+.legal-page .legal-section,
+.legal-page #contact {
+  scroll-margin-top: 110px;
+}
+
+/* ---------------------------------------------------------
+   125% DISPLAY SCALING (Windows "Scale 125%")
+   Same approach as the About and Careers pages.
+   --------------------------------------------------------- */
+@media (min-width: 1024px) and (min-resolution: 1.2dppx) and (max-resolution: 1.3dppx) {
+  .legal-page {
+    zoom: 0.82;
+  }
+}

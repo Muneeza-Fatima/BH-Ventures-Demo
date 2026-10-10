@@ -54,35 +54,40 @@ export default function HeroBackground() {
           preload="none"
           onCanPlay={() => setVideoLoaded(true)}
           className={`
+            home-hero-video
             absolute
             inset-0
             h-full
             w-full
             object-cover
             object-center
+            brightness-110
+            saturate-[1.15]
             transition-opacity
             duration-700
             ease-out
-            ${videoLoaded ? "opacity-95" : "opacity-0"}
+            ${videoLoaded ? "opacity-100" : "opacity-0"}
           `}
         >
           <source src="/videos/hero.mp4" type="video/mp4" />
         </video>
       )}
 
-      {/* Light overlay taake video zinda aur clear lage */}
-      <div className="absolute inset-0 bg-[#0B1220]/20" />
+      {/* ================================================== */}
+      {/* RIGHT SIDE BRIGHT TEAL GLOW */}
+      {/* ================================================== */}
 
       <div
         className="
           absolute
           inset-0
-          bg-[#0B1220]/8
+          bg-[radial-gradient(ellipse_at_78%_45%,rgba(45,212,191,0.4),transparent_65%)]
+          mix-blend-screen
         "
       />
 
       {/* ================================================== */}
-      {/* DESKTOP READABILITY */}
+      {/* DESKTOP READABILITY (left dim, right bright) */}
       {/* ================================================== */}
 
       <div
@@ -91,10 +96,10 @@ export default function HeroBackground() {
           inset-y-0
           left-0
           hidden
-          w-[64%]
+          w-[60%]
           bg-gradient-to-r
-          from-[#0B1220]/60
-          via-[#0B1220]/18
+          from-[#0B1220]/85
+          via-[#0B1220]/50
           to-transparent
           lg:block
         "
@@ -112,8 +117,8 @@ export default function HeroBackground() {
           hidden
           w-[72%]
           bg-gradient-to-r
-          from-[#0B1220]/55
-          via-[#0B1220]/16
+          from-[#0B1220]/80
+          via-[#0B1220]/45
           to-transparent
           md:block
           lg:hidden
@@ -129,9 +134,9 @@ export default function HeroBackground() {
           absolute
           inset-0
           bg-gradient-to-b
-          from-[#0B1220]/50
-          via-[#0B1220]/10
-          to-[#0B1220]/42
+          from-[#0B1220]/30
+          via-[#0B1220]/5
+          to-[#0B1220]/40
           md:hidden
         "
       />

@@ -4,17 +4,13 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import {
-  ArrowLeftRight,
   ArrowLeft,
   ArrowRight,
-  Cpu,
-  BarChart3,
-  Megaphone,
-  Sparkles,
-  Handshake,
-  CalendarDays,
-  Landmark,
-  Globe,
+  Search,
+  ClipboardCheck,
+  Layers,
+  Rocket,
+  TrendingUp,
   ShieldCheck,
 } from "lucide-react";
 
@@ -26,98 +22,100 @@ const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
 const AUTOPLAY_MS = 7000;
 
 const threads = [
-  { label: "Trade", icon: ArrowLeftRight },
-  { label: "Technology", icon: Cpu },
-  { label: "Data", icon: BarChart3 },
-  { label: "Marketing", icon: Megaphone },
-  { label: "Innovation", icon: Sparkles },
-  { label: "Business Dev.", icon: Handshake },
-  { label: "Events", icon: CalendarDays },
+  "Trade",
+  "Technology",
+  "Data",
+  "Marketing",
+  "Innovation",
+  "Business Development",
+  "Events",
 ];
 
 /* ============================================================
-   Thematic platform stages — not a year-by-year company history.
-   No dates are implied; only verified, source-backed facts and
-   disciplines are referenced (Dubai free-zone registration, ten
-   licensed activities, trade + technology, multi-sector platform).
-   The fact badge on each stage is drawn from the same verified set
-   used on the Facts section — nothing here is invented.
+   How We Work — the five steps every venture moves through.
+   Drawn from the Mission statement (identify opportunity, build
+   capability, create value through execution); no dates, clients
+   or numbers are invented. Badges reuse the verified facts
+   (UAE free zone, ten licensed activities, founder-led,
+   multi-sector).
 ============================================================ */
 
 const journeySteps = [
   {
-    id: "foundation",
-    label: "Foundation",
-    title: "Registered in Dubai",
+    id: "identify",
+    label: "Identify",
+    title: "Spot the opportunity",
     description:
-      "BH Ventures FZE LLC is registered as a UAE free-zone entity on a simple thesis: trade and technology belong on one platform, not two.",
-    icon: Landmark,
-    image: "/images/about/story/story-foundation.jpg",
-    imageAlt: "BH Ventures foundation — registered in Dubai",
-    caption: "Dubai, UAE",
+      "We look for high-potential openings where trade and technology meet — in markets we can reach from the UAE.",
+    icon: Search,
+    image: "/images/about/story/howwework-identify.png",
+    imageAlt: "Hand pointing at a rising bar chart over a tablet",
+    caption: "Market research",
     badge: {
-      label: "Dubai",
-      secondary: "Registered as a UAE free-zone entity.",
+      label: "Opportunity-led",
+      secondary: "Focused on markets reachable from the UAE.",
     },
   },
   {
-    id: "trade",
-    label: "Trade",
-    title: "International trade, global reach",
+    id: "assess",
+    label: "Assess",
+    title: "Assess and structure",
     description:
-      "Cross-border trade gives the platform market access and distribution reach across strategically selected regions.",
-    icon: ArrowLeftRight,
-    image: "/images/about/story/story-trade-v2.jpg",
-    imageAlt: "International trade and global reach",
-    caption: "Cross-border trade",
-    badge: {
-      label: "UAE Based",
-      secondary: "Headquartered in the UAE, trading globally.",
-    },
-  },
-  {
-    id: "technology",
-    label: "Technology",
-    title: "Modern technology, applied",
-    description:
-      "Web3, AI, and modern digital infrastructure are applied to real operating ventures — tools to move faster and decide smarter.",
-    icon: Cpu,
-    image: "/images/about/story/story-technology.jpg",
-    imageAlt: "Modern technology applied to real ventures",
-    caption: "Digital infrastructure",
-    badge: {
-      label: "Trade + Technology",
-      secondary: "Modern tools applied to real ventures.",
-    },
-  },
-  {
-    id: "innovation",
-    label: "Innovation",
-    title: "Disciplines that don't usually mix",
-    description:
-      "Data, marketing, business development, and events combine with trade and technology inside one coherent venture platform.",
-    icon: Sparkles,
-    image: "/images/about/story/story-innovation-v2.jpg",
-    imageAlt: "Innovation — disciplines connecting inside one platform",
-    caption: "Connected disciplines",
-    badge: {
-      label: "Multi-Sector Platform",
-      secondary: "One platform, spanning several disciplines.",
-    },
-  },
-  {
-    id: "global-opportunity",
-    label: "Global Opportunity",
-    title: "Ten activities, one license",
-    description:
-      "A licensed portfolio of ten business activities operates under a single founder-led platform, built for what comes next.",
-    icon: Globe,
-    image: "/images/about/story/story-global-v2.jpg",
-    imageAlt: "Global opportunity — routes connecting markets worldwide",
-    caption: "Global routes",
+      "Each idea is tested for fit, structured under our licensed activities, and shaped into a clear plan before anything is built.",
+    icon: ClipboardCheck,
+    image: "/images/about/story/story-foundation-office.jpg",
+    imageAlt: "Executive office overlooking the Dubai skyline",
+    caption: "Planning",
     badge: {
       label: "10 Licensed Activities",
       secondary: "Ten licensed business activities, one license.",
+    },
+  },
+  {
+    id: "build",
+    label: "Build",
+    title: "Build the capability",
+    description:
+      "The right team, tools, partners and digital infrastructure are put in place so the venture can operate professionally from day one.",
+    icon: Layers,
+    image: "/images/about/story/story-innovation.jpg",
+    imageAlt: "Team working together around a meeting table",
+    caption: "Team & tools",
+    badge: {
+      label: "Founder-led",
+      secondary: "Direct leadership and accountability.",
+    },
+  },
+  {
+    id: "launch",
+    label: "Launch",
+    title: "Launch and operate",
+    description:
+      "Ventures go to market with marketing, business development and events behind them — and are run with execution discipline.",
+    icon: Rocket,
+    image: "/images/about/story/howwework-launch-operate.png",
+    imageAlt: "Businessman touching a network of business process icons",
+    /* Small source image: show it whole instead of cropping/zooming */
+    imageFit: "contain",
+    caption: "Go to market",
+    badge: {
+      label: "Execution excellence",
+      secondary: "Run with integrity and discipline.",
+    },
+  },
+  {
+    id: "scale",
+    label: "Scale",
+    title: "Scale across markets",
+    description:
+      "What works is grown into new markets and sectors, creating lasting value for clients, partners and stakeholders.",
+    icon: TrendingUp,
+    image: "/images/about/story/howwework-scale-coins.png",
+    imageAlt: "Hand stacking coins in rising columns with a growth arrow",
+    caption: "Global growth",
+    badge: {
+      label: "Multi-sector growth",
+      secondary: "One platform, spanning several disciplines.",
     },
   },
 ];
@@ -144,6 +142,46 @@ const textItem = {
       duration: 0.65,
       ease: EASE,
     },
+  },
+};
+
+/* Who We Are entry: heading sharpens out of a blur, the copy card
+   slides in from the right, then the discipline names follow one
+   by one. */
+
+const headingReveal = {
+  hidden: { opacity: 0, y: 36, filter: "blur(10px)" },
+  show: {
+    opacity: 1,
+    y: 0,
+    filter: "blur(0px)",
+    transition: { duration: 0.9, ease: EASE },
+  },
+};
+
+const cardSlideIn = {
+  hidden: { opacity: 0, x: 60, filter: "blur(8px)" },
+  show: {
+    opacity: 1,
+    x: 0,
+    filter: "blur(0px)",
+    transition: { duration: 0.9, ease: EASE, delay: 0.15 },
+  },
+};
+
+const disciplinesList = {
+  hidden: {},
+  show: {
+    transition: { staggerChildren: 0.07, delayChildren: 0.35 },
+  },
+};
+
+const disciplineItem = {
+  hidden: { opacity: 0, y: 14 },
+  show: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.5, ease: EASE },
   },
 };
 
@@ -225,40 +263,6 @@ function useStageChangeSignal(activeIndex: number) {
 }
 
 /* ============================================================
-   Section background handoff.
-   A softly masked wash (not a divider or a banded strip) fades in
-   behind the Timeline block once it scrolls into view — a subtle
-   tonal shift that signals a new chapter without a hard edge
-   anywhere. Driven by the same `revealed` flag as the entry
-   stagger so it lands in the same beat as the rest of the intro.
-============================================================ */
-
-function TimelineBackdrop({ visible }: { visible: boolean }) {
-  return (
-    <motion.div
-      aria-hidden="true"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: visible ? 1 : 0 }}
-      transition={{ duration: 0.55, ease: EASE }}
-      className="
-        pointer-events-none
-        absolute
-        inset-x-[-8vw]
-        -top-16
-        bottom-0
-        -z-10
-        bg-gradient-to-b
-        from-[#0B1626]
-        via-[#0A1420]
-        to-[#0B1220]
-        [mask-image:linear-gradient(to_bottom,transparent,black_10%,black_90%,transparent)]
-        [-webkit-mask-image:linear-gradient(to_bottom,transparent,black_10%,black_90%,transparent)]
-      "
-    />
-  );
-}
-
-/* ============================================================
    One-time pulse + tracer.
    A small ring ripples from the newly active pill's position and
    a thin luminous tracer briefly drops toward the content card.
@@ -324,7 +328,7 @@ function TimelineSelector({
   return (
     <div
       role="group"
-      aria-label="Timeline stages"
+      aria-label="How we work — steps"
       className={`flex items-center gap-2 sm:gap-2.5 ${className}`}
     >
       {journeySteps.map((step, index) => {
@@ -361,12 +365,12 @@ function TimelineSelector({
               focus-visible:ring-2
               focus-visible:ring-[#5EEAD4]/70
               focus-visible:ring-offset-2
-              focus-visible:ring-offset-[#0F1B2D]
+              focus-visible:ring-offset-[#F7F9F8]
 
               ${
                 isActive
                   ? "border-transparent"
-                  : "border-white/[0.12] bg-white/[0.02] hover:border-[#2DD4BF]/35 hover:bg-white/[0.05]"
+                  : "about-pill-glow border-[1.5px] border-[#14B8A6]/60 bg-white shadow-[0_2px_8px_rgba(19,43,64,0.06)] hover:border-[#14B8A6] hover:bg-[#14B8A6]/[0.06] active:border-[#14B8A6] active:bg-[#14B8A6]/[0.10]"
               }
             `}
           >
@@ -377,7 +381,7 @@ function TimelineSelector({
                   duration: prefersReducedMotion ? 0 : 0.45,
                   ease: EASE,
                 }}
-                className="absolute inset-0 rounded-full bg-gradient-to-r from-[#00CDB5] to-[#00FFD5] shadow-[0_10px_26px_rgba(0,205,181,0.35)]"
+                className="absolute inset-0 rounded-full bg-gradient-to-r from-[#14B8A6] to-[#2DD4BF] shadow-[0_8px_20px_rgba(20,184,166,0.28)]"
               />
             )}
 
@@ -397,13 +401,13 @@ function TimelineSelector({
               strokeWidth={2}
               aria-hidden="true"
               className={`relative z-10 transition-colors duration-300 ${
-                isActive ? "text-[#06251F]" : "text-[#5EEAD4]/70 group-hover:text-[#5EEAD4]"
+                isActive ? "text-[#06251F]" : "text-[#0F766E]/70 group-hover:text-[#0F766E]"
               }`}
             />
 
             <span
               className={`relative z-10 block transition-colors duration-300 ${
-                isActive ? "text-[#06251F]" : "text-white/50 group-hover:text-white/85"
+                isActive ? "text-[#06251F]" : "text-[#52697A] group-hover:text-[#132B40]"
               }`}
             >
               {step.label}
@@ -449,8 +453,8 @@ function FactBadge({
         gap-1
         rounded-2xl
         border
-        border-[#2DD4BF]/20
-        bg-[#00FFD5]/[0.05]
+        border-[#14B8A6]/30
+        bg-[#14B8A6]/[0.08]
         px-4
         py-2.5
         text-left
@@ -458,13 +462,13 @@ function FactBadge({
         transition-colors
         duration-300
 
-        hover:border-[#2DD4BF]/50
-        hover:bg-[#00FFD5]/[0.09]
+        hover:border-[#14B8A6]/60
+        hover:bg-[#14B8A6]/[0.14]
         focus-visible:outline-none
         focus-visible:ring-2
-        focus-visible:ring-[#5EEAD4]/60
+        focus-visible:ring-[#14B8A6]/60
         focus-visible:ring-offset-2
-        focus-visible:ring-offset-[#0F1D2C]
+        focus-visible:ring-offset-[#0F1B2D]
       "
     >
       <span className="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-[0.14em] text-[#5EEAD4]">
@@ -479,7 +483,7 @@ function FactBadge({
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.3, ease: EASE }}
-            className="block overflow-hidden text-[11px] font-medium text-white/50"
+            className="block overflow-hidden text-[11px] font-medium text-white/60"
           >
             {secondary}
           </motion.span>
@@ -522,16 +526,16 @@ function JourneyPanel({
   return (
     <div
       className="
+        about-border-spin
+        [-webkit-tap-highlight-color:transparent]
+        group/panel
         relative
         h-full
         w-full
+        overflow-hidden
         rounded-[30px]
-        bg-gradient-to-br
-        from-white/[0.18]
-        via-white/[0.06]
-        to-[#00FFD5]/[0.28]
-        p-px
-        shadow-[0_30px_80px_rgba(0,0,0,0.42),0_0_60px_-20px_rgba(0,205,181,0.25)]
+        p-[2px]
+        shadow-[0_24px_60px_rgba(11,18,32,0.28)]
       "
     >
       <div
@@ -544,10 +548,7 @@ function JourneyPanel({
           grid-rows-[230px_1fr]
           overflow-hidden
           rounded-[29px]
-          bg-gradient-to-br
-          from-[#132436]
-          via-[#0F1D2C]
-          to-[#0B1220]
+          bg-[#0F1B2D]
 
           sm:grid-cols-2
           sm:grid-rows-1
@@ -557,14 +558,14 @@ function JourneyPanel({
         {revealed && !prefersReducedMotion && (
           <div
             aria-hidden="true"
-            className="journey-sheen pointer-events-none absolute inset-y-[-20%] left-0 z-20 w-[28%] bg-gradient-to-r from-transparent via-white/[0.06] to-transparent"
+            className="journey-sheen pointer-events-none hidden sm:block absolute inset-y-[-20%] left-0 z-20 w-[28%] bg-gradient-to-r from-transparent via-[#14B8A6]/[0.10] to-transparent"
           />
         )}
 
         {/* =========================================
             TEXT PANE
         ========================================= */}
-        <div className="relative z-10 order-2 flex flex-col p-6 sm:order-1 sm:p-8 lg:p-11 xl:p-12">
+        <div className="relative z-10 order-2 flex flex-col p-7 sm:order-1 sm:p-8 lg:p-11 xl:p-12">
           {/* Ghosted stage numeral */}
           <AnimatePresence mode="sync">
             <motion.span
@@ -596,31 +597,16 @@ function JourneyPanel({
             </motion.span>
           </AnimatePresence>
 
-          {/* Stage label + progress dots */}
+          {/* Stage label */}
           <div className="relative flex items-center justify-between gap-4">
-            <p className="text-[11px] font-bold uppercase tracking-[0.24em] text-white/40">
+            <p className="text-[11px] font-bold uppercase tracking-[0.24em] text-white/50">
               Stage {stageNumber} /{" "}
               {String(journeySteps.length).padStart(2, "0")}
             </p>
-
-            <div className="flex items-center gap-1.5" aria-hidden="true">
-              {journeySteps.map((s, i) => (
-                <span
-                  key={s.id}
-                  className={`h-[3px] rounded-full transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${
-                    i === activeIndex
-                      ? "w-7 bg-gradient-to-r from-[#00CDB5] to-[#00FFD5]"
-                      : i < activeIndex
-                        ? "w-3 bg-[#5EEAD4]/45"
-                        : "w-3 bg-white/[0.14]"
-                  }`}
-                />
-              ))}
-            </div>
           </div>
 
           {/* Stage copy */}
-          <div className="relative mt-8 min-h-[270px] flex-1 sm:min-h-[300px] md:min-h-[250px]">
+          <div className="relative mt-7 min-h-[250px] flex-1 sm:mt-8 sm:min-h-[300px] md:min-h-[250px]">
             <AnimatePresence mode="sync">
               <motion.div
                 key={step.id}
@@ -645,7 +631,7 @@ function JourneyPanel({
                     font-semibold
                     leading-[1.16]
                     tracking-[-0.022em]
-                    text-[#E7EDF3]
+                    text-white
 
                     sm:text-[26px]
                     lg:text-[30px]
@@ -655,7 +641,7 @@ function JourneyPanel({
                   {step.title}
                 </h3>
 
-                <p className="max-w-[440px] pt-4 text-[14px] font-medium leading-[1.75] text-[#AAB6C2] sm:pt-5 sm:text-[14.5px] lg:text-[15.5px]">
+                <p className="max-w-[440px] pt-4 text-[14px] font-normal leading-[1.75] text-white/70 sm:pt-5 sm:text-[14.5px] lg:text-[15.5px]">
                   {step.description}
                 </p>
 
@@ -665,7 +651,7 @@ function JourneyPanel({
           </div>
 
           {/* Previous / next */}
-          <div className="relative mt-6 flex items-center gap-3 border-t border-white/[0.08] pt-5">
+          <div className="relative mt-7 flex items-center gap-3 border-t border-white/10 pt-6 sm:mt-6 sm:pt-5">
             <button
               type="button"
               onClick={onPrev}
@@ -679,16 +665,16 @@ function JourneyPanel({
                 justify-center
                 rounded-full
                 border
-                border-white/[0.12]
-                bg-white/[0.03]
-                text-white/60
+                border-white/15
+                bg-white/[0.04]
+                text-white/70
                 outline-none
                 transition-all
                 duration-300
 
                 hover:-translate-x-0.5
-                hover:border-[#2DD4BF]/45
-                hover:bg-[#00FFD5]/[0.08]
+                hover:border-[#14B8A6]/50
+                hover:bg-[#14B8A6]/[0.08]
                 hover:text-white
 
                 focus-visible:ring-2
@@ -711,16 +697,16 @@ function JourneyPanel({
                 justify-center
                 rounded-full
                 border
-                border-[#2DD4BF]/30
-                bg-[#00FFD5]/[0.08]
+                border-[#14B8A6]/40
+                bg-[#14B8A6]/10
                 text-[#5EEAD4]
                 outline-none
                 transition-all
                 duration-300
 
                 hover:translate-x-0.5
-                hover:border-[#2DD4BF]/60
-                hover:bg-[#00FFD5]/[0.14]
+                hover:border-[#14B8A6]/70
+                hover:bg-[#14B8A6]/20
                 hover:text-white
 
                 focus-visible:ring-2
@@ -730,9 +716,9 @@ function JourneyPanel({
               <ArrowRight size={16} strokeWidth={2} aria-hidden="true" />
             </button>
 
-            <span className="ml-1 min-w-0 truncate text-[11px] font-bold uppercase tracking-[0.18em] text-white/35">
-              Next <span className="text-white/20">·</span>{" "}
-              <span className="text-white/55">{nextStep.label}</span>
+            <span className="ml-1 min-w-0 truncate text-[11px] font-bold uppercase tracking-[0.18em] text-white/45">
+              Next <span className="text-white/25">·</span>{" "}
+              <span className="text-white/85">{nextStep.label}</span>
             </span>
           </div>
         </div>
@@ -757,49 +743,30 @@ function JourneyPanel({
               }}
               className="absolute inset-0"
             >
-              <div
-                className={`absolute inset-0 ${
-                  prefersReducedMotion ? "" : "journey-kenburns"
+              {/* Photo shown as-is: no overlay, no zoom, so it stays sharp */}
+              <Image
+                src={step.image}
+                alt={step.imageAlt}
+                fill
+                sizes="(max-width: 639px) 100vw, 50vw"
+                className={`object-center ${
+                  "imageFit" in step && step.imageFit === "contain"
+                    ? "bg-[#0B0F1A] object-contain"
+                    : "object-cover"
                 }`}
-              >
-                <Image
-                  src={step.image}
-                  alt={step.imageAlt}
-                  fill
-                  sizes="(max-width: 639px) 100vw, 50vw"
-                  className="object-cover object-center"
-                  priority={activeIndex === 0}
-                />
-              </div>
-
-              {/* Tonal blend into the text pane + gentle floor */}
-              <div className="absolute inset-0 bg-gradient-to-t from-[#0B1220]/85 via-[#0B1220]/15 to-transparent" />
-              <div className="absolute inset-0 hidden bg-gradient-to-r from-[#0F1D2C]/70 via-transparent to-transparent sm:block" />
-              <div className="absolute inset-0 bg-gradient-to-b from-[#0B1220]/55 via-transparent to-transparent sm:hidden" />
+                priority={activeIndex === 0}
+              />
             </motion.div>
           </AnimatePresence>
-
-          {/* Fine grid */}
-          <div
-            aria-hidden="true"
-            className="
-              pointer-events-none
-              absolute
-              inset-0
-              opacity-[0.05]
-              [background-image:linear-gradient(rgba(255,255,255,0.6)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.6)_1px,transparent_1px)]
-              [background-size:34px_34px]
-            "
-          />
 
           {/* Corner accents */}
           <span
             aria-hidden="true"
-            className="pointer-events-none absolute right-5 top-5 h-6 w-6 rounded-tr-lg border-r border-t border-[#5EEAD4]/45"
+            className="pointer-events-none absolute hidden sm:block right-5 top-5 h-6 w-6 rounded-tr-lg border-r border-t border-[#5EEAD4]/45"
           />
           <span
             aria-hidden="true"
-            className="pointer-events-none absolute bottom-5 right-5 h-6 w-6 rounded-br-lg border-b border-r border-[#5EEAD4]/45"
+            className="pointer-events-none absolute hidden sm:block bottom-5 right-5 h-6 w-6 rounded-br-lg border-b border-r border-[#5EEAD4]/45"
           />
 
           {/* Glass caption */}
@@ -811,9 +778,10 @@ function JourneyPanel({
               exit={{ opacity: 0, y: 6, transition: { duration: 0.3, ease: EASE } }}
               className="
                 absolute
+                hidden
+                sm:flex
                 bottom-5
                 left-5
-                flex
                 items-center
                 gap-2.5
                 rounded-full
@@ -891,6 +859,7 @@ function TimelineStages({ revealed }: { revealed: boolean }) {
       onMouseLeave={() => setPaused(false)}
       onFocusCapture={() => setPaused(true)}
       onBlurCapture={() => setPaused(false)}
+      className="[-webkit-tap-highlight-color:transparent]"
     >
       <motion.div
         initial="hidden"
@@ -910,16 +879,18 @@ function TimelineStages({ revealed }: { revealed: boolean }) {
           autoplaying={autoplaying}
           className="w-max flex-nowrap sm:w-auto sm:flex-wrap"
         />
-        <StageSignal signal={signal} originPercent={originPercent} />
+        <div className="hidden sm:contents">
+          <StageSignal signal={signal} originPercent={originPercent} />
+        </div>
       </motion.div>
 
       <motion.div
         initial="hidden"
         animate={revealed ? "show" : "hidden"}
         variants={cardRevealVariant}
-        className="mt-8 sm:mt-10"
+        className="mt-10 sm:mt-10"
       >
-        <div className="h-[700px] sm:h-[580px] md:h-[500px] lg:h-[520px]">
+        <div className="h-[690px] sm:h-[580px] md:h-[500px] lg:h-[520px]">
           <JourneyPanel
             activeIndex={activeIndex}
             onPrev={() => select(activeIndex - 1)}
@@ -932,22 +903,11 @@ function TimelineStages({ revealed }: { revealed: boolean }) {
   );
 }
 
-/* ============================================================
-   Highlighted phrase inside body copy.
-============================================================ */
-
-function Key({ children }: { children: React.ReactNode }) {
-  return (
-    <span className="font-semibold text-[#E7EDF3]">
-      {children}
-    </span>
-  );
-}
-
 export default function AboutStory() {
   const [timelineRevealed, setTimelineRevealed] = useState(false);
 
   return (
+    <>
     <section
       id="about-story"
       className="
@@ -966,59 +926,6 @@ export default function AboutStory() {
         [@media(min-width:1024px)_and_(max-width:1366px)]:py-20!
       "
     >
-      {/* =====================================================
-          AMBIENT BACKGROUND
-      ===================================================== */}
-
-      {/* Dot grid, held to the upper-right so it frames the intro copy */}
-      <div
-        aria-hidden="true"
-        className="
-          pointer-events-none
-          absolute
-          inset-x-0
-          top-0
-          h-[900px]
-          opacity-[0.5]
-          [background-image:radial-gradient(rgba(255,255,255,0.09)_1px,transparent_1.2px)]
-          [background-size:30px_30px]
-          [mask-image:radial-gradient(ellipse_at_85%_18%,black_0%,transparent_58%)]
-          [-webkit-mask-image:radial-gradient(ellipse_at_85%_18%,black_0%,transparent_58%)]
-        "
-      />
-
-      <div
-        aria-hidden="true"
-        className="
-          about-aurora
-          pointer-events-none
-          absolute
-          left-[-160px]
-          top-[12%]
-          h-[420px]
-          w-[420px]
-          rounded-full
-          bg-[#00CDB5]/[0.06]
-          blur-[120px]
-        "
-      />
-
-      <div
-        aria-hidden="true"
-        className="
-          about-aurora-alt
-          pointer-events-none
-          absolute
-          right-[-120px]
-          top-[4%]
-          h-[380px]
-          w-[520px]
-          rounded-full
-          bg-[#5A64FF]/[0.06]
-          blur-[130px]
-        "
-      />
-
       <div
         className="
           relative
@@ -1027,7 +934,7 @@ export default function AboutStory() {
           w-full
           min-w-0
           max-w-[1440px]
-          px-5
+          px-6
           sm:px-7
           md:px-10
           lg:px-12
@@ -1039,7 +946,7 @@ export default function AboutStory() {
         "
       >
         {/* =====================================================
-            INTRO
+            INTRO — editorial statement
         ===================================================== */}
 
         <motion.div
@@ -1047,162 +954,168 @@ export default function AboutStory() {
           initial="hidden"
           whileInView="show"
           viewport={{ once: true, amount: 0.2 }}
-          className="
-            grid
-            grid-cols-1
-            gap-10
-            lg:grid-cols-12
-            lg:gap-12
-            xl:gap-16
-          "
         >
-          {/* Heading column */}
-          <div className="lg:col-span-6">
-            <motion.div
-              variants={textItem}
-              className="mb-5 flex items-center gap-3"
-            >
-              <span className="h-px w-8 bg-gradient-to-r from-transparent to-[#00FFD5] sm:w-10" />
+          <div
+            className="
+              grid
+              grid-cols-1
+              gap-10
+              lg:grid-cols-12
+              lg:gap-x-16
+            "
+          >
+            {/* Heading column */}
+            <div className="lg:col-span-5">
+              <motion.div
+                variants={textItem}
+                className="mb-6 flex items-center gap-3"
+              >
+                <span className="h-px w-8 bg-[#2DD4BF]" />
+                <span
+                  className="
+                    text-[11px]
+                    font-semibold
+                    uppercase
+                    tracking-[0.28em]
+                    text-[#5EEAD4]
+                    sm:text-[12px]
+                  "
+                >
+                  Who We Are
+                </span>
+              </motion.div>
 
-              <span
+              <motion.h2
+                variants={headingReveal}
                 className="
-                  text-[9px]
-                  font-extrabold
-                  uppercase
-                  tracking-[0.28em]
-                  text-[#00FFD5]
-                  sm:text-[10px]
+                  font-heading
+                  max-w-[520px]
+                  text-[2.2rem]
+                  font-bold
+                  leading-[1.15]
+                  sm:leading-[1.08]
+                  tracking-[-0.03em]
+                  text-[#F1F5F9]
+                  sm:text-[2.8rem]
+                  lg:text-[3rem]
+                  xl:text-[3.4rem]
                 "
               >
-                Who We Are
-              </span>
-            </motion.div>
+                A founder-led platform for{" "}
+                <span className="text-[#5EEAD4]">
+                  modern ventures.
+                </span>
+              </motion.h2>
+            </div>
 
-            <motion.h2
-              variants={textItem}
+            {/* Copy column — everything sits in one dark glass card */}
+            <motion.div
+              variants={cardSlideIn}
               className="
-                font-heading
-                max-w-[640px]
-                text-[2.25rem]
-                font-bold
-                leading-[1.08]
-                tracking-[-0.03em]
-                text-[#E7EDF3]
-                sm:text-[3rem]
-                sm:leading-[1.06]
-                lg:text-[3.25rem]
-                xl:text-[3.75rem]
+                rounded-[24px]
+                about-shine
+                relative
+                overflow-hidden
+                border
+                border-white/[0.22]
+                bg-gradient-to-br
+                from-white/[0.14]
+                via-white/[0.09]
+                to-[#2DD4BF]/[0.12]
+                backdrop-blur-xl
+                p-8
+                shadow-[0_30px_80px_rgba(0,0,0,0.35)]
 
-                [@media(min-width:1024px)_and_(max-width:1366px)]:text-[3rem]!
+                sm:p-11
+                lg:col-span-7
+                xl:p-14
               "
             >
-              A founder-led platform for{" "}
-              <span
+              <p
                 className="
-                  bg-gradient-to-r
-                  from-[#E7EDF3]
-                  via-[#D8F1EC]
-                  to-[#5EEAD4]
-                  bg-clip-text
-                  pb-[0.18em]
-                  -mb-[0.18em]
-                  text-transparent
-                  [-webkit-background-clip:text]
+                  text-[18px]
+                  font-medium
+                  leading-[1.6]
+                  tracking-[-0.01em]
+                  text-white
+                  sm:text-[20px]
+                  xl:text-[21px]
                 "
               >
-                modern ventures.
-              </span>
-            </motion.h2>
+                BH Ventures FZE LLC was built around a simple idea: the
+                opportunities of tomorrow sit at the intersection of{" "}
+                <span className="font-semibold text-[#5EEAD4]">
+                  traditional trade and modern technology.
+                </span>
+              </p>
 
-            {/* Discipline chips — desktop only here; on smaller
-                screens they sit under the copy, full width */}
-            <motion.div variants={textItem} className="mt-10 hidden lg:block">
-              <ThreadChips />
-            </motion.div>
-          </div>
-
-          {/* Copy column */}
-          <div className="lg:col-span-6 lg:pt-9">
-            {/* Lead — the one idea the whole company is built on */}
-            <motion.div variants={textItem} className="relative pl-6 sm:pl-7">
               <span
                 aria-hidden="true"
-                className="absolute left-0 top-1 bottom-1 w-[3px] rounded-full bg-gradient-to-b from-[#00FFD5] via-[#00CDB5]/70 to-transparent"
+                className="mt-8 block h-[2px] w-10 rounded-full bg-[#2DD4BF]"
               />
 
               <p
                 className="
-                  font-heading
-                  max-w-[560px]
-                  text-[19px]
-                  font-semibold
-                  leading-[1.5]
-                  tracking-[-0.015em]
-                  text-[#E7EDF3]
-
-                  sm:text-[21px]
-                  lg:text-[22px]
-                  xl:text-[24px]
+                  mt-8!
+                  text-[15px]
+                  font-normal
+                  leading-[1.8]
+                  text-white/70
+                  sm:text-[16px]
                 "
               >
-                BH Ventures FZE LLC was built around a simple idea:{" "}
-                <span className="text-[#5EEAD4]">
-                  the opportunities of tomorrow sit at the intersection of
-                  traditional trade and modern technology.
-                </span>
+                Rather than operating as a single business, we work as a
+                venture-oriented platform that connects disciplines that are
+                usually kept apart.
               </p>
             </motion.div>
-
-            <motion.p
-              variants={textItem}
-              className="
-                pt-6
-                max-w-[540px]
-                text-[15px]
-                font-medium
-                leading-[1.75]
-                text-[#AAB6C2]
-                sm:text-[16px]
-                lg:text-[16.5px]
-              "
-            >
-              Rather than operating as a single business, we work as a
-              venture-oriented platform that connects disciplines that are
-              usually kept apart.
-            </motion.p>
-
-            <motion.p
-              variants={textItem}
-              className="
-                pt-5
-                max-w-[540px]
-                text-[15px]
-                font-medium
-                leading-[1.75]
-                text-[#AAB6C2]
-                sm:text-[16px]
-                lg:text-[16.5px]
-              "
-            >
-              <Key>International trade</Key> gives us global reach.{" "}
-              <Key>Technology and data</Key> give us the tools to move faster
-              and decide smarter.{" "}
-              <Key>Marketing, innovation, business development, and events</Key>{" "}
-              give ideas the structure to become real, functioning ventures.
-            </motion.p>
-
-            <motion.div variants={textItem} className="mt-10 lg:hidden">
-              <ThreadChips />
-            </motion.div>
           </div>
+
+          {/* Disciplines */}
+          <motion.div variants={textItem}>
+            <DisciplinesRow />
+          </motion.div>
         </motion.div>
 
-        {/* =====================================================
-            TIMELINE
-        ===================================================== */}
+      </div>
+    </section>
 
-        <div className="relative mt-20 sm:mt-24 lg:mt-28">
-          <TimelineBackdrop visible={timelineRevealed} />
+    {/* =====================================================
+        TIMELINE — its own light section
+    ===================================================== */}
+
+    <section
+      id="about-journey"
+      className="
+        relative
+        w-full
+        min-w-0
+        overflow-hidden
+        bg-[#F7F9F8]
+        py-16
+        sm:py-20
+        md:py-24
+        lg:py-28
+      "
+    >
+      <div
+        className="
+          mx-auto
+          w-full
+          min-w-0
+          max-w-[1440px]
+          px-6
+          sm:px-7
+          md:px-10
+          lg:px-12
+          xl:px-16
+          2xl:max-w-[1600px]
+          2xl:px-20
+
+          [@media(min-width:1024px)_and_(max-width:1366px)]:px-10!
+        "
+      >
+        <div className="relative">
 
           <motion.div
             variants={timelineEntryContainer}
@@ -1213,7 +1126,7 @@ export default function AboutStory() {
             className="
               flex
               flex-col
-              gap-6
+              gap-7
               lg:flex-row
               lg:items-end
               lg:justify-between
@@ -1229,19 +1142,19 @@ export default function AboutStory() {
                   className="
                     rounded-full
                     border
-                    border-[#2DD4BF]/25
-                    bg-[#0E4A44]/25
+                    border-[#0F766E]/25
+                    bg-[#14B8A6]/10
                     px-3.5
                     py-1.5
-                    text-[9px]
-                    font-extrabold
+                    text-[10px]
+                    font-bold
                     uppercase
                     tracking-[0.28em]
-                    text-[#00FFD5]
-                    sm:text-[10px]
+                    text-[#0F766E]
+                    sm:text-[11px]
                   "
                 >
-                  Timeline
+                  How We Work
                 </span>
               </motion.div>
 
@@ -1252,9 +1165,9 @@ export default function AboutStory() {
                   max-w-[640px]
                   text-[2.25rem]
                   font-bold
-                  leading-[1.08]
+                  leading-[1.15]
                   tracking-[-0.03em]
-                  text-[#E7EDF3]
+                  text-[#132B40]
                   sm:text-[3rem]
                   sm:leading-[1.06]
                   lg:text-[3.25rem]
@@ -1263,22 +1176,7 @@ export default function AboutStory() {
                   [@media(min-width:1024px)_and_(max-width:1366px)]:text-[3rem]!
                 "
               >
-                The{" "}
-                <span
-                  className="
-                    bg-gradient-to-r
-                    from-[#E7EDF3]
-                    via-[#D8F1EC]
-                    to-[#5EEAD4]
-                    bg-clip-text
-                    pb-[0.18em]
-                    -mb-[0.18em]
-                    text-transparent
-                    [-webkit-background-clip:text]
-                  "
-                >
-                  Journey.
-                </span>
+                From idea <span className="text-[#0F766E]">to venture.</span>
               </motion.h2>
             </div>
 
@@ -1287,16 +1185,16 @@ export default function AboutStory() {
               className="
                 max-w-[440px]
                 text-[15px]
-                font-medium
+                font-normal
                 leading-[1.75]
-                text-[#AAB6C2]
+                text-[#52697A]
                 sm:text-[16px]
                 lg:pb-2
                 lg:text-right
               "
             >
-              How trade, technology, and innovation combine inside one
-              founder-led venture platform — five stages, one thesis.
+              Every venture moves through the same five steps — one
+              disciplined process, from first look to global scale.
             </motion.p>
           </motion.div>
 
@@ -1304,67 +1202,68 @@ export default function AboutStory() {
         </div>
       </div>
     </section>
+    </>
   );
 }
 
 /* ============================================================
-   Discipline chips. Each carries a small point of light that
-   travels around its rim (see .thread-chip in globals.css),
-   staggered so the row reads as alive rather than mechanical.
+   Disciplines — one quiet row of plain names under a hairline.
 ============================================================ */
 
-function ThreadChips() {
+function DisciplinesRow() {
   return (
-    <div>
-      <p className="pb-4 text-[10px] font-extrabold uppercase tracking-[0.24em] text-white/35">
-        Seven disciplines, one platform
-      </p>
+    <motion.ul
+      variants={disciplinesList}
+      aria-label="Disciplines"
+      className="
+        mt-14
+        grid
+        grid-cols-2
+        gap-x-4
+        gap-y-4
+        border-t
+        border-white/10
+        pt-8
 
-      <div className="flex flex-wrap gap-2.5 sm:gap-3">
-        {threads.map((thread, index) => {
-          const Icon = thread.icon;
-
-          return (
-            <span
-              key={thread.label}
-              tabIndex={0}
-              style={{ "--chip-delay": `${index * 0.65}s` } as React.CSSProperties}
-              className="
-                thread-chip
-                flex
-                items-center
-                gap-2.5
-                rounded-full
-                border
-                border-white/[0.10]
-                bg-[#0B1220]/70
-                py-2
-                pl-2
-                pr-4
-                text-[11.5px]
-                font-bold
-                text-[#B2BCC7]
-                outline-none
-
-                transition-colors
-                duration-300
-
-                hover:border-[#2DD4BF]/45
-                hover:text-[#E7EDF3]
-                focus-visible:border-[#2DD4BF]/60
-
-                sm:text-[12px]
-              "
-            >
-              <span className="flex h-6 w-6 items-center justify-center rounded-full bg-[#00FFD5]/[0.10] text-[#5EEAD4] ring-1 ring-inset ring-[#2DD4BF]/25">
-                <Icon size={12} strokeWidth={2} aria-hidden="true" />
-              </span>
-
-              {thread.label}
-            </span>
-          );
-        })}
-      </div>
-    </div>
+        sm:flex
+        sm:flex-wrap
+        sm:items-center
+        sm:gap-x-4
+        sm:gap-y-2
+        sm:pt-7
+        lg:mt-16
+      "
+    >
+      {threads.map((label, index) => (
+        <motion.li
+          key={label}
+          variants={disciplineItem}
+          className="flex items-center gap-3 sm:gap-4"
+        >
+          {/* Phone: every name has its own dot (2-column grid).
+              Larger screens: dots only sit between names. */}
+          <span
+            aria-hidden="true"
+            className={`h-1.5 w-1.5 shrink-0 rounded-full bg-[#2DD4BF] ${
+              index === 0 ? "sm:hidden" : ""
+            }`}
+          />
+          <span
+            className="
+              text-[15px]
+              font-semibold
+              text-white/90
+              transition-colors
+              duration-300
+              hover:text-[#5EEAD4]
+              sm:text-[16px]
+              lg:text-[17px]
+            "
+          >
+            {label}
+          </span>
+        </motion.li>
+      ))}
+    </motion.ul>
   );
 }

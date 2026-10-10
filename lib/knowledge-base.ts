@@ -520,7 +520,7 @@ Daily BTC rewards credited every 24h (00:00 UTC) directly to your wallet — no 
 
 Contract Terms: Fixed 5-year period.
 Payment Schedule: Hosting fees paid within 15 days of the billing period.
-Uptime Guarantee: 98% uptime target confirmed in the final offer.
+Uptime Target: 98% uptime target confirmed in the final offer.
 Designed for large-scale, cost-efficient Bitcoin accumulation.`,
         },
         {
@@ -554,7 +554,20 @@ Integrity: Decisions and commitments hold up under scrutiny — with partners, w
 clients, and with each other.
 
 Sustainability: We build for the long term — ventures designed to hold up over time,
-not just perform in the short run.`,
+not just perform in the short run.
+
+Global Impact: Operating from the UAE with a genuinely international outlook, built to
+create value across borders.`,
+        },
+        {
+            id: "careers:process",
+            title: "How BH Ventures Hires (Careers Page)",
+            text: `BH Ventures hires in four steps:
+1. Send your profile — share your CV or portfolio and where you'd like to contribute
+   (via the contact page or info@bhventures.ae).
+2. Intro conversation — a short, informal call about your experience and what you're looking for.
+3. Meet the team — talk with the people you'd work with, around a real problem from our ventures.
+4. Offer & onboarding — if it's a fit on both sides, details are agreed and onboarding begins.`,
         },
     ];
 }

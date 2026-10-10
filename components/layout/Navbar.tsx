@@ -624,30 +624,92 @@ export default function Navbar() {
   );
 
   /* ========================================
-     FOOTER LIGHT MODE DETECTION
+     LIGHT MODE DETECTION
+     The bar stays transparent (client requirement), so its text
+     must follow whatever is behind it. On scroll / resize / route
+     change we probe a few points under the bar, find the nearest
+     painted background and switch to dark text when it is light.
+     Images and videos count as dark. A section can force the result
+     with data-nav-theme="light" | "dark".
   ======================================== */
 
+  const pathname = usePathname();
+
   useEffect(() => {
-    const footer = document.querySelector("[data-footer='true']");
+    const header = document.querySelector("header[data-site-header]");
+    let frame = 0;
 
-    if (!footer) return;
+    const isLightAt = (x: number, y: number): boolean | null => {
+      const stack = document.elementsFromPoint(x, y);
+      const target = stack.find((el) => !header || !header.contains(el));
+      let el: Element | null = target ?? null;
 
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        setIsLightMode(entry.isIntersecting);
-      },
-      {
-        threshold: 0,
-        rootMargin: "0px 0px -45% 0px",
+      while (el && el !== document.documentElement) {
+        const forced = el.getAttribute("data-nav-theme");
+        if (forced === "light") return true;
+        if (forced === "dark") return false;
+
+        if (el instanceof HTMLImageElement || el instanceof HTMLVideoElement) {
+          return false;
+        }
+
+        const bg = getComputedStyle(el).backgroundColor;
+        const match = bg.match(/rgba?\(([^)]+)\)/);
+        if (match) {
+          const [r, g, b, a = "1"] = match[1].split(",").map((v) => v.trim());
+          if (parseFloat(a) > 0.5) {
+            const lum = (0.2126 * +r + 0.7152 * +g + 0.0722 * +b) / 255;
+            return lum > 0.55;
+          }
+        }
+        el = el.parentElement;
       }
-    );
+      return null;
+    };
 
-    observer.observe(footer);
+    const update = () => {
+      frame = 0;
+      const y = 35;
+
+      // Sections tagged with data-nav-theme win across the full width,
+      // so light areas painted by a full-bleed ::before (which the
+      // point probe cannot see) still switch the bar to dark text.
+      const tagged = Array.from(
+        document.querySelectorAll<HTMLElement>("main [data-nav-theme]")
+      ).find((el) => {
+        const rect = el.getBoundingClientRect();
+        return rect.top <= y && rect.bottom >= y;
+      });
+      if (tagged) {
+        setIsLightMode(tagged.dataset.navTheme === "light");
+        return;
+      }
+
+      const w = window.innerWidth;
+      const results = [0.25, 0.5, 0.75]
+        .map((p) => isLightAt(w * p, y))
+        .filter((r): r is boolean => r !== null);
+      if (results.length === 0) return;
+      const light = results.filter(Boolean).length > results.length / 2;
+      setIsLightMode(light);
+    };
+
+    const schedule = () => {
+      if (!frame) frame = requestAnimationFrame(update);
+    };
+
+    // Initial check once the new page has painted
+    const timer = window.setTimeout(update, 100);
+    window.addEventListener("scroll", schedule, { passive: true });
+    window.addEventListener("resize", schedule);
 
     return () => {
-      observer.disconnect();
+      window.clearTimeout(timer);
+      if (frame) cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", schedule);
+      window.removeEventListener("resize", schedule);
     };
-  }, []);
+  }, [pathname]);
 
   /* ========================================
      GOOGLE TRANSLATE BAR HIDER
@@ -738,7 +800,7 @@ export default function Navbar() {
     : "border-white/[0.12]";
 
   const navBackground = isLightMode
-    ? "bg-white/95"
+    ? "bg-white/70"
     : "bg-white/[0.035]";
 
   const navHover = isLightMode
@@ -751,7 +813,7 @@ export default function Navbar() {
           NAVBAR
       ======================================== */}
 
-      <header className="fixed inset-x-0 top-0 z-[100]">
+      <header data-site-header className="fixed inset-x-0 top-0 z-[100]">
         <div
           aria-hidden="true"
           className="pointer-events-none absolute left-1/2 top-0 h-px w-[70%] -translate-x-1/2 bg-gradient-to-r from-transparent via-[#14B8A6]/60 to-transparent blur-[1px]"

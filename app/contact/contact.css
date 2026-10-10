@@ -1,0 +1,26 @@
+/* =========================================================
+   CONTACT PAGE — LOCAL STYLES (scoped to .contact-page)
+
+   app/globals.css sets h1–h3 / p weight and margin as
+   unlayered rules, which silently override Tailwind's
+   mx-auto / mt-* / font-* utilities on this page (the hero
+   paragraph was drifting left because mx-auto was ignored).
+   revert-layer hands those properties back to the utilities.
+   ========================================================= */
+
+.contact-page :is(h1, h2, h3, p) {
+  font-weight: revert-layer;
+  margin: revert-layer;
+}
+
+/* ---------------------------------------------------------
+   125% DISPLAY SCALING (Windows "Scale 125%")
+   Same approach as the About page: scale the page down as one
+   unit on desktop widths with a 1.2–1.3 device pixel ratio.
+   --------------------------------------------------------- */
+
+@media (min-width: 1024px) and (min-resolution: 1.2dppx) and (max-resolution: 1.3dppx) {
+  .contact-page {
+    zoom: 0.82;
+  }
+}

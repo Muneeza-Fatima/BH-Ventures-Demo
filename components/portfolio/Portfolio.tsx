@@ -4,11 +4,13 @@ import {
   useEffect,
   useRef,
   useState,
+  useSyncExternalStore,
   type MouseEvent,
   type CSSProperties,
   type ReactNode,
 } from "react";
 import Link from "next/link";
+import { createPortal } from "react-dom";
 import { Plus_Jakarta_Sans } from "next/font/google";
 import {
   AnimatePresence,
@@ -62,7 +64,7 @@ const sectors = [
     Icon: Layers,
     size: "normal",
     image:
-      "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1600&q=85",
   },
   {
     number: "03",
@@ -72,7 +74,7 @@ const sectors = [
     Icon: CarFront,
     size: "normal",
     image:
-      "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?q=80&w=1283&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?q=80&w=1600&auto=format&fit=crop",
   },
   {
     number: "04",
@@ -82,7 +84,7 @@ const sectors = [
     Icon: Building2,
     size: "normal",
     image:
-      "https://images.unsplash.com/photo-1580920461931-fcb03a940df5?q=80&w=1170&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1580920461931-fcb03a940df5?q=80&w=1600&auto=format&fit=crop",
   },
   {
     number: "05",
@@ -92,7 +94,7 @@ const sectors = [
     Icon: BarChart3,
     size: "normal",
     image:
-      "https://images.unsplash.com/photo-1608222351212-18fe0ec7b13b?q=80&w=1074&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1608222351212-18fe0ec7b13b?q=80&w=1600&auto=format&fit=crop",
   },
   {
     number: "06",
@@ -103,7 +105,7 @@ const sectors = [
     Icon: Globe2,
     size: "wide",
     image:
-      "https://images.unsplash.com/photo-1786340436214-76fd497c650b?q=80&w=1106&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1786340436214-76fd497c650b?q=80&w=1600&auto=format&fit=crop",
   },
 ];
 
@@ -313,42 +315,79 @@ export function Loader() {
   );
 }
 
-/* 2 ─ Cursor: dot + lagging lens that swells over anything interactive */
+const noopSubscribe = () => () => {};
+
+/* 2 ─ Cursor: dot + lens that swells over anything interactive.
+   Rendered into <body> through a portal so the page zoom used for
+   125% displays never shifts it away from the real mouse position. */
 export function Cursor() {
   const x = useMotionValue(-100);
   const y = useMotionValue(-100);
-  const lx = useSpring(x, { stiffness: 140, damping: 18, mass: 0.6 });
-  const ly = useSpring(y, { stiffness: 140, damping: 18, mass: 0.6 });
+  const lx = useSpring(x, { stiffness: 600, damping: 38, mass: 0.4 });
+  const ly = useSpring(y, { stiffness: 600, damping: 38, mass: 0.4 });
   const [big, setBig] = useState(false);
   const [label, setLabel] = useState("");
+  const [visible, setVisible] = useState(true);
+  const [pressed, setPressed] = useState(false);
+  // false during server render, true once running in the browser
+  const mounted = useSyncExternalStore(
+    noopSubscribe,
+    () => true,
+    () => false,
+  );
 
   useEffect(() => {
     if (window.matchMedia("(hover: none)").matches) return;
     const move = (e: globalThis.MouseEvent) => {
       x.set(e.clientX);
       y.set(e.clientY);
+      // Only inside the portfolio page itself — over the navbar, footer
+      // or chat widget the normal mouse pointer is used instead.
+      setVisible(
+        !!(e.target as HTMLElement).closest(`.${styles.portfolio}`),
+      );
       const el = (e.target as HTMLElement).closest<HTMLElement>(
         "a, button, [data-cursor]",
       );
       setBig(!!el);
       setLabel(el?.dataset.cursor ?? "");
     };
+    const down = () => setPressed(true);
+    const up = () => setPressed(false);
     window.addEventListener("mousemove", move);
-    return () => window.removeEventListener("mousemove", move);
+    window.addEventListener("mousedown", down);
+    window.addEventListener("mouseup", up);
+    return () => {
+      window.removeEventListener("mousemove", move);
+      window.removeEventListener("mousedown", down);
+      window.removeEventListener("mouseup", up);
+    };
   }, [x, y]);
 
-  return (
-    <>
-      <motion.div className={styles.dot} style={{ x, y }} />
+  if (!mounted) return null;
+
+  const lensScale = big ? (label ? 2.6 : 1.9) : 1;
+
+  // A <span> wrapper: app/globals.css stretches every direct
+  // "body > div" to full width and height, which must not hit the cursor.
+  return createPortal(
+    <span aria-hidden="true">
+      <motion.div
+        className={styles.dot}
+        style={{ x, y, opacity: visible ? 1 : 0 }}
+        animate={{ scale: pressed ? 0.5 : 1 }}
+        transition={{ duration: 0.12 }}
+      />
       <motion.div
         className={styles.lens}
-        style={{ x: lx, y: ly }}
-        animate={{ scale: big ? (label ? 2.6 : 1.9) : 1 }}
-        transition={{ type: "spring", stiffness: 240, damping: 20 }}
+        style={{ x: lx, y: ly, opacity: visible ? 1 : 0 }}
+        animate={{ scale: pressed ? lensScale * 0.75 : lensScale }}
+        transition={{ type: "spring", stiffness: 420, damping: 22 }}
       >
         {label && <span>{label}</span>}
       </motion.div>
-    </>
+    </span>,
+    document.body,
   );
 }
 
@@ -900,6 +939,7 @@ export default function Portfolio() {
 
       <motion.section
         className={styles.intro}
+        data-nav-theme="light"
         variants={revealVariants}
         initial="hidden"
         whileInView="visible"
@@ -1065,7 +1105,11 @@ export default function Portfolio() {
           PROJECTS
       ═══════════════════════════════════════ */}
 
-      <section className={styles.projects} id="projects">
+      <section
+        className={styles.projects}
+        id="projects"
+        data-nav-theme="light"
+      >
         <div className={styles.projectsLayout}>
           {/* Sticky intro column */}
           <motion.div

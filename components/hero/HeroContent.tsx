@@ -86,8 +86,8 @@ export default function HeroContent() {
             w-8
             shrink-0
             bg-gradient-to-r
-            from-[#14B8A6]
-            to-[#2DD4BF]
+            from-[#2DD4BF]
+            to-[#5EEAD4]
 
             sm:w-9
           "
@@ -96,7 +96,7 @@ export default function HeroContent() {
         <span
           className="
             text-[9px]
-            font-semibold
+            font-bold
             uppercase
             tracking-[0.30em]
             text-[#5EEAD4]
@@ -181,9 +181,9 @@ export default function HeroContent() {
             className="
               inline-block
               bg-gradient-to-r
-              from-white
-              via-white
-              to-[#5EEAD4]
+              from-[#99F6E4]
+              via-[#5EEAD4]
+              to-[#2DD4BF]
               bg-clip-text
               font-extrabold
               text-transparent
@@ -213,8 +213,8 @@ export default function HeroContent() {
             w-full
             items-baseline
             whitespace-nowrap
-            text-[0.82rem]
-            font-semibold
+            text-[0.76rem]
+            font-bold
             leading-[1.5]
 
             sm:text-[1.08rem]
@@ -228,7 +228,7 @@ export default function HeroContent() {
             variants={itemVariants}
             className="
               shrink-0
-              text-[#14B8A6]
+              text-[#2DD4BF]
             "
           >
             Bridging
@@ -271,7 +271,7 @@ export default function HeroContent() {
                 Technology{" "}
               </span>
 
-              <span className="text-[#2DD4BF]">
+              <span className="text-[#5EEAD4]">
                 &amp;{" "}
               </span>
 
@@ -279,7 +279,7 @@ export default function HeroContent() {
                 Innovation{" "}
               </span>
 
-              <span className="text-[#2DD4BF]">
+              <span className="text-[#5EEAD4]">
                 from the UAE.
               </span>
             </motion.span>
@@ -309,7 +309,7 @@ export default function HeroContent() {
           font-medium
           leading-[1.75]
           tracking-[-0.005em]
-          text-white/75
+          text-white
 
           sm:text-[16px]
           md:text-[16px]
@@ -320,7 +320,7 @@ export default function HeroContent() {
         <motion.span
           className="
             inline-block
-            bg-[linear-gradient(90deg,#14B8A6_0%,#2DD4BF_30%,#ffffff_50%,#2DD4BF_70%,#14B8A6_100%)]
+            bg-[linear-gradient(90deg,#2DD4BF_0%,#5EEAD4_30%,#99F6E4_50%,#5EEAD4_70%,#2DD4BF_100%)]
             bg-[length:250%_100%]
             bg-clip-text
             font-extrabold
@@ -358,7 +358,7 @@ export default function HeroContent() {
           gap-2
           max-w-[560px]
           text-[13px]
-          font-semibold
+          font-bold
           leading-6
           tracking-[0.01em]
           text-[#5EEAD4]
@@ -377,8 +377,8 @@ export default function HeroContent() {
             w-5
             shrink-0
             bg-gradient-to-r
-            from-[#14B8A6]
-            to-[#2DD4BF]
+            from-[#2DD4BF]
+            to-[#5EEAD4]
           "
         />
 

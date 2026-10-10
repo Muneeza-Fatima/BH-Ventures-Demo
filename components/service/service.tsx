@@ -112,7 +112,7 @@ const EFFICIENCY_PLANS = [
       "15 J/TH Efficiency",
       "12 per TH/s Cost",
       "5 Years Contract",
-      "98% Uptime Guaranteed",
+      "98% Uptime Target",
       "0.08/kWh Hosting Rate",
     ],
     featured: false,
@@ -127,7 +127,7 @@ const EFFICIENCY_PLANS = [
       "12 J/TH Efficiency",
       "21 per TH/s Cost",
       "5 Years Contract",
-      "98% Uptime Guaranteed",
+      "98% Uptime Target",
       "0.08/kWh Hosting Rate",
     ],
     featured: true,
@@ -187,7 +187,7 @@ const CONTRACT_INFO_CARDS = [
     desc: "Hosting fees must be paid within 15 days of the billing period.",
   },
   {
-    title: "Uptime Guarantee",
+    title: "Uptime Target",
     desc: "Plans are modeled around a 98% uptime target, confirmed in the final offer.",
   },
 ];

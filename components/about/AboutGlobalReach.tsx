@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { motion, useReducedMotion } from "framer-motion";
 import { Globe2, Handshake, TrendingUp, Blocks } from "lucide-react";
 
@@ -73,7 +72,7 @@ export default function AboutGlobalReach() {
         w-full
         min-w-0
         overflow-hidden
-        bg-[#0F1B2D]
+        bg-[#0B1220]
         py-14
         sm:py-18
         md:py-20
@@ -83,62 +82,14 @@ export default function AboutGlobalReach() {
         [@media(min-width:1024px)_and_(max-width:1366px)]:py-16!
       "
     >
-      {/* Decorative backdrop. Sits at -z-10 inside this `isolate`
-          section, so it paints above the section's own navy fill but
-          below every in-flow child. The radial mask fades the photo
-          out well before the edges so the copy never sits on detail. */}
-      <div
-        aria-hidden="true"
-        className="
-          pointer-events-none
-          absolute
-          inset-0
-          -z-10
-          opacity-[0.12]
-          lg:opacity-[0.16]
-
-          [mask-image:radial-gradient(ellipse_at_center,black_15%,transparent_72%)]
-          [-webkit-mask-image:radial-gradient(ellipse_at_center,black_15%,transparent_72%)]
-        "
-      >
-        <Image
-          src="/images/about/story/story-global-v2.jpg"
-          alt=""
-          fill
-          sizes="100vw"
-          className="about-global-bg object-cover object-center"
-        />
+      {/* Background: same soft drifting glow as the Our Story hero
+          (classes in app/about/about.css) — no photo. */}
+      <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
+        <div className="about-glow-a absolute left-[-6%] top-[18%] h-[520px] w-[520px] rounded-full bg-[#14B8A6]/[0.20] blur-[120px]" />
+        <div className="about-glow-b absolute left-[28%] top-[-10%] h-[440px] w-[440px] rounded-full bg-[#1D4ED8]/[0.16] blur-[120px]" />
+        <div className="about-glow-c absolute bottom-[-20%] right-[-8%] h-[560px] w-[560px] rounded-full bg-[#0F766E]/[0.22] blur-[130px]" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_40%,rgba(11,18,32,0.6)_100%)]" />
       </div>
-
-      {/* Scrim over the photo, still below the content layer */}
-      <div
-        aria-hidden="true"
-        className="
-          pointer-events-none
-          absolute
-          inset-0
-          -z-10
-          bg-gradient-to-b
-          from-[#0F1B2D]/70
-          via-transparent
-          to-[#0F1B2D]/80
-        "
-      />
-
-      <div
-        aria-hidden="true"
-        className="
-          pointer-events-none
-          absolute
-          right-[-180px]
-          top-[10%]
-          h-[400px]
-          w-[400px]
-          rounded-full
-          bg-[#00CDB5]/[0.05]
-          blur-[130px]
-        "
-      />
 
       <div
         className="
@@ -267,10 +218,11 @@ export default function AboutGlobalReach() {
                   overflow-hidden
                   rounded-[22px]
                   border
-                  border-white/[0.09]
-                  bg-[#0B1220]/55
+                  border-white/[0.18]
+                  bg-white/[0.08]
+                  shadow-[0_18px_44px_rgba(0,0,0,0.28)]
                   p-6
-                  backdrop-blur-sm
+                  backdrop-blur-xl
 
                   transition-[transform,border-color,box-shadow,background-color]
                   duration-500
@@ -278,18 +230,19 @@ export default function AboutGlobalReach() {
 
                   hover:-translate-y-1.5
                   hover:border-[#2DD4BF]/50
-                  hover:bg-[#0B1220]/70
+                  hover:bg-white/[0.12]
                   hover:shadow-[0_24px_50px_rgba(0,0,0,0.28),0_0_36px_rgba(0,205,181,0.16)]
 
                   focus:border-[#2DD4BF]/50
-                  focus:bg-[#0B1220]/70
+                  focus:bg-white/[0.12]
                   focus:shadow-[0_24px_50px_rgba(0,0,0,0.28),0_0_36px_rgba(0,205,181,0.16)]
                   focus:outline-none
                   focus-visible:-translate-y-1.5
                   focus-visible:ring-2
                   focus-visible:ring-[#5EEAD4]/60
                   focus-visible:ring-offset-2
-                  focus-visible:ring-offset-[#0F1B2D]
+                  focus-visible:ring-offset-[#0B1220]
+                  about-shine
 
                   sm:p-7
                 "
@@ -326,7 +279,7 @@ export default function AboutGlobalReach() {
                     text-[10px]
                     font-bold
                     tracking-[0.2em]
-                    text-white/25
+                    text-white/45
                   "
                 >
                   {String(index + 1).padStart(2, "0")}
@@ -343,7 +296,7 @@ export default function AboutGlobalReach() {
                     rounded-[16px]
                     border
                     border-[#2DD4BF]/30
-                    bg-[#0E4A44]/50
+                    bg-[#14B8A6]/15
                     text-[#5EEAD4]
 
                     transition-[transform,box-shadow]
@@ -366,7 +319,7 @@ export default function AboutGlobalReach() {
                     font-semibold
                     leading-[1.25]
                     tracking-[-0.018em]
-                    text-[#E7EDF3]
+                    text-white
                     sm:text-[18px]
                   "
                 >
@@ -379,13 +332,13 @@ export default function AboutGlobalReach() {
                     text-[13px]
                     font-medium
                     leading-[1.7]
-                    text-[#AAB6C2]
+                    text-white/80
 
                     transition-colors
                     duration-300
 
-                    group-hover:text-[#C9D2DB]
-                    group-focus:text-[#C9D2DB]
+                    group-hover:text-white
+                    group-focus:text-white
                   "
                 >
                   {pillar.description}

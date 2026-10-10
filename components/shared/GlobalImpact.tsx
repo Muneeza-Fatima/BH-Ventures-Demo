@@ -2,6 +2,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { motion, useReducedMotion } from "framer-motion";
 import {
   Globe2,
   Clock3,
@@ -186,6 +187,9 @@ export default function GlobalImpact() {
     };
   }, []);
 
+  const reduceMotion = useReducedMotion();
+  const revealEase = [0.16, 1, 0.3, 1] as const;
+
   return (
     <section
       className="
@@ -230,7 +234,15 @@ export default function GlobalImpact() {
 
       {/* Main Card */}
 
-      <div
+      <motion.div
+        initial={{
+          opacity: 0,
+          y: reduceMotion ? 0 : 40,
+          scale: reduceMotion ? 1 : 0.97,
+        }}
+        whileInView={{ opacity: 1, y: 0, scale: 1 }}
+        viewport={{ once: true, amount: 0.2 }}
+        transition={{ duration: 0.8, ease: revealEase }}
         className="
           relative
           mx-auto
@@ -359,7 +371,11 @@ export default function GlobalImpact() {
         >
           {/* Header */}
 
-          <div
+          <motion.div
+            initial={{ opacity: 0, y: reduceMotion ? 0 : 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{ duration: 0.7, delay: 0.2, ease: revealEase }}
             className="
               mx-auto
               max-w-[650px]
@@ -518,7 +534,7 @@ export default function GlobalImpact() {
               Built to create accessible opportunities and
               sustainable growth for traders worldwide.
             </p>
-          </div>
+          </motion.div>
 
           {/* =====================================================
               STATISTICS
@@ -540,12 +556,24 @@ export default function GlobalImpact() {
               md:max-w-[540px]
             "
           >
-            {stats.map((stat) => {
+            {stats.map((stat, index) => {
               const Icon = stat.icon;
 
               return (
-                <div
+                /* Opacity + blur only: transform stays free for the CSS hover scale */
+                <motion.div
                   key={stat.label}
+                  initial={{
+                    opacity: 0,
+                    filter: reduceMotion ? "blur(0px)" : "blur(8px)",
+                  }}
+                  whileInView={{ opacity: 1, filter: "blur(0px)" }}
+                  viewport={{ once: true, amount: 0.4 }}
+                  transition={{
+                    duration: 0.6,
+                    delay: 0.35 + index * 0.12,
+                    ease: revealEase,
+                  }}
                   className={`
                     group
                     absolute
@@ -667,7 +695,7 @@ export default function GlobalImpact() {
                   >
                     {stat.label}
                   </div>
-                </div>
+                </motion.div>
               );
             })}
           </div>
@@ -687,7 +715,7 @@ export default function GlobalImpact() {
             "
           />
         </div>
-      </div>
+      </motion.div>
     </section>
   );
 }

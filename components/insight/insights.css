@@ -89,7 +89,7 @@
     position: absolute;
     inset: 0;
     opacity: 0;
-    transition: opacity 1.4s ease;
+    transition: opacity 0.5s ease;
     z-index: 0;
 }
 
@@ -297,7 +297,8 @@
     background: var(--signal);
     transform: scaleX(0);
     transform-origin: left;
-    animation: bhi-dot-fill 6s linear forwards;
+    /* fills over exactly one slide (set from BANNER_INTERVAL_MS) */
+    animation: bhi-dot-fill var(--bhi-slide-ms, 1500ms) linear forwards;
     border-radius: 999px;
 }
 
@@ -2939,4 +2940,698 @@
     .bhi-advisory__visual img {
         min-height: 15rem;
     }
+}
+
+/* =================================================================
+   PAGE BACKGROUND — glow mesh + fine grid (same feel as About)
+   Soft teal / blue / deep-teal lights sit down the whole length of
+   the page over the navy base, with a faint 64px grid that fades
+   out toward the edges. Two of the lights drift slowly.
+================================================================= */
+
+.bhi {
+    background-color: #0b1220;
+    background-image:
+        radial-gradient(ellipse 55% 22% at 8% 12%, rgba(45, 212, 191, 0.16), transparent 70%),
+        radial-gradient(ellipse 50% 20% at 95% 30%, rgba(59, 130, 246, 0.14), transparent 70%),
+        radial-gradient(ellipse 60% 22% at 12% 55%, rgba(20, 184, 166, 0.13), transparent 70%),
+        radial-gradient(ellipse 50% 20% at 90% 78%, rgba(45, 212, 191, 0.06), transparent 70%),
+        radial-gradient(ellipse 60% 18% at 30% 96%, rgba(59, 130, 246, 0.10), transparent 70%),
+        linear-gradient(180deg, #0b1220 0%, #0d1a2b 45%, #0b1220 100%);
+    background-size: auto;
+}
+
+/* fine grid, faded at the sides */
+.bhi__inner::before {
+    content: "";
+    position: absolute;
+    inset: 0 calc(50% - 50vw);
+    z-index: -1;
+    pointer-events: none;
+    background-image:
+        linear-gradient(rgba(255, 255, 255, 0.045) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.045) 1px, transparent 1px);
+    background-size: 64px 64px;
+    -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 18%, #000 82%, transparent 100%);
+    mask-image: linear-gradient(90deg, transparent 0%, #000 18%, #000 82%, transparent 100%);
+}
+
+/* the two ambient orbs: larger, brighter and slowly drifting */
+.bhi::before {
+    top: 30%;
+    left: -12rem;
+    width: 56rem;
+    height: 56rem;
+    background: radial-gradient(circle, rgba(45, 212, 191, 0.14) 0%, transparent 62%);
+    animation: bhi-glow-drift-a 26s ease-in-out infinite;
+}
+
+.bhi::after {
+    top: 12%;
+    right: -14rem;
+    width: 48rem;
+    height: 48rem;
+    background: radial-gradient(circle, rgba(59, 130, 246, 0.13) 0%, transparent 62%);
+    animation: bhi-glow-drift-b 32s ease-in-out infinite;
+}
+
+@keyframes bhi-glow-drift-a {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(10%, 6%) scale(1.1); }
+}
+
+@keyframes bhi-glow-drift-b {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(-10%, 8%) scale(0.92); }
+}
+
+/* phones: multi-shade glows slightly lighter, as on the other pages */
+@media (max-width: 767px) {
+    .bhi::before,
+    .bhi::after {
+        opacity: 0.6;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .bhi::before,
+    .bhi::after {
+        animation: none;
+    }
+}
+
+
+/* =================================================================
+   BH VENTURES SIGNALS PANEL — more breathing space on every screen
+================================================================= */
+
+.bhi-dateline {
+    margin: clamp(2.5rem, 6vw, 4.5rem) 0 clamp(2.5rem, 5vw, 4rem);
+    padding: clamp(2rem, 5vw, 4.5rem) clamp(1.5rem, 5vw, 4rem);
+    padding-right: clamp(20rem, 36vw, 31rem);
+}
+
+.bhi-dateline__top {
+    gap: 1rem 2rem;
+    margin-bottom: clamp(1.75rem, 3vw, 2.5rem);
+}
+
+.bhi-dateline__title {
+    margin-bottom: clamp(1.5rem, 2.5vw, 2rem);
+    line-height: 1;
+}
+
+.bhi-dateline__blurb {
+    line-height: 1.8;
+    max-width: 36rem;
+}
+
+.bhi-dateline__image {
+    top: clamp(1.5rem, 3vw, 2.25rem);
+    bottom: clamp(1.5rem, 3vw, 2.25rem);
+    right: clamp(1.5rem, 4vw, 4rem);
+}
+
+.bhi-dateline__image figcaption {
+    right: 1.25rem;
+    bottom: 1.25rem;
+    left: 1.25rem;
+    line-height: 1.35;
+}
+
+/* phones / small tablets: image stacks under the text */
+@media (max-width: 40rem) {
+    .bhi-dateline {
+        padding: 2rem 1.5rem 1.75rem;
+    }
+
+    .bhi-dateline__top {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.9rem;
+        margin-bottom: 1.75rem;
+    }
+
+    .bhi-dateline__image {
+        top: auto;
+        right: auto;
+        bottom: auto;
+        max-width: 100%;
+        margin-top: 2rem;
+    }
+}
+
+@media (max-width: 26rem) {
+    .bhi-dateline {
+        padding: 1.75rem 1.25rem 1.5rem;
+    }
+
+    .bhi-dateline__title {
+        margin-bottom: 1.25rem;
+    }
+}
+
+/* =================================================================
+   SIGNALS PANEL — brighter glass, and nothing overlapping
+   The huge outlined "Insights" ghost word ran behind the blurb and
+   the photo, so it is removed; the content gets clear spacing.
+================================================================= */
+
+.bhi-dateline {
+    background:
+        radial-gradient(120% 160% at 100% 0%, rgba(45, 212, 191, 0.22) 0%, transparent 55%),
+        radial-gradient(80% 140% at 0% 100%, rgba(59, 130, 246, 0.18) 0%, transparent 60%),
+        linear-gradient(135deg, rgba(255, 255, 255, 0.13) 0%, rgba(255, 255, 255, 0.05) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+    -webkit-backdrop-filter: blur(14px);
+    backdrop-filter: blur(14px);
+}
+
+.bhi-dateline::after {
+    display: none;
+}
+
+.bhi-dateline__issue {
+    color: rgba(255, 255, 255, 0.72);
+}
+
+.bhi-dateline__blurb {
+    color: rgba(255, 255, 255, 0.82);
+}
+
+.bhi-dateline__image {
+    border-color: rgba(94, 234, 212, 0.55);
+}
+
+/* =================================================================
+   EDITORIAL TAXONOMY — brighter panel and 4 brighter cards
+================================================================= */
+
+.bhi-key-card {
+    padding: clamp(1.5rem, 4vw, 2.75rem);
+    background:
+        radial-gradient(90% 120% at 0% 0%, rgba(45, 212, 191, 0.14) 0%, transparent 60%),
+        linear-gradient(135deg, rgba(255, 255, 255, 0.11) 0%, rgba(255, 255, 255, 0.04) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.bhi-key-card__subtitle {
+    color: rgba(255, 255, 255, 0.72);
+}
+
+.bhi-key-card__item {
+    background: linear-gradient(160deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.05) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.bhi-key-card__item:hover {
+    background: linear-gradient(160deg, rgba(255, 255, 255, 0.16) 0%, rgba(255, 255, 255, 0.07) 100%);
+    border-color: rgba(94, 234, 212, 0.55);
+}
+
+.bhi-key-card__icon-wrap {
+    background: rgba(45, 212, 191, 0.14);
+    border-color: rgba(94, 234, 212, 0.55);
+}
+
+.bhi-key-card__meaning {
+    color: rgba(255, 255, 255, 0.78);
+}
+
+/* =================================================================
+   ARTICLE GRID — tablets (761–960px)
+   The 12-column desktop grid squeezed the feature card into two
+   narrow columns here; use a clean two-column layout instead.
+================================================================= */
+
+@media (min-width: 761px) and (max-width: 960px) {
+    .bhi-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .bhi-tile {
+        grid-column: span 1;
+    }
+
+    .bhi-tile--feature {
+        grid-column: span 2;
+    }
+}
+
+/* =================================================================
+   SIGNALS PANEL ON PHONES (up to 640px)
+   Placed last so it also wins over the older 26rem rule that most
+   phones (390px and narrower) fall under.
+================================================================= */
+@media (max-width: 40rem) {
+    .bhi-dateline {
+        margin: 2.5rem 0 2.75rem;
+        padding: 2.25rem 1.75rem 2rem;
+        border-radius: 1.5rem;
+        background:
+            radial-gradient(130% 90% at 100% 0%, rgba(45, 212, 191, 0.3) 0%, transparent 60%),
+            radial-gradient(110% 80% at 0% 100%, rgba(59, 130, 246, 0.24) 0%, transparent 65%),
+            linear-gradient(160deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.09) 100%);
+        border-color: rgba(255, 255, 255, 0.26);
+    }
+
+    .bhi-dateline__top {
+        gap: 1.1rem;
+        margin-bottom: 2rem;
+    }
+
+    .bhi-dateline__title {
+        margin-bottom: 1.6rem;
+    }
+
+    /* the teal side line is hidden below 62rem, so no indent here */
+    .bhi-dateline__blurb {
+        padding-left: 0;
+        line-height: 1.85;
+        color: rgba(255, 255, 255, 0.88);
+    }
+
+    .bhi-dateline__issue {
+        color: rgba(255, 255, 255, 0.8);
+    }
+
+    .bhi-dateline__image {
+        margin-top: 2.25rem;
+    }
+}
+
+/* =================================================================
+   "STAY AHEAD OF THE SIGNAL" — softer, minimal version
+   Same content; fewer boxes and borders, lighter weights, one
+   accent colour (teal) instead of blue + yellow + teal.
+================================================================= */
+
+.bhi-dispatch {
+    padding: clamp(2rem, 5vw, 3.5rem) clamp(1.5rem, 5vw, 3.5rem);
+    background:
+        radial-gradient(70% 90% at 100% 0%, rgba(45, 212, 191, 0.12) 0%, transparent 60%),
+        linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.03) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 1.75rem;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.22);
+}
+
+.bhi-dispatch::before {
+    background: radial-gradient(circle, rgba(45, 212, 191, 0.08) 0%, transparent 70%);
+}
+
+/* badge: a quiet label instead of a pill */
+.bhi-dispatch__badge {
+    padding: 0;
+    background: none;
+    border: 0;
+    border-radius: 0;
+    color: #5eead4;
+    font-size: 0.7rem;
+    letter-spacing: 0.16em;
+    margin-bottom: 1rem;
+}
+
+.bhi-dispatch__title {
+    font-size: clamp(1.4rem, 2.6vw, 2.05rem);
+    margin-bottom: 0.75rem;
+}
+
+.bhi-dispatch__title::after {
+    margin-top: 0.6rem;
+    color: rgba(255, 255, 255, 0.45);
+    font-size: 0.66rem;
+    font-weight: 600;
+}
+
+.bhi-dispatch__desc {
+    color: rgba(255, 255, 255, 0.72);
+    font-weight: 400;
+    margin-bottom: 1.75rem;
+}
+
+/* topic tabs: light outline chips, teal numbers */
+.bhi-dispatch__signals {
+    gap: 0.5rem 0.6rem;
+    margin-bottom: 1.25rem;
+}
+
+.bhi-dispatch__signal {
+    padding: 0.5rem 0.95rem;
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    color: rgba(255, 255, 255, 0.62);
+    font-weight: 600;
+    letter-spacing: 0.06em;
+}
+
+.bhi-dispatch__signal-number {
+    color: #5eead4;
+    font-family: var(--sans);
+    font-size: 0.68rem;
+    font-weight: 600;
+    opacity: 0.85;
+}
+
+.bhi-dispatch__signal:hover,
+.bhi-dispatch__signal--active {
+    background: rgba(45, 212, 191, 0.1);
+    border-color: rgba(94, 234, 212, 0.45);
+    color: #ffffff;
+    box-shadow: none;
+}
+
+/* readout: a simple teal side line instead of a box */
+.bhi-dispatch__readout {
+    gap: 0.35rem;
+    margin-bottom: 1.75rem;
+    padding: 0.25rem 0 0.25rem 1rem;
+    border: 0;
+    border-left: 2px solid rgba(94, 234, 212, 0.6);
+    border-radius: 0;
+    background: none;
+}
+
+.bhi-dispatch__readout-label,
+.bhi-dispatch__readout small {
+    color: rgba(94, 234, 212, 0.85);
+    font-weight: 600;
+}
+
+.bhi-dispatch__readout strong {
+    font-size: clamp(1rem, 1.5vw, 1.15rem);
+    font-weight: 500;
+}
+
+.bhi-dispatch__readout > span:not(.bhi-dispatch__readout-label) {
+    color: rgba(255, 255, 255, 0.62);
+}
+
+/* form: softer field and button */
+.bhi-dispatch__form {
+    gap: 0.6rem;
+    margin-bottom: 0.85rem;
+}
+
+.bhi-dispatch__input {
+    padding: 0.8rem 1.2rem;
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.14);
+    font-size: 0.9rem;
+}
+
+.bhi-dispatch__btn {
+    padding: 0.8rem 1.5rem;
+    background: #2dd4bf;
+    font-size: 0.875rem;
+    font-weight: 600;
+}
+
+.bhi-dispatch__btn:hover {
+    background: #5eead4;
+    box-shadow: 0 6px 18px rgba(45, 212, 191, 0.25);
+}
+
+.bhi-dispatch__note {
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 0.78rem;
+    font-weight: 400;
+}
+
+/* "Talk to us": a plain text link instead of a boxed button */
+.bhi-dispatch__email-link {
+    margin-top: 1.1rem;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    color: #5eead4;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+}
+
+.bhi-dispatch__email-link:hover {
+    background: none;
+    color: #ffffff;
+    transform: translateX(2px);
+}
+
+/* =================================================================
+   "STAY AHEAD" — topic colours, softer right glow, clearer drawing
+   Each topic has its own colour (01 blue, 02 violet, 03 amber).
+   The selected topic sets --sig on the card, which the side line
+   and the orbit drawing on the right pick up.
+================================================================= */
+
+.bhi-dispatch {
+    --sig: #60a5fa;
+    background:
+        linear-gradient(135deg, rgba(255, 255, 255, 0.095) 0%, rgba(255, 255, 255, 0.045) 100%);
+    border-color: rgba(255, 255, 255, 0.16);
+}
+
+.bhi-dispatch[data-signal="web3"] {
+    --sig: #a78bfa;
+}
+
+.bhi-dispatch[data-signal="trade"] {
+    --sig: #fbbf24;
+}
+
+.bhi-dispatch::before {
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.04) 0%, transparent 70%);
+}
+
+/* tab colours */
+.bhi-dispatch__signal:nth-child(1) { --tab: #60a5fa; }
+.bhi-dispatch__signal:nth-child(2) { --tab: #a78bfa; }
+.bhi-dispatch__signal:nth-child(3) { --tab: #fbbf24; }
+
+.bhi-dispatch__signal-number {
+    color: var(--tab);
+    opacity: 1;
+}
+
+.bhi-dispatch__signal:hover,
+.bhi-dispatch__signal--active {
+    background: color-mix(in srgb, var(--tab) 14%, transparent);
+    border-color: color-mix(in srgb, var(--tab) 60%, transparent);
+}
+
+.bhi-dispatch__readout {
+    border-left-color: var(--sig);
+}
+
+.bhi-dispatch__readout-label {
+    color: var(--sig);
+}
+
+/* orbit drawing: larger, solid and clearly visible */
+.bhi-dispatch__visual {
+    width: clamp(10rem, 17vw, 15rem);
+    height: clamp(10rem, 17vw, 15rem);
+    margin-right: clamp(0rem, 2vw, 2rem);
+}
+
+.bhi-dispatch__orbit-ring {
+    transition: border-color 0.4s ease;
+}
+
+.bhi-dispatch__orbit-ring--outer {
+    border: 1.5px dashed color-mix(in srgb, var(--sig) 70%, transparent);
+}
+
+.bhi-dispatch__orbit-ring--inner {
+    border: 1.5px solid rgba(255, 255, 255, 0.28);
+}
+
+.bhi-dispatch__orbit-dot {
+    width: 0.9rem;
+    height: 0.9rem;
+    top: -0.45rem;
+    background: var(--sig);
+    box-shadow: 0 0 12px 2px color-mix(in srgb, var(--sig) 55%, transparent);
+}
+
+.bhi-dispatch__orbit-core {
+    font-size: 2.2rem;
+    color: var(--sig);
+    text-shadow: none;
+}
+
+.bhi-dispatch__chip {
+    background: rgba(15, 27, 45, 0.92);
+    border-color: rgba(255, 255, 255, 0.22);
+    color: #ffffff;
+}
+
+/* =================================================================
+   STABLE GLASS — Insights (signals) card and the 4 stat cards
+   Same calm glass as the "Stay ahead" card: a soft white tint,
+   faint border, no strong glow. Placed last so it wins on phones.
+================================================================= */
+
+.bhi-dateline {
+    background:
+        radial-gradient(120% 160% at 100% 0%, rgba(45, 212, 191, 0.07) 0%, transparent 55%),
+        radial-gradient(80% 140% at 0% 100%, rgba(59, 130, 246, 0.06) 0%, transparent 60%),
+        linear-gradient(135deg, rgba(255, 255, 255, 0.095) 0%, rgba(255, 255, 255, 0.045) 100%);
+    border-color: rgba(255, 255, 255, 0.16);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.22);
+}
+
+.bhi-dateline::before {
+    opacity: 0.5;
+}
+
+@media (max-width: 40rem) {
+    .bhi-dateline {
+        background:
+            radial-gradient(130% 90% at 100% 0%, rgba(45, 212, 191, 0.08) 0%, transparent 60%),
+            linear-gradient(160deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+        border-color: rgba(255, 255, 255, 0.16);
+    }
+}
+
+/* stat cards: minimal */
+.bhi-stats {
+    gap: 1rem;
+}
+
+.bhi-stats__item {
+    padding: 1.6rem 1.5rem;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.085) 0%, rgba(255, 255, 255, 0.04) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 1.1rem;
+    box-shadow: none;
+}
+
+.bhi-stats__item:hover {
+    border-color: rgba(255, 255, 255, 0.26);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+}
+
+.bhi-stats__number {
+    margin-bottom: 0.75rem;
+    background: none;
+    -webkit-text-fill-color: #ffffff;
+    color: #ffffff;
+    font-size: clamp(1.9rem, 3vw, 2.6rem);
+}
+
+.bhi-stats__label {
+    color: #5eead4;
+    font-size: 0.9rem;
+    font-weight: 500;
+    margin-bottom: 0.4rem;
+}
+
+.bhi-stats__detail {
+    color: rgba(255, 255, 255, 0.6);
+    font-weight: 400;
+    line-height: 1.6;
+}
+
+/* =================================================================
+   EDITORIAL TAXONOMY — stable glass (same calm level as the rest)
+================================================================= */
+
+.bhi-key-card {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.075) 0%, rgba(255, 255, 255, 0.03) 100%);
+    border-color: rgba(255, 255, 255, 0.14);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+}
+
+.bhi-key-card__item {
+    background: linear-gradient(160deg, rgba(255, 255, 255, 0.085) 0%, rgba(255, 255, 255, 0.04) 100%);
+    border-color: rgba(255, 255, 255, 0.14);
+    box-shadow: none;
+}
+
+.bhi-key-card__item:hover {
+    background: linear-gradient(160deg, rgba(255, 255, 255, 0.11) 0%, rgba(255, 255, 255, 0.05) 100%);
+    border-color: rgba(255, 255, 255, 0.26);
+}
+
+.bhi-key-card__icon-wrap {
+    background: rgba(45, 212, 191, 0.08);
+    border-color: rgba(94, 234, 212, 0.32);
+    box-shadow: none;
+}
+
+.bhi-key-card__meaning {
+    color: rgba(255, 255, 255, 0.66);
+    font-weight: 400;
+}
+
+
+/* =================================================================
+   PAGE WIDTH — same container as the About page
+   1440px wide (1600px on large screens) with About's side
+   padding; the banner text sits on the same left line.
+================================================================= */
+
+.bhi__inner,
+.bhi-banner__content {
+    max-width: 1440px;
+    padding-left: clamp(1.5rem, 4.5vw, 4rem);
+    padding-right: clamp(1.5rem, 4.5vw, 4rem);
+}
+
+@media (min-width: 1536px) {
+    .bhi__inner,
+    .bhi-banner__content {
+        max-width: 1600px;
+        padding-left: 5rem;
+        padding-right: 5rem;
+    }
+}
+
+/* =================================================================
+   125% DISPLAY SCALING (Windows "Scale 125%")
+   Same approach as the About page: on desktop widths with a
+   1.2–1.3 device pixel ratio the page is scaled down as one unit
+   so it matches the 100% layout. The full-bleed banner uses 100%
+   instead of 100vw here, because vw units do not follow the zoom.
+================================================================= */
+@media (min-width: 1024px) and (min-resolution: 1.2dppx) and (max-resolution: 1.3dppx) {
+    .bhi {
+        zoom: 0.82;
+        max-width: none;
+    }
+
+    .bhi-banner {
+        width: 100%;
+        margin-left: 0;
+        margin-right: 0;
+    }
+}
+
+/* =================================================================
+   ARTICLE CARDS — all medium size
+   The first card no longer spans two columns: every card is the
+   same medium size, three per row on desktop, two on tablets.
+================================================================= */
+
+@media (min-width: 961px) {
+    .bhi-grid .bhi-tile--feature {
+        grid-column: span 4;
+    }
+}
+
+@media (min-width: 761px) and (max-width: 960px) {
+    .bhi-grid .bhi-tile--feature {
+        grid-column: span 1;
+    }
+}
+
+.bhi-grid .bhi-tile--feature .bhi-tile__media {
+    aspect-ratio: 16 / 10;
+}
+
+.bhi-grid .bhi-tile--feature .bhi-tile__title {
+    font-size: clamp(1.05rem, 1.6vw, 1.3rem);
+    max-width: none;
 }

@@ -1,0 +1,44 @@
+/* =========================================================
+   CAREERS PAGE — LOCAL STYLES
+   Scoped under `.careers-page` (set in app/careers/page.tsx);
+   keyframes are namespaced `careers-*`. Imported only from the
+   careers route.
+   ========================================================= */
+
+.careers-page {
+  --font-heading: var(--font-jakarta), var(--font-manrope), sans-serif;
+}
+
+/* app/globals.css forces h1–h3 to 800 and p to 600 as unlayered
+   rules; hand weight back to the Tailwind utilities on this page. */
+.careers-page :is(h1, h2, h3, p) {
+  font-weight: revert-layer;
+}
+
+.careers-page .font-heading,
+.careers-page :is(h1, h2, h3) {
+  font-family: var(--font-heading);
+}
+
+/* Hide the horizontal scrollbar on the photo strip */
+.careers-page .careers-strip {
+  scrollbar-width: none;
+}
+
+.careers-page .careers-strip::-webkit-scrollbar {
+  display: none;
+}
+
+/* ---------------------------------------------------------
+   125% DISPLAY SCALING (Windows "Scale 125%")
+   Same approach as the About page: on desktop widths with a
+   1.2–1.3 device pixel ratio the page is scaled down as one
+   unit so it matches the 100% layout. 100% screens, phones,
+   tablets and 2× retina displays are not affected.
+   --------------------------------------------------------- */
+
+@media (min-width: 1024px) and (min-resolution: 1.2dppx) and (max-resolution: 1.3dppx) {
+  .careers-page {
+    zoom: 0.82;
+  }
+}

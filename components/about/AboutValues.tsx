@@ -1,88 +1,47 @@
 "use client";
 
-import { motion, useReducedMotion } from "framer-motion";
-import {
-  ShieldCheck,
-  Sparkles,
-  Target,
-  Users,
-  CheckCircle2,
-  FileCheck2,
-} from "lucide-react";
+import { motion, type Variants } from "framer-motion";
 
 const values = [
-  {
-    icon: ShieldCheck,
-    title: "Integrity",
-    tagline: "Doing what's right, every time.",
-  },
-  {
-    icon: Sparkles,
-    title: "Innovation",
-    tagline: "Seeking better ways to build and operate.",
-  },
-  {
-    icon: Target,
-    title: "Ownership",
-    tagline: "Taking direct accountability for outcomes.",
-  },
-  {
-    icon: Users,
-    title: "Client Focus",
-    tagline: "Decisions made around real client needs.",
-  },
-  {
-    icon: CheckCircle2,
-    title: "Accuracy",
-    tagline: "Precision in detail, not just direction.",
-  },
-  {
-    icon: FileCheck2,
-    title: "Compliance",
-    tagline: "Operating within clear regulatory standards.",
-  },
+  { title: "Integrity", tagline: "Doing what's right, every time." },
+  { title: "Innovation", tagline: "Seeking better ways to build and operate." },
+  { title: "Ownership", tagline: "Taking direct accountability for outcomes." },
+  { title: "Client Focus", tagline: "Decisions made around real client needs." },
+  { title: "Accuracy", tagline: "Precision in detail, not just direction." },
+  { title: "Compliance", tagline: "Operating within clear regulatory standards." },
 ];
 
 const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
-const containerVariants = {
-  hidden: {},
-  show: {
-    transition: {
-      staggerChildren: 0.1,
-      delayChildren: 0.05,
-    },
-  },
+const headerReveal: Variants = {
+  hidden: { opacity: 0, y: 20 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: EASE } },
 };
 
-const cardVariants = {
-  hidden: {
-    opacity: 0,
-    y: 24,
-    scale: 0.98,
-  },
+const gridReveal: Variants = {
+  hidden: {},
+  show: { transition: { staggerChildren: 0.08, delayChildren: 0.05 } },
+};
+
+const cardReveal: Variants = {
+  hidden: { opacity: 0, y: 28, filter: "blur(6px)" },
   show: {
     opacity: 1,
     y: 0,
-    scale: 1,
-    transition: {
-      duration: 0.6,
-      ease: EASE,
-    },
+    filter: "blur(0px)",
+    transition: { duration: 0.7, ease: EASE },
   },
 };
 
-/* Reduced motion: no entrance offset or scale — the card is simply
-   there. The hover lift is plain CSS, which app/globals.css already
-   clamps to 0.01ms site-wide under the same media query. */
-const cardVariantsReduced = {
-  hidden: { opacity: 1, y: 0, scale: 1 },
-  show: { opacity: 1, y: 0, scale: 1, transition: { duration: 0 } },
-};
+/* Leaf-shaped cards: two opposite corners deeply rounded, the other
+   two almost square. Alternate cards mirror the shape, and on hover
+   the shape flips — a small, distinctive motion. */
+const leafA =
+  "rounded-tl-[48px] rounded-br-[48px] rounded-tr-[8px] rounded-bl-[8px] hover:rounded-tl-[8px] hover:rounded-br-[8px] hover:rounded-tr-[48px] hover:rounded-bl-[48px]";
+const leafB =
+  "rounded-tr-[48px] rounded-bl-[48px] rounded-tl-[8px] rounded-br-[8px] hover:rounded-tr-[8px] hover:rounded-bl-[8px] hover:rounded-tl-[48px] hover:rounded-br-[48px]";
 
 export default function AboutValues() {
-  const prefersReducedMotion = useReducedMotion();
-
   return (
     <section
       id="about-values"
@@ -92,279 +51,156 @@ export default function AboutValues() {
         w-full
         min-w-0
         overflow-hidden
-        bg-[#F4F7F5]
-        py-14
-        sm:py-18
-        md:py-20
+        bg-white
+        py-16
+        sm:py-20
         lg:py-24
-        xl:py-28
-
-        [@media(min-width:1024px)_and_(max-width:1366px)]:py-16!
       "
     >
-      <div
-        aria-hidden="true"
-        className="
-          pointer-events-none
-          absolute
-          left-[-160px]
-          top-[10%]
-          h-[380px]
-          w-[380px]
-          rounded-full
-          bg-[#8B7CFF]/[0.05]
-          blur-[120px]
-        "
-      />
 
       <div
         className="
-          relative
-          z-10
           mx-auto
           w-full
           min-w-0
           max-w-[1440px]
-          px-5
+          px-6
           sm:px-7
           md:px-10
           lg:px-12
           xl:px-16
           2xl:max-w-[1600px]
           2xl:px-20
-
-          [@media(min-width:1024px)_and_(max-width:1366px)]:px-10!
         "
       >
+        {/* Header */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-          className="mx-auto mb-12 max-w-[680px] text-center sm:mb-14 lg:mb-16"
+          variants={headerReveal}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, amount: 0.4 }}
+          className="mb-12 flex flex-col gap-5 sm:mb-14 lg:flex-row lg:items-end lg:justify-between"
         >
-          <div className="mb-5 flex items-center justify-center gap-3">
-            <span className="h-px w-8 bg-gradient-to-r from-transparent to-[#00A98F] sm:w-10" />
+          <div>
+            <div className="mb-5 flex items-center gap-3">
+              <span className="h-px w-8 bg-[#14B8A6]" />
+              <span className="text-[11px] font-semibold uppercase tracking-[0.28em] text-[#0F766E] sm:text-[12px]">
+                Our Values
+              </span>
+            </div>
 
-            <span
+            <h2
               className="
-                text-[9px]
-                font-extrabold
-                uppercase
-                tracking-[0.28em]
-                text-[#008F7A]
-                sm:text-[10px]
+                font-heading
+                text-[2.1rem]
+                font-bold
+                leading-[1.12]
+                tracking-[-0.028em]
+                text-[#132B40]
+                sm:text-[2.5rem]
+                lg:text-[2.875rem]
               "
             >
-              Our Values
-            </span>
-
-            <span className="h-px w-8 bg-gradient-to-l from-transparent to-[#00A98F] sm:w-10" />
+              What we hold <span className="text-[#0F766E]">ourselves to.</span>
+            </h2>
           </div>
 
-          <h2
-            className="
-              font-heading
-              text-[2rem]
-              font-bold
-              leading-[1.1]
-              tracking-[-0.028em]
-              text-[#102A43]
-              sm:text-[2.5rem]
-              lg:text-[2.875rem]
-
-              [@media(min-width:1024px)_and_(max-width:1366px)]:text-[2.5rem]!
-            "
-          >
-            What we{" "}
-            <span
-              className="
-                bg-gradient-to-r
-                from-[#102A43]
-                via-[#155E75]
-                to-[#00A98F]
-                bg-clip-text
-                pb-[0.18em]
-                -mb-[0.18em]
-                text-transparent
-                [-webkit-background-clip:text]
-              "
-            >
-              hold ourselves to.
-            </span>
-          </h2>
+          <p className="max-w-[380px] text-[15px] font-normal leading-[1.75] text-[#52697A] sm:text-[16px] lg:pb-1.5 lg:text-right">
+            Six principles that shape how every venture is built and run.
+          </p>
         </motion.div>
 
-        <motion.div
-          variants={containerVariants}
+        {/* 2 × 3 glass cards */}
+        <motion.ul
+          variants={gridReveal}
           initial="hidden"
           whileInView="show"
           viewport={{ once: true, amount: 0.15 }}
-          className="
-            grid
-            grid-cols-1
-            gap-3.5
-            sm:grid-cols-2
-            sm:gap-4
-            lg:grid-cols-3
-          "
+          className="relative grid grid-cols-1 gap-5 before:absolute before:bottom-8 before:left-[10px] before:top-8 before:w-[2px] before:bg-[#14B8A6]/30 sm:gap-5 sm:grid-cols-2 sm:before:hidden lg:grid-cols-3"
         >
-          {values.map((value, index) => {
-            const Icon = value.icon;
-
-            return (
-              <motion.div
-                key={value.title}
-                variants={
-                  prefersReducedMotion ? cardVariantsReduced : cardVariants
-                }
-                tabIndex={0}
+          {values.map((value, index) => (
+            <motion.li
+              key={value.title}
+              variants={cardReveal}
+              className="relative pl-9 sm:pl-0"
+            >
+              {/* Phone: timeline bullet on the left, lights up as it scrolls into view */}
+              <motion.span
+                aria-hidden="true"
+                initial={{ scale: 0, opacity: 0 }}
+                whileInView={{ scale: 1, opacity: 1 }}
+                viewport={{ amount: 0.8 }}
+                transition={{ duration: 0.4, ease: EASE }}
                 className="
+                  absolute
+                  left-[3px]
+                  top-8
+                  h-4
+                  w-4
+                  rounded-full
+                  border-[3px]
+                  border-white
+                  bg-[#14B8A6]
+                  shadow-[0_0_0_2px_#14B8A6]
+                  sm:hidden
+                "
+              />
+
+              <div
+                tabIndex={0}
+                className={`
                   group
                   relative
+                  h-full
                   overflow-hidden
-                  rounded-[20px]
-                  border
-                  border-[#E2E8E7]
+                  ${index % 2 === 0 ? leafA : leafB}
+                  border-[1.5px]
+                  border-[#14B8A6]/60
                   bg-white
-                  p-5
+                  p-6
+                  shadow-[0_18px_40px_rgba(19,43,64,0.10)]
+                  outline-none
 
-                  shadow-[0_8px_24px_rgba(16,42,67,0.05)]
-
-                  transition-[transform,border-color,box-shadow,background-color]
+                  transition-[transform,border-color,box-shadow,border-radius]
                   duration-500
                   ease-[cubic-bezier(0.22,1,0.36,1)]
 
                   hover:-translate-y-1.5
-                  hover:border-[#00BFA6]/50
-                  hover:bg-[#F4FBFA]
-                  hover:shadow-[0_20px_44px_rgba(16,42,67,0.08),0_0_32px_rgba(0,191,166,0.16)]
+                  hover:border-[#14B8A6]
+                  hover:shadow-[0_24px_50px_rgba(19,43,64,0.14)]
+                  focus-visible:border-[#14B8A6]
 
-                  focus:border-[#00BFA6]/50
-                  focus:bg-[#F4FBFA]
-                  focus:shadow-[0_20px_44px_rgba(16,42,67,0.08),0_0_32px_rgba(0,191,166,0.16)]
-                  focus:outline-none
-                  focus-visible:-translate-y-1.5
-                  focus-visible:ring-2
-                  focus-visible:ring-[#00BFA6]/40
-                  focus-visible:ring-offset-2
-                  focus-visible:ring-offset-[#F4F7F5]
-
-                  sm:p-6
-                "
+                  sm:p-7
+                `}
               >
-                {/* Light-theme accent: the same hairline as the dark
-                    cards, in this section's teal so it reads on white */}
-                <span
-                  aria-hidden="true"
-                  className="
-                    absolute
-                    inset-x-0
-                    top-0
-                    h-px
-                    origin-left
-                    scale-x-0
-                    bg-gradient-to-r
-                    from-transparent
-                    via-[#00BFA6]
-                    to-transparent
-
-                    transition-transform
-                    duration-500
-
-                    group-hover:scale-x-100
-                    group-focus:scale-x-100
-                  "
-                />
-
-                <span
-                  className="
-                    absolute
-                    right-4
-                    top-4
-                    text-[10px]
-                    font-bold
-                    tracking-[0.14em]
-                    text-[#102A43]/15
-                  "
-                >
-                  {String(index + 1).padStart(2, "0")}
-                </span>
-
-                <div
-                  className="
-                    relative
-                    flex
-                    h-11
-                    w-11
-                    items-center
-                    justify-center
-                    rounded-[12px]
-                    border
-                    border-[#00BFA6]/25
-                    bg-[#EAF7F4]
-                    text-[#0E8C77]
-
-                    transition-[transform,box-shadow,border-color]
-                    duration-500
-
-                    group-hover:-translate-y-0.5
-                    group-hover:border-[#00BFA6]/45
-                    group-hover:shadow-[0_0_18px_rgba(0,191,166,0.35)]
-                  "
-                >
+                <div className="flex items-center gap-3">
                   <span
-                    aria-hidden="true"
                     className="
-                      pointer-events-none
-                      absolute
-                      inset-0
-                      rounded-[12px]
-                      bg-[#00BFA6]/40
-                      opacity-0
-
-                      group-hover:[animation:fact-icon-ripple_450ms_ease-out]
-                      group-focus:[animation:fact-icon-ripple_450ms_ease-out]
+                      font-heading
+                      block
+                      text-[1.6rem]
+                      sm:text-[2.5rem]
+                      font-bold
+                      leading-none
+                      tracking-[-0.04em]
+                      text-[#0F766E]
                     "
-                  />
-
-                  <Icon
-                    size={18}
-                    strokeWidth={1.7}
-                    aria-hidden="true"
-                    className="relative z-10"
-                  />
+                  >
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
                 </div>
 
-                <h3
-                  className="
-                    pt-5
-                    text-[14px]
-                    font-bold
-                    leading-[1.25]
-                    tracking-[-0.01em]
-                    text-[#102A43]
-                    sm:text-[15px]
-                  "
-                >
+                <h3 className="mt-5! text-[20px] font-bold leading-[1.25] tracking-[-0.015em] text-[#132B40] sm:text-[22px]">
                   {value.title}
                 </h3>
 
-                <p
-                  className="
-                    pt-2
-                    text-[11.5px]
-                    font-medium
-                    leading-5
-                    text-[#526477]
-                  "
-                >
+                <p className="mt-2! text-[14.5px] font-normal leading-[1.65] text-[#3B5266] sm:text-[15px]">
                   {value.tagline}
                 </p>
-              </motion.div>
-            );
-          })}
-        </motion.div>
+              </div>
+            </motion.li>
+          ))}
+        </motion.ul>
       </div>
     </section>
   );

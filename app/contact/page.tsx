@@ -1,11 +1,21 @@
+import type { Metadata } from "next";
+import { pageMeta } from "@/lib/seo";
+import "./contact.css";
 import ContactHero from "@/components/contact/ContactHero";
 import ContactForm from "@/components/contact/ContactForm";
 import ContactInfo from "@/components/contact/ContactInfo";
 import ContactFAQ from "@/components/contact/ContactFAQ";
 
+export const metadata: Metadata = pageMeta({
+  title: "Contact Us",
+  description:
+    "Contact BH Ventures FZE LLC in Dubai by email, WhatsApp or Telegram to discuss partnerships, ventures, trade and technology projects.",
+  path: "/contact/",
+});
+
 export default function ContactPage() {
   return (
-    <div className="w-full min-w-0 overflow-x-clip bg-[#0B1220]">
+    <div className="contact-page w-full min-w-0 overflow-x-clip bg-[#0B1220]">
       <section id="contact-hero-section" className="w-full min-w-0">
         <ContactHero />
       </section>
@@ -25,20 +35,11 @@ export default function ContactPage() {
           lg:pb-32
         "
       >
-        <div
-          aria-hidden="true"
-          className="
-            pointer-events-none
-            absolute
-            right-[-180px]
-            top-[10%]
-            h-[400px]
-            w-[400px]
-            rounded-full
-            bg-[#00CDB5]/[0.05]
-            blur-[130px]
-          "
-        />
+        {/* Soft teal / blue lights behind the glass cards */}
+        <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
+          <div className="absolute left-[-8%] top-[5%] h-[480px] w-[480px] rounded-full bg-[#14B8A6]/[0.14] blur-[130px]" />
+          <div className="absolute right-[-6%] top-[30%] h-[420px] w-[420px] rounded-full bg-[#1D4ED8]/[0.12] blur-[130px]" />
+        </div>
 
         <div
           className="

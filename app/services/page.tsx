@@ -1,12 +1,14 @@
 // app/services/cloud-mining/page.tsx
 import type { Metadata } from "next";
+import { pageMeta } from "@/lib/seo";
 import CloudMining from "@/components/service/service";
 
-export const metadata: Metadata = {
-  title: "Cloud Mining | BH Ventures",
+export const metadata: Metadata = pageMeta({
+  title: "Cloud Mining",
   description:
     "Rent mining hashrate without buying or managing hardware. Compare BH Ventures cloud mining plans, fees and contract terms.",
-};
+  path: "/services/",
+});
 
 export default function CloudMiningPage() {
   return (

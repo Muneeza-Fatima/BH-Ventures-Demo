@@ -1,35 +1,39 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import {
-  TrendingUp,
-  Layers,
-  Cpu,
+  Globe,
+  BriefcaseBusiness,
+  BrainCircuit,
   Handshake,
 } from "lucide-react";
 
 const pillars = [
   {
     index: "01",
-    icon: TrendingUp,
+    icon: Globe,
     title: "Strategic Market Expansion",
     description:
       "Identifying high-potential markets and creating opportunities for sustainable international growth.",
+    image: "/images/growth/market-expansion.png",
   },
   {
     index: "02",
-    icon: Layers,
+    icon: BriefcaseBusiness,
     title: "Diversified Business Ventures",
     description:
       "Building and supporting ventures across trading, technology, digital solutions, and emerging industries.",
+    image: "/images/growth/diversified-ventures.png",
   },
   {
     index: "03",
-    icon: Cpu,
+    icon: BrainCircuit,
     title: "Technology-Driven Innovation",
     description:
       "Leveraging AI, Web3, analytics, and modern digital infrastructure to create smarter business solutions.",
+    image: "/images/growth/technology-innovation.png",
   },
   {
     index: "04",
@@ -37,6 +41,7 @@ const pillars = [
     title: "Trusted Global Partnerships",
     description:
       "Working with strategic partners across markets to connect expertise, resources, and long-term opportunities.",
+    image: "/images/growth/global-partnerships.png",
   },
 ];
 
@@ -53,12 +58,12 @@ const containerVariants = {
 const cardVariants = {
   hidden: {
     opacity: 0,
-    x: -70,
+    y: 40,
   },
 
   show: {
     opacity: 1,
-    x: 0,
+    y: 0,
     transition: {
       duration: 0.65,
       ease: [0.16, 1, 0.3, 1] as [
@@ -73,6 +78,7 @@ const cardVariants = {
 
 export default function BuiltForGlobalGrowth() {
   const [shouldReduceMotion, setShouldReduceMotion] = useState(false);
+  const [active, setActive] = useState(0);
 
   useEffect(() => {
     const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -278,7 +284,8 @@ export default function BuiltForGlobalGrowth() {
           </p>
         </motion.div>
 
-        {/* CARDS */}
+
+        {/* CARDS — expanding image gallery on desktop, grid below lg */}
 
         <motion.div
           variants={containerVariants}
@@ -296,17 +303,19 @@ export default function BuiltForGlobalGrowth() {
             sm:grid-cols-2
             sm:gap-5
 
-            lg:grid-cols-4
-            lg:gap-5
+            lg:flex
+            lg:h-[480px]
+            lg:gap-4
 
-            xl:gap-6
+            xl:h-[520px]
           "
         >
-          {pillars.map((pillar) => {
+          {pillars.map((pillar, i) => {
             const Icon = pillar.icon;
+            const isActive = active === i;
 
             return (
-              <motion.div
+              <motion.article
                 key={pillar.title}
                 variants={
                   shouldReduceMotion
@@ -316,259 +325,185 @@ export default function BuiltForGlobalGrowth() {
                       }
                     : cardVariants
                 }
-                whileHover={
-                  shouldReduceMotion
-                    ? undefined
-                    : {
-                        y: -5,
-                        transition: {
-                          duration: 0.25,
-                          ease: [0.22, 1, 0.36, 1],
-                        },
-                      }
-                }
-                className="
+                tabIndex={0}
+                onMouseEnter={() => setActive(i)}
+                onFocus={() => setActive(i)}
+                onClick={() => setActive(i)}
+                style={{ flexGrow: isActive ? 3.2 : 1 }}
+                className={`
                   group
                   relative
+                  isolate
+                  min-h-[340px]
                   min-w-0
+                  cursor-pointer
                   overflow-hidden
-                  rounded-[20px]
+                  rounded-[24px]
+                  border-2
+                  bg-[#071C2E]
+                  shadow-[0_14px_40px_rgba(8,30,48,0.22)]
+                  outline-none
+                  [text-shadow:0_1px_4px_rgba(0,0,0,0.75)]
 
-                  border
-                  border-[#21445A]
+                  transition-[flex-grow,border-color,box-shadow]
+                  duration-500
+                  ease-[cubic-bezier(0.22,1,0.36,1)]
 
-                  bg-gradient-to-br
-                  from-[#102D43]
-                  via-[#0B263A]
-                  to-[#071C2E]
+                  focus-visible:ring-2
+                  focus-visible:ring-[#2DD4BF]
+                  focus-visible:ring-offset-2
+                  focus-visible:ring-offset-[#F4F7F6]
 
-                  p-5
+                  sm:min-h-[380px]
 
-                  shadow-[0_8px_24px_rgba(8,30,48,0.18)]
+                  lg:min-h-0
+                  lg:basis-0
 
-                  transition-[transform,border-color,box-shadow]
-                  duration-300
-                  ease-out
-
-                  hover:border-[#5EEAD4]/55
-                  hover:shadow-[0_14px_34px_rgba(8,30,48,0.24)]
-
-                  active:border-[#5EEAD4]/45
-
-                  sm:p-6
-                  lg:p-6
-                  xl:p-7
-                "
+                  ${
+                    isActive
+                      ? "border-[#2DD4BF] lg:shadow-[0_22px_55px_rgba(8,30,48,0.35)]"
+                      : "border-transparent"
+                  }
+                `}
               >
-                {/* INNER BORDER */}
+                {/* BACKGROUND IMAGE */}
 
-                <div
+                <Image
+                  src={pillar.image}
+                  alt=""
                   aria-hidden="true"
+                  fill
+                  sizes="(min-width: 1024px) 55vw, (min-width: 640px) 50vw, 100vw"
                   className="
                     pointer-events-none
-                    absolute
-                    inset-[1px]
-                    rounded-[19px]
-                    border
-                    border-white/[0.035]
+                    -z-10
+                    object-cover
+                    object-center
+                    transition-transform
+                    duration-700
+                    ease-out
+                    group-hover:scale-105
                   "
                 />
 
-                {/* TOP TURQUOISE LINE */}
-
+                {/* Bottom-up overlay: image clear on top, text readable at bottom */}
                 <div
                   aria-hidden="true"
                   className="
                     pointer-events-none
                     absolute
-                    left-[12%]
-                    right-[12%]
-                    top-0
-                    h-px
-
-                    bg-gradient-to-r
-                    from-transparent
-                    via-[#5EEAD4]/45
+                    inset-0
+                    -z-10
+                    bg-gradient-to-t
+                    from-[#071C2E]
+                    via-[#071C2E]/55
                     to-transparent
-
-                    transition-all
-                    duration-300
-
-                    group-hover:left-[7%]
-                    group-hover:right-[7%]
-                    group-hover:via-[#5EEAD4]/80
                   "
                 />
 
-                {/* SUBTLE HIGHLIGHT */}
-
+                {/* Collapsed panels get slightly dimmed on desktop */}
                 <div
                   aria-hidden="true"
-                  className="
+                  className={`
                     pointer-events-none
                     absolute
-                    right-0
-                    top-0
-                    h-28
-                    w-28
-
-                    bg-[radial-gradient(circle_at_top_right,rgba(20,184,166,0.09),transparent_70%)]
-
-                    opacity-70
+                    inset-0
+                    -z-10
+                    hidden
+                    bg-[#071C2E]/45
                     transition-opacity
-                    duration-300
-
-                    group-hover:opacity-100
-                  "
+                    duration-500
+                    lg:block
+                    ${isActive ? "opacity-0" : "opacity-100"}
+                  `}
                 />
 
-                {/* NUMBER */}
-
-                <span
-                  className="
-                    relative
-                    z-10
-                    inline-block
-
-                    text-[10px]
-                    font-bold
-                    tracking-[0.14em]
-                    text-[#5EEAD4]/75
-
-                    transition-colors
-                    duration-300
-
-                    group-hover:text-[#8AFFF3]
-                  "
-                >
-                  {pillar.index}
-                </span>
-
-                {/* ICON + TITLE */}
+                {/* CONTENT */}
 
                 <div
                   className="
-                    relative
-                    z-10
-                    mt-4
-
                     flex
+                    h-full
                     flex-col
-                    items-start
-                    gap-6
+                    justify-between
+                    p-5
+                    sm:p-6
+                    xl:p-7
                   "
                 >
-                  {/* ICON */}
+                  {/* TOP: number badge */}
 
-                  <div
-                    className="
-                      flex
-                      h-11
-                      w-11
-                      shrink-0
-                      items-center
-                      justify-center
-
-                      rounded-[14px]
-
-                      border
-                      border-[#5EEAD4]/25
-
-                      bg-[#087F78]/15
-
-                      text-[#5EEAD4]
-
-                      transition-[transform,border-color,background-color,color]
-                      duration-300
-                      ease-out
-
-                      group-hover:-translate-y-1
-                      group-hover:border-[#5EEAD4]/60
-                      group-hover:bg-[#087F78]/25
-                      group-hover:text-[#B8FFF8]
-                    "
-                  >
+                  <div className="flex justify-end">
                     <Icon
-                      size={19}
-                      strokeWidth={1.7}
+                      size={28}
+                      strokeWidth={1.5}
                       aria-hidden="true"
+                      className={`
+                        drop-shadow-[0_1px_4px_rgba(0,0,0,0.6)]
+                        transition-colors
+                        duration-500
+                        ${isActive ? "text-[#5EEAD4]" : "text-white/90"}
+                      `}
                     />
                   </div>
 
-                  {/* TITLE */}
+                  {/* BOTTOM: title + description */}
 
-                  <h3
-                    className="
-                      max-w-[280px]
+                  <div>
+                    <h3
+                      className={`
+                        font-bold
+                        leading-[1.2]
+                        tracking-[-0.01em]
+                        text-white
+                        transition-[font-size]
+                        duration-500
 
-                      text-[15px]
-                      font-bold
-                      leading-[1.25]
-                      tracking-[-0.01em]
-                      text-white
+                        text-[19px]
+                        sm:text-[20px]
 
-                      transition-colors
-                      duration-300
+                        ${
+                          isActive
+                            ? "max-w-[420px] lg:text-[26px] xl:text-[28px]"
+                            : "lg:text-[17px]"
+                        }
+                      `}
+                    >
+                      {pillar.title}
+                    </h3>
 
-                      group-hover:text-[#D9FFFA]
+                    <div
+                      className={`
+                        grid
+                        transition-[grid-template-rows,opacity]
+                        duration-500
+                        ${
+                          isActive
+                            ? "grid-rows-[1fr] opacity-100"
+                            : "grid-rows-[1fr] opacity-100 lg:grid-rows-[0fr] lg:opacity-0"
+                        }
+                      `}
+                    >
+                      <p
+                        className="
+                          max-w-[460px]
+                          overflow-hidden
+                          pt-3
+                          text-[13px]
+                          font-semibold
+                          leading-[1.7]
+                          text-white/90
 
-                      sm:text-[16px]
-                    "
-                  >
-                    {pillar.title}
-                  </h3>
+                          sm:text-[14px]
+                          xl:text-[15px]
+                        "
+                      >
+                        {pillar.description}
+                      </p>
+                    </div>
+                  </div>
                 </div>
-
-                {/* DESCRIPTION */}
-
-                <p
-                  className="
-                    relative
-                    z-10
-                    mt-4
-
-                    text-[12.5px]
-                    font-medium
-                    leading-[1.7]
-                    text-white/55
-
-                    transition-colors
-                    duration-300
-
-                    group-hover:text-white/72
-
-                    sm:text-[13px]
-                  "
-                >
-                  {pillar.description}
-                </p>
-
-                {/* BOTTOM ACCENT */}
-
-                <div
-                  aria-hidden="true"
-                  className="
-                    pointer-events-none
-                    absolute
-                    bottom-0
-                    left-[12%]
-                    right-[12%]
-                    h-px
-
-                    bg-gradient-to-r
-                    from-transparent
-                    via-[#5EEAD4]/40
-                    to-transparent
-
-                    transition-all
-                    duration-300
-
-                    group-hover:left-[5%]
-                    group-hover:right-[5%]
-                    group-hover:via-[#5EEAD4]/80
-                  "
-                />
-              </motion.div>
+              </motion.article>
             );
           })}
         </motion.div>

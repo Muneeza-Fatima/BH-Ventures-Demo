@@ -6,14 +6,12 @@ import { Plus_Jakarta_Sans } from "next/font/google";
 import "./about.css";
 import AboutHero from "@/components/about/AboutHero";
 import AboutStory from "@/components/about/AboutStory";
-import AboutFacts from "@/components/about/AboutFacts";
 import AboutGlobalReach from "@/components/about/AboutGlobalReach";
 import AboutMissionVision from "@/components/about/AboutMissionVision";
 import AboutCapabilities from "@/components/about/AboutCapabilities";
 import AboutValues from "@/components/about/AboutValues";
 import AboutFounder from "@/components/about/AboutFounder";
 import AboutContact from "@/components/about/AboutContact";
-import AboutCTA from "@/components/about/AboutCTA";
 
 /* Display face for About headings. Loaded here rather than in the root
    layout so it ships with this route only — next/font scopes a face to
@@ -52,10 +50,6 @@ export default function AboutPage() {
         <AboutStory />
       </section>
 
-      <section id="facts" className="w-full min-w-0">
-        <AboutFacts />
-      </section>
-
       <section id="global" className="w-full min-w-0">
         <AboutGlobalReach />
       </section>
@@ -78,10 +72,6 @@ export default function AboutPage() {
 
       <section id="contact" className="w-full min-w-0">
         <AboutContact />
-      </section>
-
-      <section id="cta" className="w-full min-w-0">
-        <AboutCTA />
       </section>
     </div>
   );

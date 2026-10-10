@@ -2,7 +2,7 @@
 
 import { useState, type ChangeEvent, type FormEvent } from "react";
 import { motion } from "framer-motion";
-import { Send, User, Mail, Phone, Globe2, MessageSquare, Info } from "lucide-react";
+import { Send, User, Mail, Phone, Globe2, MessageSquare, Info, ChevronDown } from "lucide-react";
 
 const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
@@ -13,19 +13,124 @@ const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
    in the site footer — not invented.
    ========================================================= */
 
+/* Country, flag (flagcdn, same source as the footer) and dial code.
+   Picking a country fills its dial code in front of the phone field. */
 const regionOptions = [
-  "United Arab Emirates",
-  "Saudi Arabia",
-  "United Kingdom",
-  "United States",
-  "Pakistan",
-  "Germany",
-  "France",
-  "Estonia",
-  "Denmark",
-  "Ukraine",
-  "Other",
+  { name: "United Arab Emirates", code: "ae", dial: "+971" },
+  { name: "Saudi Arabia", code: "sa", dial: "+966" },
+  { name: "United Kingdom", code: "gb", dial: "+44" },
+  { name: "United States", code: "us", dial: "+1" },
+  { name: "Pakistan", code: "pk", dial: "+92" },
+  { name: "Germany", code: "de", dial: "+49" },
+  { name: "France", code: "fr", dial: "+33" },
+  { name: "Estonia", code: "ee", dial: "+372" },
+  { name: "Denmark", code: "dk", dial: "+45" },
+  { name: "Ukraine", code: "ua", dial: "+380" },
+  { name: "Other", code: "", dial: "" },
 ];
+
+type Region = (typeof regionOptions)[number];
+
+function Flag({ region }: { region: Region }) {
+  if (!region.code) {
+    return <Globe2 size={16} strokeWidth={1.8} className="shrink-0 text-[#5EEAD4]" aria-hidden="true" />;
+  }
+  return (
+    // eslint-disable-next-line @next/next/no-img-element -- tiny remote flag, same as footer
+    <img
+      src={`https://flagcdn.com/w40/${region.code}.png`}
+      alt=""
+      width={20}
+      height={14}
+      className="h-[14px] w-5 shrink-0 rounded-[3px] object-cover"
+    />
+  );
+}
+
+/* Accessible custom select so each option can show its flag. */
+function CountrySelect({
+  value,
+  onChange,
+}: {
+  value: string;
+  onChange: (name: string) => void;
+}) {
+  const [open, setOpen] = useState(false);
+  const selected = regionOptions.find((r) => r.name === value);
+
+  return (
+    <div
+      className="relative"
+      onBlur={(event) => {
+        if (!event.currentTarget.contains(event.relatedTarget as Node)) setOpen(false);
+      }}
+    >
+      <button
+        id="contact-region"
+        type="button"
+        aria-haspopup="listbox"
+        aria-expanded={open}
+        onClick={() => setOpen((v) => !v)}
+        className={`${fieldBaseClass} flex items-center gap-3 text-left`}
+      >
+        {selected ? (
+          <>
+            <Flag region={selected} />
+            <span className="flex-1 truncate">{selected.name}</span>
+            {selected.dial && <span className="text-white/50">{selected.dial}</span>}
+          </>
+        ) : (
+          <span className="flex-1 text-white/30">Select your country</span>
+        )}
+        <ChevronDown
+          size={16}
+          aria-hidden="true"
+          className={`shrink-0 text-white/50 transition-transform duration-300 ${open ? "rotate-180" : ""}`}
+        />
+      </button>
+
+      {/* Hidden input keeps the field required for native validation */}
+      <input
+        tabIndex={-1}
+        aria-hidden="true"
+        required
+        value={value}
+        onChange={() => {}}
+        className="pointer-events-none absolute bottom-0 left-4 h-px w-px opacity-0"
+      />
+
+      {open && (
+        <ul
+          role="listbox"
+          aria-labelledby="contact-region"
+          className="absolute left-0 right-0 top-[calc(100%+6px)] z-30 max-h-64 overflow-y-auto rounded-xl border border-white/[0.18] bg-[#0F1B2D] p-1.5 shadow-[0_20px_50px_rgba(0,0,0,0.5)]"
+        >
+          {regionOptions.map((region) => {
+            const isSelected = region.name === value;
+            return (
+              <li key={region.name} role="option" aria-selected={isSelected}>
+                <button
+                  type="button"
+                  onClick={() => {
+                    onChange(region.name);
+                    setOpen(false);
+                  }}
+                  className={`flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-left text-[13.5px] transition-colors ${
+                    isSelected ? "bg-[#14B8A6]/20 text-white" : "text-white/80 hover:bg-white/[0.07] hover:text-white"
+                  }`}
+                >
+                  <Flag region={region} />
+                  <span className="flex-1">{region.name}</span>
+                  {region.dial && <span className="text-white/45">{region.dial}</span>}
+                </button>
+              </li>
+            );
+          })}
+        </ul>
+      )}
+    </div>
+  );
+}
 
 const CONTACT_EMAIL = "info@bhventures.ae";
 
@@ -51,8 +156,8 @@ const fieldBaseClass = `
   w-full
   rounded-xl
   border
-  border-white/[0.12]
-  bg-white/[0.03]
+  border-white/[0.22]
+  bg-[#0B1220]/50
   px-4
   py-3
   text-[13.5px]
@@ -104,6 +209,8 @@ function FieldLabel({
 
 export default function ContactForm() {
   const [form, setForm] = useState<FormState>(initialState);
+  const selectedRegion = regionOptions.find((r) => r.name === form.region);
+  const dialCode = selectedRegion?.dial ?? "";
 
   const handleChange = (
     event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
@@ -125,8 +232,8 @@ export default function ContactForm() {
     const lines = [
       `Name: ${form.name}`,
       `Email: ${form.email}`,
-      form.phone ? `Phone: ${form.phone}` : null,
-      form.region ? `Preferred Region: ${form.region}` : null,
+      form.phone ? `Phone: ${dialCode ? `${dialCode} ` : ""}${form.phone}` : null,
+      form.region ? `Country: ${form.region}` : null,
       "",
       form.message,
     ].filter((line) => line !== null);
@@ -146,34 +253,47 @@ export default function ContactForm() {
       transition={{ duration: 0.35, ease: EASE }}
       className="
         relative
+        flex
+        h-full
+        flex-col
         isolate
         overflow-hidden
         rounded-[24px]
         border
-        border-white/[0.10]
-        bg-white/[0.03]
+        border-white/[0.22]
+        bg-gradient-to-br
+        from-white/[0.14]
+        to-white/[0.06]
+        shadow-[0_30px_80px_rgba(0,0,0,0.35)]
+        backdrop-blur-xl
         p-6
 
-        sm:p-8
+        sm:p-10
       "
     >
+      {/* Teal hairline across the top edge */}
+      <span
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-x-10 top-0 h-px bg-gradient-to-r from-transparent via-[#5EEAD4]/70 to-transparent"
+      />
+
       <h3
         className="
-          text-[18px]
+          text-[22px]
           font-extrabold
           tracking-[-0.02em]
           text-white
-          sm:text-[20px]
+          sm:text-[26px]
         "
       >
         Send us a message
       </h3>
 
-      <p className="mt-2 text-[12.5px] font-medium leading-6 text-white/50">
+      <p className="mt-2 text-[14px] font-normal leading-6 text-white/60">
         Share a few details and our team will follow up directly.
       </p>
 
-      <div className="mt-7 grid grid-cols-1 gap-5 sm:grid-cols-2">
+      <div className="mt-8 grid flex-1 grid-cols-1 grid-rows-[repeat(5,auto)_1fr] gap-5 sm:grid-cols-2 sm:grid-rows-[auto_auto_auto_1fr]">
         <div>
           <FieldLabel icon={User} htmlFor="contact-name">
             Full Name
@@ -211,47 +331,43 @@ export default function ContactForm() {
         </div>
 
         <div>
-          <FieldLabel icon={Phone} htmlFor="contact-phone">
-            Phone Number
+          <FieldLabel icon={Globe2} htmlFor="contact-region">
+            Country
           </FieldLabel>
 
-          <input
-            id="contact-phone"
-            name="phone"
-            type="tel"
-            autoComplete="tel"
-            value={form.phone}
-            onChange={handleChange}
-            placeholder="+971 5X XXX XXXX"
-            className={fieldBaseClass}
+          <CountrySelect
+            value={form.region}
+            onChange={(name) => setForm((prev) => ({ ...prev, region: name }))}
           />
         </div>
 
         <div>
-          <FieldLabel icon={Globe2} htmlFor="contact-region">
-            Preferred Region
+          <FieldLabel icon={Phone} htmlFor="contact-phone">
+            Phone Number
           </FieldLabel>
 
-          <select
-            id="contact-region"
-            name="region"
-            value={form.region}
-            onChange={handleChange}
-            className={`${fieldBaseClass} appearance-none`}
-          >
-            <option value="" className="bg-[#0B1220] text-white/50">
-              Select a region (optional)
-            </option>
-
-            {regionOptions.map((region) => (
-              <option key={region} value={region} className="bg-[#0B1220] text-white">
-                {region}
-              </option>
-            ))}
-          </select>
+          <div className="relative flex items-center">
+            {dialCode && (
+              <span className="pointer-events-none absolute left-4 flex items-center gap-2 text-[13.5px] font-medium text-white/80">
+                <Flag region={selectedRegion!} />
+                {dialCode}
+              </span>
+            )}
+            <input
+              id="contact-phone"
+              name="phone"
+              type="tel"
+              autoComplete="tel-national"
+              value={form.phone}
+              onChange={handleChange}
+              placeholder={dialCode ? "5X XXX XXXX" : "Select a country first"}
+              className={fieldBaseClass}
+              style={dialCode ? { paddingLeft: `${dialCode.length * 9 + 52}px` } : undefined}
+            />
+          </div>
         </div>
 
-        <div className="sm:col-span-2">
+        <div className="flex flex-col sm:col-span-2">
           <FieldLabel icon={MessageSquare} htmlFor="contact-subject">
             Subject
           </FieldLabel>
@@ -268,7 +384,7 @@ export default function ContactForm() {
           />
         </div>
 
-        <div className="sm:col-span-2">
+        <div className="flex flex-col sm:col-span-2">
           <FieldLabel icon={MessageSquare} htmlFor="contact-message">
             Message
           </FieldLabel>
@@ -281,7 +397,7 @@ export default function ContactForm() {
             value={form.message}
             onChange={handleChange}
             placeholder="Tell us a little about what you'd like to discuss."
-            className={`${fieldBaseClass} resize-none`}
+            className={`${fieldBaseClass} min-h-[140px] flex-1 resize-none`}
           />
         </div>
       </div>

@@ -11,6 +11,22 @@ import {
 
 type Filter = "all" | "operations" | "partnerships";
 
+/* Highlighted cells in the background grid (56px cells) */
+const gridBlocks = [
+  { col: 2, row: 2, delay: 0 },
+  { col: 5, row: 6, delay: 1.2 },
+  { col: 8, row: 3, delay: 2.4 },
+  { col: 3, row: 10, delay: 0.8 },
+  { col: 11, row: 8, delay: 3.1 },
+  { col: 14, row: 2, delay: 1.7 },
+  { col: 17, row: 11, delay: 0.4 },
+  { col: 20, row: 5, delay: 2.8 },
+  { col: 23, row: 9, delay: 1.1 },
+  { col: 26, row: 3, delay: 3.5 },
+  { col: 28, row: 12, delay: 2 },
+  { col: 31, row: 7, delay: 0.6 },
+];
+
 type Country = {
   code: string;
   name: string;
@@ -137,6 +153,44 @@ export default function WhereWeOperate() {
         [@media(min-width:1024px)_and_(max-width:1366px)]:py-16!
       "
     >
+      {/* Background blocks grid */}
+      <div
+        aria-hidden="true"
+        className="
+          pointer-events-none
+          absolute
+          inset-0
+          [mask-image:radial-gradient(ellipse_at_center,black_35%,transparent_80%)]
+        "
+      >
+        <div
+          className="
+            absolute
+            inset-0
+            bg-[linear-gradient(rgba(45,212,191,0.07)_1px,transparent_1px),linear-gradient(90deg,rgba(45,212,191,0.07)_1px,transparent_1px)]
+            bg-[size:56px_56px]
+          "
+        />
+
+        {gridBlocks.map((block, i) => (
+          <span
+            key={i}
+            className="
+              wwo-block
+              absolute
+              h-[55px]
+              w-[55px]
+              bg-[#2DD4BF]/[0.08]
+            "
+            style={{
+              left: block.col * 56 + 1,
+              top: block.row * 56 + 1,
+              animationDelay: `${block.delay}s`,
+            }}
+          />
+        ))}
+      </div>
+
       {/* Soft top seam blending from the hero section above */}
       <div
         aria-hidden="true"
@@ -563,6 +617,8 @@ export default function WhereWeOperate() {
               rounded-[26px]
               border
               border-white/[0.09]
+              border-l-[3px]
+              border-l-[#2DD4BF]
               bg-white/[0.035]
               p-4
               shadow-[0_25px_80px_rgba(0,0,0,0.14)]

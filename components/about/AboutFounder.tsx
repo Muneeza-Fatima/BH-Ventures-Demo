@@ -1,7 +1,20 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { UserRound, Quote } from "lucide-react";
+import { motion, type Variants } from "framer-motion";
+
+const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
+
+const tags = ["Founder-Led", "Direct Accountability", "Long-Term Vision"];
+
+const reveal: Variants = {
+  hidden: { opacity: 0, y: 30, filter: "blur(8px)" },
+  show: {
+    opacity: 1,
+    y: 0,
+    filter: "blur(0px)",
+    transition: { duration: 0.85, ease: EASE },
+  },
+};
 
 export default function AboutFounder() {
   return (
@@ -14,276 +27,120 @@ export default function AboutFounder() {
         min-w-0
         overflow-hidden
         bg-[#0B1220]
-        py-14
-        sm:py-18
-        md:py-20
-        lg:py-24
-        xl:py-28
-
-        [@media(min-width:1024px)_and_(max-width:1366px)]:py-16!
+        py-16
+        sm:py-20
+        lg:py-28
       "
     >
-      <div
-        aria-hidden="true"
-        className="
-          pointer-events-none
-          absolute
-          right-[-180px]
-          top-1/4
-          h-[400px]
-          w-[400px]
-          rounded-full
-          bg-[#00CDB5]/[0.05]
-          blur-[130px]
-        "
-      />
 
-      <div
-        className="
-          relative
-          z-10
-          mx-auto
-          grid
-          w-full
-          min-w-0
-          max-w-[1440px]
-          grid-cols-1
-          items-center
-          gap-12
+      <div className="mx-auto w-full min-w-0 max-w-[1440px] px-6 sm:px-7 md:px-10 lg:px-12 xl:px-16 2xl:max-w-[1600px] 2xl:px-20">
+        <div className="mb-10 flex items-center justify-center gap-3 sm:mb-12">
+          <span className="h-px w-8 bg-[#2DD4BF]" />
+          <span className="text-[11px] font-semibold uppercase tracking-[0.28em] text-[#5EEAD4] sm:text-[12px]">
+            A word from our Founder
+          </span>
+          <span className="h-px w-8 bg-[#2DD4BF]" />
+        </div>
 
-          px-5
-          sm:px-7
-          md:px-10
-          lg:px-12
-          lg:grid-cols-[0.85fr_1.15fr]
-          lg:gap-16
-          xl:px-16
-          2xl:max-w-[1600px]
-          2xl:px-20
-
-          [@media(min-width:1024px)_and_(max-width:1366px)]:px-10!
-        "
-      >
-        {/* =====================================================
-            FOUNDER PORTRAIT PLACEHOLDER
-        ===================================================== */}
-
-        <motion.div
-          initial={{ opacity: 0, scale: 0.95, clipPath: "inset(3% round 28px)" }}
-          whileInView={{ opacity: 1, scale: 1, clipPath: "inset(0% round 28px)" }}
+        <motion.figure
+          variants={reveal}
+          initial="hidden"
+          whileInView="show"
           viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 0.85, ease: [0.22, 1, 0.36, 1] }}
           className="
+            about-shine
             relative
+            m-0
             mx-auto
-            aspect-[4/5]
-            w-full
-            max-w-[380px]
+            max-w-[920px]
             overflow-hidden
-            rounded-[28px]
+            rounded-[32px]
             border
-            border-white/[0.10]
-            bg-gradient-to-br
-            from-[#132436]
-            via-[#0F1D2C]
-            to-[#0B1220]
-            shadow-[0_25px_70px_rgba(0,0,0,0.35)]
+            border-white/[0.16]
+            bg-white/[0.06]
+            px-6
+            py-10
+            text-center
+            shadow-[0_30px_80px_rgba(0,0,0,0.35)]
+            backdrop-blur-xl
 
-            lg:max-w-none
+            sm:px-12
+            sm:py-14
+            lg:px-16
+            lg:py-16
           "
         >
-          {/*
-            Founder photo placeholder — replace this block with:
-            <Image src="/images/founder-badar-ul-haq.jpg" alt="Badar Ul Haq" fill className="object-cover" />
-            once an approved image is available.
-          */}
-
-          <div
+          {/* Teal hairline across the top edge */}
+          <span
             aria-hidden="true"
-            className="
-              pointer-events-none
-              absolute
-              inset-0
-              bg-[radial-gradient(circle_at_70%_20%,rgba(0,255,213,0.09),transparent_45%)]
-            "
+            className="absolute inset-x-12 top-0 h-px bg-gradient-to-r from-transparent via-[#5EEAD4] to-transparent"
           />
 
-          <div className="relative z-10 flex h-full w-full flex-col items-center justify-center gap-4">
+
+          <blockquote className="m-0">
+            <p className="font-heading text-[1.1rem] font-normal leading-[1.65] tracking-[-0.01em] text-white/90 sm:text-[1.75rem] sm:font-semibold sm:leading-[1.45] sm:text-white lg:text-[2rem]">
+              <span className="text-[#5EEAD4]">&ldquo;</span>BH Ventures is a founder-led company. Every venture we take on
+              carries direct accountability back to a single point of
+              leadership, rather than being spread across layers of process.<span className="text-[#5EEAD4]">&rdquo;</span>
+            </p>
+
+            <p className="mx-auto mt-7! max-w-[640px] text-[14px] font-normal leading-[1.75] text-white/65 sm:text-[16px] sm:leading-[1.8]">
+              That leadership is built around professional standards and a
+              long-term view — bringing traditional trade and modern
+              technology together under one disciplined, execution-focused
+              platform.
+            </p>
+          </blockquote>
+
+          {/* Signature block */}
+          <figcaption className="mt-10 flex flex-col items-center gap-4 border-t border-white/10 pt-9 sm:flex-row sm:justify-center sm:gap-5 sm:text-left">
             <span
+              aria-hidden="true"
               className="
                 flex
-                h-24
-                w-24
+                h-12
+                sm:h-16
+                w-12
+                sm:w-16
+                shrink-0
                 items-center
                 justify-center
                 rounded-full
-                border
-                border-[#2DD4BF]/30
-                bg-[#0E4A44]/40
-                text-[#5EEAD4]
-                sm:h-28
-                sm:w-28
-              "
-            >
-              <UserRound
-                size={44}
-                strokeWidth={1.4}
-                aria-hidden="true"
-              />
-            </span>
-
-            <span
-              className="
-                text-[10px]
+                border-2
+                border-[#2DD4BF]
+                bg-[#0F1B2D]
+                font-heading
+                text-[16px]
+                sm:text-[20px]
                 font-bold
-                uppercase
-                tracking-[0.24em]
-                text-white/35
+                tracking-[-0.02em]
+                text-[#5EEAD4]
               "
             >
-              Portrait Coming Soon
+              BH
             </span>
-          </div>
 
-          <div
-            aria-hidden="true"
-            className="
-              pointer-events-none
-              absolute
-              inset-x-0
-              bottom-0
-              h-28
-              bg-gradient-to-t
-              from-[#0B1220]
-              to-transparent
-            "
-          />
-        </motion.div>
-
-        {/* =====================================================
-            FOUNDER CONTENT
-        ===================================================== */}
-
-        <motion.div
-          initial={{ opacity: 0, y: 26 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-        >
-          <div className="mb-5 flex items-center gap-3">
-            <span className="h-px w-8 bg-gradient-to-r from-transparent to-[#00FFD5] sm:w-10" />
-
-            <span
-              className="
-                text-[9px]
-                font-extrabold
-                uppercase
-                tracking-[0.28em]
-                text-[#00FFD5]
-                sm:text-[10px]
-              "
-            >
-              Founder &amp; CEO
+            <span>
+              <span className="block font-heading text-[19px] font-bold tracking-[-0.02em] text-white sm:text-[24px]">
+                Badar Ul Haq
+              </span>
+              <span className="mt-1 block text-[10.5px] font-semibold uppercase tracking-[0.16em] sm:text-[12px] sm:tracking-[0.18em] text-[#5EEAD4]">
+                Founder &amp; Chief Executive Officer
+              </span>
             </span>
-          </div>
+          </figcaption>
 
-          <Quote
-            size={30}
-            strokeWidth={1.5}
-            aria-hidden="true"
-            className="mb-5 text-[#2DD4BF]/40"
-          />
-
-          <h2
-            className="
-              font-heading
-              max-w-[560px]
-              text-[2rem]
-              font-bold
-              leading-[1.1]
-              tracking-[-0.028em]
-              text-[#E7EDF3]
-              sm:text-[2.375rem]
-              lg:text-[2.625rem]
-            "
-          >
-            Badar Ul Haq
-          </h2>
-
-          <p
-            className="
-              pt-3
-              text-[13px]
-              font-bold
-              uppercase
-              tracking-[0.16em]
-              text-white/45
-              sm:text-[13.5px]
-            "
-          >
-            Founder &amp; Chief Executive Officer
-          </p>
-
-          <p
-            className="
-              pt-6
-              max-w-[540px]
-              text-[14px]
-              font-medium
-              leading-[1.75]
-              text-[#AAB6C2]
-              sm:text-[15px]
-              lg:text-[16px]
-            "
-          >
-            BH Ventures is a founder-led company. Every venture we take on
-            carries direct accountability back to a single point of
-            leadership, rather than being spread across layers of process.
-          </p>
-
-          <p
-            className="
-              pt-4
-              max-w-[540px]
-              text-[14px]
-              font-medium
-              leading-[1.75]
-              text-[#AAB6C2]
-              sm:text-[15px]
-              lg:text-[16px]
-            "
-          >
-            That leadership is built around professional standards and a
-            long-term view — bringing traditional trade and modern
-            technology together under one disciplined, execution-focused
-            platform.
-          </p>
-
-          <div className="mt-8 flex flex-wrap gap-2.5">
-            {[
-              "Founder-Led",
-              "Direct Accountability",
-              "Long-Term Vision",
-            ].map((tag) => (
-              <span
+          <ul className="mt-8 flex flex-wrap justify-center gap-2.5">
+            {tags.map((tag) => (
+              <li
                 key={tag}
-                className="
-                  rounded-full
-                  border
-                  border-white/[0.10]
-                  bg-white/[0.03]
-                  px-3.5
-                  py-2
-                  text-[11px]
-                  font-bold
-                  text-[#AAB6C2]
-                "
+                className="rounded-full border border-white/20 px-3 py-1 text-[12px] font-medium text-white/80 sm:px-4 sm:py-1.5 sm:text-[13px]"
               >
                 {tag}
-              </span>
+              </li>
             ))}
-          </div>
-        </motion.div>
+          </ul>
+        </motion.figure>
       </div>
     </section>
   );

@@ -126,7 +126,8 @@ const BANNER_SLIDES: { src: string; alt: string }[] = [
     { src: "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=1600&q=85", alt: "Dubai skyline illuminated at dusk" },
 ];
 
-const BANNER_INTERVAL_MS = 2000;
+// Short slides with a quick crossfade, so it reads clearly as a moving banner
+const BANNER_INTERVAL_MS = 1500;
 
 const DISPATCH_SIGNALS = {
     ai: {
@@ -180,6 +181,7 @@ function HeroBanner() {
     return (
         <div
             className="bhi-banner"
+            style={{ "--bhi-slide-ms": `${BANNER_INTERVAL_MS}ms` } as CSSProperties}
             role="group"
             aria-roledescription="carousel"
             aria-label="BH Ventures Insights, rotating photographs"
@@ -829,12 +831,17 @@ export default function Insights() {
 
     const signal = DISPATCH_SIGNALS[dispatchSignal];
 
+    // No newsletter backend yet: open the visitor's email app with a
+    // subscription request to the BH Ventures inbox (same as the contact form).
     const handleSubscribe = (e: React.FormEvent) => {
         e.preventDefault();
-        if (email.trim()) {
-            setSubscribed(true);
-            setEmail("");
-        }
+        const address = email.trim();
+        if (!address) return;
+        const subject = encodeURIComponent("Newsletter subscription — BH Ventures Signals");
+        const body = encodeURIComponent(`Please add this email to BH Ventures Signals: ${address}`);
+        window.location.href = `mailto:info@bhventures.ae?subject=${subject}&body=${body}`;
+        setSubscribed(true);
+        setEmail("");
     };
 
     const handleCopy = () => {
@@ -1024,6 +1031,7 @@ export default function Insights() {
                     <motion.div
                         ref={dispatchReveal.ref}
                         className={`bhi-dispatch ${dispatchReveal.visible ? "bhi-reveal--in" : "bhi-reveal"}`}
+                        data-signal={dispatchSignal}
                         variants={containerVariants}
                         initial="hidden"
                         whileInView="visible"
@@ -1058,7 +1066,7 @@ export default function Insights() {
                             {subscribed ? (
                                 <div className="bhi-dispatch__success">
                                     <span className="bhi-dispatch__check" aria-hidden="true">✓</span>
-                                    <span>You are subscribed. Welcome to BH Ventures Signals.</span>
+                                    <span>Almost done — send the email that just opened to confirm your subscription.</span>
                                 </div>
                             ) : (
                                 <motion.form variants={itemVariants} className="bhi-dispatch__form" onSubmit={handleSubscribe}>

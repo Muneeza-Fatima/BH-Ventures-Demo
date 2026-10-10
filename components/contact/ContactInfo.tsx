@@ -17,14 +17,14 @@ function ContactInfoPanel() {
       className="
         rounded-[24px]
         border
-        border-white/[0.10]
-        bg-white/[0.03]
+        border-white/[0.22]
+        bg-gradient-to-br from-white/[0.14] to-white/[0.06] shadow-[0_30px_80px_rgba(0,0,0,0.30)] backdrop-blur-xl
         p-6
 
-        sm:p-7
+        sm:p-8
       "
     >
-      <h3 className="text-[15px] font-extrabold tracking-[-0.01em] text-white">
+      <h3 className="text-[18px] font-bold tracking-[-0.01em] text-white sm:text-[20px]">
         Direct Lines
       </h3>
 
@@ -131,19 +131,20 @@ function ContactInfoPanel() {
                 {
                   "--accent": social.accent,
                   "--glow": social.glow,
+                  background: social.bg,
+                  color: social.fg,
                 } as CSSProperties
               }
               className="
                 flex
-                h-10
-                w-10
+                h-8
+                w-8
                 items-center
                 justify-center
-                rounded-xl
+                rounded-lg
                 border
-                border-white/[0.10]
-                bg-white/[0.03]
-                text-white/45
+                border-white/15
+                shadow-[0_6px_16px_rgba(0,0,0,0.35)]
 
                 outline-none
 
@@ -151,11 +152,9 @@ function ContactInfoPanel() {
                 duration-300
 
                 hover:border-[var(--accent)]/50
-                hover:text-[var(--accent)]
                 hover:shadow-[0_0_22px_var(--glow)]
 
                 focus-visible:border-[var(--accent)]/50
-                focus-visible:text-[var(--accent)]
                 focus-visible:shadow-[0_0_22px_var(--glow)]
                 focus-visible:ring-2
                 focus-visible:ring-[var(--accent)]/40
@@ -179,16 +178,17 @@ function QuickLinksPanel() {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.35, ease: EASE, delay: 0.05 }}
       className="
+        flex-1
         rounded-[24px]
         border
-        border-white/[0.10]
-        bg-white/[0.03]
+        border-white/[0.22]
+        bg-gradient-to-br from-white/[0.14] to-white/[0.06] shadow-[0_30px_80px_rgba(0,0,0,0.30)] backdrop-blur-xl
         p-6
 
-        sm:p-7
+        sm:p-8
       "
     >
-      <h3 className="text-[15px] font-extrabold tracking-[-0.01em] text-white">
+      <h3 className="text-[18px] font-bold tracking-[-0.01em] text-white sm:text-[20px]">
         Looking for something specific?
       </h3>
 
@@ -242,7 +242,7 @@ function QuickLinksPanel() {
 
 export default function ContactInfo() {
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex h-full flex-col gap-6">
       <ContactInfoPanel />
       <QuickLinksPanel />
     </div>

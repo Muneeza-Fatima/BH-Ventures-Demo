@@ -40,7 +40,7 @@ export default function Hero() {
             max-w-[1440px]
             items-start
 
-            px-5
+            px-3
             pt-[82px]
             pb-[72px]
 
@@ -72,14 +72,45 @@ export default function Hero() {
         >
           <div
             className="
+              home-hero-content
+              relative
               w-full
               min-w-0
               max-w-[680px]
+
+              max-md:overflow-hidden
+              max-md:rounded-[28px]
+              max-md:border
+              max-md:border-[#2DD4BF]/25
+              max-md:bg-[#0B1220]/45
+              max-md:px-4
+              max-md:py-7
+              max-md:shadow-[0_20px_50px_rgba(0,0,0,0.35)]
+              max-md:backdrop-blur-[6px]
 
               [@media(min-width:1024px)_and_(max-width:1366px)]:max-w-[650px]!
               [@media(min-width:1024px)_and_(max-width:1366px)]:pt-0!
             "
           >
+            {/* Mobile: teal light sweeping across the card's top edge */}
+            <span
+              aria-hidden="true"
+              className="
+                home-hero-sweep
+                pointer-events-none
+                absolute
+                left-0
+                top-0
+                h-px
+                w-1/3
+                bg-gradient-to-r
+                from-transparent
+                via-[#5EEAD4]
+                to-transparent
+                md:hidden
+              "
+            />
+
             <HeroContent />
           </div>
         </div>

@@ -39,6 +39,13 @@ const channelVariantsReduced = {
    primary CTA that hands off to the dedicated contact page.
    ========================================================= */
 
+const channelAccents: Record<string, string> = {
+  "Corporate Office": "#14B8A6",
+  Email: "#3B82F6",
+  WhatsApp: "#22C55E",
+  Telegram: "#0EA5E9",
+};
+
 export default function AboutContact() {
   const prefersReducedMotion = useReducedMotion();
   const cardVariants = prefersReducedMotion
@@ -64,22 +71,14 @@ export default function AboutContact() {
         [@media(min-width:1024px)_and_(max-width:1366px)]:py-16!
       "
     >
-      <div
-        aria-hidden="true"
-        className="
-          pointer-events-none
-          absolute
-          left-1/2
-          top-0
-          h-[420px]
-          w-[620px]
-          -translate-x-1/2
-          -translate-y-1/2
-          rounded-full
-          bg-[#00CDB5]/[0.05]
-          blur-[120px]
-        "
-      />
+      {/* Background: same soft drifting glow as the Our Story hero
+          (classes in app/about/about.css) — no photo. */}
+      <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
+        <div className="about-glow-a absolute left-[-6%] top-[18%] h-[520px] w-[520px] rounded-full bg-[#14B8A6]/[0.20] blur-[120px]" />
+        <div className="about-glow-b absolute left-[28%] top-[-10%] h-[440px] w-[440px] rounded-full bg-[#1D4ED8]/[0.16] blur-[120px]" />
+        <div className="about-glow-c absolute bottom-[-20%] right-[-8%] h-[560px] w-[560px] rounded-full bg-[#0F766E]/[0.22] blur-[130px]" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_40%,rgba(11,18,32,0.6)_100%)]" />
+      </div>
 
       <div
         className="
@@ -187,7 +186,8 @@ export default function AboutContact() {
             mx-auto
             mt-12
             grid
-            max-w-[900px]
+            max-w-[320px]
+            sm:max-w-[900px]
             grid-cols-1
             gap-4
             sm:mt-14
@@ -233,9 +233,9 @@ export default function AboutContact() {
                     justify-center
                     rounded-[14px]
                     border
-                    border-[#2DD4BF]/30
-                    bg-[#0E4A44]/50
-                    text-[#5EEAD4]
+                    border-[#14B8A6]/40
+                    bg-[#14B8A6]/10
+                    text-[#0F766E]
 
                     transition-[transform,box-shadow]
                     duration-500
@@ -250,15 +250,18 @@ export default function AboutContact() {
                   <Icon size={18} strokeWidth={1.7} aria-hidden="true" />
                 </span>
 
-                <span className="mt-3 block text-[10px] font-bold uppercase tracking-[0.16em] text-white/40">
+                <span className="mt-3 block text-[10px] font-bold uppercase tracking-[0.16em] text-[#52697A]">
                   {channel.label}
                 </span>
 
-                <span className="mt-1 block text-[13px] font-bold text-[#E7EDF3]">
+                <span className="mt-1 block text-[13px] font-bold text-[#132B40]">
                   {channel.value}
                 </span>
               </>
             );
+
+            /* Each channel gets its own colour on the left border */
+            const accent = channelAccents[channel.label] ?? "#14B8A6";
 
             const cardClass = `
               group
@@ -269,8 +272,11 @@ export default function AboutContact() {
               overflow-hidden
               rounded-2xl
               border
-              border-white/[0.10]
-              bg-white/[0.03]
+              border-[1.5px]
+              border-white
+              border-l-4
+              bg-white
+              shadow-[0_12px_30px_rgba(0,0,0,0.25)]
               p-5
               text-center
 
@@ -279,8 +285,8 @@ export default function AboutContact() {
               ease-[cubic-bezier(0.22,1,0.36,1)]
 
               hover:-translate-y-1.5
-              hover:border-[#2DD4BF]/50
-              hover:bg-white/[0.05]
+              hover:border-[#2DD4BF]
+              hover:bg-white
               hover:shadow-[0_24px_50px_rgba(0,0,0,0.28),0_0_36px_rgba(0,205,181,0.16)]
             `;
 
@@ -290,6 +296,7 @@ export default function AboutContact() {
                   key={channel.label}
                   variants={cardVariants}
                   className={cardClass}
+                  style={{ borderLeftColor: accent }}
                 >
                   {content}
                 </motion.div>
@@ -303,6 +310,7 @@ export default function AboutContact() {
                 href={channel.href}
                 target={channel.external ? "_blank" : undefined}
                 rel={channel.external ? "noopener noreferrer" : undefined}
+                style={{ borderLeftColor: accent }}
                 className={`${cardClass} focus:outline-none focus-visible:ring-2 focus-visible:ring-[#5EEAD4]/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#0B1220]`}
               >
                 {content}

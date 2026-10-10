@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import {
   ArrowLeftRight,
   Rocket,
-  Sparkles,
+  BrainCircuit,
   BarChart3,
   Megaphone,
   Handshake,
@@ -25,7 +25,7 @@ const capabilities = [
       "Identifying, developing, and supporting high-potential business opportunities.",
   },
   {
-    icon: Sparkles,
+    icon: BrainCircuit,
     title: "AI & Web3 Solutions",
     description:
       "Technology-driven solutions across artificial intelligence, Web3, and emerging digital ecosystems.",
@@ -80,6 +80,32 @@ const cardVariants = {
     },
   },
 };
+
+/* Card tones (navy / slate grey / ocean blue) */
+const cardThemes = [
+  {
+    card: "border-[#0D293B] bg-[#0D293B] shadow-[0_6px_16px_rgba(13,41,59,0.12)]",
+    icon: "text-[#5EEAD4]",
+    title: "text-white",
+    text: "text-white/65",
+  },
+  {
+    card: "border-[#3B4A5E] bg-gradient-to-br from-[#3B4A5E] to-[#2C3A4C] shadow-[0_6px_16px_rgba(51,65,85,0.18)]",
+    icon: "text-[#5EEAD4]",
+    title: "text-white",
+    text: "text-white/72",
+  },
+  {
+    card: "border-[#155E75] bg-gradient-to-br from-[#155E75] to-[#164E63] shadow-[0_6px_16px_rgba(21,94,117,0.14)]",
+    icon: "text-[#A5F3FC]",
+    title: "text-white",
+    text: "text-white/72",
+  },
+];
+
+/* No two neighbours share a colour: not in the mobile list (i, i+1)
+   and not in a desktop column (i, i+3) */
+const themeOrder = [0, 1, 2, 1, 2, 0];
 
 export default function OurCapabilities() {
   const [shouldReduceMotion, setShouldReduceMotion] = useState(false);
@@ -316,7 +342,8 @@ export default function OurCapabilities() {
           </p>
         </motion.div>
 
-        {/* CARDS */}
+
+        {/* CARDS — architecture diagram: 3 cards / BH Ventures bus / 3 cards */}
 
         <motion.div
           variants={containerVariants}
@@ -327,306 +354,247 @@ export default function OurCapabilities() {
             amount: 0.15,
           }}
           className="
-            grid
-            grid-cols-1
-            gap-3
+            relative
+            flex
+            flex-col
+            gap-4
+            pl-8
 
-            sm:grid-cols-2
             sm:gap-5
+            sm:pl-10
 
+            lg:grid
             lg:grid-cols-3
-            lg:gap-5
+            lg:grid-rows-[auto_72px_auto]
+            lg:gap-x-6
+            lg:gap-y-0
+            lg:pl-0
 
-            xl:gap-6
+            xl:gap-x-7
           "
         >
+          {/* Mobile / tablet: vertical spine */}
+          <span
+            aria-hidden="true"
+            className="
+              pointer-events-none
+              absolute
+              bottom-6
+              left-3
+              top-6
+              w-[2px]
+              bg-[#14B8A6]/70
+
+              sm:left-4
+              lg:hidden
+            "
+          />
+
+          {/* Desktop: horizontal bus with central hub */}
+          <div
+            aria-hidden="true"
+            className="
+              pointer-events-none
+              relative
+              hidden
+
+              lg:col-span-3
+              lg:row-start-2
+              lg:block
+            "
+          >
+            <span
+              className="
+                absolute
+                left-[16.666%]
+                right-[16.666%]
+                top-1/2
+                h-[2px]
+                bg-[#14B8A6]/80
+              "
+            />
+
+            {/* Data pulse travelling along the bus */}
+            <span
+              className="
+                capability-bus-pulse
+                absolute
+                top-1/2
+                h-3.5
+                w-3.5
+                -translate-x-1/2
+                -translate-y-1/2
+                rounded-full
+                bg-[#2DD4BF]
+                shadow-[0_0_16px_4px_rgba(45,212,191,0.75)]
+              "
+            />
+
+            <span
+              className="
+                absolute
+                left-1/2
+                top-1/2
+                z-10
+                -translate-x-1/2
+                -translate-y-1/2
+                whitespace-nowrap
+                rounded-full
+                bg-[#0D293B]
+                px-5
+                py-2
+                text-[10px]
+                font-extrabold
+                uppercase
+                tracking-[0.24em]
+                text-[#5EEAD4]
+                shadow-[0_8px_20px_rgba(13,41,59,0.25)]
+              "
+            >
+              BH Ventures
+            </span>
+          </div>
+
           {capabilities.map((capability, index) => {
             const Icon = capability.icon;
+            const isTopRow = index < 3;
+            const theme = cardThemes[themeOrder[index] ?? 0];
 
             return (
               <motion.article
                 key={capability.title}
-                variants={cardVariants}
-                whileHover={
+                variants={
                   shouldReduceMotion
-                    ? undefined
-                    : {
-                        y: -4,
-                        transition: {
-                          duration: 0.22,
-                          ease: [0.22, 1, 0.36, 1],
-                        },
+                    ? {
+                        hidden: { opacity: 0 },
+                        show: { opacity: 1 },
                       }
+                    : cardVariants
                 }
-                className="
+                className={`
                   group
                   relative
-                  mx-auto
-                  w-[94%]
-                  min-h-[190px]
+                  min-h-[170px]
                   min-w-0
-
-                  flex
-                  flex-col
-
-                  overflow-hidden
-                  rounded-[16px]
-
+                  rounded-[18px]
                   border
-                  border-[#3F7D82]/55
+                  p-5
+                  ${theme.card}
 
-                  bg-gradient-to-br
-                  from-[#173D4A]
-                  via-[#123542]
-                  to-[#0D293B]
-
-                  p-4
-
-                  shadow-[0_5px_16px_rgba(18,49,65,0.14)]
-
-                  transition-[transform,border-color,box-shadow]
+                  transition-[border-color,box-shadow]
                   duration-300
                   ease-out
 
-                  hover:border-[#36CDBB]/70
-                  hover:shadow-[0_10px_24px_rgba(20,120,110,0.16)]
+                  hover:border-[#2DD4BF]
+                  hover:shadow-[0_10px_24px_rgba(18,49,65,0.14)]
 
-                  active:border-[#36CDBB]/60
+                  sm:p-6
 
-                  sm:mx-0
-                  sm:w-full
-                  sm:min-h-[220px]
-                  sm:rounded-[18px]
-                  sm:p-5
-
-                  lg:min-h-[225px]
-                  lg:p-5
-
-                  xl:min-h-[230px]
-                "
+                  lg:min-h-[180px]
+                  ${isTopRow ? "lg:row-start-1" : "lg:row-start-3"}
+                `}
               >
-                {/* INNER BORDER */}
-
-                <div
-                  aria-hidden="true"
-                  className="
-                    pointer-events-none
-                    absolute
-                    inset-[1px]
-                    rounded-[15px]
-                    border
-                    border-white/[0.04]
-
-                    transition-colors
-                    duration-300
-
-                    group-hover:border-[#5EEAD4]/20
-
-                    sm:rounded-[17px]
-                  "
-                />
-
-                {/* TOP ACCENT */}
-
-                <div
-                  aria-hidden="true"
-                  className="
-                    pointer-events-none
-                    absolute
-                    left-[15%]
-                    right-[15%]
-                    top-0
-                    h-px
-
-                    bg-gradient-to-r
-                    from-transparent
-                    via-[#8DEBDD]/50
-                    to-transparent
-
-                    transition-all
-                    duration-300
-
-                    group-hover:left-[8%]
-                    group-hover:right-[8%]
-                    group-hover:via-[#8DEBDD]/80
-                  "
-                />
-
-                {/* NUMBER */}
-
+                {/* Mobile connector: spine → card */}
                 <span
+                  aria-hidden="true"
                   className="
-                    relative
-                    z-10
-
-                    text-[8px]
-                    font-bold
-                    tracking-[0.16em]
-
-                    text-[#8EA7B8]
-
+                    pointer-events-none
+                    absolute
+                    -left-5
+                    top-9
+                    h-[2px]
+                    w-5
+                    bg-[#14B8A6]/70
                     transition-colors
                     duration-300
+                    group-hover:bg-[#2DD4BF]
 
-                    group-hover:text-[#6EE7D8]
-
-                    sm:text-[10px]
-                    sm:tracking-[0.18em]
+                    sm:-left-6
+                    sm:w-6
+                    lg:hidden
                   "
                 >
-                  {String(index + 1).padStart(2, "0")}
+                  <span className="absolute -left-[5px] -top-[4px] h-[10px] w-[10px] rounded-full bg-[#14B8A6]" />
                 </span>
 
-                {/* ICON + TITLE */}
-
-                <div
-                  className="
-                    relative
-                    z-10
-                    mt-3
-
-                    flex
-                    flex-col
-                    items-start
-                    gap-6
-
-                    sm:mt-4
-                    sm:gap-4
-                  "
+                {/* Desktop connector: card → bus */}
+                <span
+                  aria-hidden="true"
+                  className={`
+                    pointer-events-none
+                    absolute
+                    left-1/2
+                    hidden
+                    h-9
+                    w-[2px]
+                    bg-[#14B8A6]/80
+                    transition-colors
+                    duration-300
+                    group-hover:bg-[#2DD4BF]
+                    lg:block
+                    ${isTopRow ? "top-full" : "bottom-full"}
+                  `}
                 >
-                  {/* ICON */}
+                  <span
+                    className={`
+                      absolute
+                      -left-[4px]
+                      h-[10px]
+                      w-[10px]
+                      rounded-full
+                      bg-[#14B8A6]
+                      ${isTopRow ? "-bottom-[5px]" : "-top-[5px]"}
+                    `}
+                  />
+                </span>
 
-                  <div
-                    className="
-                      flex
-                      h-9
-                      w-9
-                      shrink-0
-                      items-center
-                      justify-center
+                {/* ICON (spacing lives here: global h3 rule resets heading margins) */}
 
-                      rounded-[10px]
-
-                      border
-                      border-[#4ED8C7]/35
-
-                      bg-[#174E55]
-
-                      text-[#73E6D8]
-
-                      transition-[transform,border-color,background-color,color]
+                <div className="mb-5">
+                  <Icon
+                    size={24}
+                    strokeWidth={1.3}
+                    aria-hidden="true"
+                    className={`
+                      ${theme.icon}
+                      transition-transform
                       duration-300
-                      ease-out
-
-                      group-hover:-translate-y-0.5
-                      group-hover:border-[#6EE7D8]/65
-                      group-hover:bg-[#1A5B5E]
-                      group-hover:text-[#B4FFF5]
-
-                      sm:h-10
-                      sm:w-10
-                      sm:rounded-[12px]
-                    "
-                  >
-                    <Icon
-                      size={16}
-                      strokeWidth={1.7}
-                      aria-hidden="true"
-                      className="
-                        sm:h-[18px]
-                        sm:w-[18px]
-                      "
-                    />
-                  </div>
-
-                  {/* TITLE */}
-
-                  <h3
-                    className="
-                      max-w-[280px]
-
-                      text-[12.5px]
-                      font-bold
-                      leading-[1.25]
-                      tracking-[-0.01em]
-
-                      text-white
-
-                      transition-colors
-                      duration-300
-
-                      group-hover:text-[#D8FFF9]
-
-                      sm:text-[16px]
-                      sm:leading-[1.25]
-                    "
-                  >
-                    {capability.title}
-                  </h3>
+                      group-hover:scale-110
+                    `}
+                  />
                 </div>
+
+                {/* TITLE */}
+
+                <h3
+                  className={`
+                    ${theme.title}
+                    text-[16px]
+                    font-semibold!
+                    leading-[1.3]
+                    tracking-[-0.01em]
+
+                    sm:text-[17px]
+                  `}
+                >
+                  {capability.title}
+                </h3>
 
                 {/* DESCRIPTION */}
 
                 <p
-                  className="
-                    relative
-                    z-10
+                  className={`
+                    ${theme.text}
+                    mt-2
+                    text-[13px]
+                    font-normal!
+                    leading-[1.7]
 
-                    mt-4
-                    max-w-[390px]
-
-                    text-[10px]
-                    font-medium
-                    leading-[1.6]
-
-                    text-[#B8C8D3]
-
-                    transition-colors
-                    duration-300
-
-                    group-hover:text-[#D0DEE5]
-
-                    sm:mt-2.5
-                    sm:text-[12px]
-                    sm:leading-[1.6]
-                  "
+                    sm:text-[13.5px]
+                  `}
                 >
                   {capability.description}
                 </p>
-
-                {/* BOTTOM ACCENT */}
-
-                <div
-                  aria-hidden="true"
-                  className="
-                    pointer-events-none
-                    absolute
-                    bottom-0
-                    left-5
-                    right-5
-                    h-px
-
-                    origin-left
-                    scale-x-0
-
-                    bg-gradient-to-r
-                    from-[#00D8C0]
-                    via-[#5EEAD4]
-                    to-transparent
-
-                    opacity-0
-
-                    transition-[transform,opacity]
-                    duration-300
-                    ease-out
-
-                    group-hover:scale-x-100
-                    group-hover:opacity-100
-
-                    sm:left-6
-                    sm:right-6
-                  "
-                />
               </motion.article>
             );
           })}

@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { SERVICES } from "@/data/services";
+import { pageMeta } from "@/lib/seo";
 import ServiceDetailHero from "@/components/Ventures/VentureDetailHero";
 import ServiceContactModal from "@/components/Ventures/VentureContactModal";
 import AutomobileExtras from "@/components/automobiles/AutomobileExtras";
@@ -80,10 +81,12 @@ export async function generateMetadata({ params }: { params: ParamsPromise }) {
     const { slug } = await params;
     const service = SERVICES.find((s) => s.slug === slug);
     if (!service) return {};
-    return {
-        title: `${service.title} | BH Ventures FZE LLC`,
+    return pageMeta({
+        title: service.title,
         description: service.desc,
-    };
+        path: `/ventures/${service.slug}/`,
+        image: service.image,
+    });
 }
 
 export default async function VentureDetailPage({ params }: { params: ParamsPromise }) {

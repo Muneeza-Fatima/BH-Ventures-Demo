@@ -1235,8 +1235,8 @@
   height: 100%;
   object-fit: cover;
 
-  filter: grayscale(55%) brightness(0.6) contrast(1.05);
-  transform: scale(1.06);
+  filter: brightness(0.88) contrast(1.05) saturate(1.05);
+  transform: scale(1.02);
 
   transition:
     transform 1.1s cubic-bezier(0.16, 1, 0.3, 1),
@@ -1244,8 +1244,8 @@
 }
 
 .tile:hover .tileMedia img {
-  transform: scale(1.14);
-  filter: grayscale(0%) brightness(0.75) contrast(1.05);
+  transform: scale(1.07);
+  filter: brightness(0.95) contrast(1.05) saturate(1.05);
 }
 
 .tileShade {
@@ -1255,10 +1255,9 @@
 
   background:
     linear-gradient(180deg,
-      rgba(7, 23, 34, 0.25) 0%,
-      rgba(7, 23, 34, 0.55) 45%,
-      rgba(4, 14, 22, 0.97) 100%),
-    linear-gradient(135deg, rgba(72, 165, 155, 0.28), transparent 55%);
+      rgba(7, 23, 34, 0) 0%,
+      rgba(7, 23, 34, 0.4) 45%,
+      rgba(4, 14, 22, 0.92) 100%);
 }
 
 .tileGlow {
@@ -2007,10 +2006,10 @@
 
 .futureContent h2 {
   max-width: 800px;
-  margin: 18px 0 0;
-  font-size: clamp(3.4rem, 6.3vw, 6.4rem);
-  line-height: 0.9;
-  letter-spacing: -0.06em;
+  margin: 28px 0 0;
+  font-size: clamp(2.8rem, 5.2vw, 5.2rem);
+  line-height: 1.08;
+  letter-spacing: -0.045em;
   font-weight: 600;
 }
 
@@ -2655,7 +2654,7 @@
   }
 
   .futureContent h2 {
-    font-size: clamp(3.2rem, 14vw, 5rem);
+    font-size: clamp(2.8rem, 12vw, 4.2rem);
   }
 
   /* Projects: stack thumbnail above text */
@@ -2807,7 +2806,7 @@
 /* Touch devices have no hover — keep the sector photos lively */
 @media (hover: none) {
   .tileMedia img {
-    filter: grayscale(10%) brightness(0.7);
+    filter: brightness(0.88) contrast(1.05) saturate(1.05);
   }
 }
 
@@ -3321,4 +3320,82 @@
 
 .orbitCore span {
   font-size: calc(var(--size) * 0.034);
+}
+/* Hero: the rotating word is gradient text (background-clip: text),
+   which only paints inside the element box — give the descenders
+   ("g" in "together.") room so they are not cut off. */
+.heroRotatorWord {
+  padding-bottom: 0.2em;
+}
+
+.heroLineMask {
+  padding-bottom: 0.22em;
+  margin-bottom: -0.18em;
+}
+
+/* ---------------------------------------------------------
+   INTRO ALIGNED WITH THE HERO
+   The intro uses the same container as the hero, so its heading
+   starts on the same left line. The "01" index moves into the
+   left gutter on wide screens and sits above the copy otherwise.
+   --------------------------------------------------------- */
+@media (min-width: 901px) {
+  .intro {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 18px;
+  }
+}
+
+/* ---------------------------------------------------------
+   SHARED PAGE WIDTH
+   Every section except Selected Projects (kept at its original
+   width) uses the same container on desktop, so headings start
+   on one left line and the side margins stay slim.
+   --------------------------------------------------------- */
+@media (min-width: 901px) {
+  .heroInner,
+  .intro,
+  .sectors,
+  .futureLayout {
+    width: min(1320px, calc(100% - 64px));
+  }
+}
+
+@media (min-width: 1700px) {
+  .heroInner,
+  .intro,
+  .sectors,
+  .futureLayout {
+    width: min(1600px, calc(100% - 96px));
+  }
+}
+
+@media (min-width: 1440px) {
+  .intro {
+    gap: 0;
+  }
+
+  .intro .sectionIndex {
+    position: absolute;
+    top: 130px;
+    left: -64px;
+  }
+}
+
+/* ---------------------------------------------------------
+   125% DISPLAY SCALING (Windows "Scale 125%")
+   Same approach as the About page: on desktop widths with a
+   1.2–1.3 device pixel ratio the page is scaled down as one
+   unit so it matches the 100% layout. Full-screen heights are
+   divided by the same factor so they still fill one screen.
+   --------------------------------------------------------- */
+@media (min-width: 1024px) and (min-resolution: 1.2dppx) and (max-resolution: 1.3dppx) {
+  .portfolio {
+    zoom: 0.82;
+    min-height: calc(100vh / 0.82);
+  }
+
+  .portfolio .hero {
+    min-height: calc(100svh / 0.82);
+  }
 }

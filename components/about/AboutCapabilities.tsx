@@ -1,99 +1,102 @@
 "use client";
 
-import type { CSSProperties } from "react";
-import { motion, useReducedMotion } from "framer-motion";
-import { ArrowLeftRight, Cpu, Megaphone, Sparkles, ChevronRight } from "lucide-react";
+import Image from "next/image";
+import { useState } from "react";
+import { AnimatePresence, motion, type Variants } from "framer-motion";
+import {
+  ArrowLeftRight,
+  Cpu,
+  Megaphone,
+  Sparkles,
+  Plus,
+  type LucideIcon,
+} from "lucide-react";
 
 const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
-const capabilities = [
+type Capability = {
+  icon: LucideIcon;
+  title: string;
+  bullets: string[];
+  image: string;
+  imageAlt: string;
+  /* Colour of the row's left border and point boxes */
+  accent: string;
+};
+
+const capabilities: Capability[] = [
   {
     icon: ArrowLeftRight,
     title: "International Trade",
-    accent: "#14B8A6",
-    accentSoft: "rgba(20,184,166,0.16)",
     bullets: [
       "Cross-border trade & market access",
       "Strategically selected international markets",
       "Import, export & distribution",
       "UAE free-zone trade platform",
     ],
+    image: "/images/about/story/story-trade-v2.jpg",
+    imageAlt: "Container port with cargo ship, truck and aircraft",
+    accent: "#14B8A6",
   },
   {
     icon: Cpu,
     title: "Technology & Data",
-    accent: "#2DD4C3",
-    accentSoft: "rgba(45,212,195,0.16)",
     bullets: [
       "Web3, AI & modern digital infrastructure",
       "Applied to real business problems",
       "Structured data & insight",
       "Smarter, faster decision-making",
     ],
+    image: "/images/about/story/story-technology-hands.jpg",
+    imageAlt: "Robotic hand reaching toward a human hand",
+    accent: "#3B82F6",
   },
   {
     icon: Megaphone,
     title: "Marketing & Business Development",
-    accent: "#11998E",
-    accentSoft: "rgba(17,153,142,0.18)",
     bullets: [
       "Positioning & growth strategy",
       "Partnerships & pipeline development",
       "Curated events & gatherings",
       "Visibility and reach for ventures",
     ],
+    image: "/images/about/story/story-licensed-activities.jpg",
+    imageAlt: "Partners placing an architectural model on a boardroom table",
+    accent: "#F59E0B",
   },
   {
     icon: Sparkles,
     title: "Innovation & Strategic Ventures",
-    accent: "#22D3EE",
-    accentSoft: "rgba(34,211,238,0.16)",
     bullets: [
       "Testing new operating models",
       "Combining disciplines others keep separate",
       "One multi-sector venture platform",
       "Founder-led execution",
     ],
+    image: "/images/about/story/story-innovation-globe.png",
+    imageAlt: "Hands holding a glowing digital globe",
+    accent: "#A855F7",
   },
 ];
 
-const containerVariants = {
+const headerReveal: Variants = {
+  hidden: { opacity: 0, y: 24 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.65, ease: EASE } },
+};
+
+const listReveal: Variants = {
   hidden: {},
-  show: {
-    transition: {
-      staggerChildren: 0.1,
-      delayChildren: 0.05,
-    },
-  },
+  show: { transition: { staggerChildren: 0.1, delayChildren: 0.05 } },
 };
 
-const cardVariants = {
-  hidden: {
-    opacity: 0,
-    y: 24,
-    scale: 0.98,
-  },
-  show: {
-    opacity: 1,
-    y: 0,
-    scale: 1,
-    transition: {
-      duration: 0.6,
-      ease: EASE,
-    },
-  },
-};
-
-/* Reduced motion: no entrance offset or scale — the card is simply
-   there. The hover lift is plain CSS, which app/globals.css already
-   clamps to 0.01ms site-wide under the same media query. */
-const cardVariantsReduced = {
-  hidden: { opacity: 1, y: 0, scale: 1 },
-  show: { opacity: 1, y: 0, scale: 1, transition: { duration: 0 } },
+const rowReveal: Variants = {
+  hidden: { opacity: 0, y: 24 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: EASE } },
 };
 
 export default function AboutCapabilities() {
-  const prefersReducedMotion = useReducedMotion();
+  /* First row starts open so the section never looks empty. */
+  const [open, setOpen] = useState(0);
 
   return (
     <section
@@ -105,338 +108,316 @@ export default function AboutCapabilities() {
         min-w-0
         overflow-hidden
         bg-[#0B1220]
-        py-14
-        sm:py-18
-        md:py-20
+        py-16
+        sm:py-20
         lg:py-24
         xl:py-28
-
-        [@media(min-width:1024px)_and_(max-width:1366px)]:py-16!
       "
     >
-      <div
-        aria-hidden="true"
-        className="
-          pointer-events-none
-          absolute
-          left-1/2
-          top-0
-          h-[420px]
-          w-[620px]
-          -translate-x-1/2
-          -translate-y-1/2
-          rounded-full
-          bg-[#00CDB5]/[0.05]
-          blur-[120px]
-        "
-      />
+      {/* Same soft drifting glow as the hero (classes in about.css) */}
+      <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
+        <div className="about-glow-a absolute left-[-6%] top-[18%] h-[520px] w-[520px] rounded-full bg-[#14B8A6]/[0.18] blur-[120px]" />
+        <div className="about-glow-b absolute left-[40%] top-[-10%] h-[440px] w-[440px] rounded-full bg-[#1D4ED8]/[0.14] blur-[120px]" />
+        <div className="about-glow-c absolute bottom-[-20%] right-[-8%] h-[560px] w-[560px] rounded-full bg-[#0F766E]/[0.20] blur-[130px]" />
+      </div>
 
       <div
         className="
-          relative
-          z-10
           mx-auto
           w-full
           min-w-0
           max-w-[1440px]
-          px-5
+          px-6
           sm:px-7
           md:px-10
           lg:px-12
           xl:px-16
           2xl:max-w-[1600px]
           2xl:px-20
-
-          [@media(min-width:1024px)_and_(max-width:1366px)]:px-10!
         "
       >
+        {/* =====================================================
+            HEADER
+        ===================================================== */}
         <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.2 }}
-          transition={{ duration: 0.65, ease: EASE }}
-          className="mx-auto mb-12 max-w-[720px] text-center sm:mb-14 lg:mb-16"
+          variants={headerReveal}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, amount: 0.3 }}
+          className="mb-12 flex flex-col gap-6 sm:mb-14 lg:mb-16 lg:flex-row lg:items-end lg:justify-between"
         >
-          <div className="mb-5 flex items-center justify-center gap-3">
-            <span className="h-px w-8 bg-gradient-to-r from-transparent to-[#00FFD5] sm:w-10" />
+          <div>
+            <div className="mb-5 flex items-center gap-3">
+              <span className="h-px w-8 bg-[#2DD4BF]" />
+              <span className="text-[11px] font-semibold uppercase tracking-[0.28em] text-[#5EEAD4] sm:text-[12px]">
+                What We Operate
+              </span>
+            </div>
 
-            <span
+            <h2
               className="
-                text-[9px]
-                font-extrabold
-                uppercase
-                tracking-[0.28em]
-                text-[#00FFD5]
-                sm:text-[10px]
+                font-heading
+                text-[2.1rem]
+                font-bold
+                leading-[1.12]
+                tracking-[-0.028em]
+                text-white
+                sm:text-[2.5rem]
+                lg:text-[2.875rem]
               "
             >
-              What We Operate
-            </span>
-
-            <span className="h-px w-8 bg-gradient-to-l from-transparent to-[#00FFD5] sm:w-10" />
+              Four capabilities.{" "}
+              <span className="text-[#5EEAD4]">One platform.</span>
+            </h2>
           </div>
 
-          <h2
-            className="
-              font-heading
-              text-[2rem]
-              font-bold
-              leading-[1.1]
-              tracking-[-0.028em]
-              text-[#E7EDF3]
-              sm:text-[2.5rem]
-              lg:text-[2.875rem]
-
-              [@media(min-width:1024px)_and_(max-width:1366px)]:text-[2.5rem]!
-            "
-          >
-            Four capabilities.{" "}
-            <span
-              className="
-                bg-gradient-to-r
-                from-[#E7EDF3]
-                via-[#D8F1EC]
-                to-[#5EEAD4]
-                bg-clip-text
-                pb-[0.18em]
-                -mb-[0.18em]
-                text-transparent
-                [-webkit-background-clip:text]
-              "
-            >
-              One platform.
-            </span>
-          </h2>
-
-          <p
-            className="
-              mx-auto
-              pt-6
-              max-w-[560px]
-              text-[14px]
-              font-medium
-              leading-[1.75]
-              text-[#AAB6C2]
-              sm:text-[15px]
-              lg:text-[16px]
-            "
-          >
+          <p className="max-w-[440px] text-[15px] font-normal leading-[1.75] text-white/70 sm:text-[16px] lg:pb-1.5 lg:text-right">
             Each capability stands on its own, but the real value comes from
             how they work together inside a single venture platform.
           </p>
         </motion.div>
 
-        <motion.div
-          variants={containerVariants}
+        {/* =====================================================
+            EXPANDING ROWS
+            Hover (mouse), tap or keyboard opens a row: its bullets
+            unfold and the matching image slides in on the right.
+        ===================================================== */}
+        <motion.ul
+          variants={listReveal}
           initial="hidden"
           whileInView="show"
           viewport={{ once: true, amount: 0.15 }}
-          className="
-            grid
-            grid-cols-1
-            gap-5
-            sm:grid-cols-2
-            lg:gap-6
-          "
+          className="border-t border-white/15 [-webkit-tap-highlight-color:transparent]"
         >
-          {capabilities.map((item) => {
-            const Icon = item.icon;
+          {capabilities.map((capability, index) => {
+            const isOpen = open === index;
+            const Icon = capability.icon;
 
             return (
-              <motion.div
-                key={item.title}
-                variants={
-                  prefersReducedMotion ? cardVariantsReduced : cardVariants
-                }
-                tabIndex={0}
-                style={
-                  {
-                    "--accent": item.accent,
-                    "--accent-soft": item.accentSoft,
-                  } as CSSProperties
-                }
-                className="
-                  group
+              <motion.li
+                key={capability.title}
+                variants={rowReveal}
+                onMouseEnter={() => {
+                  /* Hover opens rows only on real mouse devices; touch uses tap. */
+                  if (window.matchMedia("(hover: hover)").matches) setOpen(index);
+                }}
+                className={`
                   relative
-                  isolate
-                  overflow-hidden
-                  rounded-[26px]
-                  border
-                  border-white/[0.08]
-                  bg-white/[0.025]
-                  p-7
-
-                  transition-[transform,border-color,box-shadow,background-color]
+                  border-b
+                  border-white/15
+                  transition-colors
                   duration-500
-                  ease-[cubic-bezier(0.22,1,0.36,1)]
-
-                  hover:-translate-y-1.5
-                  hover:border-[var(--accent)]/50
-                  hover:bg-white/[0.045]
-                  hover:shadow-[0_24px_55px_rgba(0,0,0,0.28),0_0_40px_var(--accent-soft)]
-
-                  focus:border-[var(--accent)]/50
-                  focus:bg-white/[0.045]
-                  focus:shadow-[0_24px_55px_rgba(0,0,0,0.28),0_0_40px_var(--accent-soft)]
-                  focus:outline-none
-                  focus-visible:-translate-y-1.5
-                  focus-visible:ring-2
-                  focus-visible:ring-[var(--accent)]/60
-                  focus-visible:ring-offset-2
-                  focus-visible:ring-offset-[#0B1220]
-
-                  sm:p-8
-                "
+                  ${isOpen ? "bg-white/[0.04]" : ""}
+                `}
               >
-                {/* Top accent strip */}
-                <div
-                  aria-hidden="true"
-                  className="
-                    absolute
-                    inset-x-0
-                    top-0
-                    h-[3px]
-                    opacity-70
-
-                    transition-opacity
-                    duration-500
-
-                    group-hover:opacity-100
-                  "
-                  style={{
-                    background: `linear-gradient(90deg, transparent, var(--accent), transparent)`,
-                  }}
-                />
-
-                {/* Hairline that draws in from the left on hover */}
+                {/* Coloured left border: thin when closed, thick when open */}
                 <span
                   aria-hidden="true"
-                  className="
+                  className={`
                     absolute
-                    inset-x-0
+                    left-0
                     top-0
-                    z-20
-                    h-px
-                    origin-left
-                    scale-x-0
-                    bg-gradient-to-r
-                    from-transparent
-                    via-[#00FFD5]
-                    to-transparent
-
-                    transition-transform
+                    h-full
+                    transition-[width]
                     duration-500
-
-                    group-hover:scale-x-100
-                    group-focus:scale-x-100
-                  "
+                    ease-[cubic-bezier(0.22,1,0.36,1)]
+                    ${isOpen ? "w-[4px]" : "w-[2px]"}
+                  `}
+                  style={{ backgroundColor: capability.accent }}
                 />
 
-                <div
-                  aria-hidden="true"
+                <button
+                  type="button"
+                  aria-expanded={isOpen}
+                  aria-controls={`capability-${index}`}
+                  onClick={() => setOpen(index)}
                   className="
-                    pointer-events-none
-                    absolute
-                    -right-20
-                    -top-20
-                    h-48
-                    w-48
-                    rounded-full
-                    blur-[70px]
-                    opacity-0
-                    transition-opacity
-                    duration-700
-                    ease-out
-                    group-hover:opacity-100
-                  "
-                  style={{ background: "var(--accent-soft)" }}
-                />
+                    group
+                    flex
+                    w-full
+                    items-center
+                    gap-4
+                    py-6
+                    pl-5
+                    pr-2
+                    text-left
+                    outline-none
+                    focus-visible:ring-2
+                    focus-visible:ring-inset
+                    focus-visible:ring-[#2DD4BF]
 
-                <div className="relative z-10">
+                    sm:gap-6
+                    sm:py-7
+                    sm:pl-7
+                    lg:py-8
+                  "
+                >
                   <span
-                    className="
+                    className={`
+                      w-8
+                      shrink-0
+                      text-[13px]
+                      font-bold
+                      tracking-[0.12em]
+                      transition-colors
+                      duration-300
+                      sm:w-10
+                      sm:text-[14px]
+                      ${isOpen ? "text-[#5EEAD4]" : "text-white/40"}
+                    `}
+                  >
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
+
+                  <Icon
+                    size={26}
+                    strokeWidth={1.5}
+                    aria-hidden="true"
+                    className={`
+                      hidden
+                      shrink-0
+                      transition-colors
+                      duration-300
+                      sm:block
+                      ${isOpen ? "text-[#5EEAD4]" : "text-white/50"}
+                    `}
+                  />
+
+                  <span
+                    className={`
+                      font-heading
+                      min-w-0
+                      flex-1
+                      text-[19px]
+                      font-bold
+                      leading-[1.2]
+                      tracking-[-0.02em]
+                      transition-colors
+                      duration-300
+                      sm:text-[24px]
+                      lg:text-[30px]
+                      ${isOpen ? "text-white" : "text-white/75 group-hover:text-white"}
+                    `}
+                  >
+                    {capability.title}
+                  </span>
+
+                  <span
+                    aria-hidden="true"
+                    className={`
                       flex
-                      h-14
-                      w-14
+                      h-10
+                      w-10
                       shrink-0
                       items-center
                       justify-center
-                      rounded-2xl
-                      border
-
-                      transition-[transform,box-shadow]
+                      rounded-full
+                      border-[1.5px]
+                      transition-all
                       duration-500
-
-                      group-hover:-translate-y-0.5
-                      group-hover:shadow-[0_0_18px_rgba(0,205,181,0.35)]
-                    "
-                    style={{
-                      borderColor: "var(--accent-soft)",
-                      backgroundColor: "var(--accent-soft)",
-                      color: "var(--accent)",
-                    }}
+                      ease-[cubic-bezier(0.22,1,0.36,1)]
+                      ${
+                        isOpen
+                          ? "rotate-45 border-[#2DD4BF] bg-[#2DD4BF] text-[#06251F]"
+                          : "border-white/30 text-white/70"
+                      }
+                    `}
                   >
-                    <Icon size={24} strokeWidth={1.6} aria-hidden="true" />
+                    <Plus size={18} strokeWidth={2} />
                   </span>
+                </button>
 
-                  <h3
-                    className="
-                      pt-6
-                      text-[19px]
-                      font-semibold
-                      leading-[1.25]
-                      tracking-[-0.018em]
-                      text-[#E7EDF3]
-                      sm:text-[21px]
-                    "
-                  >
-                    {item.title}
-                  </h3>
-
-                  <ul className="mt-4 flex flex-col gap-2.5">
-                    {item.bullets.map((bullet) => (
-                      <li
-                        key={bullet}
+                <AnimatePresence initial={false}>
+                  {isOpen && (
+                    <motion.div
+                      id={`capability-${index}`}
+                      key="content"
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: "auto", opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.5, ease: EASE }}
+                      className="overflow-hidden"
+                    >
+                      <div
                         className="
-                          flex
-                          items-start
-                          gap-2
-                          text-[13.5px]
-                          font-medium
-                          leading-6
-                          text-[#AAB6C2]
+                          grid
+                          grid-cols-1
+                          gap-6
+                          pb-8
+                          pl-5
+                          pr-2
 
-                          transition-colors
-                          duration-500
-
-                          group-hover:text-[#C9D2DB]
+                          sm:pl-[calc(1.75rem+2.5rem+1.5rem)]
+                          lg:grid-cols-[1fr_minmax(0,460px)]
+                          lg:gap-12
+                          lg:pb-10
                         "
                       >
-                        <ChevronRight
-                          size={15}
-                          strokeWidth={2}
-                          aria-hidden="true"
+                        <ul className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:content-start">
+                          {capability.bullets.map((bullet, i) => (
+                            <motion.li
+                              key={bullet}
+                              initial={{ opacity: 0, x: -12 }}
+                              animate={{ opacity: 1, x: 0 }}
+                              transition={{ duration: 0.4, delay: 0.1 + i * 0.06, ease: EASE }}
+                              style={{ borderLeftColor: capability.accent }}
+                              className="
+                                flex
+                                items-start
+                                gap-3
+                                rounded-[14px]
+                                border
+                                border-white/15
+                                border-l-[3px]
+                                bg-white/[0.05]
+                                px-4
+                                py-3
+                                text-[14px]
+                                font-medium
+                                leading-[1.5]
+                                text-white/85
+                                sm:text-[15px]
+                              "
+                            >
+                              <span
+                                className="mt-[7px] h-1.5 w-1.5 shrink-0 rounded-full"
+                                style={{ backgroundColor: capability.accent }}
+                              />
+                              {bullet}
+                            </motion.li>
+                          ))}
+                        </ul>
+
+                        <motion.div
+                          initial={{ opacity: 0, x: 40 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          transition={{ duration: 0.6, delay: 0.1, ease: EASE }}
                           className="
-                            mt-[3px]
-                            shrink-0
-
-                            transition-transform
-                            duration-300
-
-                            group-hover:translate-x-0.5
+                            relative
+                            aspect-[16/9]
+                            w-full
+                            overflow-hidden
+                            rounded-[18px]
+                            border
+                            border-white/15
                           "
-                          style={{ color: "var(--accent)" }}
-                        />
-
-                        <span>{bullet}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </motion.div>
+                        >
+                          <Image
+                            src={capability.image}
+                            alt={capability.imageAlt}
+                            fill
+                            sizes="(min-width: 1024px) 460px, 100vw"
+                            className="object-cover object-center"
+                          />
+                        </motion.div>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </motion.li>
             );
           })}
-        </motion.div>
+        </motion.ul>
       </div>
     </section>
   );

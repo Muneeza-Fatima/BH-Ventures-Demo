@@ -1,10 +1,15 @@
 "use client";
 
-import { motion, useReducedMotion, type Variants } from "framer-motion";
+import Image from "next/image";
+import { useEffect, useRef, useState } from "react";
+import { motion, useInView, type Variants } from "framer-motion";
 
 /* ============================================================
    ANIMATION VARIANTS
+   Quiet fade + rise, staggered — nothing loops.
 ============================================================ */
+
+const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
 const containerVariants: Variants = {
   hidden: {},
@@ -17,136 +22,148 @@ const containerVariants: Variants = {
 };
 
 const itemVariants: Variants = {
-  hidden: {
-    opacity: 0,
-    y: 18,
-  },
+  hidden: { opacity: 0, y: 18 },
   visible: {
     opacity: 1,
     y: 0,
-    transition: {
-      duration: 0.6,
-      ease: [0.22, 1, 0.36, 1],
-    },
+    transition: { duration: 0.7, ease: EASE },
   },
 };
 
-const headingContainer: Variants = {
+/* Page-entry transitions: the glass card sharpens out of a blur,
+   the photo is wiped open from the bottom, the facts cards follow. */
+const cardVariants: Variants = {
+  hidden: { opacity: 0, y: 30, scale: 0.97, filter: "blur(12px)" },
+  visible: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    filter: "blur(0px)",
+    transition: { duration: 1, ease: EASE },
+  },
+};
+
+const photoVariants: Variants = {
+  hidden: { opacity: 0, clipPath: "inset(100% 0% 0% 0% round 20px)" },
+  visible: {
+    opacity: 1,
+    clipPath: "inset(0% 0% 0% 0% round 20px)",
+    transition: { duration: 1.2, ease: EASE, delay: 0.3 },
+  },
+};
+
+const factsListVariants: Variants = {
   hidden: {},
   visible: {
-    transition: {
-      staggerChildren: 0.09,
-      delayChildren: 0.2,
-    },
+    transition: { staggerChildren: 0.08, delayChildren: 0.55 },
   },
 };
 
-const headingWord: Variants = {
-  hidden: {
-    opacity: 0,
-    y: 22,
-  },
+const factVariants: Variants = {
+  hidden: { opacity: 0, y: 24, filter: "blur(6px)" },
   visible: {
     opacity: 1,
     y: 0,
-    transition: {
-      duration: 0.6,
-      ease: [0.22, 1, 0.36, 1],
-    },
-  },
-};
-
-const orbitVariants: Variants = {
-  hidden: { opacity: 0, scale: 0.92 },
-  visible: {
-    opacity: 1,
-    scale: 1,
-    transition: { duration: 1.4, ease: [0.22, 1, 0.36, 1], delay: 0.35 },
+    filter: "blur(0px)",
+    transition: { duration: 0.7, ease: EASE },
   },
 };
 
 /* ============================================================
-   ORBITAL VISUAL
-   Three concentric rings, each carrying a single point of light
-   that circles at its own pace around a softly breathing core —
-   trade, technology and the disciplines between them, orbiting
-   one platform. Pure CSS motion, no canvas, no images. Sits to
-   the right of the copy on tablet and desktop; on phones it is
-   hidden so the heading keeps the full width.
+   COMPANY FACTS
+   Five even columns under the hero (the former Facts section).
 ============================================================ */
 
-const rings = [
-  { inset: "32%", duration: "26s", direction: "normal", dashed: false, alpha: 0.28 },
-  { inset: "19%", duration: "46s", direction: "reverse", dashed: true, alpha: 0.18 },
-  { inset: "6%", duration: "74s", direction: "normal", dashed: false, alpha: 0.12 },
-] as const;
+type HeroFact = {
+  label: string;
+  detail: string;
+  count?: number;
+};
 
-function OrbitalVisual() {
+const heroFacts: HeroFact[] = [
+  { label: "UAE Based", detail: "Operating from the United Arab Emirates." },
+  { label: "Dubai Free Zone", detail: "Registered as a UAE free-zone entity." },
+  {
+    count: 10,
+    label: "Licensed Activities",
+    detail: "Across trade, technology and business services.",
+  },
+  {
+    label: "Multi-Sector",
+    detail: "Connecting multiple disciplines under one venture platform.",
+  },
+  { label: "Founder-Led", detail: "Direct leadership and accountability." },
+];
+
+function CountUp({ value }: { value: number }) {
+  const ref = useRef<HTMLSpanElement>(null);
+  const isInView = useInView(ref, { once: true });
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    if (!isInView) return;
+
+    let frame = 0;
+    let start: number | null = null;
+    const duration = 1100;
+
+    const tick = (now: number) => {
+      if (start === null) start = now;
+      const progress = Math.min((now - start) / duration, 1);
+      setCount(Math.round((1 - Math.pow(1 - progress, 4)) * value));
+      if (progress < 1) frame = requestAnimationFrame(tick);
+    };
+
+    frame = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(frame);
+  }, [isInView, value]);
+
+  return <span ref={ref}>{count}</span>;
+}
+
+
+/* ============================================================
+   HERO
+============================================================ */
+
+/* ============================================================
+   LIGHT BEAMS
+   Three soft teal beams fall diagonally from the top-right
+   corner and sway very slowly, like stage lights. Pure CSS
+   (classes in about.css); reduced motion leaves them still.
+============================================================ */
+
+const beams = [
+  { left: "58%", width: "140px", rotate: "28deg", opacity: 0.16, delay: "0s" },
+  { left: "70%", width: "220px", rotate: "34deg", opacity: 0.11, delay: "-4s" },
+  { left: "82%", width: "120px", rotate: "40deg", opacity: 0.14, delay: "-8s" },
+];
+
+function LightBeams() {
   return (
-    <motion.div
-      aria-hidden="true"
-      variants={orbitVariants}
-      className="
-        pointer-events-none
-        absolute
-        right-[-14%]
-        top-1/2
-        hidden
-        aspect-square
-        w-[440px]
-        -translate-y-1/2
-        select-none
-
-        md:block
-        lg:right-[-6%]
-        lg:w-[560px]
-        xl:right-[1%]
-        xl:w-[640px]
-        2xl:right-[4%]
-        2xl:w-[700px]
-
-        [@media(min-width:1024px)_and_(max-width:1366px)]:right-[-10%]
-        [@media(min-width:1024px)_and_(max-width:1366px)]:w-[500px]
-      "
-    >
-      {/* Core */}
-      <div className="about-core-breathe absolute left-1/2 top-1/2 h-44 w-44 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#00FFD5]/[0.13] blur-[46px]" />
-      <div className="absolute left-1/2 top-1/2 h-16 w-16 -translate-x-1/2 -translate-y-1/2 rounded-full border border-[#2DD4BF]/30 bg-[#0B1220]/60 backdrop-blur-[2px]" />
-      <div className="absolute left-1/2 top-1/2 h-2.5 w-2.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#00FFD5] shadow-[0_0_24px_6px_rgba(0,255,213,0.45)]" />
-
-      {/* Rings */}
-      {rings.map((ring, index) => (
-        <div
-          key={index}
-          className={`about-orbit absolute rounded-full border ${
-            ring.dashed ? "border-dashed" : "border-solid"
-          }`}
+    <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
+      {beams.map((beam) => (
+        <span
+          key={beam.left}
+          className="about-beam absolute -top-[20%] h-[140%] blur-[30px]"
           style={
             {
-              inset: ring.inset,
-              borderColor: `rgba(45, 212, 191, ${ring.alpha})`,
-              "--orbit-duration": ring.duration,
-              "--orbit-direction": ring.direction,
+              left: beam.left,
+              width: beam.width,
+              opacity: beam.opacity,
+              "--beam-rotate": beam.rotate,
+              animationDelay: beam.delay,
+              background:
+                "linear-gradient(to bottom, rgba(94,234,212,0.9), rgba(45,212,191,0.25) 55%, transparent 85%)",
             } as React.CSSProperties
           }
-        >
-          <span className="absolute left-1/2 top-0 h-2 w-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#00FFD5] shadow-[0_0_16px_3px_rgba(0,255,213,0.55)]" />
-          {index === 0 && (
-            <span className="absolute bottom-0 left-1/2 h-1.5 w-1.5 -translate-x-1/2 translate-y-1/2 rounded-full bg-white/70 shadow-[0_0_10px_2px_rgba(255,255,255,0.35)]" />
-          )}
-        </div>
+        />
       ))}
-
-      {/* Faint cross-hair guides */}
-      <div className="absolute left-1/2 top-[6%] bottom-[6%] w-px -translate-x-1/2 bg-gradient-to-b from-transparent via-[#2DD4BF]/[0.14] to-transparent" />
-      <div className="absolute top-1/2 left-[6%] right-[6%] h-px -translate-y-1/2 bg-gradient-to-r from-transparent via-[#2DD4BF]/[0.14] to-transparent" />
-    </motion.div>
+    </div>
   );
 }
 
 export default function AboutHero() {
-  const prefersReducedMotion = useReducedMotion();
-
   return (
     <section
       id="about-hero"
@@ -158,131 +175,63 @@ export default function AboutHero() {
         overflow-hidden
         bg-[#0B1220]
 
-        px-5
-        pt-[118px]
-        pb-20
+        px-6
+        pt-[112px]
+        pb-14
 
         sm:px-7
-        sm:pt-[126px]
-        sm:pb-24
+        sm:pt-[124px]
 
         md:px-10
-        md:pt-[136px]
-        md:pb-28
+        md:pt-[132px]
+        md:pb-16
 
         lg:px-12
-        lg:pt-[156px]
-        lg:pb-32
+        lg:pt-[148px]
+        lg:pb-20
 
         xl:px-16
-        xl:pt-[170px]
 
         2xl:px-20
-
-        [@media(min-width:1024px)_and_(max-width:1366px)]:pt-[136px]!
-        [@media(min-width:1024px)_and_(max-width:1366px)]:pb-24!
       "
     >
       {/* =====================================================
-          AMBIENT BACKGROUND
-          Layered, slow and low-contrast: a fine dot grid that
-          fades toward the edges, two drifting aurora washes,
-          a hairline at the top and a soft floor glow at the
-          bottom so the section hands off gently to the next.
+          BACKGROUND
+          No pattern: a soft mesh of large teal / blue lights on
+          navy that drift very slowly. They sit behind the glass
+          card so its blur has something to soften.
       ===================================================== */}
 
-      {/* Dot grid */}
+      <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
+        <div className="about-glow-a absolute left-[-6%] top-[18%] h-[520px] w-[520px] rounded-full bg-[#14B8A6]/[0.20] blur-[120px]" />
+        <div className="about-glow-b absolute left-[28%] top-[-10%] h-[440px] w-[440px] rounded-full bg-[#1D4ED8]/[0.16] blur-[120px]" />
+        <div className="about-glow-c absolute bottom-[-20%] right-[-8%] h-[560px] w-[560px] rounded-full bg-[#0F766E]/[0.22] blur-[130px]" />
+        {/* Soft vignette keeps the edges deep navy */}
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_40%,rgba(11,18,32,0.6)_100%)]" />
+      </div>
+
+      <LightBeams />
+
+      {/* Minimal fine grid, fading out toward the edges */}
       <div
         aria-hidden="true"
         className="
           pointer-events-none
           absolute
           inset-0
-          opacity-[0.55]
-          [background-image:radial-gradient(rgba(255,255,255,0.10)_1px,transparent_1.2px)]
-          [background-size:30px_30px]
-          [mask-image:radial-gradient(ellipse_at_68%_45%,black_10%,transparent_68%)]
-          [-webkit-mask-image:radial-gradient(ellipse_at_68%_45%,black_10%,transparent_68%)]
+          -z-10
+          bg-[linear-gradient(rgba(255,255,255,0.045)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.045)_1px,transparent_1px)]
+          bg-[size:64px_64px]
+          [mask-image:radial-gradient(ellipse_at_50%_40%,black_20%,transparent_75%)]
+          [-webkit-mask-image:radial-gradient(ellipse_at_50%_40%,black_20%,transparent_75%)]
         "
       />
-
-      {/* Aurora washes */}
-      <div
-        aria-hidden="true"
-        className={`
-          pointer-events-none
-          absolute
-          left-[-8%]
-          top-[-160px]
-          h-[520px]
-          w-[760px]
-          rounded-full
-          bg-[#00CDB5]/[0.085]
-          blur-[130px]
-          ${prefersReducedMotion ? "" : "about-aurora"}
-        `}
-      />
-
-      <div
-        aria-hidden="true"
-        className={`
-          pointer-events-none
-          absolute
-          right-[-120px]
-          bottom-[-180px]
-          h-[460px]
-          w-[460px]
-          rounded-full
-          bg-[#5A64FF]/[0.07]
-          blur-[130px]
-          ${prefersReducedMotion ? "" : "about-aurora-alt"}
-        `}
-      />
-
-      {/* Top hairline */}
-      <div
-        aria-hidden="true"
-        className="
-          pointer-events-none
-          absolute
-          left-1/2
-          top-0
-          h-px
-          w-[70%]
-          -translate-x-1/2
-          bg-gradient-to-r
-          from-transparent
-          via-[#2DD4BF]/40
-          to-transparent
-        "
-      />
-
-      {/* Floor glow — softens the hand-off into the next section */}
-      <div
-        aria-hidden="true"
-        className="
-          pointer-events-none
-          absolute
-          inset-x-0
-          bottom-0
-          h-40
-          bg-gradient-to-t
-          from-[#0F1B2D]
-          to-transparent
-        "
-      />
-
-      {/* =====================================================
-          CONTENT
-      ===================================================== */}
-
       <motion.div
         variants={containerVariants}
         initial="hidden"
         animate="visible"
         className="
           relative
-          z-10
           mx-auto
           w-full
           min-w-0
@@ -290,190 +239,277 @@ export default function AboutHero() {
           2xl:max-w-[1600px]
         "
       >
-        <OrbitalVisual />
+        {/* =====================================================
+            COPY + PHOTO
+        ===================================================== */}
 
-        {/* Eyebrow Pill */}
-
-        <motion.div
-          variants={itemVariants}
-          className="mb-8 flex items-center sm:mb-10"
-        >
-          <span
-            className="
-              story-pill
-              hero-story-pill
-              relative
-              inline-flex
-              items-center
-              gap-2.5
-              rounded-full
-              border
-              border-[#2DD4BF]/25
-              bg-[linear-gradient(135deg,rgba(0,255,213,0.08),rgba(255,255,255,0.04))]
-              px-4
-              py-2.5
-              backdrop-blur-sm
-
-              shadow-[0_0_0_1px_rgba(45,212,191,0.06),0_14px_38px_-10px_rgba(0,205,181,0.32)]
-
-              transition-all
-              duration-300
-              ease-out
-
-              hover:-translate-y-[2.5px]
-              hover:border-[#2DD4BF]/45
-              hover:shadow-[0_0_0_1px_rgba(45,212,191,0.10),0_22px_50px_-10px_rgba(0,205,181,0.48)]
-            "
-          >
-            <span className="relative flex h-[8px] w-[8px] shrink-0 items-center justify-center">
-              {!prefersReducedMotion && (
-                <>
-                  <span
-                    aria-hidden="true"
-                    className="absolute inset-[-6px] rounded-full border border-[#2DD4BF]/35 hero-story-ring"
-                  />
-
-                  <span
-                    aria-hidden="true"
-                    className="absolute inset-0 rounded-full bg-[#00FFD5] story-dot-breathe"
-                  />
-                </>
-              )}
-
-              <span className="relative h-[8px] w-[8px] rounded-full bg-[#00FFD5] shadow-[0_0_10px_rgba(0,255,213,0.65)]" />
-            </span>
-
-            <span
-              className="
-                text-[9px]
-                font-extrabold
-                uppercase
-                tracking-[0.30em]
-                text-[#00FFD5]
-                sm:text-[10px]
-                md:text-[11px]
-              "
-            >
-              Our Story
-            </span>
-          </span>
-        </motion.div>
-
-        {/* Heading */}
-
-        <motion.h1
-          variants={headingContainer}
-          aria-label="Where Trade Meets Technology."
+        <div
           className="
-            font-heading
-            max-w-[1040px]
-            font-bold
-            tracking-[-0.035em]
-            text-[#E7EDF3]
-            text-[2.3rem]
-            leading-[1.06]
-            sm:text-[3.1rem]
-            sm:leading-[1.04]
-            md:text-[3.75rem]
-            lg:text-[4.4rem]
-            xl:text-[5rem]
+            grid
+            grid-cols-1
+            gap-12
 
-            [@media(min-width:1024px)_and_(max-width:1366px)]:text-[4.1rem]!
+            lg:grid-cols-[1.1fr_0.9fr]
+            lg:items-center
+            lg:gap-16
+
+            xl:gap-24
           "
         >
-          <span className="block">
-            <motion.span variants={headingWord} className="inline-block">
-              Where
-            </motion.span>{" "}
-            <motion.span variants={headingWord} className="inline-block">
-              Trade
-            </motion.span>
-          </span>
+          {/* Copy */}
+          <div className="min-w-0">
+            {/* Label */}
+            <motion.div
+              variants={itemVariants}
+              className="mb-7 flex items-center gap-3 sm:mb-8"
+            >
+              <span className="h-px w-8 bg-[#2DD4BF]" />
+              <span
+                className="
+                  text-[11px]
+                  font-semibold
+                  uppercase
+                  tracking-[0.28em]
+                  text-[#5EEAD4]
 
-          <span className="block">
-            <motion.span variants={headingWord} className="inline-block">
-              Meets
-            </motion.span>{" "}
-            {/*
-              Gradient text is painted only inside the element's own box.
-              With a tight line-height the box is shorter than the glyphs,
-              so the descenders of "gy" were being cut off. The bottom
-              padding extends the paint area to cover them and the matching
-              negative margin gives the space back so the layout is unchanged.
-            */}
-            <motion.span
-              variants={headingWord}
+                  sm:text-[12px]
+                "
+              >
+                Our Story
+              </span>
+            </motion.div>
+
+            {/* Glass card: heading + description */}
+            <motion.div
+              variants={cardVariants}
               className="
-                inline-block
-                bg-gradient-to-r
-                from-[#E7EDF3]
-                via-[#D8F1EC]
-                to-[#5EEAD4]
-                bg-clip-text
-                pb-[0.2em]
-                -mb-[0.2em]
-                pr-[0.06em]
+                about-shine
+                relative
+                overflow-hidden
+                rounded-[28px]
+                border
+                border-white/[0.12]
+                bg-white/[0.045]
+                p-8
+                shadow-[0_30px_80px_rgba(0,0,0,0.35)]
+                backdrop-blur-xl
+
+                sm:p-10
+                lg:p-12
+              "
+            >
+              {/* Top highlight edge */}
+              <span
+                aria-hidden="true"
+                className="
+                  pointer-events-none
+                  absolute
+                  inset-x-8
+                  top-0
+                  h-px
+                  bg-gradient-to-r
+                  from-transparent
+                  via-white/40
+                  to-transparent
+                "
+              />
+
+            {/* Heading */}
+            <h1
+              className="
+                font-heading
                 font-bold
-                text-transparent
-                [-webkit-background-clip:text]
+                tracking-[-0.035em]
+                text-[#F1F5F9]
+
+                text-[2.3rem]
+                leading-[1.12]
+                sm:leading-[1.05]
+
+                sm:text-[3rem]
+                md:text-[3.5rem]
+                lg:text-[3.6rem]
+                xl:text-[4.1rem]
               "
             >
-              Technology.
-            </motion.span>
-          </span>
-        </motion.h1>
+              Where Trade
+              <br />
+              Meets{" "}
+              <span className="text-[#5EEAD4]">
+                Technology.
+              </span>
+            </h1>
 
-        {/* Supporting Paragraph */}
+            {/* Paragraph */}
+            <p
+              className="
+                mt-7!
+                max-w-[560px]
+                text-[15.5px]
+                font-normal
+                leading-[1.8]
+                text-white/70
 
-        <motion.p
-          variants={itemVariants}
-          className="
-            pt-8
-            max-w-[600px]
-            text-[15.5px]
-            font-medium
-            leading-[1.75]
-            tracking-[-0.005em]
-            text-[#B2BCC7]
-            sm:pt-9
-            sm:text-[16.5px]
-            md:text-[17.5px]
-            lg:pt-10
-            lg:text-[18.5px]
-          "
-        >
-          <span className="font-bold text-[#E7EDF3]">
-            BH Ventures FZE LLC
-          </span>{" "}
-          is a UAE free-zone company built to combine international trade,
-          technology, data, marketing, innovation, and business development
-          into a single, focused venture platform.
-        </motion.p>
+                sm:mt-8!
+                sm:text-[17px]
+                lg:text-[18px]
+              "
+            >
+              <span className="font-semibold text-white">
+                BH Ventures FZE LLC
+              </span>{" "}
+              is a UAE free-zone company built to combine international trade,
+              technology, data, marketing, innovation, and business development
+              into a single, focused venture platform.
+            </p>
+            </motion.div>
+          </div>
 
-        {/* Location */}
-
-        <motion.div
-          variants={itemVariants}
-          className="
-            mt-10
-            flex
-            items-center
-            sm:mt-12
-          "
-        >
-          <span
+          {/* Photo */}
+          <motion.figure
+            variants={photoVariants}
             className="
-              text-[11px]
-              font-bold
-              uppercase
-              tracking-[0.24em]
-              text-white/40
-              sm:text-[12px]
+              about-shine
+              group
+              relative
+              m-0
+              aspect-[16/10]
+              w-full
+              overflow-hidden
+              rounded-[20px]
+              border
+              border-white/10
+              bg-[#0F1B2D]
+
+              lg:aspect-[4/5]
+              lg:max-h-[560px]
+              lg:justify-self-end
             "
           >
-            UAE • Dubai
-          </span>
-        </motion.div>
+            <Image
+              src="/images/about/story/story-foundation.jpg"
+              alt="Museum of the Future and the Dubai skyline at night"
+              fill
+              priority
+              sizes="(min-width: 1024px) 42vw, 100vw"
+              className="
+                object-cover
+                object-center
+                transition-transform
+                duration-[1200ms]
+                ease-out
+                group-hover:scale-[1.03]
+              "
+            />
+
+            {/* Soft bottom shade so the caption stays legible */}
+            <div
+              aria-hidden="true"
+              className="
+                pointer-events-none
+                absolute
+                inset-x-0
+                bottom-0
+                h-1/3
+                bg-gradient-to-t
+                from-[#0B1220]/70
+                to-transparent
+              "
+            />
+
+            <figcaption
+              className="
+                absolute
+                bottom-4
+                left-4
+                flex
+                items-center
+                gap-2
+                rounded-full
+                bg-[#0B1220]/80
+                px-3.5
+                py-1.5
+                text-[12px]
+                font-medium
+                text-white/85
+                backdrop-blur-sm
+
+                sm:bottom-5
+                sm:left-5
+              "
+            >
+              <span className="h-1.5 w-1.5 rounded-full bg-[#2DD4BF]" />
+              Dubai, United Arab Emirates
+            </figcaption>
+          </motion.figure>
+        </div>
+
+        {/* =====================================================
+            FACTS ROW
+        ===================================================== */}
+
+        <motion.ul
+          variants={factsListVariants}
+          className="
+            mt-14
+            grid
+            grid-cols-1
+            gap-4
+
+            min-[420px]:grid-cols-2
+            sm:mt-14
+            sm:grid-cols-3
+            sm:gap-4
+
+            lg:mt-16
+            lg:grid-cols-5
+          "
+        >
+          {heroFacts.map((fact) => (
+            <motion.li
+              key={fact.label}
+              variants={factVariants}
+              tabIndex={0}
+              className="
+                about-shine
+                relative
+                overflow-hidden
+                rounded-[18px]
+                border
+                border-white/[0.18]
+                border-l-[3px]
+                border-l-[#2DD4BF]
+                bg-white/[0.09]
+                p-6
+                sm:p-5
+                shadow-[0_14px_36px_rgba(0,0,0,0.25)]
+                outline-none
+                backdrop-blur-xl
+
+                transition-[border-color,background-color]
+                duration-300
+
+                hover:border-y-white/[0.30]
+                hover:border-r-white/[0.30]
+                hover:bg-white/[0.13]
+                focus-visible:border-[#2DD4BF]/60
+              "
+            >
+              <p className="flex items-baseline gap-1.5 text-[15px] font-semibold text-white">
+                {fact.count !== undefined && (
+                  <span className="text-[1.25em] font-bold leading-none text-[#5EEAD4]">
+                    <CountUp value={fact.count} />
+                  </span>
+                )}
+                {fact.label}
+              </p>
+
+              <p className="mt-1.5! text-[13px] font-normal leading-[1.6] text-white/80">
+                {fact.detail}
+              </p>
+            </motion.li>
+          ))}
+        </motion.ul>
       </motion.div>
     </section>
   );

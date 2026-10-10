@@ -45,6 +45,210 @@
 }
 
 /* ---------------------------------------------------------
+   125% DISPLAY SCALING (Windows "Scale 125%")
+   A 1920px screen at 125% gives the browser only ~1536×864
+   CSS px, so the whole page reads oversized. On desktop widths
+   with a 1.2–1.3 device pixel ratio, scale the About page down
+   as one unit so it matches the 100% layout. 100% screens,
+   phones/tablets and 2× retina displays are not affected.
+   --------------------------------------------------------- */
+
+@media (min-width: 1024px) and (min-resolution: 1.2dppx) and (max-resolution: 1.3dppx) {
+  .about-page {
+    zoom: 0.82;
+  }
+}
+
+/* ---------------------------------------------------------
+   HOVER SHINE
+   A soft diagonal glint sweeps across a card once per hover.
+   The element needs position: relative + overflow: hidden.
+   --------------------------------------------------------- */
+
+.about-page .about-shine::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background: linear-gradient(
+    115deg,
+    transparent 30%,
+    rgba(255, 255, 255, 0.16) 46%,
+    rgba(255, 255, 255, 0.04) 54%,
+    transparent 68%
+  );
+  transform: translateX(-130%);
+  transition: transform 0s;
+}
+
+.about-page .about-shine:hover::after,
+.about-page .about-shine:focus-visible::after {
+  transform: translateX(130%);
+  transition: transform 1s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* ---------------------------------------------------------
+   HERO GLOW
+   Three blurred lights drift very slowly, each on its own path
+   and timing, so the navy never looks flat.
+   --------------------------------------------------------- */
+
+@keyframes about-glow-drift-a {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(8%, 6%) scale(1.1); }
+}
+
+@keyframes about-glow-drift-b {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(-10%, 8%) scale(0.92); }
+}
+
+@keyframes about-glow-drift-c {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(-6%, -8%) scale(1.08); }
+}
+
+.about-page .about-glow-a {
+  animation: about-glow-drift-a 22s ease-in-out infinite;
+}
+
+.about-page .about-glow-b {
+  animation: about-glow-drift-b 28s ease-in-out infinite;
+}
+
+.about-page .about-glow-c {
+  animation: about-glow-drift-c 34s ease-in-out infinite;
+}
+
+/* Phones: the multi-shade glows read heavier on a small screen,
+   so they are toned down slightly there. */
+@media (max-width: 767px) {
+  .about-page .about-glow-a,
+  .about-page .about-glow-b,
+  .about-page .about-glow-c {
+    opacity: 0.6;
+  }
+}
+/* ---------------------------------------------------------
+   HOW WE WORK — SPINNING BORDER
+   A teal light travels round the panel's 2px border; it speeds
+   up while the panel is hovered. Browsers without @property
+   show a static teal gradient border instead.
+   --------------------------------------------------------- */
+
+@property --about-border-angle {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+
+@keyframes about-border-spin {
+  to {
+    --about-border-angle: 360deg;
+  }
+}
+
+/* Two bright arcs chase each other round the border so the motion
+   is visible at a glance on every screen size. Hover (mouse) or a
+   press / tap (touch) speeds it up. */
+.about-page .about-border-spin {
+  background: conic-gradient(
+    from var(--about-border-angle),
+    rgba(20, 184, 166, 0.35) 0deg,
+    #5eead4 50deg,
+    #14b8a6 80deg,
+    rgba(20, 184, 166, 0.35) 130deg,
+    rgba(20, 184, 166, 0.35) 180deg,
+    #5eead4 230deg,
+    #14b8a6 260deg,
+    rgba(20, 184, 166, 0.35) 310deg
+  );
+  animation: about-border-spin 5s linear infinite;
+}
+
+.about-page .about-border-spin:hover,
+.about-page .about-border-spin:active,
+.about-page .about-border-spin:focus-within {
+  animation-duration: 1.8s;
+  box-shadow: 0 0 0 4px rgba(45, 212, 191, 0.12),
+    0 24px 60px rgba(11, 18, 32, 0.28);
+}
+
+/* Stage pills: a soft teal pulse ring on their border */
+@keyframes about-pill-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(20, 184, 166, 0.35);
+  }
+  50% {
+    box-shadow: 0 0 0 4px rgba(20, 184, 166, 0);
+  }
+}
+
+.about-page .about-pill-glow {
+  animation: about-pill-pulse 2.6s ease-in-out infinite;
+}
+
+/* ---------------------------------------------------------
+   HERO LIGHT BEAMS
+   Each beam sways a few degrees around its own tilt
+   (--beam-rotate, set inline), pivoting from the top.
+   --------------------------------------------------------- */
+
+@keyframes about-beam-sway {
+  0%,
+  100% {
+    transform: rotate(var(--beam-rotate, 30deg));
+  }
+  50% {
+    transform: rotate(calc(var(--beam-rotate, 30deg) + 6deg));
+  }
+}
+
+.about-page .about-beam {
+  transform-origin: top center;
+  transform: rotate(var(--beam-rotate, 30deg));
+  animation: about-beam-sway 12s ease-in-out infinite;
+}
+
+/* ---------------------------------------------------------
+   PURPOSE ARROW
+   The active tab's arrow nudges toward the statement: right on
+   desktop (side-by-side layout), down on phones (stacked layout).
+   --------------------------------------------------------- */
+
+@keyframes about-arrow-nudge-x {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(8px);
+  }
+}
+
+@keyframes about-arrow-nudge-y {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(5px);
+  }
+}
+
+.about-page .about-arrow-nudge {
+  animation: about-arrow-nudge-y 1.2s ease-in-out infinite;
+}
+
+@media (min-width: 1024px) {
+  .about-page .about-arrow-nudge {
+    animation-name: about-arrow-nudge-x;
+  }
+}
+
+/* ---------------------------------------------------------
    AMBIENT MOTION
    Slow, low-amplitude movement that keeps the large dark
    sections from reading as empty. All of it is switched off
@@ -102,130 +306,9 @@
 .about-page .about-core-breathe {
   animation: about-core-breathe 4.2s ease-in-out infinite;
 }
-
-/* ---------------------------------------------------------
-   DISCIPLINE CHIPS (light travelling around the rim)
-   A thin conic highlight orbits each chip's border. Chips are
-   staggered via --chip-delay (set inline) so the lights don't
-   sync. Browsers without @property support just show a static
-   highlight — still looks intentional.
-   --------------------------------------------------------- */
-
-@property --about-chip-angle {
-  syntax: "<angle>";
-  inherits: false;
-  initial-value: 0deg;
-}
-
-@keyframes about-chip-orbit {
-  to {
-    --about-chip-angle: 360deg;
-  }
-}
-
-@keyframes about-chip-float {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-3px);
-  }
-}
-
-.about-page .thread-chip {
-  position: relative;
-  isolation: isolate;
-  animation: about-chip-float 6s ease-in-out infinite;
-  animation-delay: var(--chip-delay, 0s);
-}
-
-.about-page .thread-chip::before {
-  content: "";
-  position: absolute;
-  inset: -1px;
-  z-index: -1;
-  border-radius: inherit;
-  padding: 1px;
-
-  background: conic-gradient(
-    from var(--about-chip-angle),
-    transparent 0deg,
-    transparent 290deg,
-    rgba(0, 255, 213, 0.95) 330deg,
-    transparent 360deg
-  );
-
-  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-
-  pointer-events: none;
-  animation: about-chip-orbit 5s linear infinite;
-  animation-delay: var(--chip-delay, 0s);
-}
-
-.about-page .thread-chip::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  border-radius: inherit;
-  background: radial-gradient(
-    120% 140% at 50% 120%,
-    rgba(0, 255, 213, 0.14),
-    transparent 60%
-  );
-  opacity: 0;
-  transition: opacity 300ms ease;
-  pointer-events: none;
-}
-
-.about-page .thread-chip:hover::after,
-.about-page .thread-chip:focus-visible::after {
-  opacity: 1;
-}
-
-/* ---------------------------------------------------------
-   GLOBAL REACH BACKDROP
-   A single very slow push-in on the decorative photo behind
-   the Global Reach cards. It runs once (forwards) rather than
-   looping, so the section settles instead of breathing.
-   --------------------------------------------------------- */
-
-@keyframes about-global-bg-zoom {
-  from {
-    transform: scale(1);
-  }
-  to {
-    transform: scale(1.06);
-  }
-}
-
-.about-page .about-global-bg {
-  animation: about-global-bg-zoom 40s ease-out forwards;
-  will-change: transform;
-}
-
 /* ---------------------------------------------------------
    JOURNEY PANEL
    --------------------------------------------------------- */
-
-/* Slow Ken Burns push-in on the active stage visual */
-@keyframes about-journey-kenburns {
-  from {
-    transform: scale(1);
-  }
-  to {
-    transform: scale(1.07);
-  }
-}
-
-.about-page .journey-kenburns {
-  animation: about-journey-kenburns 14s ease-out forwards;
-  will-change: transform;
-}
 
 /* Fine diagonal sheen that sweeps across the panel once it reveals */
 @keyframes about-journey-sheen {
@@ -248,9 +331,7 @@
    and transition durations site-wide. This block is the local
    guarantee for the About animations specifically: it removes
    them outright (rather than running them at 0.01ms) so no
-   element is left mid-transform, and it pins the chip rim
-   highlight to a fixed angle so the chips still look finished
-   while standing completely still.
+   element is left mid-transform.
    --------------------------------------------------------- */
 
 @media (prefers-reduced-motion: reduce) {
@@ -258,11 +339,14 @@
   .about-page .about-aurora-alt,
   .about-page .about-orbit,
   .about-page .about-core-breathe,
-  .about-page .thread-chip,
-  .about-page .thread-chip::before,
-  .about-page .journey-kenburns,
   .about-page .journey-sheen,
-  .about-page .about-global-bg {
+  .about-page .about-glow-a,
+  .about-page .about-glow-b,
+  .about-page .about-glow-c,
+  .about-page .about-arrow-nudge,
+  .about-page .about-border-spin,
+  .about-page .about-pill-glow,
+  .about-page .about-beam {
     animation: none !important;
   }
 
@@ -270,15 +354,6 @@
   .about-page .about-core-breathe {
     opacity: 0.8;
     transform: scale(1);
-  }
-
-  .about-page .thread-chip::before {
-    --about-chip-angle: 320deg;
-  }
-
-  .about-page .journey-kenburns,
-  .about-page .about-global-bg {
-    transform: none;
   }
 
   /* Cards and their icon tiles keep the hover glow/border but
@@ -293,7 +368,8 @@
   }
 
   /* The sheen is a pure motion flourish — nothing to preserve */
-  .about-page .journey-sheen {
+  .about-page .journey-sheen,
+  .about-page .about-shine::after {
     display: none;
   }
 }

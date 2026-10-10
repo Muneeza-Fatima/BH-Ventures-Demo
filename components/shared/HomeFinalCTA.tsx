@@ -1,9 +1,34 @@
 "use client";
 
 import Link from "next/link";
+import { motion, useReducedMotion, type Variants } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 
+const ease = [0.16, 1, 0.3, 1] as const;
+
 export default function HomeFinalCTA() {
+  const reduceMotion = useReducedMotion();
+
+  /* Scroll reveal: children fade + rise one after another */
+  const container: Variants = {
+    hidden: {},
+    show: {
+      transition: {
+        staggerChildren: 0.12,
+        delayChildren: 0.05,
+      },
+    },
+  };
+
+  const item: Variants = {
+    hidden: { opacity: 0, y: reduceMotion ? 0 : 24 },
+    show: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.7, ease },
+    },
+  };
+
   return (
     <section
       className="
@@ -63,7 +88,11 @@ export default function HomeFinalCTA() {
       />
 
       {/* Content */}
-      <div
+      <motion.div
+        variants={container}
+        initial="hidden"
+        whileInView="show"
+        viewport={{ once: true, amount: 0.3 }}
         className="
           relative
           z-10
@@ -77,7 +106,8 @@ export default function HomeFinalCTA() {
         "
       >
         {/* Eyebrow */}
-        <div
+        <motion.div
+          variants={item}
           className="
             mb-5
             flex
@@ -117,10 +147,11 @@ export default function HomeFinalCTA() {
               sm:w-9
             "
           />
-        </div>
+        </motion.div>
 
         {/* Heading */}
-        <h2
+        <motion.h2
+          variants={item}
           className="
             w-full
             text-[30px]
@@ -139,10 +170,11 @@ export default function HomeFinalCTA() {
           Discover What BH Ventures
           <br className="hidden sm:block" />
           {" "}Can Build Next.
-        </h2>
+        </motion.h2>
 
         {/* Accent */}
-        <div
+        <motion.div
+          variants={item}
           aria-hidden="true"
           className="
             mt-6
@@ -156,7 +188,8 @@ export default function HomeFinalCTA() {
         />
 
         {/* Description */}
-        <p
+        <motion.p
+          variants={item}
           className="
             mx-auto
             mt-5
@@ -171,10 +204,11 @@ export default function HomeFinalCTA() {
         >
           Explore our solutions and ventures shaping
           opportunities across global markets.
-        </p>
+        </motion.p>
 
         {/* CTA Buttons */}
-        <div
+        <motion.div
+          variants={item}
           className="
             mt-8
             flex
@@ -365,8 +399,8 @@ export default function HomeFinalCTA() {
               />
             </span>
           </Link>
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
     </section>
   );
 }
