@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef, FormEvent, ReactElement } from "react";
 import Image from "next/image";
 import { BH_WHATSAPP_NUMBER, BH_WHATSAPP_DISPLAY } from "@/lib/constants";
+import { usePlayWhenVisible } from "@/lib/usePlayWhenVisible";
 
 /* ---------- BRAND MARK (logo, or initials placeholder if the logo file 404s) ---------- */
 
@@ -232,20 +233,11 @@ function FeaturedBanner({
         return () => observer.disconnect();
     }, []);
 
-    useEffect(() => {
-        if (!inView) return;
-        const vid = videoRef.current;
-        if (!vid) return;
-        vid.muted = true;
-        vid.defaultMuted = true;
-        vid.playsInline = true;
-        const playPromise = vid.play();
-        if (playPromise !== undefined) {
-            playPromise.catch(() => { });
-        }
-    }, [inView]);
-
     const showVideo = Boolean(vehicle.video) && !videoFailed;
+
+    // Play only while this banner is on screen; pause when it scrolls away
+    // so the three car videos never decode at the same time on a phone.
+    usePlayWhenVisible(ref, videoRef, showVideo, "featured-cars");
     const showPoster = !showVideo && Boolean(vehicle.poster) && !photoFailed;
 
     // per-breakpoint object-position, expressed as CSS custom properties
@@ -269,14 +261,13 @@ function FeaturedBanner({
                     className="feat-banner-video"
                     style={videoStyle}
                     poster={vehicle.poster}
-                    autoPlay
                     muted
                     loop
                     playsInline
-                    // First banner (Mercedes) uses "auto" so the browser eagerly
-                    // buffers the whole file; subsequent banners stay on "metadata"
-                    // to avoid downloading all three videos simultaneously.
-                    preload={index === 0 ? "auto" : "metadata"}
+                    // No autoPlay: usePlayWhenVisible starts the video when the
+                    // banner reaches the screen. "metadata" keeps all three from
+                    // downloading in full at once; the poster shows meanwhile.
+                    preload="metadata"
                     onError={() => setVideoFailed(true)}
                 >
                     <source

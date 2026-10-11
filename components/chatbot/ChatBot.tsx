@@ -18,12 +18,13 @@ const SUGGESTED_PROMPTS = [
 
 const CONTACT_EMAIL = "info@bhventures.ae";
 
-// One shared formatter: creating a new one per call (toLocaleTimeString)
-// is slow on phones.
-let timeFormat: Intl.DateTimeFormat | null = null;
+// Plain "3:07 PM" formatting. Intl date formatting has to load locale
+// data the first time it runs, which is slow on phones.
 function formatTime() {
-    timeFormat ??= new Intl.DateTimeFormat([], { hour: "numeric", minute: "2-digit" });
-    return timeFormat.format(new Date());
+    const d = new Date();
+    const h = d.getHours();
+    const m = String(d.getMinutes()).padStart(2, "0");
+    return `${h % 12 || 12}:${m} ${h < 12 ? "AM" : "PM"}`;
 }
 
 // The chatbot's face: a rounded speech-bubble shape (with a little tail,

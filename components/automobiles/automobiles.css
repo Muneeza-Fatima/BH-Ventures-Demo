@@ -1555,3 +1555,37 @@
         width: 2.5rem;
     }
 }
+/* =========================================================
+   TOUCH DEVICES — smooth car videos
+   A CSS filter on a playing <video> stops the phone from showing
+   the video straight from its hardware decoder: every frame has to
+   be re-filtered, which makes the videos stutter. The light sweep
+   loop on top of each video is switched off for the same reason.
+   (The dark overlay already sets the mood, so the look barely changes.)
+   ========================================================= */
+@media (hover: none) and (pointer: coarse) {
+  .feat-banner-video {
+    filter: none;
+  }
+
+  .feat-banner-sweep {
+    display: none;
+  }
+
+  /* brand name colour pulse sits on top of the playing video */
+  .feat-banner-brand {
+    animation: none;
+  }
+
+  /* logo cards are white, so multiply has no visible effect here —
+     it only forces extra compositing work while scrolling */
+  .auto-brand-logo-card img {
+    mix-blend-mode: normal;
+    filter: none;
+  }
+
+  .auto-photo-img,
+  .auto-photo-img img {
+    filter: none;
+  }
+}

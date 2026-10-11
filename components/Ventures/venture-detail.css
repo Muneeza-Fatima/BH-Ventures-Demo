@@ -1409,3 +1409,15 @@
     transform: translateY(-2px);
     box-shadow: 0 0 34px rgba(var(--accent-rgb), 0.55);
 }
+/* Touch devices: no CSS filter on the playing hero video, so the phone
+   can show it straight from its hardware decoder (smooth playback). */
+@media (hover: none) and (pointer: coarse) {
+    .detail-hero-media-el--video {
+        filter: none;
+    }
+
+    /* moving shimmer on the title repaints over the playing video */
+    .detail-hero-title {
+        animation: none;
+    }
+}
