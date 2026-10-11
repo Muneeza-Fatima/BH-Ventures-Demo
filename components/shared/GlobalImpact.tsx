@@ -1,7 +1,7 @@
 
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useMemo } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import {
   Globe2,
@@ -187,7 +187,10 @@ export default function GlobalImpact() {
     };
   }, []);
 
-  const reduceMotion = useReducedMotion();
+  const prefersReducedMotion = useReducedMotion();
+  // useReducedMotion() returns null on the server, so we must treat null as
+  // false to keep SSR and the first client render in sync (hydration-safe).
+  const reduceMotion = prefersReducedMotion === true;
   const revealEase = [0.16, 1, 0.3, 1] as const;
 
   return (

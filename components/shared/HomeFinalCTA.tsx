@@ -7,7 +7,9 @@ import { ArrowRight } from "lucide-react";
 const ease = [0.16, 1, 0.3, 1] as const;
 
 export default function HomeFinalCTA() {
-  const reduceMotion = useReducedMotion();
+  // useReducedMotion() returns null on the server — treat null as false so
+  // SSR and the first client render produce identical initial prop values.
+  const reduceMotion = useReducedMotion() === true;
 
   /* Scroll reveal: children fade + rise one after another */
   const container: Variants = {
