@@ -446,6 +446,7 @@ function AboutNavDropdown({
       <button
         ref={triggerRef}
         type="button"
+        suppressHydrationWarning
         onClick={() => setOpen((prev) => !prev)}
         aria-haspopup="menu"
         aria-expanded={open}
@@ -946,6 +947,7 @@ export default function Navbar() {
             <div className="relative">
               <button
                 type="button"
+                suppressHydrationWarning
                 onClick={() => setLanguageOpen((prev) => !prev)}
                 aria-label="Select language"
                 aria-expanded={languageOpen}
@@ -998,6 +1000,7 @@ export default function Navbar() {
                     <button
                       key={language.code}
                       type="button"
+                      suppressHydrationWarning
                       onClick={() => changeLanguage(language.code)}
                       className={`flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left text-[11px] font-semibold transition-all duration-200 ${
                         currentLanguage === language.code
@@ -1030,6 +1033,7 @@ export default function Navbar() {
 
             <button
               type="button"
+              suppressHydrationWarning
               onClick={openContactMenu}
               aria-label="Contact us on WhatsApp"
               className="flex h-[36px] w-[36px] items-center justify-center rounded-full bg-[#25D366] text-white shadow-[0_0_18px_rgba(37,211,102,0.18)] transition-all duration-300 hover:scale-105 hover:bg-[#20BD5A] hover:shadow-[0_0_25px_rgba(37,211,102,0.30)]"
@@ -1041,6 +1045,7 @@ export default function Navbar() {
 
             <button
               type="button"
+              suppressHydrationWarning
               onClick={openContactMenu}
               aria-label="Contact us on Telegram"
               className="flex h-[36px] w-[36px] items-center justify-center rounded-full bg-[#229ED9] text-white shadow-[0_0_18px_rgba(34,158,217,0.18)] transition-all duration-300 hover:scale-105 hover:bg-[#168CC5] hover:shadow-[0_0_25px_rgba(34,158,217,0.30)]"

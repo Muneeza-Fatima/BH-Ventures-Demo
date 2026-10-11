@@ -35,16 +35,20 @@ export default function ContactFAQ() {
         </motion.h2>
         <motion.span initial={{ scaleX: 0 }} whileInView={{ scaleX: 1 }} viewport={{ once: true }} transition={{ duration: 0.9, delay: 0.3, ease: EASE }} className="mx-auto -mt-6 mb-12 block h-[3px] w-28 origin-center rounded-full bg-gradient-to-r from-[#5EEAD4] via-[#38BDF8] to-[#14B8A6]" />
 
-        <div className="relative grid overflow-hidden rounded-[36px] border border-white bg-white/80 shadow-[0_40px_100px_rgba(20,184,166,0.18)] backdrop-blur-2xl lg:grid-cols-[1fr_1.25fr]">
+        <div className="relative grid overflow-hidden rounded-[36px] border-2 border-[#14B8A6]/35 bg-white shadow-[0_30px_90px_rgba(20,184,166,0.22)] ring-1 ring-[#0B1626]/10 backdrop-blur-2xl lg:grid-cols-[1fr_1.25fr]">
           {!still && <motion.span aria-hidden className="absolute left-0 top-0 z-10 h-[2px] w-1/3 bg-gradient-to-r from-transparent via-[#14B8A6] to-transparent" animate={{ x: ["-100%", "300%"] }} transition={{ duration: 4.5, repeat: Infinity, ease: "easeInOut" }} />}
-          <ul className="flex flex-col gap-1.5 border-[#0B1626]/8 p-5 sm:p-7 lg:border-r">
+          <ul className="flex flex-col gap-2 border-[#0B1626]/12 p-5 sm:p-7 lg:border-r">
             {faqs.map((faq, i) => {
               const on = active === i;
               return (
                 <motion.li key={faq.question} initial={{ opacity: 0, x: -18 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true, amount: 0.4 }} transition={{ duration: 0.5, delay: i * 0.08, ease: EASE }}>
-                  <button type="button" onClick={() => setActive(i)} aria-current={on}
-                    className={`group relative flex w-full items-center gap-3 rounded-2xl px-4 py-4 text-left transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#14B8A6] ${on ? "bg-white shadow-[0_12px_34px_rgba(20,184,166,0.22)] ring-1 ring-[#2DD4BF]/30" : "hover:-translate-y-0.5 hover:bg-white/80"}`}>
-                    <span className={`flex-1 text-[14.5px] font-semibold leading-snug transition ${on ? "text-[#0B1626]" : "text-[#0B1626]/55 group-hover:text-[#0B1626]/80"}`}>{faq.question}</span>
+                  <button type="button" suppressHydrationWarning onClick={() => setActive(i)} aria-current={on}
+                    className={`group relative flex w-full items-center gap-3 rounded-2xl border px-4 py-4 text-left transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#14B8A6] ${
+                      on
+                        ? "border-[#14B8A6]/45 bg-white shadow-[0_12px_34px_rgba(20,184,166,0.20)] ring-1 ring-[#14B8A6]/30"
+                        : "border-[#0B1626]/08 bg-[#0B1626]/[0.02] hover:-translate-y-0.5 hover:border-[#14B8A6]/30 hover:bg-white"
+                    }`}>
+                    <span className={`flex-1 text-[14.5px] font-semibold leading-snug transition ${on ? "text-[#0B1626]" : "text-[#0B1626]/60 group-hover:text-[#0B1626]/85"}`}>{faq.question}</span>
                     <ChevronRight size={15} className={`shrink-0 transition ${on ? "text-[#14B8A6] max-lg:rotate-90 lg:translate-x-0.5" : "text-[#0B1626]/25"}`} />
                     {on && <motion.span layoutId="faq-glow" className="absolute bottom-3 left-0 top-3 w-[3px] rounded-full bg-gradient-to-b from-[#5EEAD4] via-[#14B8A6] to-[#1D4ED8]" />}
                   </button>

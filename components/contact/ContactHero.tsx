@@ -1,186 +1,156 @@
+
 "use client";
 
-import { useEffect, useState } from "react";
-import { Plus_Jakarta_Sans } from "next/font/google";
-import { motion, AnimatePresence, useMotionValue, useMotionTemplate } from "framer-motion";
-import { ArrowRight } from "lucide-react";
+import { Spectral, Plus_Jakarta_Sans } from "next/font/google";
+import { motion } from "framer-motion";
+import { ArrowRight, ArrowUpRight } from "lucide-react";
 import { useHydratedReducedMotion } from "./useHydratedReducedMotion";
 
-const jakarta = Plus_Jakarta_Sans({ subsets: ["latin"], weight: ["600", "700", "800"] });
-
-/** Shared by the other contact components. Uses the site's own font. */
-export const DISPLAY = "font-bold";
-
-const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
-const TOPICS = ["partnership.", "trade.", "technology.", "growth."];
-
-const NODES = [
-  { label: "London", x: 78, y: 92, d: 0.2 },
-  { label: "New York", x: 40, y: 190, d: 0.9 },
-  { label: "Frankfurt", x: 120, y: 40, d: 1.6 },
-  { label: "Riyadh", x: 250, y: 120, d: 0.5 },
-  { label: "Karachi", x: 340, y: 168, d: 1.2 },
-  { label: "Singapore", x: 330, y: 300, d: 1.9 },
-];
-
-/* Deterministic sparkles so server and client render the same thing */
-const SPARKS = (() => {
-  let s = 7;
-  const r = () => ((s = (s * 9301 + 49297) % 233280) / 233280);
-  return Array.from({ length: 34 }, () => ({ x: r() * 100, y: r() * 100, size: 2 + r() * 3, dur: 2 + r() * 3.5, delay: r() * 4 }));
-})();
-
-const rise = (delay: number) => ({
-  initial: { opacity: 0, y: 22 },
-  animate: { opacity: 1, y: 0 },
-  transition: { duration: 0.7, delay, ease: EASE },
+const spectral = Spectral({
+  subsets: ["latin"],
+  weight: ["400", "600", "700"],
+  style: ["normal", "italic"],
 });
 
-function Network({ still }: { still: boolean }) {
-  const C = 200;
-  return (
-    <svg viewBox="0 0 400 400" className="h-full w-full overflow-visible" role="img" aria-label="Dubai headquarters connected to markets worldwide">
-      <defs>
-        <radialGradient id="hubGlow">
-          <stop offset="0%" stopColor="#2DD4BF" stopOpacity="0.45" />
-          <stop offset="100%" stopColor="#5EEAD4" stopOpacity="0" />
-        </radialGradient>
-      </defs>
+const jakarta = Plus_Jakarta_Sans({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+});
 
-      <circle cx={C} cy={C} r="120" fill="url(#hubGlow)" />
-      {[70, 120, 175].map((r) => (
-        <circle key={r} cx={C} cy={C} r={r} fill="none" stroke="#2DD4BF" strokeOpacity="0.2" strokeDasharray="2 5" />
-      ))}
+export const DISPLAY = "font-bold";
 
-      {/* orbiting ring with a travelling spark */}
-      {!still && (
-        <motion.g animate={{ rotate: 360 }} transition={{ duration: 22, repeat: Infinity, ease: "linear" }} style={{ transformOrigin: "200px 200px" }}>
-          <circle cx={C} cy={C} r="148" fill="none" stroke="#7DD3FC" strokeOpacity="0.35" />
-          <circle cx={C + 148} cy={C} r="6" fill="#FFFFFF" />
-          <circle cx={C + 148} cy={C} r="14" fill="#FFFFFF" fillOpacity="0.25" />
-        </motion.g>
-      )}
-
-      {!still &&
-        [0, 1, 2].map((i) => (
-          <motion.circle key={i} cx={C} cy={C} fill="none" stroke="#99F6E4" strokeWidth="1.6"
-            initial={{ r: 10, opacity: 0.9 }} animate={{ r: 190, opacity: 0 }}
-            transition={{ duration: 4.5, delay: i * 1.5, repeat: Infinity, ease: "easeOut" }} />
-        ))}
-
-      {NODES.map((n, i) => (
-        <g key={n.label}>
-          <motion.line x1={C} y1={C} x2={n.x} y2={n.y} stroke="#38BDF8" strokeOpacity="0.45" strokeWidth="1.2" strokeDasharray="3 4"
-            initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ duration: 1.2, delay: 0.5 + i * 0.12, ease: EASE }} />
-          {!still && (
-            <motion.circle r="3.2" fill="#FFFFFF" initial={{ cx: C, cy: C, opacity: 0 }}
-              animate={{ cx: [C, n.x], cy: [C, n.y], opacity: [0, 1, 1, 0] }}
-              transition={{ duration: 2.2, delay: 1.4 + n.d, repeat: Infinity, repeatDelay: 1.2, ease: "easeInOut" }} />
-          )}
-          <motion.circle cx={n.x} cy={n.y} r="5" fill="#5EEAD4" initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 1 + i * 0.12 }} />
-          {!still && (
-            <motion.circle cx={n.x} cy={n.y} fill="none" stroke="#99F6E4" strokeWidth="1.2"
-              initial={{ r: 5, opacity: 0 }} animate={{ r: [5, 20], opacity: [0.9, 0] }}
-              transition={{ duration: 2, delay: n.d + 2, repeat: Infinity, repeatDelay: 1.4 }} />
-          )}
-          <text x={n.x} y={n.y - 13} textAnchor="middle" fill="#FFFFFF" fillOpacity="0.7" fontSize="11.5" fontWeight="700">{n.label}</text>
-        </g>
-      ))}
-
-      <circle cx={C} cy={C} r="10" fill="#FFFFFF" />
-      <circle cx={C} cy={C} r="18" fill="none" stroke="#FFFFFF" strokeOpacity="0.7" />
-      <text x={C} y={C + 38} textAnchor="middle" fill="#FFFFFF" fontSize="14" fontWeight="800">Dubai HQ</text>
-    </svg>
-  );
-}
+const EASE: [number, number, number, number] = [
+  0.22, 1, 0.36, 1,
+];
 
 export default function ContactHero() {
   const still = useHydratedReducedMotion();
-  const [idx, setIdx] = useState(0);
-  const mx = useMotionValue(400);
-  const my = useMotionValue(300);
-  const spot = useMotionTemplate`radial-gradient(520px circle at ${mx}px ${my}px, rgba(45,212,191,0.16), transparent 62%)`;
-
-  useEffect(() => {
-    if (still) return;
-    const t = setInterval(() => setIdx((i) => (i + 1) % TOPICS.length), 2400);
-    return () => clearInterval(t);
-  }, [still]);
 
   return (
     <section
       id="contact-hero"
-      onMouseMove={(e) => { const r = e.currentTarget.getBoundingClientRect(); mx.set(e.clientX - r.left); my.set(e.clientY - r.top); }}
-      className={`${jakarta.className} relative isolate w-full overflow-hidden bg-[#060E1A] pb-20 pt-[130px] text-white lg:pb-24 lg:pt-[160px]`}
+      className={`${jakarta.className} relative isolate flex min-h-[520px] w-full items-center justify-center overflow-hidden bg-[#060C18] px-5 pb-16 pt-[120px] text-center text-white sm:min-h-[570px] sm:pb-20 sm:pt-[135px] lg:min-h-[600px]`}
     >
-      <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
-        <motion.div animate={still ? undefined : { x: [0, 120, -40, 0], y: [0, 60, -30, 0], scale: [1, 1.2, 0.95, 1] }} transition={{ duration: 16, repeat: Infinity, ease: "easeInOut" }} className="absolute -left-20 top-[-10%] h-[560px] w-[620px] rounded-full bg-[#14B8A6]/[0.14] blur-[140px]" />
-        <motion.div animate={still ? undefined : { x: [0, -140, 30, 0], y: [0, 80, -40, 0], scale: [1, 0.9, 1.2, 1] }} transition={{ duration: 19, repeat: Infinity, ease: "easeInOut" }} className="absolute right-[-8%] top-[5%] h-[520px] w-[560px] rounded-full bg-[#1D4ED8]/[0.18] blur-[140px]" />
-        <motion.div animate={still ? undefined : { x: [0, 90, -90, 0], y: [0, -50, 40, 0] }} transition={{ duration: 22, repeat: Infinity, ease: "easeInOut" }} className="absolute bottom-[-20%] left-[30%] h-[420px] w-[620px] rounded-full bg-[#14B8A6]/[0.08] blur-[140px]" />
-        <motion.div style={{ background: spot }} className="absolute inset-0" />
-        <div className="absolute inset-0 opacity-[0.05]" style={{ backgroundImage: "linear-gradient(#5EEAD4 1px, transparent 1px), linear-gradient(90deg, #5EEAD4 1px, transparent 1px)", backgroundSize: "56px 56px", maskImage: "radial-gradient(ellipse at 40% 40%, #000 15%, transparent 75%)", WebkitMaskImage: "radial-gradient(ellipse at 40% 40%, #000 15%, transparent 75%)" }} />
-        {SPARKS.map((p, i) => (
-          <motion.span key={i} className="absolute rounded-full bg-[#5EEAD4] shadow-[0_0_10px_2px_rgba(94,234,212,0.6)]"
-            style={{ left: `${p.x}%`, top: `${p.y}%`, width: p.size, height: p.size }}
-            animate={still ? { opacity: 0.4 } : { opacity: [0.1, 1, 0.1], scale: [0.8, 1.4, 0.8] }}
-            transition={{ duration: p.dur, delay: p.delay, repeat: Infinity, ease: "easeInOut" }} />
-        ))}
+      {/* Background image */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 -z-10"
+      >
+        <img
+          src="https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=2000&q=85"
+          alt=""
+          fetchPriority="high"
+          className="h-full w-full object-cover object-center opacity-[0.20]"
+        />
+
+        <div
+          className="absolute inset-0"
+          style={{
+            background:
+              "linear-gradient(180deg, rgba(6,12,24,0.86) 0%, rgba(6,12,24,0.70) 45%, #060C18 100%)",
+          }}
+        />
+
+        <div
+          className="absolute inset-0"
+          style={{
+            background:
+              "radial-gradient(ellipse at 50% 40%, rgba(45,212,191,0.09), transparent 58%)",
+          }}
+        />
+
+        {/* Subtle decorative lines */}
+        <div className="absolute left-1/2 top-1/2 h-[420px] w-[420px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-[#5EEAD4]/[0.08] sm:h-[550px] sm:w-[550px]" />
+
+        <div className="absolute left-1/2 top-1/2 h-[340px] w-[340px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-[#5EEAD4]/[0.06] sm:h-[450px] sm:w-[450px]" />
+
+        <div
+          className="absolute inset-x-0 bottom-0 h-px"
+          style={{
+            background:
+              "linear-gradient(90deg, transparent, rgba(94,234,212,0.45), transparent)",
+          }}
+        />
       </div>
 
-      <div className="mx-auto grid w-full max-w-[1440px] items-center gap-14 px-5 sm:px-8 lg:grid-cols-[1.1fr_0.9fr] lg:px-14">
-        <div>
-          <motion.div {...rise(0)} className="flex items-center gap-4">
-            <span className="h-[2px] w-11 bg-[#2DD4BF]" />
-            <span className="text-[12px] font-semibold uppercase tracking-[0.25em] text-[#5EEAD4]">Dubai • UAE · Get in touch</span>
-          </motion.div>
+      {/* Centered content */}
+      <div className="mx-auto w-full max-w-[950px]">
+        <motion.div
+          initial={still ? false : { opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, ease: EASE }}
+          className="mb-6 flex items-center justify-center gap-3"
+        >
+          <span className="h-px w-7 bg-[#5EEAD4]" />
 
-          <h1 aria-label="Let's talk" className="mt-8 text-[3.2rem] font-extrabold leading-[1.05] tracking-[-0.045em] sm:text-[4.8rem] lg:text-[6rem]">
-            <span aria-hidden className="inline-flex flex-wrap overflow-hidden pb-[0.08em]">
-              {"Let's talk".split("").map((ch, i) => (
-                <motion.span key={i} initial={{ y: "110%", rotate: 8 }} animate={{ y: "0%", rotate: 0 }}
-                  transition={{ duration: 0.8, delay: 0.1 + i * 0.045, ease: EASE }} className="inline-block whitespace-pre">{ch}</motion.span>
-              ))}
-            </span>
-            <span className="relative block h-[1.2em] overflow-hidden">
-              <AnimatePresence mode="wait" initial={false}>
-                <motion.span key={TOPICS[idx]}
-                  initial={{ y: "100%", opacity: 0, filter: "blur(8px)" }} animate={{ y: "0%", opacity: 1, filter: "blur(0px)" }} exit={{ y: "-100%", opacity: 0, filter: "blur(8px)" }}
-                  transition={{ duration: 0.55, ease: EASE }} className="absolute left-0 top-0">
-                  <motion.span
-                    animate={still ? undefined : { backgroundPosition: ["0% 50%", "300% 50%"] }}
-                    transition={{ duration: 3.5, repeat: Infinity, ease: "linear" }}
-                    style={{ backgroundImage: "linear-gradient(90deg,#5EEAD4,#99F6E4,#38BDF8,#5EEAD4)", backgroundSize: "300% 100%", WebkitBackgroundClip: "text", backgroundClip: "text", color: "transparent" }}
-                  >
-                    {TOPICS[idx]}
-                  </motion.span>
-                </motion.span>
-              </AnimatePresence>
-            </span>
-          </h1>
+          <span className="text-[11px] font-semibold uppercase tracking-[0.24em] text-[#5EEAD4] sm:text-xs">
+            Contact BH Ventures
+          </span>
 
-          <motion.p {...rise(0.3)} className="mt-8 max-w-[560px] text-[1.1rem] font-medium leading-[1.75] text-white/70 sm:text-[1.2rem]">
-            <span className="font-bold text-[#5EEAD4]">BH Ventures</span> answers partnership, trade and technology
-            inquiries directly. Tell us what you&apos;re working on and a member of our team will reply, usually within the hour.
-          </motion.p>
+          <span className="h-px w-7 bg-[#5EEAD4]" />
+        </motion.div>
 
-          <motion.div {...rise(0.4)} className="mt-10 flex flex-wrap items-center gap-x-8 gap-y-4">
-            <motion.a href="#contact-form" whileHover={{ y: -3, scale: 1.03 }} whileTap={{ scale: 0.97 }}
-              className="group relative inline-flex items-center gap-3 overflow-hidden rounded-full bg-white px-8 py-4 text-[15px] font-bold text-[#060E1A] shadow-[0_12px_40px_rgba(255,255,255,0.12)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#2DD4BF]">
-              {!still && <motion.span aria-hidden className="absolute inset-y-0 w-1/3 -skew-x-12 bg-gradient-to-r from-transparent via-[#2DD4BF]/40 to-transparent" initial={{ left: "-40%" }} animate={{ left: "140%" }} transition={{ duration: 2.2, repeat: Infinity, repeatDelay: 1.8, ease: "easeInOut" }} />}
-              <span className="relative">Send a Message</span>
-              <motion.span className="relative" animate={still ? undefined : { x: [0, 4, 0] }} transition={{ duration: 1.4, repeat: Infinity }}><ArrowRight size={16} strokeWidth={2.5} /></motion.span>
-            </motion.a>
-            <a href="mailto:info@bhventures.ae" className="group inline-flex items-center gap-2 text-[15px] font-bold text-white transition hover:text-[#5EEAD4] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#2DD4BF]">
-              Email Us
-              <ArrowRight size={15} strokeWidth={2.5} className="transition group-hover:translate-x-1" />
-            </a>
-          </motion.div>
-        </div>
+        <motion.h1
+          initial={still ? false : { opacity: 0, y: 18 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, delay: 0.08, ease: EASE }}
+          className={`${spectral.className} mx-auto max-w-[900px] text-[2.8rem] font-semibold leading-[1.1] tracking-[-0.04em] sm:text-6xl lg:text-[5rem]`}
+        >
+          Every great partnership
+          <br className="hidden sm:block" /> starts with a{" "}
+          <span className="font-normal italic text-[#5EEAD4]">
+            conversation.
+          </span>
+        </motion.h1>
 
-        <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 1.2, delay: 0.2, ease: EASE }} className="mx-auto aspect-square w-full max-w-[500px]">
-          <motion.div animate={still ? undefined : { y: [0, -12, 0] }} transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }} className="h-full w-full">
-            <Network still={still} />
-          </motion.div>
+        <motion.p
+          initial={still ? false : { opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.18, ease: EASE }}
+          className="mx-auto mt-6 max-w-[570px] text-sm leading-7 text-slate-300 sm:text-base sm:leading-8"
+        >
+          Have an idea, a business opportunity, or a question?
+          Let&apos;s explore what&apos;s possible together.
+        </motion.p>
+
+        <motion.div
+          initial={still ? false : { opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.26, ease: EASE }}
+          className="mt-8 flex flex-col items-center justify-center gap-5 sm:flex-row"
+        >
+          <a
+            href="#contact-form"
+            className="group inline-flex min-h-[52px] items-center justify-center gap-3 rounded-full bg-[#5EEAD4] px-7 py-3 text-sm font-bold text-[#06111C] transition duration-300 hover:-translate-y-0.5 hover:bg-[#99F6E4] hover:shadow-[0_8px_35px_rgba(94,234,212,0.20)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#5EEAD4]"
+          >
+            Send an Inquiry
+
+            <ArrowRight
+              size={16}
+              className="transition-transform group-hover:translate-x-1"
+            />
+          </a>
+
+          <a
+            href="mailto:info@bhventures.ae"
+            className="inline-flex items-center gap-2 text-sm text-slate-300 transition hover:text-[#5EEAD4]"
+          >
+            info@bhventures.ae
+            <ArrowUpRight size={15} />
+          </a>
+        </motion.div>
+
+        <motion.div
+          initial={still ? false : { opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.6, delay: 0.35, ease: EASE }}
+          className="mt-10 flex flex-wrap items-center justify-center gap-x-3 gap-y-2 text-[10px] font-medium uppercase tracking-[0.17em] text-white/45 sm:mt-12"
+        >
+          <span>Dubai</span>
+          <span className="text-[#5EEAD4]">•</span>
+          <span>International Business</span>
+          <span className="text-[#5EEAD4]">•</span>
+          <span>Technology & Innovation</span>
         </motion.div>
       </div>
     </section>

@@ -9,7 +9,7 @@ import { DISPLAY } from "./ContactHero";
 import { useHydratedReducedMotion } from "./useHydratedReducedMotion";
 
 const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
-const glass = "relative isolate overflow-hidden rounded-[32px] border border-[#2DD4BF]/30 bg-[#0D1B2F]/70 p-7 shadow-[0_30px_80px_rgba(0,0,0,0.36),0_0_60px_rgba(45,212,191,0.10)] backdrop-blur-2xl sm:p-8";
+const glass = "relative isolate overflow-hidden rounded-[32px] border-2 border-[#2DD4BF]/45 bg-[#0D1B2F]/85 p-7 shadow-[0_35px_90px_rgba(0,0,0,0.55),0_0_50px_rgba(45,212,191,0.15)] ring-1 ring-white/15 backdrop-blur-2xl sm:p-8";
 const tints = ["bg-[#14B8A6]/20", "bg-[#38BDF8]/20", "bg-[#2DD4BF]/15", "bg-[#1D4ED8]/30"];
 
 export default function ContactInfo() {
@@ -21,7 +21,7 @@ export default function ContactInfo() {
         {!still && <motion.span aria-hidden className="pointer-events-none absolute left-0 top-0 z-10 h-[2px] w-1/3 bg-gradient-to-r from-transparent via-[#5EEAD4] to-transparent" animate={{ x: ["-100%", "300%"] }} transition={{ duration: 4.5, repeat: Infinity, ease: "easeInOut" }} />}
         <h3 className={`${DISPLAY} mb-6 text-[1.7rem] tracking-[-0.02em] text-white`}>Reach us directly</h3>
 
-        <div className="flex flex-col gap-1.5">
+        <div className="flex flex-col gap-2.5">
           {directChannels.map((channel, idx) => {
             const Icon = channel.icon;
             const inner = (
@@ -38,7 +38,7 @@ export default function ContactInfo() {
                 {channel.href && <ArrowRight size={15} className="shrink-0 text-white/30 transition group-hover:translate-x-1 group-hover:text-[#2DD4BF]" />}
               </>
             );
-            const row = `group -mx-3 flex items-center gap-4 rounded-2xl p-3 transition ${channel.href ? "hover:bg-white/[0.07]" : ""}`;
+            const row = `group -mx-2 flex items-center gap-4 rounded-2xl border border-white/[0.08] bg-white/[0.02] p-3 transition hover:border-[#2DD4BF]/35 hover:bg-white/[0.06]`;
             return (
               <motion.div key={idx} initial={{ opacity: 0, x: 16 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true, amount: 0.3 }} transition={{ duration: 0.5, delay: idx * 0.08, ease: EASE }}>
                 {channel.href ? (
@@ -71,11 +71,11 @@ export default function ContactInfo() {
         <motion.div aria-hidden animate={still ? undefined : { x: [0, -50, 0], y: [0, -30, 0], scale: [1, 1.2, 1] }} transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }} className="pointer-events-none absolute -bottom-12 -right-12 -z-10 h-56 w-56 rounded-full bg-[#1D4ED8]/[0.32] blur-[70px]" />
         {!still && <motion.span aria-hidden className="pointer-events-none absolute left-0 top-0 z-10 h-[2px] w-1/3 bg-gradient-to-r from-transparent via-[#38BDF8] to-transparent" animate={{ x: ["-100%", "300%"] }} transition={{ duration: 4.5, repeat: Infinity, ease: "easeInOut" }} />}
         <h3 className={`${DISPLAY} mb-4 text-[1.5rem] tracking-[-0.02em] text-white`}>Looking for something else?</h3>
-        <div className="flex flex-col">
+        <div className="flex flex-col gap-2">
           {quickLinks.map((link) => (
-            <Link key={link.label} href={link.href} className="group -mx-3 flex items-center justify-between rounded-2xl px-3 py-3.5 transition hover:bg-white/[0.07]">
-              <span className="text-[14.5px] font-medium text-white/70 transition group-hover:text-white">{link.label}</span>
-              <ArrowRight size={15} className="text-white/30 transition group-hover:translate-x-1 group-hover:text-[#2DD4BF]" />
+            <Link key={link.label} href={link.href} className="group -mx-2 flex items-center justify-between rounded-2xl border border-white/[0.08] bg-white/[0.02] px-3.5 py-3.5 transition hover:border-[#2DD4BF]/35 hover:bg-white/[0.06]">
+              <span className="text-[14.5px] font-medium text-white/75 transition group-hover:text-white">{link.label}</span>
+              <ArrowRight size={15} className="text-white/35 transition group-hover:translate-x-1 group-hover:text-[#2DD4BF]" />
             </Link>
           ))}
         </div>

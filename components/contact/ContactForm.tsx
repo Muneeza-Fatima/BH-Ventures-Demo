@@ -28,7 +28,7 @@ type FormState = { name: string; email: string; phone: string; region: string; s
 const initialState: FormState = { name: "", email: "", phone: "", region: "", subject: "", message: "" };
 
 const fieldBase =
-  "w-full rounded-2xl border border-white/10 bg-[#0A1424]/60 px-4 py-3.5 text-[14px] text-white outline-none transition placeholder:text-white/30 hover:border-white/20 focus:border-[#2DD4BF] focus:bg-white/[0.08] focus:ring-4 focus:ring-[#2DD4BF]/15 focus:shadow-[0_0_32px_rgba(45,212,191,0.18)]";
+  "w-full rounded-2xl border border-white/20 bg-[#0A1424]/75 px-4 py-3.5 text-[14px] text-white outline-none transition placeholder:text-white/35 hover:border-white/35 focus:border-[#2DD4BF] focus:bg-[#0A1424]/90 focus:ring-4 focus:ring-[#2DD4BF]/20 focus:shadow-[0_0_32px_rgba(45,212,191,0.22)]";
 
 function Flag({ region }: { region: Region }) {
   if (!region.code) return <Globe2 size={16} className="shrink-0 text-[#2DD4BF]" aria-hidden />;
@@ -41,7 +41,7 @@ function CountrySelect({ value, onChange }: { value: string; onChange: (n: strin
   const selected = regionOptions.find((r) => r.name === value);
   return (
     <div className="relative" onBlur={(e) => { if (!e.currentTarget.contains(e.relatedTarget as Node)) setOpen(false); }}>
-      <button id="contact-region" type="button" aria-haspopup="listbox" aria-expanded={open} onClick={() => setOpen((v) => !v)} className={`${fieldBase} flex items-center gap-3 text-left`}>
+      <button id="contact-region" type="button" suppressHydrationWarning aria-haspopup="listbox" aria-expanded={open} onClick={() => setOpen((v) => !v)} className={`${fieldBase} flex items-center gap-3 text-left`}>
         {selected ? (
           <>
             <Flag region={selected} />
@@ -129,7 +129,7 @@ export default function ContactForm() {
       initial={{ opacity: 0, y: 16 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, ease: EASE }}
-      className="relative isolate flex h-full flex-col overflow-hidden rounded-[36px] border border-[#2DD4BF]/30 bg-[#0D1B2F]/70 p-7 shadow-[0_40px_100px_rgba(0,0,0,0.44),0_0_70px_rgba(45,212,191,0.12)] backdrop-blur-2xl sm:p-10"
+      className="relative isolate flex h-full flex-col overflow-hidden rounded-[36px] border-2 border-[#2DD4BF]/45 bg-[#0D1B2F]/85 p-7 shadow-[0_40px_100px_rgba(0,0,0,0.55),0_0_50px_rgba(45,212,191,0.18)] ring-1 ring-white/15 backdrop-blur-2xl sm:p-10"
     >
       <motion.div aria-hidden animate={still ? undefined : { x: [0, -50, 0], y: [0, 40, 0] }} transition={{ duration: 16, repeat: Infinity, ease: "easeInOut" }} className="pointer-events-none absolute -right-16 -top-16 -z-10 h-72 w-72 rounded-full bg-[#1D4ED8]/[0.32] blur-[80px]" />
       <motion.div aria-hidden animate={still ? undefined : { x: [0, 60, 0], y: [0, -40, 0], scale: [1, 1.15, 1] }} transition={{ duration: 19, repeat: Infinity, ease: "easeInOut" }} className="pointer-events-none absolute -bottom-16 -left-16 -z-10 h-72 w-72 rounded-full bg-[#14B8A6]/[0.3] blur-[80px]" />
@@ -142,10 +142,10 @@ export default function ContactForm() {
 
       <motion.div variants={{ show: { transition: { staggerChildren: 0.08 } } }} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.1 }} className="grid flex-1 grid-cols-1 gap-5 sm:grid-cols-2 sm:grid-rows-[auto_auto_auto_1fr]">
         <Field label="Full name" htmlFor="contact-name">
-          <input id="contact-name" name="name" required autoComplete="name" value={form.name} onChange={handleChange} placeholder="Jane Carter" className={fieldBase} />
+          <input id="contact-name" name="name" required autoComplete="name" value={form.name} onChange={handleChange} placeholder="Jane Carter" className={fieldBase} suppressHydrationWarning />
         </Field>
         <Field label="Email" htmlFor="contact-email">
-          <input id="contact-email" name="email" type="email" required autoComplete="email" value={form.email} onChange={handleChange} placeholder="jane@company.com" className={fieldBase} />
+          <input id="contact-email" name="email" type="email" required autoComplete="email" value={form.email} onChange={handleChange} placeholder="jane@company.com" className={fieldBase} suppressHydrationWarning />
         </Field>
         <Field label="Country" htmlFor="contact-region">
           <CountrySelect value={form.region} onChange={(n) => setForm((p) => ({ ...p, region: n }))} />
@@ -160,14 +160,14 @@ export default function ContactForm() {
             )}
             <input id="contact-phone" name="phone" type="tel" autoComplete="tel-national" value={form.phone} onChange={handleChange}
               placeholder={dialCode ? "5X XXX XXXX" : "Select a country first"} className={fieldBase}
-              style={dialCode ? { paddingLeft: `${dialCode.length * 9 + 52}px` } : undefined} />
+              style={dialCode ? { paddingLeft: `${dialCode.length * 9 + 52}px` } : undefined} suppressHydrationWarning />
           </div>
         </Field>
         <Field label="Subject" htmlFor="contact-subject" className="sm:col-span-2">
-          <input id="contact-subject" name="subject" required value={form.subject} onChange={handleChange} placeholder="Partnership inquiry" className={fieldBase} />
+          <input id="contact-subject" name="subject" required value={form.subject} onChange={handleChange} placeholder="Partnership inquiry" className={fieldBase} suppressHydrationWarning />
         </Field>
         <Field label="Message" htmlFor="contact-message" className="sm:col-span-2">
-          <textarea id="contact-message" name="message" required rows={5} value={form.message} onChange={handleChange} placeholder="Tell us a little about what you'd like to discuss." className={`${fieldBase} min-h-[140px] flex-1 resize-none`} />
+          <textarea id="contact-message" name="message" required rows={5} value={form.message} onChange={handleChange} placeholder="Tell us a little about what you'd like to discuss." className={`${fieldBase} min-h-[140px] flex-1 resize-none`} suppressHydrationWarning />
         </Field>
       </motion.div>
 
@@ -180,7 +180,7 @@ export default function ContactForm() {
               <CheckCircle2 size={16} /> Email app opened
             </motion.div>
           ) : (
-            <motion.button key="submit" type="submit" whileHover={{ y: -2 }} whileTap={{ scale: 0.97 }}
+            <motion.button key="submit" type="submit" whileHover={{ y: -2 }} whileTap={{ scale: 0.97 }} suppressHydrationWarning
               className="group relative flex items-center justify-center gap-2.5 overflow-hidden rounded-full bg-gradient-to-r from-[#14B8A6] to-[#38BDF8] px-8 py-3.5 text-[14px] font-semibold text-[#06202A] shadow-[0_14px_40px_rgba(20,184,166,0.35)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#2DD4BF]">
               {!still && <motion.span aria-hidden className="absolute inset-y-0 w-1/3 -skew-x-12 bg-gradient-to-r from-transparent via-white/40 to-transparent" initial={{ left: "-40%" }} animate={{ left: "140%" }} transition={{ duration: 2.2, repeat: Infinity, repeatDelay: 2, ease: "easeInOut" }} />}
               <span className="relative">Send message</span>

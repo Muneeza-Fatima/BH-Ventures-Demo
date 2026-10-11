@@ -353,6 +353,7 @@ export default function BHChatBot() {
                 {!open && <span className="chatbot-pulse-ring" />}
                 <button
                     onClick={() => setOpen((v) => !v)}
+                    suppressHydrationWarning
                     className={`chatbot-trigger-btn${open ? " is-open" : ""}`}
                     aria-label={open ? "Close chat" : "Open chat"}
                 >
