@@ -528,6 +528,22 @@
     filter: saturate(1.5) contrast(1.1) brightness(1.08);
 }
 
+/* Card video sits over the photo and fades in once it starts playing,
+   so the photo stays visible while the video loads. */
+.service-video {
+    position: absolute;
+    inset: 0;
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity 0.5s ease-out;
+}
+
+.service-video--ready {
+    opacity: 1;
+}
+
 .service-banner-glow {
     position: absolute;
     inset: 0;

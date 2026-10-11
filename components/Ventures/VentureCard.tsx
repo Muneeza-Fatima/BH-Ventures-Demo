@@ -1,9 +1,10 @@
 "use client";
 
-import { useRef, MouseEvent, CSSProperties } from "react";
+import { useRef, useState, MouseEvent, CSSProperties } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import type { Service } from "@/lib/types";
+import { usePlayWhenVisible } from "@/lib/usePlayWhenVisible";
 
 import "./venture-detail.css";
 
@@ -41,6 +42,8 @@ const BRAND_ACCENT = {
 
 export default function ServiceCard({ service, index }: ServiceCardProps) {
   const cardRef = useRef<HTMLElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [videoReady, setVideoReady] = useState(false);
   const category = getCategory(service.badge);
   // First card gets priority (eager load + preload link); rest lazy-load.
   const isFirst = index === 0;
@@ -49,6 +52,10 @@ export default function ServiceCard({ service, index }: ServiceCardProps) {
     "--accent": BRAND_ACCENT.accent,
     "--accent-rgb": BRAND_ACCENT.rgb,
   } as CSSProperties;
+
+  // Play the card's video only while it is on screen. On phones the cards
+  // share one group, so just the most visible card plays at a time.
+  usePlayWhenVisible(cardRef, videoRef, Boolean(service.video), "venture-cards");
 
   function handleMouseMove(e: MouseEvent<HTMLElement>) {
     const card = cardRef.current;
@@ -93,6 +100,20 @@ export default function ServiceCard({ service, index }: ServiceCardProps) {
             decoding="async"
             quality={75}
           />
+          {service.video && (
+            <video
+              ref={videoRef}
+              className={`service-video${videoReady ? " service-video--ready" : ""}`}
+              src={service.video}
+              muted
+              loop
+              playsInline
+              preload="none"
+              disablePictureInPicture
+              onPlaying={() => setVideoReady(true)}
+              aria-hidden="true"
+            />
+          )}
         </div>
         <div className="service-banner-glow" />
         <div className="service-banner-fade" />
