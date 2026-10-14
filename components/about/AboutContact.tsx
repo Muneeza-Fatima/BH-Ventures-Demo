@@ -1,6 +1,7 @@
 "use client";
 
-import { motion, useReducedMotion } from "framer-motion";
+import { motion } from "framer-motion";
+import { useHydratedReducedMotion } from "@/lib/useHydratedReducedMotion";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { directChannels } from "@/components/about/aboutContactData";
@@ -47,7 +48,7 @@ const channelAccents: Record<string, string> = {
 };
 
 export default function AboutContact() {
-  const prefersReducedMotion = useReducedMotion();
+  const prefersReducedMotion = useHydratedReducedMotion();
   const cardVariants = prefersReducedMotion
     ? channelVariantsReduced
     : channelVariants;

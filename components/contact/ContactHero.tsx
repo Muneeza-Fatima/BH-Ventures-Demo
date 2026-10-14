@@ -1,21 +1,8 @@
-
 "use client";
 
-import { Spectral, Plus_Jakarta_Sans } from "next/font/google";
 import { motion } from "framer-motion";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
 import { useHydratedReducedMotion } from "./useHydratedReducedMotion";
-
-const spectral = Spectral({
-  subsets: ["latin"],
-  weight: ["400", "600", "700"],
-  style: ["normal", "italic"],
-});
-
-const jakarta = Plus_Jakarta_Sans({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-});
 
 export const DISPLAY = "font-bold";
 
@@ -39,7 +26,7 @@ export default function ContactHero() {
   return (
     <section
       id="contact-hero"
-      className={`${jakarta.className} relative isolate flex min-h-[520px] w-full items-center justify-center overflow-hidden bg-[#060C18] px-5 pb-16 pt-[120px] text-center text-white sm:min-h-[560px] sm:pb-20 sm:pt-[130px] lg:min-h-[590px]`}
+      className="contact-hero-font relative isolate flex min-h-[520px] w-full items-center justify-center overflow-hidden bg-[#060C18] px-5 pb-16 pt-[120px] text-center text-white sm:min-h-[560px] sm:pb-20 sm:pt-[130px] lg:min-h-[590px]"
     >
       {/* Background */}
       <div
@@ -105,7 +92,7 @@ export default function ContactHero() {
         {/* Headline */}
         <motion.h1
           {...reveal(0.07)}
-          className={`${spectral.className} mx-auto max-w-[900px] text-[2.65rem] font-semibold leading-[1.12] tracking-[-0.04em] sm:text-[3.5rem] lg:text-[4.6rem]`}
+          className="contact-hero-heading mx-auto max-w-[900px] text-[2.65rem] font-semibold leading-[1.12] tracking-[-0.04em] sm:text-[3.5rem] lg:text-[4.6rem]"
         >
           Every great partnership
           <br className="hidden sm:block" /> starts with a{" "}

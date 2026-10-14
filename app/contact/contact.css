@@ -7,6 +7,23 @@
    revert-layer hands those properties back to the utilities.
    ========================================================= */
 
+/* ---------------------------------------------------------
+   HEADING FACES
+   Spectral (serif) and Plus Jakarta Sans are loaded in
+   app/contact/page.tsx via next/font and exposed as CSS
+   variables --font-spectral and --font-jakarta on the page
+   root. These classes let child client components consume
+   them without calling next/font themselves.
+   --------------------------------------------------------- */
+
+.contact-hero-font {
+  font-family: var(--font-jakarta), var(--font-manrope), sans-serif;
+}
+
+.contact-hero-heading {
+  font-family: 'Spectral', Georgia, serif;
+}
+
 .contact-page :is(h1, h2, h3, p) {
   font-weight: revert-layer;
   margin: revert-layer;

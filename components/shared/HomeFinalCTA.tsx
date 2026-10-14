@@ -1,15 +1,14 @@
 "use client";
 
 import Link from "next/link";
-import { motion, useReducedMotion, type Variants } from "framer-motion";
+import { motion, type Variants } from "framer-motion";
 import { ArrowRight } from "lucide-react";
+import { useHydratedReducedMotion } from "@/lib/useHydratedReducedMotion";
 
 const ease = [0.16, 1, 0.3, 1] as const;
 
 export default function HomeFinalCTA() {
-  // useReducedMotion() returns null on the server — treat null as false so
-  // SSR and the first client render produce identical initial prop values.
-  const reduceMotion = useReducedMotion() === true;
+  const reduceMotion = useHydratedReducedMotion();
 
   /* Scroll reveal: children fade + rise one after another */
   const container: Variants = {

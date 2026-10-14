@@ -16,12 +16,61 @@
   --card: #123b46;
   --muted: #69777c;
 
+  /* Responsive spacing tokens matching the Home Page layout:
+     Mobile (<640px):  px-5  (20px each side -> 40px gutter)
+     sm (>=640px):     px-7  (28px each side -> 56px gutter)
+     md (>=768px):     px-10 (40px each side -> 80px gutter)
+     lg (>=1024px):    px-12 (48px each side -> 96px gutter)
+     xl (>=1280px):    px-16 (64px each side -> 128px gutter, max-w 1440px)
+     2xl (>=1536px):   px-20 (80px each side -> 160px gutter, max-w 1600px)
+  */
+  --page-pad: 20px;
+  --page-gutter: 40px;
+  --page-max-w: 1440px;
+  --container-width: min(calc(var(--page-max-w) - var(--page-gutter)), calc(100% - var(--page-gutter)));
+
   position: relative;
   min-height: 100vh;
   /* clip (not hidden) so the sticky Projects intro keeps working */
   overflow-x: clip;
   background: var(--navy-dark);
   color: var(--cream);
+}
+
+@media (min-width: 640px) {
+  .portfolio {
+    --page-pad: 28px;
+    --page-gutter: 56px;
+  }
+}
+
+@media (min-width: 768px) {
+  .portfolio {
+    --page-pad: 40px;
+    --page-gutter: 80px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .portfolio {
+    --page-pad: 48px;
+    --page-gutter: 96px;
+  }
+}
+
+@media (min-width: 1280px) {
+  .portfolio {
+    --page-pad: 64px;
+    --page-gutter: 128px;
+  }
+}
+
+@media (min-width: 1536px) {
+  .portfolio {
+    --page-pad: 80px;
+    --page-gutter: 160px;
+    --page-max-w: 1600px;
+  }
 }
 
 /* =========================================================
@@ -54,9 +103,12 @@
   display: flex;
   align-items: center;
 
+  /* BRIGHTER BACKGROUND */
   background:
-    radial-gradient(900px circle at 85% 30%, rgba(72, 165, 155, 0.16), transparent 60%),
-    var(--navy-dark);
+    radial-gradient(900px circle at 85% 28%, rgba(85, 212, 198, 0.34), transparent 60%),
+    radial-gradient(800px circle at 10% 85%, rgba(72, 165, 155, 0.26), transparent 62%),
+    radial-gradient(700px circle at 45% 0%, rgba(108, 200, 255, 0.14), transparent 60%),
+    linear-gradient(135deg, #0d2c3b 0%, #0a2230 50%, #0c3038 100%);
 
   /* slanted bottom edge */
   clip-path: polygon(0 0, 100% 0, 100% 96%, 0 100%);
@@ -68,9 +120,10 @@
   z-index: 0;
   pointer-events: none;
 
+  /* BRIGHTER GRID LINES (0.07 -> 0.13) */
   background-image:
-    linear-gradient(rgba(142, 208, 199, 0.07) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(142, 208, 199, 0.07) 1px, transparent 1px);
+    linear-gradient(rgba(142, 208, 199, 0.13) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(142, 208, 199, 0.13) 1px, transparent 1px);
   background-size: 64px 64px;
 
   -webkit-mask-image: radial-gradient(ellipse 80% 70% at 60% 45%, #000 20%, transparent 85%);
@@ -89,8 +142,9 @@
   height: 560px;
   right: -120px;
   top: -120px;
+  /* BRIGHTER (0.3 -> 0.5) */
   background: radial-gradient(circle,
-      rgba(72, 165, 155, 0.3),
+      rgba(85, 212, 198, 0.5),
       transparent 70%);
 }
 
@@ -99,8 +153,9 @@
   height: 420px;
   left: 20%;
   bottom: -140px;
+  /* BRIGHTER + soft blue tint */
   background: radial-gradient(circle,
-      rgba(85, 212, 198, 0.2),
+      rgba(108, 200, 255, 0.35),
       transparent 70%);
 }
 
@@ -119,14 +174,15 @@
   letter-spacing: -0.08em;
 
   color: transparent;
-  -webkit-text-stroke: 1px rgba(142, 208, 199, 0.12);
+  /* MORE VISIBLE (0.12 -> 0.2) */
+  -webkit-text-stroke: 1px rgba(142, 208, 199, 0.2);
 }
 
 .heroInner {
   position: relative;
   z-index: 2;
 
-  width: min(1240px, calc(100% - 48px));
+  width: var(--container-width);
   margin: 0 auto;
   padding: 130px 0;
 
@@ -741,7 +797,7 @@
   position: relative;
   z-index: 1;
 
-  width: min(1180px, calc(100% - 48px));
+  width: var(--container-width);
   margin: 0 auto;
 
   display: grid;
@@ -1067,7 +1123,7 @@
   position: relative;
   z-index: 1;
 
-  width: min(1180px, calc(100% - 48px));
+  width: var(--container-width);
   margin: 0 auto;
 
   padding: 120px 0;
@@ -1473,7 +1529,7 @@
   position: relative;
   z-index: 1;
 
-  width: min(1200px, calc(100% - 48px));
+  width: var(--container-width);
   margin: 0 auto;
 
   padding: 120px 0 130px;
@@ -1957,7 +2013,7 @@
 .futureLayout {
   position: relative;
   z-index: 2;
-  width: min(1180px, calc(100% - 48px));
+  width: var(--container-width);
   margin: 0 auto;
   display: grid;
   grid-template-columns: minmax(0, 1.25fr) minmax(300px, 0.75fr);
@@ -2815,6 +2871,7 @@
 ========================================================= */
 
 @media (prefers-reduced-motion: reduce) {
+
   .marqueeTrack,
   .marqueeRowSmall .marqueeTrack,
   .heroRotatorWord,
@@ -2945,6 +3002,7 @@
 }
 
 @media (hover: none) {
+
   .dot,
   .lens {
     display: none;
@@ -2952,6 +3010,7 @@
 }
 
 @media (hover: hover) {
+
   .portfolio,
   .portfolio a,
   .portfolio button {
@@ -3031,12 +3090,29 @@
 }
 
 @keyframes grainShift {
-  0% { transform: translate(0, 0); }
-  20% { transform: translate(-3%, 2%); }
-  40% { transform: translate(2%, -3%); }
-  60% { transform: translate(-2%, -1%); }
-  80% { transform: translate(3%, 3%); }
-  100% { transform: translate(0, 0); }
+  0% {
+    transform: translate(0, 0);
+  }
+
+  20% {
+    transform: translate(-3%, 2%);
+  }
+
+  40% {
+    transform: translate(2%, -3%);
+  }
+
+  60% {
+    transform: translate(-2%, -1%);
+  }
+
+  80% {
+    transform: translate(3%, 3%);
+  }
+
+  100% {
+    transform: translate(0, 0);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -3145,9 +3221,9 @@
   min-width: 0;
 }
 
-.introContent > *,
-.heroInner > *,
-.projectsLayout > * {
+.introContent>*,
+.heroInner>*,
+.projectsLayout>* {
   min-width: 0;
 }
 
@@ -3251,14 +3327,6 @@
 
 /* big screens: don't let it feel lost */
 @media (min-width: 1700px) {
-  .heroInner,
-  .intro,
-  .sectors,
-  .projects,
-  .futureLayout {
-    width: min(1480px, calc(100% - 96px));
-  }
-
   .heroTitle {
     font-size: 6.2rem;
   }
@@ -3321,6 +3389,7 @@
 .orbitCore span {
   font-size: calc(var(--size) * 0.034);
 }
+
 /* Hero: the rotating word is gradient text (background-clip: text),
    which only paints inside the element box — give the descenders
    ("g" in "together.") room so they are not cut off. */
@@ -3348,27 +3417,8 @@
 
 /* ---------------------------------------------------------
    SHARED PAGE WIDTH
-   Every section except Selected Projects (kept at its original
-   width) uses the same container on desktop, so headings start
-   on one left line and the side margins stay slim.
+   All sections follow --container-width aligned with the home page.
    --------------------------------------------------------- */
-@media (min-width: 901px) {
-  .heroInner,
-  .intro,
-  .sectors,
-  .futureLayout {
-    width: min(1320px, calc(100% - 64px));
-  }
-}
-
-@media (min-width: 1700px) {
-  .heroInner,
-  .intro,
-  .sectors,
-  .futureLayout {
-    width: min(1600px, calc(100% - 96px));
-  }
-}
 
 @media (min-width: 1440px) {
   .intro {

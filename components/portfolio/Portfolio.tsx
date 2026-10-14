@@ -236,11 +236,11 @@ const pop: Variants = {
   }),
 };
 
-/* Hero starts only after the loader has finished */
+/* Hero entrance */
 const heroStart: Variants = {
   hidden: {},
   visible: {
-    transition: { staggerChildren: 0.09, delayChildren: 2.2 },
+    transition: { staggerChildren: 0.09, delayChildren: 0.1 },
   },
 };
 
@@ -612,7 +612,6 @@ export default function Portfolio() {
 
   return (
     <main className={`${styles.portfolio} ${jakarta.className}`}>
-      <Loader />
       <Cursor />
       <Grain />
       <ScrollRing />

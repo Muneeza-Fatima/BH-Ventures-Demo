@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
+import { useHydratedReducedMotion } from "@/lib/useHydratedReducedMotion";
 import { X, MapPin, Briefcase, Clock3, ArrowRight } from "lucide-react";
 import type { CareerJob } from "./careersJobsData";
 
@@ -29,7 +30,7 @@ export default function CareersJobModal({
   job: CareerJob | null;
   onClose: () => void;
 }) {
-  const prefersReducedMotion = useReducedMotion();
+  const prefersReducedMotion = useHydratedReducedMotion();
   const closeButtonRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {

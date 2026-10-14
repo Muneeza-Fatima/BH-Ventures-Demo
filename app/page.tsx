@@ -5,6 +5,7 @@ import BuiltForGlobalGrowth from "@/components/shared/GlobalGrowth";
 import OurCapabilities from "@/components/shared/OurCapabilities";
 import GlobalImpact from "@/components/shared/GlobalImpact";
 import HomeFinalCTA from "@/components/shared/HomeFinalCTA";
+import HomeLoader from "@/components/hero/HomeLoader";
 
 export const metadata: Metadata = pageMeta({
   title: "BH Ventures FZE LLC | Trade, Technology & Innovation from Dubai",
@@ -16,6 +17,7 @@ export const metadata: Metadata = pageMeta({
 export default function Home() {
   return (
     <div className="home-page w-full min-w-0 overflow-x-clip bg-[#0B1220]">
+      <HomeLoader />
       <section id="home" className="w-full min-w-0">
         <Hero />
       </section>

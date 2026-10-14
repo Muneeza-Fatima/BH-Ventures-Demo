@@ -4,9 +4,9 @@ import { useEffect, useState } from "react";
 import {
   AnimatePresence,
   motion,
-  useReducedMotion,
   type Variants,
 } from "framer-motion";
+import { useHydratedReducedMotion } from "@/lib/useHydratedReducedMotion";
 import { ArrowDown, ArrowRight } from "lucide-react";
 
 const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
@@ -191,7 +191,7 @@ function PurposeDrawing({
 }
 
 export default function AboutMissionVision() {
-  const prefersReducedMotion = useReducedMotion();
+  const prefersReducedMotion = useHydratedReducedMotion();
   const [active, setActive] = useState(0);
   const [manual, setManual] = useState(false);
   const [inView, setInView] = useState(false);

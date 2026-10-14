@@ -2,7 +2,8 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
+import { useHydratedReducedMotion } from "@/lib/useHydratedReducedMotion";
 import {
   ArrowLeft,
   ArrowRight,
@@ -277,7 +278,7 @@ function StageSignal({
   signal: number;
   originPercent: number;
 }) {
-  const prefersReducedMotion = useReducedMotion();
+  const prefersReducedMotion = useHydratedReducedMotion();
 
   if (prefersReducedMotion || signal === 0) return null;
 
@@ -323,7 +324,7 @@ function TimelineSelector({
   autoplaying: boolean;
   className?: string;
 }) {
-  const prefersReducedMotion = useReducedMotion();
+  const prefersReducedMotion = useHydratedReducedMotion();
 
   return (
     <div
@@ -517,7 +518,7 @@ function JourneyPanel({
   onNext: () => void;
   revealed: boolean;
 }) {
-  const prefersReducedMotion = useReducedMotion();
+  const prefersReducedMotion = useHydratedReducedMotion();
   const step = journeySteps[activeIndex];
   const nextStep = journeySteps[(activeIndex + 1) % journeySteps.length];
   const StepIcon = step.icon;
@@ -826,7 +827,7 @@ function JourneyPanel({
 ============================================================ */
 
 function TimelineStages({ revealed }: { revealed: boolean }) {
-  const prefersReducedMotion = useReducedMotion();
+  const prefersReducedMotion = useHydratedReducedMotion();
   const [activeIndex, setActiveIndex] = useState(0);
   const [manual, setManual] = useState(false);
   const [paused, setPaused] = useState(false);

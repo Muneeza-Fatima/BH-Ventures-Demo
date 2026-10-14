@@ -1,7 +1,8 @@
 "use client";
 
-import { motion, useReducedMotion } from "framer-motion";
+import { motion } from "framer-motion";
 import { Globe2, Handshake, TrendingUp, Blocks } from "lucide-react";
+import { useHydratedReducedMotion } from "@/lib/useHydratedReducedMotion";
 
 const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
@@ -61,7 +62,7 @@ const cardVariantsReduced = {
 };
 
 export default function AboutGlobalReach() {
-  const prefersReducedMotion = useReducedMotion();
+  const prefersReducedMotion = useHydratedReducedMotion();
 
   return (
     <section

@@ -1,10 +1,18 @@
 import type { Metadata } from "next";
 import { pageMeta } from "@/lib/seo";
+import { Plus_Jakarta_Sans } from "next/font/google";
 import "./contact.css";
 import ContactHero from "@/components/contact/ContactHero";
 import ContactForm from "@/components/contact/ContactForm";
 import ContactInfo from "@/components/contact/ContactInfo";
 import ContactFAQ from "@/components/contact/ContactFAQ";
+
+const jakarta = Plus_Jakarta_Sans({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  display: "swap",
+  variable: "--font-jakarta",
+});
 
 export const metadata: Metadata = pageMeta({
   title: "Contact Us",
@@ -15,7 +23,19 @@ export const metadata: Metadata = pageMeta({
 
 export default function ContactPage() {
   return (
-    <div className="contact-page w-full min-w-0 overflow-x-clip bg-[#060E1A]">
+    <div className={`${jakarta.variable} contact-page w-full min-w-0 overflow-x-clip bg-[#060E1A]`}>
+      {/*
+        Spectral is loaded via a <link> tag because next/font/google fails
+        for fonts with multiple style variants (italic) under Turbopack in
+        Next.js 16.x. Next.js App Router hoists inline <link> tags to <head>.
+      */}
+      <link rel="preconnect" href="https://fonts.googleapis.com" />
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+      <link
+        href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap"
+        rel="stylesheet"
+      />
+
       {/* Hero — split layout with globe */}
       <section id="contact-hero-section" className="w-full min-w-0">
         <ContactHero />
