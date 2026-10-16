@@ -6,19 +6,16 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { directChannels, socialLinks, quickLinks } from "@/components/contact/contactData";
 import { DISPLAY } from "./ContactHero";
-import { useHydratedReducedMotion } from "./useHydratedReducedMotion";
 
 const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
-const glass = "relative isolate overflow-hidden rounded-[32px] border-2 border-[#2DD4BF]/45 bg-[#0D1B2F]/85 p-7 shadow-[0_35px_90px_rgba(0,0,0,0.55),0_0_50px_rgba(45,212,191,0.15)] ring-1 ring-white/15 backdrop-blur-2xl sm:p-8";
+const glass = "relative isolate overflow-hidden rounded-[32px] border border-white/[0.24] bg-gradient-to-br from-white/[0.14] to-white/[0.06] shadow-[0_24px_60px_rgba(0,0,0,0.30)] backdrop-blur-xl p-7 sm:p-8";
 const tints = ["bg-[#14B8A6]/20", "bg-[#38BDF8]/20", "bg-[#2DD4BF]/15", "bg-[#1D4ED8]/30"];
 
 export default function ContactInfo() {
-  const still = useHydratedReducedMotion();
   return (
     <div className="flex h-full flex-col gap-6">
       <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, ease: EASE }} className={glass}>
-        <motion.div aria-hidden animate={still ? undefined : { x: [0, 50, 0], y: [0, 30, 0], scale: [1, 1.2, 1] }} transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }} className="pointer-events-none absolute -left-12 -top-12 -z-10 h-56 w-56 rounded-full bg-[#2DD4BF]/[0.26] blur-[70px]" />
-        {!still && <motion.span aria-hidden className="pointer-events-none absolute left-0 top-0 z-10 h-[2px] w-1/3 bg-gradient-to-r from-transparent via-[#5EEAD4] to-transparent" animate={{ x: ["-100%", "300%"] }} transition={{ duration: 4.5, repeat: Infinity, ease: "easeInOut" }} />}
+        <div aria-hidden className="pointer-events-none absolute -left-12 -top-12 -z-10 h-56 w-56 rounded-full bg-[#2DD4BF]/[0.12] blur-[70px]" />
         <h3 className={`${DISPLAY} mb-6 text-[1.7rem] tracking-[-0.02em] text-white`}>Reach us directly</h3>
 
         <div className="flex flex-col gap-2.5">
@@ -28,7 +25,6 @@ export default function ContactInfo() {
               <>
                 <span className={`relative flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-[#5EEAD4] transition group-hover:scale-110 ${tints[idx % tints.length]}`}>
                   <Icon size={18} strokeWidth={1.7} aria-hidden />
-                  <span aria-hidden className="absolute inset-0 rounded-full bg-[#2DD4BF]/25 motion-safe:animate-ping [animation-duration:3.2s]" style={{ animationDelay: `${idx * 0.7}s` }} />
                 </span>
                 <span className="min-w-0 flex-1">
                   <span className="block text-[12px] text-white/45">{channel.label}</span>
@@ -68,8 +64,7 @@ export default function ContactInfo() {
       </motion.div>
 
       <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.08, ease: EASE }} className={glass}>
-        <motion.div aria-hidden animate={still ? undefined : { x: [0, -50, 0], y: [0, -30, 0], scale: [1, 1.2, 1] }} transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }} className="pointer-events-none absolute -bottom-12 -right-12 -z-10 h-56 w-56 rounded-full bg-[#1D4ED8]/[0.32] blur-[70px]" />
-        {!still && <motion.span aria-hidden className="pointer-events-none absolute left-0 top-0 z-10 h-[2px] w-1/3 bg-gradient-to-r from-transparent via-[#38BDF8] to-transparent" animate={{ x: ["-100%", "300%"] }} transition={{ duration: 4.5, repeat: Infinity, ease: "easeInOut" }} />}
+        <div aria-hidden className="pointer-events-none absolute -bottom-12 -right-12 -z-10 h-56 w-56 rounded-full bg-[#1D4ED8]/[0.14] blur-[70px]" />
         <h3 className={`${DISPLAY} mb-4 text-[1.5rem] tracking-[-0.02em] text-white`}>Looking for something else?</h3>
         <div className="flex flex-col gap-2">
           {quickLinks.map((link) => (

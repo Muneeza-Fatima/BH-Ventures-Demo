@@ -129,11 +129,10 @@ export default function ContactForm() {
       initial={{ opacity: 0, y: 16 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, ease: EASE }}
-      className="relative isolate flex h-full flex-col overflow-hidden rounded-[36px] border-2 border-[#2DD4BF]/45 bg-[#0D1B2F]/85 p-7 shadow-[0_40px_100px_rgba(0,0,0,0.55),0_0_50px_rgba(45,212,191,0.18)] ring-1 ring-white/15 backdrop-blur-2xl sm:p-10"
+      className="relative isolate flex h-full flex-col overflow-hidden rounded-[32px] border border-white/[0.24] bg-gradient-to-br from-white/[0.14] to-white/[0.06] shadow-[0_24px_60px_rgba(0,0,0,0.30)] backdrop-blur-xl p-7 sm:p-10"
     >
-      <motion.div aria-hidden animate={still ? undefined : { x: [0, -50, 0], y: [0, 40, 0] }} transition={{ duration: 16, repeat: Infinity, ease: "easeInOut" }} className="pointer-events-none absolute -right-16 -top-16 -z-10 h-72 w-72 rounded-full bg-[#1D4ED8]/[0.32] blur-[80px]" />
-      <motion.div aria-hidden animate={still ? undefined : { x: [0, 60, 0], y: [0, -40, 0], scale: [1, 1.15, 1] }} transition={{ duration: 19, repeat: Infinity, ease: "easeInOut" }} className="pointer-events-none absolute -bottom-16 -left-16 -z-10 h-72 w-72 rounded-full bg-[#14B8A6]/[0.3] blur-[80px]" />
-      {!still && <motion.span aria-hidden className="pointer-events-none absolute left-0 top-0 z-10 h-[2px] w-1/3 bg-gradient-to-r from-transparent via-[#5EEAD4] to-transparent" animate={{ x: ["-100%", "300%"] }} transition={{ duration: 4.5, repeat: Infinity, ease: "easeInOut" }} />}
+      <div aria-hidden className="pointer-events-none absolute -right-16 -top-16 -z-10 h-72 w-72 rounded-full bg-[#1D4ED8]/[0.14] blur-[80px]" />
+      <div aria-hidden className="pointer-events-none absolute -bottom-16 -left-16 -z-10 h-72 w-72 rounded-full bg-[#14B8A6]/[0.12] blur-[80px]" />
 
       <h3 className={`${DISPLAY} text-[2rem] leading-tight tracking-[-0.02em] text-white sm:text-[2.4rem]`}>
         Send us a message

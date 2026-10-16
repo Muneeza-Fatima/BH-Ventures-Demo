@@ -226,13 +226,14 @@ const maskLine: Variants = {
   visible: { y: "0%", transition: { duration: 0.85, ease } },
 };
 
+// Hero photos: show almost immediately (custom = small stagger in seconds)
 const pop: Variants = {
-  hidden: { opacity: 0, scale: 0.9, y: 30 },
+  hidden: { opacity: 0, scale: 0.96, y: 12 },
   visible: (d: number) => ({
     opacity: 1,
     scale: 1,
     y: 0,
-    transition: { duration: 0.9, ease, delay: 0.35 + d },
+    transition: { duration: 0.5, ease, delay: d },
   }),
 };
 
@@ -760,13 +761,18 @@ export default function Portfolio() {
               className={styles.heroArch}
               style={{ x: archX, y: archY }}
               variants={pop}
-              custom={2}
-              initial="hidden"
+              custom={0}
+              // Rendered visible from the server: the photo shows the moment
+              // the page opens instead of waiting for JS + an entrance animation.
+              initial={false}
               animate="visible"
             >
               <img
-                src="https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=1400&q=85"
+                src="/images/portfolio/hero-dubai.jpg"
                 alt="Dubai skyline"
+                loading="eager"
+                fetchPriority="high"
+                decoding="sync"
               />
               <span className={styles.heroArchShade} />
               <span className={styles.heroArchTag}>
@@ -779,13 +785,18 @@ export default function Portfolio() {
               className={styles.heroSquare}
               style={{ x: squareX, y: squareY }}
               variants={pop}
-              custom={2.15}
-              initial="hidden"
+              custom={0.06}
+              // Rendered visible from the server: the photo shows the moment
+              // the page opens instead of waiting for JS + an entrance animation.
+              initial={false}
               animate="visible"
             >
               <img
-                src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=800&q=80"
+                src="/images/portfolio/hero-globe.jpg"
                 alt=""
+                loading="eager"
+                fetchPriority="high"
+                decoding="sync"
               />
             </motion.div>
 
@@ -794,13 +805,18 @@ export default function Portfolio() {
               className={styles.heroCircle}
               style={{ x: circleX, y: circleY }}
               variants={pop}
-              custom={2.3}
-              initial="hidden"
+              custom={0.12}
+              // Rendered visible from the server: the photo shows the moment
+              // the page opens instead of waiting for JS + an entrance animation.
+              initial={false}
               animate="visible"
             >
               <img
-                src="https://images.unsplash.com/photo-1518684079-3c830dcef090?auto=format&fit=crop&w=800&q=80"
+                src="/images/portfolio/hero-architecture.jpg"
                 alt=""
+                loading="eager"
+                fetchPriority="high"
+                decoding="sync"
               />
             </motion.div>
 
@@ -808,7 +824,7 @@ export default function Portfolio() {
             <motion.div
               className={styles.heroBadge}
               variants={pop}
-              custom={2.5}
+              custom={0.18}
               initial="hidden"
               animate="visible"
               aria-hidden="true"
@@ -836,7 +852,7 @@ export default function Portfolio() {
               className={`${styles.heroChip} ${styles.heroChipTop}`}
               style={{ x: chipX, y: chipY }}
               variants={pop}
-              custom={2.6}
+              custom={0.22}
               initial="hidden"
               animate="visible"
             >
@@ -851,7 +867,7 @@ export default function Portfolio() {
               className={`${styles.heroChip} ${styles.heroChipMid}`}
               style={{ x: chipX, y: chipY }}
               variants={pop}
-              custom={2.75}
+              custom={0.28}
               initial="hidden"
               animate="visible"
             >
@@ -1065,7 +1081,7 @@ export default function Portfolio() {
                     data-cursor={sector.number}
                   >
                     <div className={styles.tileMedia}>
-                      <img src={sector.image} alt="" loading="lazy" />
+                      <img src={sector.image} alt="" loading="eager" decoding="async" />
                     </div>
                     <div className={styles.tileShade} />
                     <div className={styles.tileGlow} />
