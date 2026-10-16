@@ -898,3 +898,16 @@ svg[class*="VIpgJd-ZVi9od-aZ2wEe"] * {
     backdrop-filter: none !important;
   }
 }
+
+/* =========================================================
+   INTRO LOADER ANIMATIONS
+   ========================================================= */
+@keyframes loader-shimmer {
+  0% { transform: translateX(-100%); }
+  60%, 100% { transform: translateX(100%); }
+}
+
+.animate-loader-shimmer {
+  animation: loader-shimmer 2.4s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
