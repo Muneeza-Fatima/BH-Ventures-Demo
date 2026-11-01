@@ -35,9 +35,12 @@ import {
 import styles from "./Portfolio.module.css";
 import { projects } from "@/data/projects";
 
+// Variable font (all weights 200–800 in one file), loaded the same way as
+// the About, Careers and Legal pages. A fixed `weight` list here made
+// Turbopack fail to resolve the font files on Vercel builds.
 const jakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
-  weight: ["500", "600", "700", "800"],
+  display: "swap",
 });
 
 /* ─────────────────────────────────────────────

@@ -8,8 +8,9 @@ import ContactInfo from "@/components/contact/ContactInfo";
 import ContactFAQ from "@/components/contact/ContactFAQ";
 
 const jakarta = Plus_Jakarta_Sans({
+  // Variable font (all weights in one file). A fixed `weight` list makes
+  // Turbopack fail to resolve the Google font files on clean builds.
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
   display: "swap",
   variable: "--font-jakarta",
 });
