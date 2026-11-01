@@ -2,6 +2,7 @@
 
 import { useEffect, useId, useMemo, useRef, useState } from "react";
 import type { CSSProperties, ReactNode, RefObject } from "react";
+import Link from "next/link";
 import { motion, type Variants } from "framer-motion";
 import {
     Globe2,
@@ -485,12 +486,14 @@ function Chart({ spec, accent = "#2340D6" }: { spec: ChartSpec; accent?: string 
             const C = 2 * Math.PI * r;
             const total = spec.data.reduce((a, d) => a + d.value, 0) || 1;
             const fills = [accent, INK, RULE, MUTED];
-            let acc = 0;
+            // Arc lengths and their running start offsets, worked out before render.
+            const lens = spec.data.map((d) => (d.value / total) * C);
+            const offsets = lens.map((_, i) => lens.slice(0, i).reduce((a, b) => a + b, 0));
             body = (
                 <>
                     {spec.data.map((d, i) => {
-                        const len = (d.value / total) * C;
-                        const el = (
+                        const len = lens[i];
+                        return (
                             <circle
                                 key={d.label}
                                 cx={cx}
@@ -500,12 +503,10 @@ function Chart({ spec, accent = "#2340D6" }: { spec: ChartSpec; accent?: string 
                                 stroke={fills[i % fills.length]}
                                 strokeWidth={34}
                                 strokeDasharray={`${len} ${C - len}`}
-                                strokeDashoffset={-acc}
+                                strokeDashoffset={-offsets[i]}
                                 transform={`rotate(-90 ${cx} ${cy})`}
                             />
                         );
-                        acc += len;
-                        return el;
                     })}
                     {spec.data.map((d, i) => (
                         <g key={d.label} transform={`translate(312 ${92 + i * 72})`}>
@@ -682,16 +683,15 @@ function ReadingProgress({ target }: { target: RefObject<HTMLDivElement | null> 
 /* ------------------------------------------------------------------ */
 
 function useReveal<T extends HTMLElement>() {
-    const ref = useRef<T | null>(null);
+    // Callback ref kept in state, so the element can be observed without
+    // reading a ref object during render.
+    const [el, setEl] = useState<T | null>(null);
     const [visible, setVisible] = useState(false);
 
     useEffect(() => {
-        const el = ref.current;
         if (!el) return;
-        if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-            setVisible(true);
-            return;
-        }
+        // Reduced motion still reveals on entry; the stylesheet removes the
+        // transition, so the section simply appears.
         const io = new IntersectionObserver(
             ([entry]) => {
                 if (entry.isIntersecting) {
@@ -703,9 +703,10 @@ function useReveal<T extends HTMLElement>() {
         );
         io.observe(el);
         return () => io.disconnect();
-    }, []);
+    }, [el]);
 
-    return { ref, visible };
+    // `attach` is a callback ref: <div ref={reveal.attach}>
+    return { attach: setEl, visible };
 }
 
 /** Animates the numeric portion of a label ("50+", "$150M+", "100%")
@@ -716,21 +717,16 @@ function useCountUp(target: string, active: boolean, duration = 1100) {
     const [display, setDisplay] = useState(match ? target.replace(match[0], "0") : target);
 
     useEffect(() => {
-        if (!match) {
-            setDisplay(target);
-            return;
-        }
-        if (!active) return;
-        if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-            setDisplay(target);
-            return;
-        }
+        // No number to animate: the initial state already shows the label.
+        if (!match || !active) return;
+        // Reduced motion: jump straight to the final value on the first frame.
+        const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
         const end = parseFloat(match[0]);
         const decimals = match[0].includes(".") ? match[0].split(".")[1].length : 0;
         const start = performance.now();
         let raf = 0;
         const tick = (now: number) => {
-            const p = Math.min(1, (now - start) / duration);
+            const p = reduced ? 1 : Math.min(1, (now - start) / duration);
             const eased = 1 - Math.pow(1 - p, 3);
             setDisplay(target.replace(match[0], (end * eased).toFixed(decimals)));
             if (p < 1) raf = requestAnimationFrame(tick);
@@ -811,7 +807,6 @@ export default function Insights() {
         return map;
     }, []);
 
-    const usedTypes = (Object.keys(TYPE_LABELS) as ContentType[]).filter((t) => ARTICLES.some((a) => a.type === t));
     const keyCards: Array<{ type: ContentType; icon: LucideIcon; title: string; text: string }> = [
         { type: "insight", icon: Globe2, title: TYPE_LABELS.insight.name, text: TYPE_LABELS.insight.meaning },
         { type: "trend", icon: Handshake, title: TYPE_LABELS.trend.name, text: TYPE_LABELS.trend.meaning },
@@ -819,10 +814,10 @@ export default function Insights() {
         { type: "internal", icon: Grid3X3, title: TYPE_LABELS.internal.name, text: TYPE_LABELS.internal.meaning },
     ];
 
-    const statsReveal = useReveal<HTMLDivElement>();
-    const dispatchReveal = useReveal<HTMLDivElement>();
-    const advisoryReveal = useReveal<HTMLDivElement>();
-    const keyReveal = useReveal<HTMLDivElement>();
+    const { attach: statsRef, visible: statsVisible } = useReveal<HTMLDivElement>();
+    const { attach: dispatchRef, visible: dispatchVisible } = useReveal<HTMLDivElement>();
+    const { attach: advisoryRef, visible: advisoryVisible } = useReveal<HTMLDivElement>();
+    const { attach: keyRef, visible: keyVisible } = useReveal<HTMLDivElement>();
 
     const [email, setEmail] = useState("");
     const [subscribed, setSubscribed] = useState(false);
@@ -1011,8 +1006,8 @@ export default function Insights() {
 
                     {/* 1. Research Highlights & Impact Counters */}
                     <motion.div
-                        ref={statsReveal.ref}
-                        className={`bhi-stats ${statsReveal.visible ? "bhi-reveal--in" : "bhi-reveal"}`}
+                        ref={statsRef}
+                        className={`bhi-stats ${statsVisible ? "bhi-reveal--in" : "bhi-reveal"}`}
                         variants={{
                             hidden: {},
                             visible: { transition: { staggerChildren: 0.11, delayChildren: 0.05 } },
@@ -1021,16 +1016,16 @@ export default function Insights() {
                         whileInView="visible"
                         viewport={{ once: true, margin: "-60px" }}
                     >
-                        <StatItem i={0} active={statsReveal.visible} number="50+" label="Strategic Briefings" detail="Original research on technology, trade & growth" />
-                        <StatItem i={1} active={statsReveal.visible} number="6" label="Global Verticals" detail="AI, Web3, Trade, Digital Analytics & Marketing" />
-                        <StatItem i={2} active={statsReveal.visible} number="$150M+" label="Dealflow Tracked" detail="Frontier market data and real-time execution models" />
-                        <StatItem i={3} active={statsReveal.visible} number="100%" label="Proprietary Analysis" detail="Written directly by the BH Ventures team in Dubai" />
+                        <StatItem i={0} active={statsVisible} number="50+" label="Strategic Briefings" detail="Original research on technology, trade & growth" />
+                        <StatItem i={1} active={statsVisible} number="6" label="Global Verticals" detail="AI, Web3, Trade, Digital Analytics & Marketing" />
+                        <StatItem i={2} active={statsVisible} number="$150M+" label="Dealflow Tracked" detail="Frontier market data and real-time execution models" />
+                        <StatItem i={3} active={statsVisible} number="100%" label="Proprietary Analysis" detail="Written directly by the BH Ventures team in Dubai" />
                     </motion.div>
 
                     {/* 2. Interactive Weekly Dispatch Newsletter */}
                     <motion.div
-                        ref={dispatchReveal.ref}
-                        className={`bhi-dispatch ${dispatchReveal.visible ? "bhi-reveal--in" : "bhi-reveal"}`}
+                        ref={dispatchRef}
+                        className={`bhi-dispatch ${dispatchVisible ? "bhi-reveal--in" : "bhi-reveal"}`}
                         data-signal={dispatchSignal}
                         variants={containerVariants}
                         initial="hidden"
@@ -1114,8 +1109,8 @@ export default function Insights() {
 
                     {/* 3. Advisory & Venture Partnership CTA */}
                     <motion.div
-                        ref={advisoryReveal.ref}
-                        className={`bhi-advisory ${advisoryReveal.visible ? "bhi-reveal--in" : "bhi-reveal"}`}
+                        ref={advisoryRef}
+                        className={`bhi-advisory ${advisoryVisible ? "bhi-reveal--in" : "bhi-reveal"}`}
                         variants={containerVariants}
                         initial="hidden"
                         whileInView="visible"
@@ -1129,9 +1124,9 @@ export default function Insights() {
                                 Point us at the constraint. We connect research, operators and execution around the opportunity in front of you.
                             </motion.p>
                             <motion.div variants={itemVariants} className="bhi-advisory__actions">
-                                <a href="/ventures" className="bhi-btn bhi-btn--secondary">
+                                <Link href="/ventures" className="bhi-btn bhi-btn--secondary">
                                     Explore Our Ventures
-                                </a>
+                                </Link>
                             </motion.div>
                         </motion.div>
                         <motion.div
@@ -1152,8 +1147,8 @@ export default function Insights() {
 
                     {/* 4. Reading the Marks Key */}
                     <motion.div
-                        ref={keyReveal.ref}
-                        className={`bhi-key-card ${keyReveal.visible ? "bhi-reveal--in" : "bhi-reveal"}`}
+                        ref={keyRef}
+                        className={`bhi-key-card ${keyVisible ? "bhi-reveal--in" : "bhi-reveal"}`}
                         aria-label="How we label our writing"
                         variants={containerVariants}
                         initial="hidden"
